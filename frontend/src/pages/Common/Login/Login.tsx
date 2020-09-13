@@ -15,24 +15,12 @@ const Login = () => {
   return (
     <div>
       <Header />
-      <BodyContainer
-      // style={{
-      //     backgroundColor: "rgb(0, 21, 41)",
-      //     color: "#fff",
-      //     flex: "auto",
-      //     maxWidth: '90%',
-      //     marginLeft: 'auto',
-      //     marginRight: 'auto',
-      //     display: "flex",
-      //     alignItems: "center",
-      //     justifyContent: "center",
-      //     flexDirection: "column",
-      // }}
-      >
+      <BodyContainer>
         <h1 style={{ fontSize: "3rem" }}>Welcome, log in</h1>
         <Button label="Log in" className="p-button-raised p-button-rounded" />
         <div>Data retrieved from lorum ipsum:</div>
         <p>{data}</p>
+
       </BodyContainer>
     </div>
   );
