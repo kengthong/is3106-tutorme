@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Our Cart</title>
+
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<!-- font-awesome css -->
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<!-- Custom CSS -->
+<link href="css/style.css" rel="stylesheet">
+<link href="css/responsive.css" rel="stylesheet">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+<header>
+  <div class="header-top-area">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+          <div class="header-top-left">
+            <ul>
+              <li><i class="fa fa-mobile" aria-hidden="true"></i>(+64) 984 221 4789</li>
+              <li><i class="fa fa-envelope-o" aria-hidden="true"></i>contacts@yoursites.com</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+          <div class="header-top-right">
+            <div class="lang"><a href="#" class="dropdown-toggle" data-toggle="dropdown" id="lang_option" ><img src="images/lang.png" alt="language icon"> English <i class="fa fa-angle-down"></i> </a>|
+              <div class="dropdown-menu" aria-labelledby="lang_option"> <a href="#">Spanish</a> <a href="#">Chinese</a> <a href="#">Arabic</a> </div>
+            </div>
+            <div class="currency"><a href="#" class="dropdown-toggle" data-toggle="dropdown" id="currency_option" >$USD <i class="fa fa-angle-down"></i> </a>|
+              <div class="dropdown-menu" aria-labelledby="currency_option"> <a href="#">Euro</a> <a href="#">Yuan</a> <a href="#">AED</a> </div>
+            </div>
+            <div class="account"><a href="#" class="dropdown-toggle" data-toggle="dropdown" id="accout_option" ><i class="fa fa-user"></i> My Account <i class="fa fa-angle-down"></i></a>
+              <div class="dropdown-menu" aria-labelledby="accout_option"> <a href="#">My Profile</a> <a href="#">Setting</a> <a href="#">LogOut</a> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Navigation -->
+  
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container"> 
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="col-lg-3 col-sm-2">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+          <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="logo"></a> </div>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="col-lg-7  col-md-8 col-sm-8">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li> <a href="index.html">Home</a> </li>
+            <li> <a href="#">About us</a> </li>
+            <li> <a href="#">Shop</a> </li>
+            <li> <a href="blog.html">Blog</a> </li>
+            <li class="dropdown" > <a class="dropdown-toggle" data-toggle="dropdown" href="#">Pages</a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="product_page.html">Product Page</a></li>
+                <li><a href="product_details.html">Product Detail</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="blog_details.html">Blog Detail</a></li>
+                <li><a href="cart_page.html">Our Cart Page</a></li>
+                <li><a href="checkout.html">Checkout</a></li>
+              </ul>
+            </li>
+            <li> <a href="contact_us.html">Contact us</a> </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <div class="cart-area"><a href="cart_page.html">
+          <h3><span>2</span></h3>
+          </a>
+          <div><a href="cart_page.html">
+            <h4>My Cart</h4>
+            <h5>$29.00</h5>
+            </a></div>
+        </div>
+      </div>
+      <!-- /.navbar-collapse --> 
+    </div>
+    <!-- /.container --> 
+  </nav>
+</header>
+
+<!-- header-top-inner area start here -->
+<div class="header-top-inner">
+  <div class="container">
+    <div class="row">
+      <h6>New Collections</h6>
+      <h2>Our Cart Page</h2>
+    </div>
+  </div>
+</div>
+<!-- header-top-inner area end here -->
+
+<div class="cart_wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="cart_item_area">
+        <h2>Your Items</h2>
+        <div class="cart_item_tbl">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>Product Name</td>
+              <td>&nbsp;</td>
+              <td>Price</td>
+              <td>Quantity</td>
+              <td>Total</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td><img src="images/cart1.png" alt="product"></td>
+              <td><h4>Black Leather Ski Jacket</h4>
+                <h5>Size : XXL</h5>
+                <h5>Color : Black</h5></td>
+              <td class="price">$ 25,15 </td>
+              <td class="cart_qty"><div class="sp-quantity">
+                  <div class="sp-minus fff"> <a class="ddd" href="javascript:void(0)">-</a> </div>
+                  <div class="sp-input">
+                    <input type="text" class="quntity-input" value="1" />
+                  </div>
+                  <div class="sp-plus fff"> <a class="ddd" href="javascript:void(0)">+</a> </div>
+                </div></td>
+              <td class="total">$ 115,69 </td>
+              <td class="remove"><a href="#"><i class="fa fa-trash"></i></a></td>
+            </tr>
+            <tr>
+              <td><img src="images/cart3.png" alt="product"></td>
+              <td><h4>Black Leather Skirt</h4>
+                <h5>Size : XXL</h5>
+                <h5>Color : Black</h5></td>
+              <td class="price">$ 25,15 </td>
+              <td class="cart_qty"><div class="sp-quantity">
+                  <div class="sp-minus fff"> <a class="ddd" href="javascript:void(0)">-</a> </div>
+                  <div class="sp-input">
+                    <input type="text" class="quntity-input" value="1" />
+                  </div>
+                  <div class="sp-plus fff"> <a class="ddd" href="javascript:void(0)">+</a> </div>
+                </div></td>
+              <td class="total">$ 115,69 </td>
+              <td class="remove"><a href="#"><i class="fa fa-trash"></i></a></td>
+            </tr>
+          </table>
+        </div>
+        <div class="cart_btn_area">
+          <button>Clear Shopping Cart</button>
+          <button>Update Shopping Cart</button>
+          <button>Continue Shopping</button>
+        </div>
+      </div>
+      <div class="cart_cal_area">
+        <div class="cart_shipping">
+          <h3>Calculate Shipping</h3>
+          <div>
+            <select>
+              <option>United Kingdom(UK)</option>
+              <option>United Kingdom(UK)</option>
+              <option>United Kingdom(UK)</option>
+              <option>United Kingdom(UK)</option>
+            </select>
+          </div>
+          <div>
+            <select>
+              <option>United Kingdom(UK)</option>
+              <option>United Kingdom(UK)</option>
+              <option>United Kingdom(UK)</option>
+              <option>United Kingdom(UK)</option>
+            </select>
+          </div>
+          <div>
+            <input type="text" placeholder="Postcode / Zip">
+          </div>
+          <div>
+            <button>GET A QUOTE</button>
+          </div>
+        </div>
+        <div class="cart_coupon">
+          <h3>Coupon Discount</h3>
+          <div>
+            <input type="text" placeholder="Enter your coupon code">
+          </div>
+          <div>
+            <button>Apply code</button>
+          </div>
+        </div>
+        <div class="cart_total">
+          <h3>Cart Total</h3>
+          <div class="cart_black">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td>SUB TOTAL</td>
+                <td>:</td>
+                <td>$ 531,19 </td>
+              </tr>
+              <tr>
+                <td>GRAND TOTAL</td>
+                <td>:</td>
+                <td>$ 531,19 </td>
+              </tr>
+              <tr>
+                <td colspan="3"><button>PROCEED TO CHECKOUT</button></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- newsletter subscribe area start here -->
+<div class="subscribe-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <ul>
+          <li>Subscribe To Say Update With
+            Latest News And Discounts</li>
+          <li>
+            <input type="text" placeholder="Enter Your Email Address">
+          </li>
+          <li>
+            <button>Subscribe Now</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- newsletter subscribe area end here --> 
+
+<!-- partner area start here -->
+<div class="container">
+  <div class="row">
+    <div class="partner-area">
+      <ul>
+        <li><img src="images/logo1.png" alt="partner logo"></li>
+        <li><img src="images/logo2.png" alt="partner logo"></li>
+        <li><img src="images/logo3.png" alt="partner logo"></li>
+        <li><img src="images/logo4.png" alt="partner logo"></li>
+        <li><img src="images/logo5.png" alt="partner logo"></li>
+        <li><img src="images/logo6.png" alt="partner logo"></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- partner area end here --> 
+
+<!-- footer area start here -->
+<div class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="footer_bx footer_bx1">
+        <figure> <img src="images/logo-footer.png" alt="logo"> </figure>
+        <p>Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?</p>
+        <div class="social_icon"> <a href="#"><i class="fa fa-facebook-f"></i></a> <a href="#"><i class="fa fa-twitter"></i></a> <a href="#"><i class="fa fa-pinterest-p"></i></a> <a href="#"><i class="fa fa-instagram"></i></a> </div>
+      </div>
+      <div class="footer_bx links_txt">
+        <h3>Quick Links</h3>
+        <h6>Product Of The Week</h6>
+        <ul class="footer_list">
+          <li><a href="#">Catrgories</a></li>
+          <li><a href="#">About Theme</a></li>
+          <li><a href="blog.html">Our Blog</a></li>
+          <li><a href="product_page.html">Trendy Item</a></li>
+          <li><a href="product_page.html">Shop</a></li>
+          <li><a href="contact_us.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer_bx deals_txt">
+        <h3>Shopping Deals</h3>
+        <h6>Product Of The Week</h6>
+        <ul class="footer_list">
+          <li><a href="#">Fashion</a></li>
+          <li><a href="product_page.html">Products</a></li>
+          <li><a href="product_page.html">Deals</a></li>
+          <li><a href="#">Categories</a></li>
+          <li><a href="product_page.html">Ladies Bag</a></li>
+          <li><a href="product_page.html">Accessroies</a></li>
+        </ul>
+      </div>
+      <div class="footer_bx services_txt">
+        <h3>Customers Services</h3>
+        <h6>Product Of The Week</h6>
+        <ul class="footer_list">
+          <li><a href="#">Frequently Asked Questions</a></li>
+          <li><a href="#">Refund / Return Policy</a></li>
+          <li><a href="#">Contact Support</a></li>
+          <li><a href="#">Report Abuse</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- footer area start here -->
+<div class="copyright_area">
+    <p><a href="https://digitalcenturysf.com/">Free WordPress Themes</a> Powered by <a class="credits" href="https://digitalcenturysf.com/templates/">Best WordPress Themes</a></p> 
+</div>
+<!-- jQuery --> 
+<script src="js/jquery.js"></script> 
+
+<!-- Bootstrap Core JavaScript --> 
+<script src="js/bootstrap.min.js"></script> 
+<script>
+	$(".ddd").on("click", function () {
+
+    var $button = $(this);
+    var oldValue = $button.closest('.sp-quantity').find("input.quntity-input").val();
+
+    if ($button.text() == "+") {
+        var newVal = parseFloat(oldValue) + 1;
+    } else {
+        // Don't allow decrementing below zero
+        if (oldValue > 0) {
+            var newVal = parseFloat(oldValue) - 1;
+        } else {
+            newVal = 0;
+        }
+    }
+
+    $button.closest('.sp-quantity').find("input.quntity-input").val(newVal);
+
+});
+</script>
+</body>
+</html>
