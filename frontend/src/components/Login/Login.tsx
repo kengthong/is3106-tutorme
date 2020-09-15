@@ -42,6 +42,7 @@ const Login = () => {
           <label htmlFor="email">Email</label>
           <InputText
             id="emailinput"
+            keyfilter="email"
             type="text"
             onChange={(e) => handleEmailChange(e)}
           />
@@ -49,7 +50,7 @@ const Login = () => {
         <div className="p-field">
           <label htmlFor="password">Password</label>
           <InputText
-            id="emailinput"
+            id="passwordinput"
             type="password"
             onChange={(e) => handlePasswordChange(e)}
           />
