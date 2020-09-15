@@ -1,7 +1,7 @@
 import React from "react";
 import BodyContainer from "../../../components/Layout/BodyContainer";
 import logo from "../../../assets/logo.jpg";
-import RegistrationComponent from "../../../components/login/Registration";
+import RegistrationComponent from "../../../components/Login/Registration";
 
 const Registration = () => {
   return (

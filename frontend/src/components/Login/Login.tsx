@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Component } from "react";
+import React, {useEffect, useState, Component, FormEvent} from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
@@ -8,20 +8,34 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  function validateForm() {
-    return email.length > 0 && password.length > 0;
-  }
 
-  function submitForm() {
+  const validateForm = () => {
+    return email.length > 0 && password.length > 0;
+  };
+
+  // function validateForm() {
+  //   return email.length > 0 && password.length > 0;
+  // }
+
+  const submitForm = () => {
     return setEmail(email);
-  }
+  };
+
+  const handleEmailChange = (e: any) => {
+    const value = e && e.target && e.target.value? e.target.value: '';
+    setEmail(value);
+  };
+
+  // function submitForm() {
+  //   return setEmail(email);
+  // }
 
   return (
     <form>
       <div className="p-fluid">
         <div className="p-field">
           <label htmlFor="email">Email</label>
-          <InputText id="emailinput" type="text" />
+          <InputText id="emailinput" type="text" onChange={(e) => handleEmailChange(e)}/>
         </div>
         <div className="p-field">
           <label htmlFor="password">Password</label>

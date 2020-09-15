@@ -48,7 +48,7 @@ const ProtectedRoute = ({ component, isAuthenticated, ...rest }: any) => {
     isAuthenticated ? (
       React.createElement(component, props)
     ) : (
-      <Redirect to={{ pathname: "/login" }} />
+      <Redirect to={{ pathname: "/Login" }} />
     );
   return <Route {...rest} render={routeComponent} />;
 };
