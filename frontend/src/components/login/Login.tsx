@@ -13,7 +13,7 @@ const Login = () => {
   }
 
   function submitForm() {
-    return setEmail("Done");
+    return setEmail(email);
   }
 
   return (
@@ -21,11 +21,11 @@ const Login = () => {
       <div className="p-fluid">
         <div className="p-field">
           <label htmlFor="email">Email</label>
-          <InputText id="email" type="text" />
+          <InputText id="emailinput" type="text" />
         </div>
         <div className="p-field">
           <label htmlFor="password">Password</label>
-          <Password id="password" type="text" />
+          <Password id="passwordinput" type="text" />
         </div>
         <br></br>
         <div>
@@ -34,6 +34,7 @@ const Login = () => {
             className="p-button-raised p-pt-4"
             onClick={submitForm}
           />
+          <Button label="Register new account" className="p-button-link" />
         </div>
       </div>
     </form>
