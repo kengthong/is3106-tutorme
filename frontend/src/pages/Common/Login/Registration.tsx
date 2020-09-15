@@ -1,9 +1,14 @@
 import React from "react";
 import BodyContainer from "../../../components/Layout/BodyContainer";
+import { useHistory } from "react-router-dom";
+import { Button } from "primereact/button";
 import logo from "../../../assets/logo.jpg";
 import RegistrationComponent from "../../../components/Login/Registration";
 
 const Registration = () => {
+  const history = useHistory();
+  const handleClick = () => history.push("/login");
+
   return (
     <div>
       <BodyContainer>
@@ -17,6 +22,11 @@ const Registration = () => {
           Registration page
         </h1>
         <RegistrationComponent />
+        <Button
+          label="Register new account"
+          className="p-button-link"
+          onClick={handleClick}
+        />
       </BodyContainer>
     </div>
   );
