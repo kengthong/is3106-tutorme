@@ -13,6 +13,7 @@ import "./css/responsive.css";
 // components
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
 import Login from "../pages/Common/Login/Login";
+import Registration from "../pages/Common/Login/Registration";
 import LandingPage from "../pages/Common/LandingPage/LandingPage";
 import NotFoundPage from "../pages/Common/NotFoundPage/NotFoundPage";
 
@@ -24,6 +25,7 @@ const App = () => {
       <BrowserRouter>
         <Switch>
           <Route path="/login" component={Login} />
+          <Route path="/registration" component={Registration} />
           <ProtectedRoute path="/login" component={Login} />
           <ProtectedRoute
             path="/"
