@@ -6,7 +6,6 @@ import { Password } from "primereact/password";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [submitted, setSubmitted] = useState(false);
 
   const validateForm = () => {
     return email.length > 0 && password.length > 0;
@@ -16,8 +15,10 @@ const Login = () => {
   //   return email.length > 0 && password.length > 0;
   // }
 
-  const submitForm = () => {
-    return setEmail(email);
+  const handleSubmit = (e: any) => {
+    //Should call on
+    //Skeleton
+    console.log("Submitted");
   };
 
   const handleEmailChange = (e: any) => {
@@ -25,12 +26,17 @@ const Login = () => {
     setEmail(value);
   };
 
+  const handlePasswordChange = (e: any) => {
+    const value = e && e.target && e.target.value ? e.target.value : "";
+    setPassword(value);
+  };
+
   // function submitForm() {
   //   return setEmail(email);
   // }
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="p-fluid">
         <div className="p-field">
           <label htmlFor="email">Email</label>
@@ -42,14 +48,18 @@ const Login = () => {
         </div>
         <div className="p-field">
           <label htmlFor="password">Password</label>
-          <Password id="passwordinput" type="text" />
+          <InputText
+            id="emailinput"
+            type="password"
+            onChange={(e) => handlePasswordChange(e)}
+          />
         </div>
         <br></br>
         <div>
           <Button
             label="Login"
             className="p-button-raised p-pt-4"
-            onClick={submitForm}
+            onClick={handleSubmit}
           />
         </div>
       </div>
