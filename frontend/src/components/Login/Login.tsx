@@ -1,19 +1,29 @@
 import React, { useEffect, useState, Component, FormEvent } from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { Password } from "primereact/password";
+import { useHistory } from "react-router-dom";
+import { REGISTRATION_URL } from "../../config/constants";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const history = useHistory();
+  const handleRedirectToLogin = () => history.push(REGISTRATION_URL);
 
-  const validateForm = () => {
-    return email.length > 0 && password.length > 0;
+  const [formData, setFormData] = useState({
+    email: "5",
+    password: "43",
+  });
+
+  const handleChange = (e: any) => {
+    console.log(e);
+    const name = e && e.target && e.target.name ? e.target.name : "";
+    const value = e && e.target && e.target.value ? e.target.value : "";
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+
+    console.log(formData);
   };
-
-  // function validateForm() {
-  //   return email.length > 0 && password.length > 0;
-  // }
 
   const handleSubmit = (e: any) => {
     //Should call on
@@ -21,38 +31,26 @@ const Login = () => {
     console.log("Submitted");
   };
 
-  const handleEmailChange = (e: any) => {
-    const value = e && e.target && e.target.value ? e.target.value : "";
-    setEmail(value);
-  };
-
-  const handlePasswordChange = (e: any) => {
-    const value = e && e.target && e.target.value ? e.target.value : "";
-    setPassword(value);
-  };
-
-  // function submitForm() {
-  //   return setEmail(email);
-  // }
-
   return (
     <form onSubmit={handleSubmit}>
       <div className="p-fluid">
         <div className="p-field">
           <label htmlFor="email">Email</label>
           <InputText
+            name="email"
             id="emailinput"
             keyfilter="email"
             type="text"
-            onChange={(e) => handleEmailChange(e)}
+            onChange={(e) => handleChange(e)}
           />
         </div>
         <div className="p-field">
           <label htmlFor="password">Password</label>
           <InputText
+            name="password"
             id="passwordinput"
             type="password"
-            onChange={(e) => handlePasswordChange(e)}
+            onChange={(e) => handleChange(e)}
           />
         </div>
         <br></br>
@@ -63,13 +61,16 @@ const Login = () => {
             onClick={handleSubmit}
           />
         </div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            label="Login"
+            className="p-button-link"
+            onClick={handleRedirectToLogin}
+          />
+        </div>
       </div>
     </form>
   );
 };
 
-<<<<<<< HEAD
 export default Login;
-=======
-export default Login;
->>>>>>> 97efe2f032568363c535e853747b10fcbf772217
