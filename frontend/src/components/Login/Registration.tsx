@@ -16,7 +16,6 @@ const RegisterComponent = () => {
     firstName: "2",
     gender: "Male",
     lastName: "2",
-    name: "",
     password: "43",
     phoneNumber: "3",
   });

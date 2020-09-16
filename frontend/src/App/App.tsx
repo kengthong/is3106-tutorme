@@ -15,6 +15,7 @@ import Login from "../pages/Common/Login/Login";
 import Registration from "../pages/Common/Login/Registration";
 import LandingPage from "../pages/Common/LandingPage/LandingPage";
 import NotFoundPage from "../pages/Common/NotFoundPage/NotFoundPage";
+import tuteeProfile from "../pages/Common/Tutee/TuteeProfile";
 
 // services
 
@@ -25,7 +26,13 @@ const App = () => {
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/registration" component={Registration} />
-          <ProtectedRoute path="/" exact component={LandingPage} isAuthenticated={true} />
+          <Route path="/tuteeProfile" component={tuteeProfile} />
+          <ProtectedRoute
+            path="/"
+            exact
+            component={LandingPage}
+            isAuthenticated={true}
+          />
           {/*<ProtectedRoute path="/settings" component={Settings}/>*/}
           {/*<ProtectedRoute component={Dashboard}/>*/}
           <Route path="/error" exact={true} component={NotFoundPage} />
