@@ -1,5 +1,6 @@
 import React from "react";
 import BodyContainer from "../../../components/Layout/BodyContainer";
+<<<<<<< HEAD
 import { useHistory } from "react-router-dom";
 import { Button } from "primereact/button";
 import logo from "../../../assets/logo.jpg";
@@ -27,6 +28,15 @@ const Registration = () => {
           className="p-button-link"
           onClick={handleClick}
         />
+=======
+import RegistrationComponent from "../../../components/Login/Registration";
+
+const Registration = () => {
+  return (
+    <div>
+      <BodyContainer>
+        <RegistrationComponent />
+>>>>>>> 97efe2f032568363c535e853747b10fcbf772217
       </BodyContainer>
     </div>
   );

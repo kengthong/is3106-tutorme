@@ -11,5 +11,7 @@ export const getLorumIpsum = async (url: string) => {
     method: "GET",
   };
 
+  // test comment
+
   return fetch(url, requestOptions).then((res) => res.json());
 };
