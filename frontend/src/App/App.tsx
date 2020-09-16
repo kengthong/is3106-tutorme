@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+
 // CSS
 import "./App.css";
 
@@ -24,13 +25,7 @@ const App = () => {
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/registration" component={Registration} />
-          <ProtectedRoute path="/login" component={Login} />
-          <ProtectedRoute
-            path="/"
-            exact
-            component={LandingPage}
-            isAuthenticated={true}
-          />
+          <ProtectedRoute path="/" exact component={LandingPage} isAuthenticated={true} />
           {/*<ProtectedRoute path="/settings" component={Settings}/>*/}
           {/*<ProtectedRoute component={Dashboard}/>*/}
           <Route path="/error" exact={true} component={NotFoundPage} />
