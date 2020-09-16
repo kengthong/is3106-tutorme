@@ -2,8 +2,6 @@ import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 // CSS
 import "./App.css";
-import "primereact/resources/themes/saga-blue/theme.css";
-import "primereact/resources/primereact.min.css";
 
 import "./css/bootstrap.css";
 import "./css/bootstrap.min.css";
