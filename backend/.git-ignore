@@ -3,28 +3,14 @@
 .idea/
 
 
-/tutorme/dist/
-/tutorme/build/
-/tutormeLibrary/build/
-/tutormeLibrary/dist/
-/tutormeLibrary/nbproject/private/
-/tutorme/tutorme-ejb/build/
-/tutorme/tutorme-ejb/dist/
-/tutorme/tutorme-ejb/nbproject/private/
-/tutorme-ejb/nbproject/private/
-/tutorme-ejb/dist/
-/tutorme-ejb/build/
-/tutorme/tutorme-war/build/
-/tutorme/tutorme-war/dist/
-/tutorme/tutorme-war/nbproject/private/
-/tutorme/tutorme-war/nbproject/
+./dist/
+./build/
+./nbproject/
 
+./tutorme-ejb/dist/
+./tutorme-ejb/build/
+./tutorme-ejb/nbproject/
 
-# ignore the following files:
-project.properties
-glassfish-resources.xml
-/tutorme/nbproject/private/private.xml
-/tutorme/nbproject/private/private.properties
-/tutorme/nbproject/project.properties
-/tutorme/nbproject/private/private.properties
-/tutorme/nbproject/private/
+./tutorme-war/dist/
+./tutorme-war/build/
+./tutorme-war/nbproject/private
