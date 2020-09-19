@@ -1,37 +1,54 @@
 import React, { useState } from "react";
-import { Button } from "primereact/button";
-import { Calendar } from "primereact/calendar";
-import { InputText } from "primereact/inputtext";
-import { Password } from "primereact/password";
-import { RadioButton } from "primereact/radiobutton";
 import { LOGIN_URL } from "../../config/constants";
 import { useHistory } from "react-router-dom";
 import logo from "../../assets/logo.jpg";
+import { Input, Button, Radio, DatePicker, Modal } from "antd";
+import registerAction from "../../actions/registerAction";
 
 const RegisterComponent = () => {
   const [formData, setFormData] = useState({
-    confirmPassword: "3",
-    date: null,
-    email: "5",
-    firstName: "2",
+    confirmPassword: "",
+    date: "",
+    email: "",
+    firstName: "",
     gender: "Male",
-    lastName: "2",
-    password: "43",
-    phoneNumber: "3",
+    lastName: "",
+    password: "",
+    phoneNumber: "",
   });
 
   const history = useHistory();
 
-  const verifyPassword = (password1: string, password2: string) => {
-    return password1 == password2;
+  const verifyForm = () => {
+    let a = formData.firstName != "";
+    let b = formData.lastName != "";
+    let c = formData.password != "";
+    let d = formData.confirmPassword != "";
+    let e = formData.phoneNumber != "";
+    let f = formData.date != "";
+    let g = formData.email != "";
+    let h = formData.password == formData.confirmPassword;
+    return a && b && c && d && e && f && g && h;
   };
 
   //To be implemented
   const handleSubmit = (e: any) => {
     //Should call on API
     //Skeleton
-    console.log("Submitted");
-    console.log("form data=", formData);
+    if (verifyForm()) {
+      registerAction();
+    } else if (formData.password != formData.confirmPassword) {
+      Modal.error({
+        title: "Error",
+        content: "Please ensure password is identical to retyped password",
+      });
+    } else {
+      console.log("failed");
+      Modal.error({
+        title: "Error",
+        content: "Please ensure all fields are filled",
+      });
+    }
   };
 
   const handleRedirectToLogin = () => history.push(LOGIN_URL);
@@ -48,6 +65,14 @@ const RegisterComponent = () => {
     console.log(formData);
   };
 
+  //Need this to be separated because DatePicker returns 2 values
+  const handleDateChange = (dateData: any, dateString: any) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      date: dateString,
+    }));
+  };
+
   return (
     <div>
       <img src={logo} style={{ padding: 100 }} />
@@ -55,6 +80,7 @@ const RegisterComponent = () => {
         style={{
           fontSize: "3rem",
           padding: 50,
+          textAlign: "center",
         }}
       >
         Registration page
@@ -64,20 +90,18 @@ const RegisterComponent = () => {
         <div className="p-fluid ">
           <div className="p-field p-col-12 p-md-6">
             <label htmlFor="firstname">First name</label>
-            <InputText
+            <Input
               name="firstName"
               type="text"
-              keyfilter="alphanum"
               onChange={(e) => handleChange(e)}
               required={true}
             />
           </div>
           <div className="p-field p-col-12 p-md-6">
             <label htmlFor="lastname">Last name</label>
-            <InputText
+            <Input
               name="lastName"
               type="text"
-              keyfilter="alphanum"
               onChange={(e) => handleChange(e)}
               required={true}
             />
@@ -85,17 +109,16 @@ const RegisterComponent = () => {
 
           <div className="p-field ">
             <label htmlFor="email">Email</label>
-            <InputText
+            <Input
               name="email"
               type="text"
-              keyfilter="email"
               onChange={(e) => handleChange(e)}
               required={true}
             />
           </div>
           <div className="p-field ">
             <label htmlFor="password">Password</label>
-            <Password
+            <Input.Password
               name="password"
               type="text"
               onChange={(e) => handleChange(e)}
@@ -104,7 +127,7 @@ const RegisterComponent = () => {
           </div>
           <div className="p-field ">
             <label htmlFor="password">Retype Password</label>
-            <Password
+            <Input.Password
               name="confirmPassword"
               type="text"
               onChange={(e) => handleChange(e)}
@@ -113,10 +136,9 @@ const RegisterComponent = () => {
           </div>
           <div className="p-field ">
             <label htmlFor="phonenumber">Phone Number</label>
-            <InputText
+            <Input
               name="phoneNumber"
               type="text"
-              keyfilter="int"
               onChange={(e) => handleChange(e)}
               required={true}
             />
@@ -125,7 +147,7 @@ const RegisterComponent = () => {
             <label htmlFor="gender">Gender</label>
           </div>
           <div className="p-field-radiobutton">
-            <RadioButton
+            <Radio
               value="Male"
               name="gender"
               onChange={(e) => handleChange(e)}
@@ -134,7 +156,7 @@ const RegisterComponent = () => {
             <label htmlFor="gen1">Male</label>
           </div>
           <div className="p-field-radiobutton">
-            <RadioButton
+            <Radio
               value="Female"
               name="gender"
               onChange={(e) => handleChange(e)}
@@ -144,31 +166,26 @@ const RegisterComponent = () => {
           </div>
           <div className="p-field ">
             <label htmlFor="dob">Date of Birth</label>
-            <Calendar
-              dateFormat="dd/mm/yy"
+            <DatePicker
               name="date"
-              onChange={(e) => handleChange(e)}
-              required={true}
-            ></Calendar>
+              format="DD-MM-YYYY"
+              onChange={handleDateChange}
+            ></DatePicker>
           </div>
         </div>
 
         <br></br>
-        <div className="p-fluid p-formgrid p-grid">
-          <Button
-            label="Register"
-            className="p-button-raised p-pt-4"
-            onClick={handleSubmit}
-          />
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button type="primary" onClick={handleSubmit}>
+            Register
+          </Button>
         </div>
       </form>
 
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button
-          label="Login"
-          className="p-button-link"
-          onClick={handleRedirectToLogin}
-        />
+        <Button type="link" onClick={handleRedirectToLogin}>
+          Login
+        </Button>
       </div>
     </div>
   );
