@@ -1,16 +1,15 @@
 import React from "react";
-
 import BodyContainer from "../../../components/Layout/BodyContainer";
-import LoginComponent from "../../../components/Login/Login";
+import RegistrationComponent from "../../../components/Login/Registration";
 
-const Login = () => {
+const Registration = () => {
   return (
     <div>
       <BodyContainer>
-        <LoginComponent />
+        <RegistrationComponent />
       </BodyContainer>
     </div>
   );
 };
 
-export default Login;
+export default Registration;
