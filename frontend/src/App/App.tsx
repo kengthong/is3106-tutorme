@@ -18,6 +18,9 @@ import NotFoundPage from "../pages/Common/NotFoundPage/NotFoundPage";
 import tuteeProfile from "../pages/Common/Tutee/TuteeProfile";
 import TutorProfilePage from "../pages/Tutor/Settings/Profile";
 import TutorDetailsPage from "../pages/Tutor/Settings/PersonalDetails";
+import TuteeListingPage from "../pages/Tutee/TuteeListingPage";
+import TutorListingPage from "../pages/Tutor/TutorListingPage";
+
 
 // services
 
@@ -26,6 +29,8 @@ const App = () => {
     <ErrorBoundary>
       <BrowserRouter>
         <Switch>
+          <Route path="/tutee/listings" component={TuteeListingPage} />
+          <Route path="/tutor/listings" component={TutorListingPage} />
           <Route path="/login" component={Login} />
           <Route path="/" exact component={LandingPage} isAuthenticated={true}/>
           <ProtectedRoute path="/login" component={Login} />
@@ -52,6 +57,7 @@ const ProtectedRoute = ({ component, isAuthenticated, allowedUser, ...rest }: an
   const isAppropriateUser = (!allowedUser) || (allowedUser && userType === allowedUser);
 
   const routeComponent = (props: any) =>
+
     isAuthenticated?
         isAppropriateUser ?
             ( React.createElement(component, props))
