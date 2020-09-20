@@ -26,10 +26,6 @@ const MakeOfferComponent = (props: any) => {
       <Button type={"primary"} style={{ margin: "20px 0" }}>
         <span>SEND A MESSAGE</span>
       </Button>
-
-      <div style={{ textAlign: "center", opacity: 0.85 }}>
-        Expected response time: 24h
-      </div>
     </div>
   );
 };
