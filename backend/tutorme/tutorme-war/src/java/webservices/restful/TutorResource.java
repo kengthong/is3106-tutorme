@@ -25,7 +25,8 @@ import session.TutorSessionLocal;
  *
  * @author Owen Tay
  */
-@Path("tutor")
+
+@Path("/tutor")
 public class TutorResource {
 
     @EJB
@@ -57,6 +58,8 @@ public class TutorResource {
             JsonObject exception = Json.createObjectBuilder().add("error", "returned null value from REST/getTutors").build();
             return Response.status(400).entity(exception).build();
         }
+//        System.out.println("hello world");
+
     }
 
     @GET
