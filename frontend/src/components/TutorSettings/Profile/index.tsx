@@ -2,9 +2,9 @@ import React from "react";
 import { Card } from "antd";
 
 import BasicDetails from "./BasicDetails";
-import MakeOfferComponent from "./MakeOffer";
-import ReviewsComponent from "./Reviews";
-import OfferListComponent from "./OfferList";
+import MakeOfferComponent from "../../MakeOffer/MakeOffer";
+import ReviewsComponent from "../../Reviews/Reviews";
+import OfferListComponent from "../../OfferList/OfferList";
 
 type TutorProfileComponentProps = {
   user: { name: string; type: string };

@@ -31,6 +31,7 @@ const EditableDetails = () => {
       ...fieldsValue,
       dob: fieldsValue["dob"].format("DD-MM-YYYY"),
     };
+    console.log(values)
   };
 
   const radioStyle = {
