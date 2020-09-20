@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="998af429-ce67-4225-a875-f2c24c961ad1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/build/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/build/gfv5ee8.dpf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/build/lib/javaee-api-8.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/build/lib/javax.persistence-2.1.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/build/lib/javax.ws.rs-api-2.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/build/tutorme-ejb.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/build/tutorme-war.war" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/lib/javaee-api-8.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/lib/javax.persistence-2.1.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/lib/javax.ws.rs-api-2.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/.netbeans_automatic_build" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/.netbeans_update_resources" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/META-INF/persistence.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/entity/Area.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/entity/JobListing.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/entity/Message.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/entity/Offer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/entity/Person.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/entity/Rating.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/entity/Staff.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/entity/Subject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/entity/Timeslot.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/entity/Tutee.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/entity/Tutor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/enumeration/CitizenshipEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/enumeration/DowEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/enumeration/GenderEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/enumeration/OfferStatusEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/enumeration/QualificationEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/enumeration/RaceEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/enumeration/ShiftEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/enumeration/StaffPositionEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/AreaNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/JobListingNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/MessageNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/MessageUpdateException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/OfferNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/OfferWithdrawException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/PersonLoginFailException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/PersonNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/PersonUpdateException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/RatingNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/StaffNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/SubjectNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/TimeslotNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/TuteeNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/exception/TutorNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/AreaSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/AreaSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/DataInitializationBean.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/JobListingSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/JobListingSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/MessageSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/MessageSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/OfferSession$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/OfferSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/OfferSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/PersonSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/PersonSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/RatingSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/RatingSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/StaffSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/StaffSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/SubjectSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/SubjectSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/TimeslotSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/TimeslotSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/TuteeSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/TuteeSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/TutorSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/session/TutorSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-ejb_jar/util/security/CryptoHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-war_war/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-war_war/WEB-INF/classes/.netbeans_automatic_build" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-war_war/WEB-INF/classes/.netbeans_update_resources" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-war_war/WEB-INF/classes/webfilters/CORSFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-war_war/WEB-INF/classes/webservices/restful/ApplicationConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-war_war/WEB-INF/classes/webservices/restful/TutorResource$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-war_war/WEB-INF/classes/webservices/restful/TutorResource$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-war_war/WEB-INF/classes/webservices/restful/TutorResource.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/gfdeploy/tutorme/tutorme-war_war/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/dist/tutorme.ear" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/nbproject/private/private.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/nbproject/project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tutorme/nbproject/project.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/.netbeans_automatic_build" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/.netbeans_update_resources" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/META-INF/persistence.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/entity/Area.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/entity/JobListing.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/entity/Message.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/entity/Offer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/entity/Person.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/entity/Rating.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/entity/Staff.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/entity/Subject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/entity/Timeslot.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/entity/Tutee.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/entity/Tutor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/enumeration/CitizenshipEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/enumeration/DowEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/enumeration/GenderEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/enumeration/OfferStatusEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/enumeration/QualificationEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/enumeration/RaceEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/enumeration/ShiftEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/enumeration/StaffPositionEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/AreaNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/JobListingNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/MessageNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/MessageUpdateException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/OfferNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/OfferWithdrawException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/PersonLoginFailException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/PersonNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/PersonUpdateException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/RatingNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/StaffNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/SubjectNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/TimeslotNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/TuteeNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/exception/TutorNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/AreaSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/AreaSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/DataInitializationBean.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/JobListingSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/JobListingSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/MessageSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/MessageSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/OfferSession$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/OfferSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/OfferSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/PersonSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/PersonSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/RatingSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/RatingSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/StaffSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/StaffSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/SubjectSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/SubjectSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/TimeslotSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/TimeslotSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/TuteeSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/TuteeSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/TutorSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/session/TutorSessionLocal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/build/classes/util/security/CryptoHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/dist/tutorme-ejb.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/nbproject/private/private.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/nbproject/private/private.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/nbproject/project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tutorme/tutorme-ejb/nbproject/project.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/build/lib/javaee-api-8.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/build/lib/javax.persistence-2.1.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/build/web/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/build/web/WEB-INF/classes/.netbeans_automatic_build" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/build/web/WEB-INF/classes/.netbeans_update_resources" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/build/web/WEB-INF/classes/webfilters/CORSFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/build/web/WEB-INF/classes/webservices/restful/ApplicationConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/build/web/WEB-INF/classes/webservices/restful/TutorResource$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/build/web/WEB-INF/classes/webservices/restful/TutorResource$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/build/web/WEB-INF/classes/webservices/restful/TutorResource.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/build/web/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/dist/tutorme-war.war" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/nbproject/private/private.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tutorme/tutorme-war/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tutorme/tutorme-war/nbproject/private/private.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1hlq9akIAwm3X1Vd8q7y3vmqvzZ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="998af429-ce67-4225-a875-f2c24c961ad1" name="Default Changelist" comment="" />
+      <created>1600595875613</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600595875613</updated>
+      <workItem from="1600595878085" duration="877000" />
+      <workItem from="1600596866885" duration="272000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+</project>
