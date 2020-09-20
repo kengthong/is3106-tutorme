@@ -19,6 +19,8 @@ import tuteeProfile from "../pages/Common/Tutee/TuteeProfile";
 import TutorProfilePage from "../pages/Tutor/Settings/Profile";
 import TutorDetailsPage from "../pages/Tutor/Settings/PersonalDetails";
 import SearchPage from "../pages/Search/SearchPage";
+import TuteeListingPage from "../pages/Tutee/TuteeListingPage";
+import TutorListingPage from "../pages/Tutor/TutorListingPage";
 
 // services
 
@@ -27,13 +29,15 @@ const App = () => {
     <ErrorBoundary>
       <BrowserRouter>
         <Switch>
+          <Route path="/tutee/listings" component={TuteeListingPage} />
+          <Route path="/tutor/listings" component={TutorListingPage} />
           <Route path="/login" component={Login} />
-          <Route path="/" exact component={LandingPage} isAuthenticated={true}/>
+          <Route path="/" exact component={LandingPage} isAuthenticated={true} />
           <Route path='/search:params?' component={SearchPage} />
           <ProtectedRoute path="/login" component={Login} />
-          <ProtectedRoute path="/tutor/settings/profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true}/>
-          <ProtectedRoute path="/tutor/settings/personal-details" allowedUser='tutor' exact component={TutorDetailsPage} isAuthenticated={true}/>
-          <ProtectedRoute path="/tutor-profile" allowedUser='tutee' exact component={TutorProfilePage} isAuthenticated={true}/>
+          <ProtectedRoute path="/tutor/settings/profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
+          <ProtectedRoute path="/tutor/settings/personal-details" allowedUser='tutor' exact component={TutorDetailsPage} isAuthenticated={true} />
+          <ProtectedRoute path="/tutor-profile" allowedUser='tutee' exact component={TutorProfilePage} isAuthenticated={true} />
 
           <Route path="/registration" component={Registration} />
           <Route path="/tuteeProfile" component={tuteeProfile} />
@@ -54,11 +58,12 @@ const ProtectedRoute = ({ component, isAuthenticated, allowedUser, ...rest }: an
   const isAppropriateUser = (!allowedUser) || (allowedUser && userType === allowedUser);
 
   const routeComponent = (props: any) =>
-    isAuthenticated?
-        isAppropriateUser ?
-            ( React.createElement(component, props))
-        : ( <Redirect to={{ pathname: "/" }} /> )
-    : (<Redirect to={{ pathname: "/login" }} /> );
+
+    isAuthenticated ?
+      isAppropriateUser ?
+        (React.createElement(component, props))
+        : (<Redirect to={{ pathname: "/" }} />)
+      : (<Redirect to={{ pathname: "/login" }} />);
   return <Route {...rest} render={routeComponent} />;
 };
 
