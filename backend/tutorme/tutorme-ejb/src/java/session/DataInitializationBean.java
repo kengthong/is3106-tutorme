@@ -6,6 +6,9 @@
 package session;
 
 import entity.Area;
+import entity.JobListing;
+import entity.Offer;
+import entity.Person;
 import entity.Subject;
 import entity.Timeslot;
 import entity.Tutee;
@@ -17,10 +20,10 @@ import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import enumeration.ShiftEnum;
-import exception.SubjectNotFoundException;
-import exception.TimeslotNotFoundException;
-import exception.TutorNotFoundException;
+import exception.InvalidSubjectChoiceException;
+import exception.PersonNotFoundException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -31,7 +34,6 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PostPersist;
 
 /**
  *
@@ -61,6 +63,12 @@ public class DataInitializationBean {
     JobListingSessionLocal jobListingSession;
     @EJB
     OfferSessionLocal offerSession;
+    @EJB
+    RatingSessionLocal ratingSession;
+    @EJB
+    PersonSessionLocal persionSession;
+    @EJB
+    MessageSessionLocal messageSession;
 
     public DataInitializationBean() {
     }
@@ -68,22 +76,24 @@ public class DataInitializationBean {
     @PostConstruct
     public void postContruct() {
         initStaff();
-//        initTutors();
-//        initTutees();
-//        initArea();
-//        initTimeslots();
+        initTutors();
+        initTutees();
+        initArea();
+        initTimeslots();
         initSubjects();
         initJobListings();
-    }
-
-    @PostPersist
-    public void postPersist() throws TutorNotFoundException, SubjectNotFoundException, TimeslotNotFoundException {
-        initJobListings();
+        initOffers();
+        initRatings();
+        initMessages();
     }
 
     private void initStaff() {
-        Date randomStartDate = new Date(1990, 1, 1);
-        Date randomEndDate = new Date(2015, 12, 31);
+        Calendar c = Calendar.getInstance();
+        c.set(1990, 0, 0);
+        Date randomStartDate = c.getTime();
+        
+        c.set(2015, 12, 31);
+        Date randomEndDate = c.getTime();
 
         for (int i = 1; i <= 5; i++) {
             String email = "test_staff".concat(String.valueOf(i)).concat("@email.com");
@@ -91,13 +101,17 @@ public class DataInitializationBean {
             GenderEnum gender = mobileNum % 2 == 0 ? GenderEnum.MALE : GenderEnum.FEMALE;
             StaffPositionEnum adminPosition = mobileNum % 2 == 0 ? StaffPositionEnum.MANAGER : StaffPositionEnum.OPERATOR;
             Date dob = randomDateBetween(randomStartDate, randomEndDate);
-            staffSession.createStaff("test", "admin", email, "password", String.valueOf(mobileNum), gender, dob, adminPosition);
+            staffSession.createStaff("test", "admin", email, "password", String.valueOf(mobileNum), gender, randomStartDate, adminPosition);
         }
     }
 
     private void initTutors() {
-        Date randomStartDate = new Date(1990, 1, 1);
-        Date randomEndDate = new Date(2015, 12, 31);
+        Calendar c = Calendar.getInstance();
+        c.set(1990, 0, 0);
+        Date randomStartDate = c.getTime();
+        
+        c.set(2015, 12, 31);
+        Date randomEndDate = c.getTime();
 
         for (int i = 1; i <= 10; i++) {
             String email = "test_tutor".concat(String.valueOf(i)).concat("@email.com");
@@ -109,8 +123,12 @@ public class DataInitializationBean {
     }
 
     private void initTutees() {
-        Date randomStartDate = new Date(1990, 1, 1);
-        Date randomEndDate = new Date(2015, 12, 31);
+        Calendar c = Calendar.getInstance();
+        c.set(1990, 0, 0);
+        Date randomStartDate = c.getTime();
+        
+        c.set(2015, 12, 31);
+        Date randomEndDate = c.getTime();
 
         for (int i = 1; i <= 10; i++) {
             String email = "test_tutee".concat(String.valueOf(i)).concat("@email.com");
@@ -139,7 +157,7 @@ public class DataInitializationBean {
     }
 
     private void initSubjects() {
-//        subjectSession.createSubject("Primary 1", "English Language");
+        subjectSession.createSubject("Primary 1", "English Language");
         subjectSession.createSubject("Primary 1", "Mother Tongue Language (MTL)");
         subjectSession.createSubject("Primary 1", "Mathematics");
         subjectSession.createSubject("Primary 1", "Science");
@@ -336,47 +354,92 @@ public class DataInitializationBean {
     }
 
     private void initJobListings() {
-        Date randomStartDate = new Date(1990, 1, 1);
-        Date randomEndDate = new Date(2015, 12, 31);
+        List<Tutor> tutors = tutorSession.retrieveAllTutors();
+        List<Subject> subjects = subjectSession.retrieveAllSubjects();
+        List<Timeslot> timeslots = timeslotSession.retrieveAllTimeslots();
+        List<Area> areas = areaSession.retrieveAllAreas();
+        for (int i = 0; i < 25; i++) {
+            int randomTutorIndex = randomNumberGenerator(0, tutors.size());
+            Tutor tutor;
+            tutor = tutors.get(randomTutorIndex);
 
-        Tutor tutor = new Tutor();
-        for (int i = 1; i <= 10; i++) {
-            String email = "test_tutor".concat(String.valueOf(i)).concat("@email.com");
-            int mobileNum = randomNumberGenerator(80000001, 99999998);
-            GenderEnum gender = mobileNum % 2 == 0 ? GenderEnum.MALE : GenderEnum.FEMALE;
-            Date dob = randomDateBetween(randomStartDate, randomEndDate);
-            tutor = new Tutor("test", "tutor", email, "password", String.valueOf(mobileNum), gender, dob, QualificationEnum.BACHELOR, CitizenshipEnum.SINGAPORE, RaceEnum.CHINESE, "i am test tutor ".concat(String.valueOf(i)));
-            tutorSession.createTutor(tutor);
+            int numSubjects = randomNumberGenerator(1, 6);
+            List<Subject> jlSubjects = new ArrayList();
+            for (int j = 0; j < numSubjects; j++) {
+                int randomSubjectIndex = randomNumberGenerator(0, subjects.size());
+                jlSubjects.add(subjects.get(randomSubjectIndex));
+            }
+
+            int numTimeslots = randomNumberGenerator(1, 6);
+            List<Timeslot> jlTimeslots = new ArrayList();
+            for (int j = 0; j < numTimeslots; j++) {
+                int randomTimeslotIndex = randomNumberGenerator(0, timeslots.size());
+                jlTimeslots.add(timeslots.get(randomTimeslotIndex));
+            }
+
+            int numAreas = randomNumberGenerator(1, 4);
+            List<Area> jlAreas = new ArrayList();
+            for (int j = 0; j < numTimeslots; j++) {
+                int randomAreaIndex = randomNumberGenerator(0, areas.size());
+                jlAreas.add(areas.get(randomAreaIndex));
+            }
+
+            double rates = (double) randomNumberGenerator(20, 100);
+            jobListingSession.createJobListing(tutor, jlSubjects, rates, jlTimeslots, jlAreas, "i love to teach");
         }
-
-        Tutee tutee;
-        for (int i = 1; i <= 10; i++) {
-            String email = "test_tutee".concat(String.valueOf(i)).concat("@email.com");
-            int mobileNum = randomNumberGenerator(80000001, 99999998);
-            GenderEnum gender = mobileNum % 2 == 0 ? GenderEnum.MALE : GenderEnum.FEMALE;
-            Date dob = randomDateBetween(randomStartDate, randomEndDate);
-            tutee = tuteeSession.createTutee("test", "tutee", email, "password", String.valueOf(mobileNum), gender, dob, "i am test tutee ".concat(String.valueOf(i)));
-            tuteeSession.createTutee(tutee);
-        }
-
-        ArrayList<Area> preferredAreas = new ArrayList();
-        preferredAreas.add(areaSession.createArea("NORTH"));
-        preferredAreas.add(areaSession.createArea("NORTH-EAST"));
-        preferredAreas.add(areaSession.createArea("WEST"));
-        preferredAreas.add(areaSession.createArea("CENTRAL"));
-        preferredAreas.add(areaSession.createArea("EAST"));
-
-        Timeslot timeslot = timeslotSession.createTimeslot(DowEnum.SUNDAY, ShiftEnum.PM);
-        List<Timeslot> preferredTimeslots = new ArrayList();
-        preferredTimeslots.add(timeslot);
-
-        Subject subject = subjectSession.createSubject("Primary 1", "English Language");
-        Double rates = Double.valueOf(randomNumberGenerator(10, 40));
-
-        String jobListingDesc = "i love teaching";
-        jobListingSession.createJobListing(tutor, subject, rates, preferredTimeslots, preferredAreas, jobListingDesc);
     }
 
+    private void initOffers() {
+        List<JobListing> jobListings = jobListingSession.retrieveAllJobListings();
+        List<Tutee> tutees = tuteeSession.retrieveAllTutees();
+        for (int i = 0; i < 100; i++) {
+            int randomJobListingIndex = randomNumberGenerator(0, jobListings.size());
+            JobListing jobListing = jobListings.get(randomJobListingIndex);
+            int randomTuteeIndex = randomNumberGenerator(0, tutees.size());
+            Tutee tutee = tutees.get(randomTuteeIndex);
+
+            double minRate = jobListing.getHourlyRates() - 10;
+            double maxRate = jobListing.getHourlyRates() + 10;
+            double rates = (double) randomNumberGenerator((int) minRate, (int) maxRate);
+
+            List<Subject> subjects = jobListing.getSubjects();
+            int randomSubjectIndex = randomNumberGenerator(0, subjects.size());
+            Subject chosenSubject = subjects.get(randomSubjectIndex);
+
+            Date startDate = new Date();
+            try {
+                offerSession.createOffer(rates, startDate, tutee, chosenSubject, jobListing, "I love learning");
+            } catch (InvalidSubjectChoiceException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    private void initRatings() {
+        List<Offer> offers = offerSession.retrieveAllOffers();
+        for (int i=0; i<50; i++) {
+            int randomOfferIndex = randomNumberGenerator(1, offers.size());
+            Offer offer = offers.get(randomOfferIndex);
+            double value = (double) randomNumberGenerator(1,5);
+            ratingSession.createRating(value, "the tutor was great/bad", offer);
+        }
+    }
+    
+    private void initMessages() {
+        List<Person> persons = persionSession.retrieveAllPersons();
+        for (int i=0; i<100; i++) {
+            int randomSenderIndex = randomNumberGenerator(0, persons.size());
+            int randomReceiverIndex = randomNumberGenerator(0, persons.size());
+            Person sender = persons.get(randomSenderIndex);
+            Person receiver = persons.get(randomReceiverIndex);
+            try {
+                messageSession.createMessage(sender.getPersonId(), receiver.getPersonId(), "test message from Person_"+sender.getPersonId()+" to Person_"+receiver.getPersonId());
+            } catch (PersonNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
     public static Date randomDateBetween(Date startInclusive, Date endExclusive) {
         long startMillis = startInclusive.getTime();
         long endMillis = endExclusive.getTime();

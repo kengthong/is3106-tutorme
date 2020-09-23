@@ -23,7 +23,7 @@ public interface JobListingSessionLocal {
 
     public JobListing createJobListing(JobListing newJobListing);
 
-    public JobListing createJobListing(Tutor tutor, Subject subject, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc);
+    public JobListing createJobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc);
 
     public List<JobListing> retrieveAllJobListings();
 
@@ -45,7 +45,7 @@ public interface JobListingSessionLocal {
 
     public void updateJobListing(JobListing updatedJobListing);
 
-    public void updateJobListing(Long jobListingId, Subject subject, Double hourlyRates,  List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) throws JobListingNotFoundException;
+    public void updateJobListing(Long jobListingId, List<Subject> subjects, Double hourlyRates,  List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) throws JobListingNotFoundException;
 
     public void changeJobListingActiveStatus(Long jobListingId) throws JobListingNotFoundException;
 

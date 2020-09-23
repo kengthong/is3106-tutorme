@@ -28,9 +28,9 @@ public interface RatingSessionLocal {
 
     public Rating retrieveRatingByOfferId(Long offerId);
 
-    public List<Rating> retrieveRatingByTutorId(Long tutorId);
+    public List<Rating> retrieveRatingsByTutorId(Long tutorId);
 
-    public List<Rating> retrieveRatingByJobListingId(Long jobListingId);
+    public List<Rating> retrieveRatingsByJobListingId(Long jobListingId);
 
     public void updateRating(Rating updatedRating);
 

@@ -69,4 +69,10 @@ public class Subject implements Serializable {
     public void setSubjectLevel(String subjectLevel) {
         this.subjectLevel = subjectLevel;
     }
+
+    @Override
+    public String toString() {
+        return "Subject{" + "subjectId=" + subjectId + ", subjectName=" + subjectName + ", subjectLevel=" + subjectLevel + '}';
+    }
+    
 }

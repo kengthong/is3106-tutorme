@@ -34,6 +34,13 @@ public class PersonSession implements PersonSessionLocal {
     }
 
     @Override
+    public List<Person> retrieveAllPersons() {
+        Query query = em.createQuery("SELECT p from Person p");
+        List<Person> results = query.getResultList();
+        return results;
+    }
+
+    @Override
     public List<Person> retrievePersonsByName(String inputName) throws PersonNotFoundException {
         Query query = em.createQuery("SELECT u FROM Person u WHERE u.firstName LIKE :inputName OR u.lastName LIKE :inputName");
         query.setParameter("inputName", inputName);

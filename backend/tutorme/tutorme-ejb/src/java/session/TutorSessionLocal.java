@@ -31,6 +31,8 @@ public interface TutorSessionLocal {
             QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc);
 
     public List<Tutor> retrieveAllTutors();
+    
+    public Tutor retrieveTutorByIdDetach(Long personId) throws TutorNotFoundException;
 
     public Tutor retrieveTutorById(Long personId) throws TutorNotFoundException;
 
@@ -44,12 +46,12 @@ public interface TutorSessionLocal {
 
     public Tutor retrieveTutorByRating(Long ratingId) throws TutorNotFoundException;
 
-    public void updateTutorProfile(Tutor updatedTutor);
+    public Tutor updateTutorProfile(Tutor updatedTutor);
 
-    public void updateTutorProfile(Long personId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob,
+    public Tutor updateTutorProfile(Long personId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob,
             QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc) throws TutorNotFoundException;
 
-    public void changeTutorActiveStatus(Long personId) throws TutorNotFoundException;
+    public Tutor deactivateTutor (Long personId) throws TutorNotFoundException;
 
     public void deleteTutor(Long personId) throws TutorNotFoundException;
 

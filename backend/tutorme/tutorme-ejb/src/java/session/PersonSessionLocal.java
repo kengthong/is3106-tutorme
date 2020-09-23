@@ -19,6 +19,8 @@ public interface PersonSessionLocal {
 
     public Person retrievePersonById(Long userId) throws PersonNotFoundException;
 
+    public List<Person> retrieveAllPersons();
+
     public List<Person> retrievePersonsByName(String inputName) throws PersonNotFoundException;
 
     public Person changePassword(Long userId, String oldPassword, String newPassword);

@@ -22,6 +22,8 @@ public interface SubjectSessionLocal {
     public Subject createSubject(String subjectName, String subjectLevel);
 
     public Subject retrieveSubjectById(Long subjectId) throws SubjectNotFoundException;
+    
+    public List<Subject> retrieveAllSubjects();
 
     public List<Subject> retrieveSubjectsByName(String subjectName) throws SubjectNotFoundException;
 

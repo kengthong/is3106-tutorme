@@ -23,7 +23,7 @@ import javax.persistence.PersistenceContext;
 public class MessageSession implements MessageSessionLocal {
 
     @EJB
-    private PersonSessionLocal userSession;
+    private PersonSessionLocal personSession;
     @PersistenceContext(unitName = "tutorme-ejbPU")
     private EntityManager em;
 
@@ -43,11 +43,10 @@ public class MessageSession implements MessageSessionLocal {
 
     @Override
     public Message createMessage(Long senderId, Long receiverId, String body) throws PersonNotFoundException {
-        Person sender = userSession.retrievePersonById(senderId);
-        Person receiver = userSession.retrievePersonById(receiverId);
+        Person sender = personSession.retrievePersonById(senderId);
+        Person receiver = personSession.retrievePersonById(receiverId);
         Message newMessage = new Message(sender, receiver, body);
         em.persist(newMessage);
-        em.flush();
 
         sender.getMessages().add(newMessage);
         receiver.getMessages().add(newMessage);
@@ -68,7 +67,7 @@ public class MessageSession implements MessageSessionLocal {
 
     @Override
     public List<Message> retrieveMessagesByPersonId(Long userId) throws PersonNotFoundException {
-        Person user = userSession.retrievePersonById(userId);
+        Person user = personSession.retrievePersonById(userId);
         List<Message> messages = user.getMessages();
         return messages;
     }

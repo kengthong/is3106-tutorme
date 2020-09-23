@@ -46,8 +46,8 @@ public class JobListingSession implements JobListingSessionLocal {
     }
 
     @Override
-    public JobListing createJobListing(Tutor tutor, Subject subject, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) {
-        JobListing newJobListing = new JobListing(tutor, subject, hourlyRates, preferredTimeslots, preferredAreas, jobListingDesc);
+    public JobListing createJobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) {
+        JobListing newJobListing = new JobListing(tutor, subjects, hourlyRates, preferredTimeslots, preferredAreas, jobListingDesc);
         return createJobListing(newJobListing);
     }
 
@@ -71,28 +71,49 @@ public class JobListingSession implements JobListingSessionLocal {
     @Override
     public List<JobListing> retrieveJobListingsBySubjectLevel(String subjectLevel) {
         List<JobListing> jobListings = retrieveAllJobListings();
-        List<JobListing> filteredJobListings = jobListings.stream()
-                .filter(jl -> jl.getSubject().getSubjectLevel().equals(subjectLevel))
-                .collect(Collectors.toList());
+        List<JobListing> filteredJobListings = new ArrayList();
+        for (JobListing jl : jobListings) {
+            if (!filteredJobListings.contains(jl)) {
+                for (Subject s : jl.getSubjects()) {
+                    if (s.getSubjectLevel().equals(subjectLevel)) {
+                        filteredJobListings.add(jl);
+                        break;
+                    }
+                }
+            }
+        }
         return filteredJobListings;
     }
 
     @Override
     public List<JobListing> retrieveJobListingsBySubjectName(String subjectName) {
         List<JobListing> jobListings = retrieveAllJobListings();
-        List<JobListing> filteredJobListings = jobListings.stream()
-                .filter(jl -> jl.getSubject().getSubjectName().equals(subjectName))
-                .collect(Collectors.toList());
+        List<JobListing> filteredJobListings = new ArrayList();
+        for (JobListing jl : jobListings) {
+            if (!filteredJobListings.contains(jl)) {
+                Subject s = jl.getSubjects().get(0);
+                if (s.getSubjectName().equals(subjectName)) {
+                    filteredJobListings.add(jl);
+                }
+            }
+        }
         return filteredJobListings;
     }
 
     @Override
     public List<JobListing> retrieveJobListingsBySubjectLevelAndName(String subjectLevel, String subjectName) {
         List<JobListing> jobListings = retrieveAllJobListings();
-        List<JobListing> filteredJobListings = jobListings.stream()
-                .filter(jl -> jl.getSubject().getSubjectLevel().equals(subjectLevel))
-                .filter(jl -> jl.getSubject().getSubjectName().equals(subjectName))
-                .collect(Collectors.toList());
+        List<JobListing> filteredJobListings = new ArrayList();
+        for (JobListing jl : jobListings) {
+            if (!filteredJobListings.contains(jl)) {
+                for (Subject s : jl.getSubjects()) {
+                    if (s.getSubjectLevel().equals(subjectLevel) && s.getSubjectName().equals(subjectName)) {
+                        filteredJobListings.add(jl);
+                        break;
+                    }
+                }
+            }
+        }
         return filteredJobListings;
     }
 
@@ -145,9 +166,9 @@ public class JobListingSession implements JobListingSessionLocal {
     }
 
     @Override
-    public void updateJobListing(Long jobListingId, Subject subject, Double hourlyRates,  List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) throws JobListingNotFoundException {
+    public void updateJobListing(Long jobListingId, List<Subject> subjects, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) throws JobListingNotFoundException {
         JobListing jobListing = retrieveJobListingById(jobListingId);
-        jobListing.setSubject(subject);
+        jobListing.setSubjects(subjects);
         jobListing.setHourlyRates(hourlyRates);
         jobListing.setPreferredTimeslots(preferredTimeslots);
         jobListing.setPreferredAreas(preferredAreas);

@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.Length;
 
 /**
  *
@@ -73,7 +72,7 @@ public abstract class Person implements Serializable {
     private List<Message> messages;
 
     public Person() {
-        this.createdDate = Date.from(Instant.now());
+        this.createdDate = new Date();
         this.activeStatus = true;
         this.messages = new ArrayList();
     }
@@ -95,7 +94,7 @@ public abstract class Person implements Serializable {
         return personId;
     }
 
-    public void setpersonId(Long personId) {
+    public void setPersonId(Long personId) {
         this.personId = personId;
     }
 
