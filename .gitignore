@@ -1,4 +1,5 @@
-/backend/tutorme/nbproject/private/
+# ignore directories
+/backend/tutorme/nbproject/
 /backend/tutorme/build/
 /backend/tutorme/dist/
 /backend/tutorme/tutorme-war/nbproject/private/
@@ -7,3 +8,19 @@
 /backend/tutorme/tutorme-war/dist/
 /backend/tutorme/tutorme-ejb/build/
 /backend/tutorme/tutorme-ejb/dist/
+
+# ignore paths
+build/
+dist/
+/nbproject/private/
+*/nbproject/private/
+nbbuild/
+nbdist/
+
+# ignore files
+*.class
+*.jar
+*.war
+project.properties
+nbactions.xml
+nb-configuration.xml
