@@ -16,13 +16,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -43,12 +40,16 @@ import session.TutorSessionLocal;
 @Path("/tutor")
 public class TutorResource {
 
-//    @Inject 
-//    RatingSessionLocal ratingSession;
-    RatingSessionLocal ratingSession = lookupRatingSessionLocal();
-//    @Inject 
-//    TutorSessionLocal tutorSession;
-    TutorSessionLocal tutorSession = lookupTutorSessionLocal();
+//    RatingSessionLocal ratingSession = lookupRatingSessionLocal();
+//
+//    TutorSessionLocal tutorSession = lookupTutorSessionLocal();
+    
+
+    @EJB
+    RatingSessionLocal ratingSession;
+    @EJB
+    TutorSessionLocal tutorSession;
+    
 
     /**
      * Creates a new instance of TutorResource
@@ -75,6 +76,7 @@ public class TutorResource {
                 t.setPassword(null);
                 t.setMessages(null);
                 t.setJobListings(null);
+                System.out.println(t);
             }
             GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
             };
@@ -108,6 +110,7 @@ public class TutorResource {
 
     @POST
     @Path("/tutorProfile")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateTutorById(@QueryParam("tutorId") Long tutorId,
             @QueryParam("firstName") String firstName,
@@ -148,23 +151,23 @@ public class TutorResource {
         }
     }
 
-    private TutorSessionLocal lookupTutorSessionLocal() {
-        try {
-            Context c = new InitialContext();
-            return (TutorSessionLocal) c.lookup("java:global/tutorme/tutorme-ejb/TutorSession!session.TutorSessionLocal");
-        } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
-    }
-
-    private RatingSessionLocal lookupRatingSessionLocal() {
-        try {
-            Context c = new InitialContext();
-            return (RatingSessionLocal) c.lookup("java:global/tutorme/tutorme-ejb/RatingSession!session.RatingSessionLocal");
-        } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
-    }
+//    private TutorSessionLocal lookupTutorSessionLocal() {
+//        try {
+//            Context c = new InitialContext();
+//            return (TutorSessionLocal) c.lookup("java:global/tutorme/tutorme-ejb/TutorSession!session.TutorSessionLocal");
+//        } catch (NamingException ne) {
+//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+//            throw new RuntimeException(ne);
+//        }
+//    }
+//
+//    private RatingSessionLocal lookupRatingSessionLocal() {
+//        try {
+//            Context c = new InitialContext();
+//            return (RatingSessionLocal) c.lookup("java:global/tutorme/tutorme-ejb/RatingSession!session.RatingSessionLocal");
+//        } catch (NamingException ne) {
+//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+//            throw new RuntimeException(ne);
+//        }
+//    }
 }

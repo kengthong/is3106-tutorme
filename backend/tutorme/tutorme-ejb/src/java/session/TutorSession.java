@@ -101,7 +101,7 @@ public class TutorSession implements TutorSessionLocal {
 
     }
 
-    @Override
+    @Override // in use
     public List<Tutor> retrieveAllTutors() {
         Query query = em.createQuery("SELECT t FROM Tutor t");
         List<Tutor> tutors = query.getResultList();
@@ -112,7 +112,7 @@ public class TutorSession implements TutorSessionLocal {
         return tutors;
     }
 
-    @Override
+    @Override 
     public Tutor retrieveTutorByIdDetach(Long personId) throws TutorNotFoundException {
         Tutor tutor = em.find(Tutor.class, personId);
         if (tutor != null) {
