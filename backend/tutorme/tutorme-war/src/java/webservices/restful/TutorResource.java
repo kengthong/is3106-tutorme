@@ -11,9 +11,6 @@ import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import exception.TutorNotFoundException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -23,7 +20,9 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
@@ -146,23 +145,40 @@ public class TutorResource {
         }
     }
 
-//    private TutorSessionLocal lookupTutorSessionLocal() {
-//        try {
-//            Context c = new InitialContext();
-//            return (TutorSessionLocal) c.lookup("java:global/tutorme/tutorme-ejb/TutorSession!session.TutorSessionLocal");
-//        } catch (NamingException ne) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-//            throw new RuntimeException(ne);
-//        }
-//    }
-//
-//    private RatingSessionLocal lookupRatingSessionLocal() {
-//        try {
-//            Context c = new InitialContext();
-//            return (RatingSessionLocal) c.lookup("java:global/tutorme/tutorme-ejb/RatingSession!session.RatingSessionLocal");
-//        } catch (NamingException ne) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-//            throw new RuntimeException(ne);
-//        }
-//    }
+    @POST
+    @Path("/createTutor")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Tutor createTutor(Tutor tutor) {
+        tutor.setCreatedDate(new Date());
+        tutorSession.createTutor(tutor);
+        return tutor;
+    }
+
+    @PUT
+    @Path("/editTutorProfile/{tutorId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editTutor(@PathParam("tutorId") Long tutorId, Tutor tutor) {
+
+        Tutor selectedTutor = null;
+
+        try {
+            selectedTutor = tutorSession.retrieveTutorById(tutorId);
+            String firstName = tutor.getFirstName();
+            String lastName = tutor.getLastName();
+            String mobileNum = tutor.getMobileNum();
+            GenderEnum gender = tutor.getGender();
+            Date dob = tutor.getDob();
+            QualificationEnum highestQualification = tutor.getHighestQualification();
+            CitizenshipEnum citizenship = tutor.getCitizenship();
+            RaceEnum race = tutor.getRace();
+            String profileDesc = tutor.getProfileDesc();
+            tutorSession.updateTutorProfile(tutorId, firstName, lastName, mobileNum, gender, dob, highestQualification, citizenship, race, profileDesc);
+            return Response.status(200).build();
+        } catch (TutorNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", "tutorId does not exists").build();
+            return Response.status(400).entity(exception).build();
+        }
+    }
 }
