@@ -23,6 +23,8 @@ public interface PersonSessionLocal {
     
     public List<Person> retrieveAllPersons();
 
+    public List<Person> retrieveAllPersons();
+
     public List<Person> retrievePersonsByName(String inputName) throws PersonNotFoundException;
 
     public Person changePassword(Long userId, String oldPassword, String newPassword);
