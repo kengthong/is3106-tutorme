@@ -37,8 +37,9 @@ public class JobListing implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Tutor tutor;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Subject subject;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn
+    private List<Subject> subjects;
 
     @Column(nullable = false, precision = 2)
     private Double hourlyRates;
@@ -62,9 +63,9 @@ public class JobListing implements Serializable {
     public JobListing() {
     }
 
-    public JobListing(Tutor tutor, Subject subject, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) {
+    public JobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) {
         this.tutor = tutor;
-        this.subject = subject;
+        this.subjects = subjects;
         this.hourlyRates = hourlyRates;
         this.preferredTimeslots = preferredTimeslots;
         this.preferredAreas = preferredAreas;
@@ -98,12 +99,12 @@ public class JobListing implements Serializable {
         this.tutor = tutor;
     }
 
-    public Subject getSubject() {
-        return subject;
+    public List<Subject> getSubjects() {
+        return subjects;
     }
 
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
     }
 
     public Double getHourlyRates() {

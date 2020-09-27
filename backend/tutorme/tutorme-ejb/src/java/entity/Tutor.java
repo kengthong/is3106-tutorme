@@ -42,6 +42,8 @@ public class Tutor extends Person implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<JobListing> jobListings;
+    
+    private double avgRating;
 
     public Tutor() {
         super();
@@ -95,6 +97,19 @@ public class Tutor extends Person implements Serializable {
 
     public void setJobListings(List<JobListing> jobListings) {
         this.jobListings = jobListings;
+    }
+
+    public double getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(double avgRating) {
+        this.avgRating = avgRating;
+    }
+
+    @Override
+    public String toString() {
+        return "Tutor{" + "highestQualification=" + highestQualification + ", citizenship=" + citizenship + ", race=" + race + ", profileDesc=" + profileDesc + '}';
     }
 
 }

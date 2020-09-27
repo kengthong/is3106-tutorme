@@ -9,6 +9,7 @@ import entity.JobListing;
 import entity.Offer;
 import entity.Subject;
 import entity.Tutee;
+import exception.InvalidSubjectChoiceException;
 import exception.OfferNotFoundException;
 import exception.OfferWithdrawException;
 import java.util.Date;
@@ -24,7 +25,7 @@ public interface OfferSessionLocal {
 
     public Offer createOffer(Offer newOffer);
 
-    public Offer createOffer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, String additionalNote);
+    public Offer createOffer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, String additionalNote) throws InvalidSubjectChoiceException;
 
     public List<Offer> retrieveAllOffers();
 

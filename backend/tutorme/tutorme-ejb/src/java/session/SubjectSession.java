@@ -7,6 +7,7 @@ package session;
 
 import entity.Subject;
 import exception.SubjectNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -34,6 +35,13 @@ public class SubjectSession implements SubjectSessionLocal {
     public Subject createSubject(String subjectName, String subjectLevel) {
         Subject newSubject = new Subject(subjectName, subjectLevel);
         return createSubject(newSubject);
+    }
+
+    @Override
+    public List<Subject> retrieveAllSubjects() {
+        Query query = em.createQuery("SELECT s from Subject s");
+        List<Subject> subjects = query.getResultList();
+        return subjects;
     }
 
     @Override

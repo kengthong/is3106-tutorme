@@ -10,6 +10,7 @@ import entity.Offer;
 import entity.Subject;
 import entity.Tutee;
 import enumeration.OfferStatusEnum;
+import exception.InvalidSubjectChoiceException;
 import exception.OfferNotFoundException;
 import exception.OfferWithdrawException;
 import java.util.Date;
@@ -38,9 +39,14 @@ public class OfferSession implements OfferSessionLocal {
     }
 
     @Override
-    public Offer createOffer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, String additionalNote) {
-        Offer newOffer = new Offer(offeredRate, startDate, tutee, chosenSubject, jobListing, additionalNote);
+    public Offer createOffer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, String additionalNote) throws InvalidSubjectChoiceException {
+        if (jobListing.getSubjects().contains(chosenSubject)) {
+            Offer newOffer = new Offer(offeredRate, startDate, tutee, chosenSubject, jobListing, additionalNote);
         return createOffer(newOffer);
+        } else {
+            throw new InvalidSubjectChoiceException();
+        }
+        
     }
 
     @Override

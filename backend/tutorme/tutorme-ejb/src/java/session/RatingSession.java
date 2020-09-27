@@ -28,7 +28,6 @@ public class RatingSession implements RatingSessionLocal {
     @Override
     public Rating createRating(Rating newRating) {
         em.persist(newRating);
-        em.flush();
         return newRating;
     }
 
@@ -55,7 +54,7 @@ public class RatingSession implements RatingSessionLocal {
         }
     }
 
-    @Override
+    @Override // should this return be List<Rating>
     public Rating retrieveRatingByOfferId(Long offerId) {
         List<Rating> ratings = retrieveAllRatings();
         List<Rating> filteredRatings = ratings.stream()
@@ -65,7 +64,7 @@ public class RatingSession implements RatingSessionLocal {
     }
 
     @Override
-    public List<Rating> retrieveRatingByTutorId(Long tutorId) {
+    public List<Rating> retrieveRatingsByTutorId(Long tutorId) {
         List<Rating> ratings = retrieveAllRatings();
         List<Rating> filteredRatings = ratings.stream()
                 .filter(r -> r.getOffer().getJobListing().getTutor().getPersonId().equals(tutorId))
@@ -74,7 +73,7 @@ public class RatingSession implements RatingSessionLocal {
     }
 
     @Override
-    public List<Rating> retrieveRatingByJobListingId(Long jobListingId) {
+    public List<Rating> retrieveRatingsByJobListingId(Long jobListingId) {
         List<Rating> ratings = retrieveAllRatings();
         List<Rating> filteredRatings = ratings.stream()
                 .filter(r -> r.getOffer().getJobListing().getJobListingId().equals(jobListingId))

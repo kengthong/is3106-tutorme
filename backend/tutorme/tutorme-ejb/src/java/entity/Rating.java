@@ -41,7 +41,7 @@ public class Rating implements Serializable {
 
     private String comments;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = true)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     private Offer offer;
 
     public Rating() {

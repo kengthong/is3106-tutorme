@@ -21,6 +21,7 @@ import exception.PersonLoginFailException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+import java.util.OptionalDouble;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -70,7 +71,6 @@ public class TutorSession implements TutorSessionLocal {
     @Override
     public Tutor createTutor(Tutor newTutor) {
         em.persist(newTutor);
-        em.flush();
         return newTutor;
     }
 
@@ -101,23 +101,50 @@ public class TutorSession implements TutorSessionLocal {
 
     }
 
-    @Override
+    @Override // in use
     public List<Tutor> retrieveAllTutors() {
         Query query = em.createQuery("SELECT t FROM Tutor t");
         List<Tutor> tutors = query.getResultList();
-        for (Tutor t : tutors) {
-            t.getMessages();
-            t.getJobListings();
-        }
+//        for (Tutor t : tutors) {
+//            t.getMessages();
+//            t.getJobListings();
+//        }
         return tutors;
     }
 
-    @Override
+    @Override 
+    public Tutor retrieveTutorByIdDetach(Long personId) throws TutorNotFoundException {
+        Tutor tutor = em.find(Tutor.class, personId);
+        if (tutor != null) {
+            List<Rating> tutorRatings = ratingSession.retrieveRatingsByTutorId(personId);
+//            em.detach(tutor);
+            OptionalDouble avgRating = tutorRatings.stream()
+                    .mapToDouble(r -> r.getRatingValue())
+                    .average();
+            if (avgRating.isPresent()) {
+                tutor.setAvgRating(avgRating.getAsDouble());
+            } else {
+                tutor.setAvgRating(0.0);
+            }
+            return tutor;
+        } else {
+            throw new TutorNotFoundException("TutorID " + personId + " does not exists.");
+        }
+    }
+
+    @Override // in use
     public Tutor retrieveTutorById(Long personId) throws TutorNotFoundException {
         Tutor tutor = em.find(Tutor.class, personId);
         if (tutor != null) {
-            tutor.getMessages();
-            tutor.getJobListings();
+            List<Rating> tutorRatings = ratingSession.retrieveRatingsByTutorId(personId);
+            OptionalDouble avgRating = tutorRatings.stream()
+                    .mapToDouble(r -> r.getRatingValue())
+                    .average();
+            if (avgRating.isPresent()) {
+                tutor.setAvgRating(avgRating.getAsDouble());
+            } else {
+                tutor.setAvgRating(0.0);
+            }
             return tutor;
         } else {
             throw new TutorNotFoundException("TutorID " + personId + " does not exists.");
@@ -197,12 +224,12 @@ public class TutorSession implements TutorSessionLocal {
     }
 
     @Override
-    public void updateTutorProfile(Tutor updatedTutor) {
-        em.merge(updatedTutor);
+    public Tutor updateTutorProfile(Tutor updatedTutor) {
+        return em.merge(updatedTutor);
     }
 
     @Override
-    public void updateTutorProfile(Long personId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc) throws TutorNotFoundException {
+    public Tutor updateTutorProfile(Long personId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc) throws TutorNotFoundException {
         Tutor tutor = retrieveTutorById(personId);
         tutor.setFirstName(firstName);
         tutor.setLastName(lastName);
@@ -213,18 +240,18 @@ public class TutorSession implements TutorSessionLocal {
         tutor.setCitizenship(citizenship);
         tutor.setRace(race);
         tutor.setProfileDesc(profileDesc);
-        updateTutorProfile(tutor);
+        return updateTutorProfile(tutor);
     }
 
     @Override
-    public void changeTutorActiveStatus(Long personId) throws TutorNotFoundException {
+    public Tutor deactivateTutor(Long personId) throws TutorNotFoundException {
         Tutor tutor = retrieveTutorById(personId);
         if (tutor.getActiveStatus()) {
             tutor.setActiveStatus(false);
         } else {
             tutor.setActiveStatus(true);
         }
-        updateTutorProfile(tutor);
+        return updateTutorProfile(tutor);
     }
 
     @Override

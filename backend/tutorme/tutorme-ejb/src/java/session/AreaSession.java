@@ -26,7 +26,6 @@ public class AreaSession implements AreaSessionLocal {
     @Override
     public Area createArea(Area area) {
         em.persist(area);
-        em.flush();
         return area;
     }
 
