@@ -38,29 +38,26 @@ public class TuteeSession implements TuteeSessionLocal {
     @PersistenceContext(unitName = "tutorme-ejbPU")
     private EntityManager em;
     private final CryptoHelper ch = CryptoHelper.getInstance();
-//    Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-//
-//    String jws = Jwts.builder().setSubject("Joe").signWith(key).compact();
 
-    @Override
-    public Tutee loginTutee(String email, String password) throws TuteeNotFoundException {
-        try {
-            Tutee tutee = retrieveTuteeByEmail(email);
-            String storedPassword = tutee.getPassword();
-            String salt = tutee.getSalt();
-            String hashedPassword = ch.byteArrayToHexString(ch.doHashPassword(password.concat(salt)));
-            if (storedPassword.equals(hashedPassword)) {
-                tutee.setSalt(null);
-                tutee.getOffers();
-                tutee.getMessages();
-                return tutee;
-            } else {
-                throw new TuteeNotFoundException("Invalid login parameters.");
-            }
-        } catch (TuteeNotFoundException ex) {
-            throw new TuteeNotFoundException("Invalid login parameters.");
-        }
-    }
+//    @Override
+//    public Tutee loginTutee(String email, String password) throws TuteeNotFoundException {
+//        try {
+//            Tutee tutee = retrieveTuteeByEmail(email);
+//            String storedPassword = tutee.getPassword();
+//            String salt = tutee.getSalt();
+//            String hashedPassword = ch.byteArrayToHexString(ch.doHashPassword(password.concat(salt)));
+//            if (storedPassword.equals(hashedPassword)) {
+//                tutee.setSalt(null);
+//                tutee.getOffers();
+//                tutee.getMessages();
+//                return tutee;
+//            } else {
+//                throw new TuteeNotFoundException("Invalid login parameters.");
+//            }
+//        } catch (TuteeNotFoundException ex) {
+//            throw new TuteeNotFoundException("Invalid login parameters.");
+//        }
+//    }
 
     @Override
     public Tutee createTutee(Tutee newTutee) {

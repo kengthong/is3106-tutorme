@@ -25,4 +25,4 @@ project.properties
 nbactions.xml
 nb-configuration.xml
 *.properties
-*.properties
+!dependencies/*.jar

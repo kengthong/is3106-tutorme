@@ -11,6 +11,9 @@ import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import exception.TutorNotFoundException;
+import io.fusionauth.jwt.Verifier;
+import io.fusionauth.jwt.hmac.HMACSigner;
+import io.fusionauth.jwt.hmac.HMACVerifier;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +33,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import session.RatingSessionLocal;
 import session.TutorSessionLocal;
+import utils.AuthenticateUser;
 
 /**
  * REST Web Service
@@ -47,29 +51,33 @@ public class TutorResource {
     public TutorResource() {
     }
 
-    @GET
+    @POST
     @Path("/getTutors")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTutors() {
+    public Response getTutors(JsonObject json) {
         System.out.println("Getting tutors... ");
-        List<Tutor> tutors = new ArrayList();
-        tutors = tutorSession.retrieveAllTutors();
-        if (!tutors.isEmpty()) {
-            for (Tutor t : tutors) {
-                t.setSalt(null);
-                t.setPassword(null);
-                t.setMessages(null);
-                t.setJobListings(null);
-                System.out.println(t);
+        if (AuthenticateUser.verifyJwt(json)) {
+            List<Tutor> tutors = new ArrayList();
+            tutors = tutorSession.retrieveAllTutors();
+            if (!tutors.isEmpty()) {
+                for (Tutor t : tutors) {
+                    t.setSalt(null);
+                    t.setPassword(null);
+                    t.setMessages(null);
+                    t.setJobListings(null);
+                    System.out.println(t);
+                }
+                GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
+                };
+                return Response.status(200).entity(packet).type(MediaType.APPLICATION_JSON).build();
+            } else {
+                JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getTutors").build();
+                return Response.status(400).entity(exception).build();
             }
-            GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
-            };
-            return Response.status(200).entity(packet).type(MediaType.APPLICATION_JSON).build();
         } else {
-            JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getTutors").build();
+            JsonObject exception = Json.createObjectBuilder().add("error", "Unauthorized JWT.").build();
             return Response.status(400).entity(exception).build();
         }
-
     }
 
     @GET

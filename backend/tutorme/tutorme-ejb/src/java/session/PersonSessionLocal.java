@@ -16,9 +16,11 @@ import javax.ejb.Local;
  */
 @Local
 public interface PersonSessionLocal {
+    
+    public Person login(String email, String password);
 
     public Person retrievePersonById(Long userId) throws PersonNotFoundException;
-
+    
     public List<Person> retrieveAllPersons();
 
     public List<Person> retrievePersonsByName(String inputName) throws PersonNotFoundException;
