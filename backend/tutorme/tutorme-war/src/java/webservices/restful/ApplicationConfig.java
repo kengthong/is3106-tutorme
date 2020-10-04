@@ -30,7 +30,7 @@ public class ApplicationConfig extends javax.ws.rs.core.Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
 //        resources.add(webfilters.CORSFilter.class);
-        resources.add(webfilters.CORSFilter.class);
+        resources.add(webservices.restful.TuteeResource.class);
         resources.add(webservices.restful.TutorResource.class);
     }
     

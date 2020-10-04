@@ -36,20 +36,16 @@ import session.TutorSessionLocal;
  *
  * @author Owen Tay
  */
-
 @Path("/tutor")
 public class TutorResource {
 
 //    RatingSessionLocal ratingSession = lookupRatingSessionLocal();
 //
 //    TutorSessionLocal tutorSession = lookupTutorSessionLocal();
-    
-
     @EJB
     RatingSessionLocal ratingSession;
     @EJB
     TutorSessionLocal tutorSession;
-    
 
     /**
      * Creates a new instance of TutorResource
@@ -85,7 +81,6 @@ public class TutorResource {
             JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getTutors").build();
             return Response.status(400).entity(exception).build();
         }
-
     }
 
     @GET

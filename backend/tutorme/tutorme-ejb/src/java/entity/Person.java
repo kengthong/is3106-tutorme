@@ -41,30 +41,30 @@ public abstract class Person implements Serializable {
 
     private Boolean activeStatus;
 
-    @NotNull
+//    @NotNull
     private String firstName;
 
-    @NotNull
+//    @NotNull
     private String lastName;
 
-    @NotNull
+//    @NotNull
     @Email
     @Column(unique = true)
     private String email;
 
-    @NotNull
+//    @NotNull
     private String password;
     private String salt;
 
     @Size(min = 8, max = 8)
-    @NotNull
+//    @NotNull
     private String mobileNum;
 
-    @NotNull
+//    @NotNull
     @Enumerated
     private GenderEnum gender;
 
-    @NotNull
+//    @NotNull
     @Temporal(TemporalType.DATE)
     private Date dob;
 
