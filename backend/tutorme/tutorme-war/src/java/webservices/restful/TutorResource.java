@@ -11,9 +11,6 @@ import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import exception.TutorNotFoundException;
-import io.fusionauth.jwt.Verifier;
-import io.fusionauth.jwt.hmac.HMACSigner;
-import io.fusionauth.jwt.hmac.HMACVerifier;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,13 +66,13 @@ public class TutorResource {
                 }
                 GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
                 };
-                return Response.status(200).entity(packet).type(MediaType.APPLICATION_JSON).build();
+                return Response.status(200).entity(packet).build();
             } else {
                 JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getTutors").build();
                 return Response.status(400).entity(exception).build();
             }
         } else {
-            JsonObject exception = Json.createObjectBuilder().add("error", "Unauthorized JWT.").build();
+            JsonObject exception = Json.createObjectBuilder().add("error", "Unauthorized or missing JWT.").build();
             return Response.status(400).entity(exception).build();
         }
     }
@@ -93,7 +90,7 @@ public class TutorResource {
             result.setJobListings(null);
             GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
             };
-            return Response.status(200).entity(packet).type(MediaType.APPLICATION_JSON).build();
+            return Response.status(200).entity(packet).build();
         } catch (TutorNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", "tutorId does not exists").build();
             return Response.status(400).entity(exception).build();
@@ -102,7 +99,6 @@ public class TutorResource {
 
     @POST
     @Path("/tutorProfile")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateTutorById(JsonObject json) {
         Long tutorId = Long.valueOf(json.getJsonString("tutorId").getString());

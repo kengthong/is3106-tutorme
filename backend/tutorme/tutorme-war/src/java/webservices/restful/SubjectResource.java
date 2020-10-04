@@ -35,7 +35,7 @@ public class SubjectResource {
     @GET
     @Path("/subjectList")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSujectList() {
+    public Response getSubjectList() {
         System.out.println("Getting all subjects...");
         List<Subject> subjects = subjectSession.retrieveAllSubjects();
         for (Subject s : subjects) {
@@ -43,6 +43,6 @@ public class SubjectResource {
         }
         GenericEntity<List<Subject>> payload = new GenericEntity<List<Subject>>(subjects) {
         };
-        return Response.status(200).entity(payload).type(MediaType.APPLICATION_JSON).build();
+        return Response.status(200).entity(payload).build();
     }
 }

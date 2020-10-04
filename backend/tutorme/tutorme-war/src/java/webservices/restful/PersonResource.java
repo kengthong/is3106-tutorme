@@ -56,11 +56,10 @@ public class PersonResource implements Serializable {
         Person person = personSession.login(email, password);
         if (person != null) {
             String encodedJWT = AuthenticateUser.issueJwt(person.getPersonId());
-            return Response.status(200).entity(encodedJWT).type(MediaType.APPLICATION_JSON).build();
+            return Response.status(200).entity(encodedJWT).build();
         } else {
             JsonObject exception = Json.createObjectBuilder().add("error", "No such user.").build();
             return Response.status(400).entity(exception).build();
         }
     }
-
 }

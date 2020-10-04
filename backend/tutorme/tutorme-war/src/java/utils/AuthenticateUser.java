@@ -34,12 +34,12 @@ public class AuthenticateUser {
         return encodedJWT;
     }
     
-    public static boolean verifyJwt (JsonObject json) {
-        String jwtSignature = json.getString("jwt");
+    public static boolean verifyJwt (JsonObject json) {    
         try {
+            String jwtSignature = json.getString("jwt");
             JWT jwt = JWT.getDecoder().decode(jwtSignature, verifier);
             return true;
-        } catch (InvalidJWTSignatureException ex) {
+        } catch (InvalidJWTSignatureException | NullPointerException ex1) {
             return false;
         }
     }
