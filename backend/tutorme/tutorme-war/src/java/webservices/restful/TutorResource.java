@@ -11,6 +11,7 @@ import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import exception.TutorNotFoundException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,7 +44,10 @@ public class TutorResource {
     @EJB
     RatingSessionLocal ratingSession;
     @EJB
+    RatingSessionLocal ratingSession;
+    @EJB
     TutorSessionLocal tutorSession;
+    
 
     public TutorResource() {
     }
@@ -75,7 +79,6 @@ public class TutorResource {
             JsonObject exception = Json.createObjectBuilder().add("error", "Unauthorized or missing JWT.").build();
             return Response.status(400).entity(exception).build();
         }
-    }
 
     @GET
     @Path("/tutorProfile")
@@ -141,9 +144,4 @@ public class TutorResource {
             payload.add("tutorId", tutorId);
             payload.add("success", true);
             return Response.status(200).entity(payload.build()).build();
-        } catch (TutorNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "tutorId does not exists").build();
-            return Response.status(400).entity(exception).build();
-        }
-    }
 }
