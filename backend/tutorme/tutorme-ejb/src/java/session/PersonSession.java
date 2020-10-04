@@ -10,8 +10,10 @@ import exception.PersonNotFoundException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.security.CryptoHelper;
 
 /**
  *
@@ -22,6 +24,24 @@ public class PersonSession implements PersonSessionLocal {
 
     @PersistenceContext(unitName = "tutorme-ejbPU")
     private EntityManager em;
+    private final CryptoHelper ch = CryptoHelper.getInstance();
+
+    @Override
+    public Person login(String email, String password) {
+        Query query = em.createQuery("SELECT p from Person p WHERE p.email=:email");
+        query.setParameter("email", email);
+        try {
+            Person person = (Person) query.getSingleResult();
+            String hashedInputPassword = ch.byteArrayToHexString(ch.doHashPassword(password.concat(person.getSalt())));
+            if (person.getPassword().equals(hashedInputPassword)) {
+                return person;
+            } else {
+                return null;
+            }
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
 
     @Override
     public Person retrievePersonById(Long userId) throws PersonNotFoundException {
@@ -72,4 +92,5 @@ public class PersonSession implements PersonSessionLocal {
             System.out.println("Person ID " + userId + "does not exists.");
         }
     }
+
 }

@@ -23,7 +23,7 @@ import javax.ejb.Local;
 @Local
 public interface TutorSessionLocal {
 
-    public Tutor loginTutor(String email, String password) throws PersonLoginFailException;
+//    public Tutor loginTutor(String email, String password) throws PersonLoginFailException;
 
     public Tutor createTutor(Tutor newTutor);
 

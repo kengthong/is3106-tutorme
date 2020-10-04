@@ -48,25 +48,25 @@ public class TutorSession implements TutorSessionLocal {
     private EntityManager em;
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
-    @Override
-    public Tutor loginTutor(String email, String password) throws PersonLoginFailException {
-        try {
-            Tutor tutor = retrieveTutorByEmail(email);
-            String storedPassword = tutor.getPassword();
-            String salt = tutor.getSalt();
-            String hashedPassword = ch.byteArrayToHexString(ch.doHashPassword(password.concat(salt)));
-            if (storedPassword.equals(hashedPassword)) {
-                tutor.setSalt(null);
-                tutor.getJobListings();
-                tutor.getMessages();
-                return tutor;
-            } else {
-                throw new PersonLoginFailException("Invalid login parameters.");
-            }
-        } catch (TutorNotFoundException ex) {
-            throw new PersonLoginFailException("Invalid login parameters.");
-        }
-    }
+//    @Override
+//    public Tutor loginTutor(String email, String password) throws PersonLoginFailException {
+//        try {
+//            Tutor tutor = retrieveTutorByEmail(email);
+//            String storedPassword = tutor.getPassword();
+//            String salt = tutor.getSalt();
+//            String hashedPassword = ch.byteArrayToHexString(ch.doHashPassword(password.concat(salt)));
+//            if (storedPassword.equals(hashedPassword)) {
+//                tutor.setSalt(null);
+//                tutor.getJobListings();
+//                tutor.getMessages();
+//                return tutor;
+//            } else {
+//                throw new PersonLoginFailException("Invalid login parameters.");
+//            }
+//        } catch (TutorNotFoundException ex) {
+//            throw new PersonLoginFailException("Invalid login parameters.");
+//        }
+//    }
 
     @Override
     public Tutor createTutor(Tutor newTutor) {

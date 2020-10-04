@@ -19,7 +19,7 @@ import javax.ejb.Local;
 @Local
 public interface TuteeSessionLocal {
 
-    public Tutee loginTutee(String email, String password) throws TuteeNotFoundException;
+//    public Tutee loginTutee(String email, String password) throws TuteeNotFoundException;
 
     public Tutee createTutee(Tutee newTutee);
 

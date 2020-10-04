@@ -20,7 +20,7 @@ import javax.ejb.Local;
 @Local
 public interface StaffSessionLocal {
 
-    public Staff loginStaff(String email, String password) throws StaffNotFoundException;
+//    public Staff loginStaff(String email, String password) throws StaffNotFoundException;
 
     public Staff createStaff(Staff newStaff);
 

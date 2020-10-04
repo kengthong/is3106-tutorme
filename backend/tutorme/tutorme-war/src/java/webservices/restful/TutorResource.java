@@ -19,6 +19,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
@@ -30,63 +31,54 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import session.RatingSessionLocal;
 import session.TutorSessionLocal;
+import utils.AuthenticateUser;
 
 /**
  * REST Web Service
  *
  * @author Owen Tay
  */
-
 @Path("/tutor")
 public class TutorResource {
 
-//    RatingSessionLocal ratingSession = lookupRatingSessionLocal();
-//
-//    TutorSessionLocal tutorSession = lookupTutorSessionLocal();
-    
-
+    @EJB
+    RatingSessionLocal ratingSession;
     @EJB
     RatingSessionLocal ratingSession;
     @EJB
     TutorSessionLocal tutorSession;
     
 
-    /**
-     * Creates a new instance of TutorResource
-     */
     public TutorResource() {
     }
 
-    /**
-     * Retrieves representation of an instance of
-     * webservices.restful.TutorResource
-     *
-     * @return an instance of java.lang.String
-     */
-    @GET
+    @POST
     @Path("/getTutors")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTutors() {
+    public Response getTutors(JsonObject json) {
         System.out.println("Getting tutors... ");
-        List<Tutor> tutors = new ArrayList();
-        tutors = tutorSession.retrieveAllTutors();
-        if (!tutors.isEmpty()) {
-            for (Tutor t : tutors) {
-                t.setSalt(null);
-                t.setPassword(null);
-                t.setMessages(null);
-                t.setJobListings(null);
-                System.out.println(t);
+        if (AuthenticateUser.verifyJwt(json)) {
+            List<Tutor> tutors = new ArrayList();
+            tutors = tutorSession.retrieveAllTutors();
+            if (!tutors.isEmpty()) {
+                for (Tutor t : tutors) {
+                    t.setSalt(null);
+                    t.setPassword(null);
+                    t.setMessages(null);
+                    t.setJobListings(null);
+                    System.out.println(t);
+                }
+                GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
+                };
+                return Response.status(200).entity(packet).build();
+            } else {
+                JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getTutors").build();
+                return Response.status(400).entity(exception).build();
             }
-            GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
-            };
-            return Response.status(200).entity(packet).type(MediaType.APPLICATION_JSON).build();
         } else {
-            JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getTutors").build();
+            JsonObject exception = Json.createObjectBuilder().add("error", "Unauthorized or missing JWT.").build();
             return Response.status(400).entity(exception).build();
         }
-
-    }
 
     @GET
     @Path("/tutorProfile")
@@ -101,7 +93,7 @@ public class TutorResource {
             result.setJobListings(null);
             GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
             };
-            return Response.status(200).entity(packet).type(MediaType.APPLICATION_JSON).build();
+            return Response.status(200).entity(packet).build();
         } catch (TutorNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", "tutorId does not exists").build();
             return Response.status(400).entity(exception).build();
@@ -110,64 +102,46 @@ public class TutorResource {
 
     @POST
     @Path("/tutorProfile")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateTutorById(@QueryParam("tutorId") Long tutorId,
-            @QueryParam("firstName") String firstName,
-            @QueryParam("lastName") String lastName,
-            @QueryParam("mobileNum") String mobileNum,
-            @QueryParam("gender") String gender,
-            @QueryParam("dob") String dob,
-            @QueryParam("highestQualification") String highestQualification,
-            @QueryParam("citizenship") String citizenship,
-            @QueryParam("race") String race,
-            @QueryParam("profileDesc") String profileDesc
-    ) {
+    public Response updateTutorById(JsonObject json) {
+        Long tutorId = Long.valueOf(json.getJsonString("tutorId").getString());
         System.out.println("Updating Tutor Id is ... " + tutorId);
+
+        String firstName = json.getJsonString("firstName").getString();
+        String lastName = json.getJsonString("lastName").getString();
+        String mobileNum = json.getJsonString("mobileNum").getString();
+
+        String gender = json.getJsonString("gender").getString();
+        String qualification = json.getJsonString("highestQualification").getString();
+        String citizenship = json.getJsonString("citizenship").getString();
+        String race = json.getJsonString("race").getString();
+        String profileDesc = json.getJsonString("profileDesc").getString();
+
+        GenderEnum genderEnum = gender.equals("M") ? GenderEnum.MALE : GenderEnum.FEMALE;
+        QualificationEnum qualiEnum = QualificationEnum.valueOf(QualificationEnum.class, qualification.toUpperCase());
+        CitizenshipEnum citiEnum = CitizenshipEnum.valueOf(CitizenshipEnum.class, citizenship.toUpperCase());
+        RaceEnum raceEnum = RaceEnum.valueOf(RaceEnum.class, race.toUpperCase());
+
+        String dob = json.getJsonString("dob").getString();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY");
+        Date parsedDob = new Date();
         try {
-            GenderEnum genderEnum = gender.equals('M') ? GenderEnum.MALE : GenderEnum.FEMALE;
-            QualificationEnum qualiEnum = QualificationEnum.valueOf(QualificationEnum.class, highestQualification.toUpperCase());
-            CitizenshipEnum citiEnum = CitizenshipEnum.valueOf(CitizenshipEnum.class, citizenship.toUpperCase());
-            RaceEnum raceEnum = RaceEnum.valueOf(RaceEnum.class, race.toUpperCase());
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY");
-            Date parsedDob = new Date();
-            try {
-                parsedDob = formatter.parse(dob);
-            } catch (ParseException ex) {
-                ex.printStackTrace();
-            }
-
-            Tutor result = tutorSession.updateTutorProfile(tutorId, firstName, lastName, mobileNum, genderEnum, parsedDob, qualiEnum, citiEnum, raceEnum, profileDesc);
-            result.setPassword(null);
-            result.setSalt(null);
-            result.setMessages(null);
-            result.setJobListings(null);
-            GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
-            };
-            return Response.status(200).entity(packet).type(MediaType.APPLICATION_JSON).build();
-        } catch (TutorNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "tutorId does not exists").build();
-            return Response.status(400).entity(exception).build();
+            parsedDob = formatter.parse(dob);
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
         }
-    }
-
-//    private TutorSessionLocal lookupTutorSessionLocal() {
-//        try {
-//            Context c = new InitialContext();
-//            return (TutorSessionLocal) c.lookup("java:global/tutorme/tutorme-ejb/TutorSession!session.TutorSessionLocal");
-//        } catch (NamingException ne) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-//            throw new RuntimeException(ne);
-//        }
-//    }
-//
-//    private RatingSessionLocal lookupRatingSessionLocal() {
-//        try {
-//            Context c = new InitialContext();
-//            return (RatingSessionLocal) c.lookup("java:global/tutorme/tutorme-ejb/RatingSession!session.RatingSessionLocal");
-//        } catch (NamingException ne) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-//            throw new RuntimeException(ne);
-//        }
-//    }
+        try {
+            Tutor result = tutorSession.updateTutorProfile(tutorId, firstName, lastName, mobileNum, genderEnum, parsedDob, qualiEnum, citiEnum, raceEnum, profileDesc);
+//            *Start debug code
+//            result.setPassword(null);
+//            result.setSalt(null);
+//            result.setMessages(null);
+//            result.setJobListings(null);
+//            GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
+//            };
+//            *End debug code
+            JsonObjectBuilder payload = Json.createObjectBuilder();
+            payload.add("tutorId", tutorId);
+            payload.add("success", true);
+            return Response.status(200).entity(payload.build()).build();
 }
