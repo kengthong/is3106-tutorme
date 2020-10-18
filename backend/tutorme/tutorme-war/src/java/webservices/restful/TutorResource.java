@@ -11,7 +11,11 @@ import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import exception.TutorNotFoundException;
+<<<<<<< Updated upstream
 import java.text.ParseException;
+=======
+import filter.JWTTokenNeeded;
+>>>>>>> Stashed changes
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,7 +24,6 @@ import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -31,7 +34,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import session.RatingSessionLocal;
 import session.TutorSessionLocal;
-import utils.AuthenticateUser;
 
 /**
  * REST Web Service
@@ -50,37 +52,34 @@ public class TutorResource {
     public TutorResource() {
     }
 
-    @POST
+    @GET
     @Path("/getTutors")
+    @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTutors(JsonObject json) {
         System.out.println("Getting tutors... ");
-        if (AuthenticateUser.verifyJwt(json)) {
-            List<Tutor> tutors = new ArrayList();
-            tutors = tutorSession.retrieveAllTutors();
-            if (!tutors.isEmpty()) {
-                for (Tutor t : tutors) {
-                    t.setSalt(null);
-                    t.setPassword(null);
-                    t.setMessages(null);
-                    t.setJobListings(null);
-                    System.out.println(t);
-                }
-                GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
-                };
-                return Response.status(200).entity(packet).build();
-            } else {
-                JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getTutors").build();
-                return Response.status(400).entity(exception).build();
+        List<Tutor> tutors = new ArrayList();
+        tutors = tutorSession.retrieveAllTutors();
+        if (!tutors.isEmpty()) {
+            for (Tutor t : tutors) {
+                t.setSalt(null);
+                t.setPassword(null);
+                t.setMessages(null);
+                t.setJobListings(null);
+                System.out.println(t);
             }
+            GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
+            };
+            return Response.status(200).entity(packet).build();
         } else {
-            JsonObject exception = Json.createObjectBuilder().add("error", "Unauthorized or missing JWT.").build();
+            JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getTutors").build();
             return Response.status(400).entity(exception).build();
         }
     }
 
     @GET
     @Path("/tutorProfile")
+    @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTutorById(@QueryParam("tutorId") Long tutorId) {
         System.out.println("Tutor Id is... " + tutorId);
@@ -101,6 +100,7 @@ public class TutorResource {
 
     @POST
     @Path("/tutorProfile")
+    @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateTutorById(JsonObject json) {
         Long tutorId = Long.valueOf(json.getJsonString("tutorId").getString());
