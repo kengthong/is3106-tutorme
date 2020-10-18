@@ -44,8 +44,6 @@ public class TutorResource {
     @EJB
     RatingSessionLocal ratingSession;
     @EJB
-    RatingSessionLocal ratingSession;
-    @EJB
     TutorSessionLocal tutorSession;
     
 
@@ -94,7 +92,6 @@ public class TutorResource {
             result.setJobListings(null);
             GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
             };
-
             return Response.status(200).entity(packet).build();
         } catch (TutorNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", "tutorId does not exists").build();
