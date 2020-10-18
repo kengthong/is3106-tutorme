@@ -41,8 +41,6 @@ import session.TutorSessionLocal;
 public class TutorResource {
     
     @EJB
-    RatingSessionLocal ratingSession;
-    @EJB
     TutorSessionLocal tutorSession;
 
     public TutorResource() {
