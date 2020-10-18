@@ -5,6 +5,7 @@
  */
 package webservices.restful;
 
+import filter.JWTTokenNeeded;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
 import javax.enterprise.context.RequestScoped;
@@ -33,6 +34,7 @@ public class JobListingResource {
 
     @GET
     @Path("/jobListingList")
+    @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFilteredJobListings(JsonObject json) {
         JsonObject exception = Json.createObjectBuilder().add("error", "Unauthorized or missing JWT.").build();
