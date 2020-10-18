@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from "../../components/Header/Header";
 import BodyContainer from "../../components/Layout/BodyContainer";
-import SearchFilter from "../../components/Search";
-import JobListings from "../../components/Search/JobListings";
+import SearchFilter from "../../components/SearchFilter";
+import JobListings from "../../components/JobListings/JobListings";
 
 const SearchPage = () => {
     return (
