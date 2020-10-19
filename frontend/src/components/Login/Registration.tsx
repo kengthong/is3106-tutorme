@@ -3,7 +3,7 @@ import { LOGIN_URL } from "../../config/constants";
 import { useHistory } from "react-router-dom";
 import logo from "../../assets/logo.jpg";
 import { Input, Button, Radio, DatePicker, Modal } from "antd";
-import registerAction from "../../actions/registerAction";
+import {UserService} from "../../services/User";
 
 const RegisterComponent = () => {
   const [formData, setFormData] = useState({
@@ -36,7 +36,7 @@ const RegisterComponent = () => {
     //Should call on API
     //Skeleton
     if (verifyForm()) {
-      registerAction();
+      UserService.register();
     } else if (formData.password != formData.confirmPassword) {
       Modal.error({
         title: "Error",
