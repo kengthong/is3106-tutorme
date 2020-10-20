@@ -31,9 +31,7 @@ const TutorProfileComponent = (props: TutorProfileComponentProps) => {
         <Card>
           {user.type === "tutee" ? (
             <MakeOfferComponent />
-          ) : (
-            <OfferListComponent />
-          )}
+          ) : null}
         </Card>
       </div>
     </div>

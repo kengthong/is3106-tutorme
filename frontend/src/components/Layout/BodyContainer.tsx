@@ -4,21 +4,10 @@ const BodyContainer = (props: any) => {
   return (
     <div
       style={{
-        backgroundColor: "rgb(237 247 255)",
+            backgroundColor: "rgb(237 247 255)",
       }}
     >
-      <div style={{
-          maxWidth: "1260px",
-          flex: "auto",
-          marginLeft: "auto",
-          marginRight: "auto",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column",
-          paddingLeft: "20px",
-          paddingRight: "20px",
-      }}>
+      <div className='custom-container'>
           {props.children}
       </div>
     </div>
