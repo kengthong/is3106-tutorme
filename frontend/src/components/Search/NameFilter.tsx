@@ -27,7 +27,6 @@ const NameFilter = (props: filterProps) => {
             <div className={'flex-row'}>
                 <Search placeholder={'Name of tutor'}
                         onSearch={(value) => handleApply(value)}
-                        enterButton="Apply"
                         defaultValue={defaultVal}/>
             </div>
         </div>
