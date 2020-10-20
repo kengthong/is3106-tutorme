@@ -21,7 +21,7 @@ import TutorDetailsPage from "../pages/Tutor/Settings/PersonalDetails";
 import SearchPage from "../pages/Search/SearchPage";
 import TuteeListingPage from "../pages/Tutee/TuteeListingPage";
 import TutorListingPage from "../pages/Tutor/TutorListingPage";
-
+import CreateJobListing from "../pages/Tutor/CreateListingPage";
 // services
 
 const App = () => {
@@ -34,6 +34,7 @@ const App = () => {
           <Route path="/login" component={Login} />
           <Route path="/" exact component={LandingPage} isAuthenticated={true} />
           <Route path='/search:params?' component={SearchPage} />
+          <Route path="/tutor/createListing" component={CreateJobListing} />
           <ProtectedRoute path="/login" component={Login} />
           <ProtectedRoute path="/tutor/settings/profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
           <ProtectedRoute path="/tutor/settings/personal-details" allowedUser='tutor' exact component={TutorDetailsPage} isAuthenticated={true} />

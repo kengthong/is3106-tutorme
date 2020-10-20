@@ -38,6 +38,7 @@ const MakeOfferForm = () => {
                 onCancel={() => setShowOffer(false)}
                 width={800}
                 footer={null}
+                style={{ display: "flex", flexDirection: "column" }}
             >
 
                 <Form
