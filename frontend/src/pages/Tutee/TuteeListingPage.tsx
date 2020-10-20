@@ -30,7 +30,7 @@ const TuteeListingPage = () => {
 
                     <div>
                         <Collapse defaultActiveKey={['1']} style={{ marginTop: "50px" }}>
-                            <Panel header="Description" key="1">
+                            <Panel header="Subjects" key="1">
                                 <ListingDescription />
                             </Panel>
 
