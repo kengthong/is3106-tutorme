@@ -5,8 +5,10 @@
  */
 package session;
 
+import entity.Chat;
 import entity.Message;
 import entity.Person;
+import exception.ChatNotFoundException;
 import exception.MessageNotFoundException;
 import exception.PersonNotFoundException;
 import java.util.ArrayList;

@@ -7,8 +7,6 @@ package session;
 
 import entity.Message;
 import exception.MessageNotFoundException;
-import exception.PersonNotFoundException;
-import java.util.List;
 import javax.ejb.Local;
 
 /**

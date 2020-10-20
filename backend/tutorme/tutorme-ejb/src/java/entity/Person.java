@@ -20,6 +20,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -213,5 +214,4 @@ public abstract class Person implements Serializable {
     public void setPersonEnum(PersonEnum personEnum) {
         this.personEnum = personEnum;
     }
-
 }

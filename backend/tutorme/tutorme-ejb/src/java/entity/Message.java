@@ -34,6 +34,9 @@ public class Message implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     private Date createdDate;
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Chat chat;
+
     @NotNull
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Person sender;

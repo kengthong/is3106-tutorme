@@ -17,7 +17,6 @@ import enumeration.StaffPositionEnum;
 import enumeration.GenderEnum;
 import exception.InvalidParamsException;
 import exception.InvalidSubjectChoiceException;
-import exception.PersonNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -378,6 +377,8 @@ public class DataInitializationBean {
             List<Subject> subjects = jobListing.getSubjects();
             int randomSubjectIndex = randomNumberGenerator(0, subjects.size());
             Subject chosenSubject = subjects.get(randomSubjectIndex);
+            
+            int randomNumSessions = randomNumberGenerator(2, 8);
 
             int randomNumSessions = randomNumberGenerator(2, 8); 
 
