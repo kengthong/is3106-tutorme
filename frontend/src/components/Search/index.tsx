@@ -41,7 +41,7 @@ const Index = () => {
     return (
         <div style={{width: '100%',border: '1px solid #e8e8e8', backgroundColor: 'white', height: '100px'}} className='flex-row align-center'>
             <div className={'custom-container'}>
-                <div className={'flex-row justify-space-around'}>
+                <div className={'flex-row justify-space-around w-100'}>
                     <NameFilter label={'Name'} _key={'name'} {...filterProps} />
                     <Filter label={'Subject'} _key={'subject'} {...filterProps} data={['Maths', 'English', 'Chinese']} />
                     <Filter label={'Level'} _key={'level'} {...filterProps} data={qualifications} />

@@ -43,6 +43,13 @@ label {
   }
 }
 
+.align-center {
+  align-items: center;
+}
+.clickable:hover {
+  cursor: pointer;
+}
+
 .custom-container {
   max-width: 1260px;
   flex: auto;
@@ -56,25 +63,70 @@ label {
   padding-right: 20px;
 }
 
+.h-100 {
+  height: 100%;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
 .flex-row {
   display:flex;
   flex-direction: row;
-  width: 100%;
 }
 
-.justify-space-around {
-  justify-content: space-around;
+.fs-18 {
+  font-size: 18px;
 }
 
-.align-center {
-  align-items: center;
+.fs-24 {
+  font-size: 24px;
+}
+
+.justify-end {
+  justify-content: flex-end;
 }
 
 .justify-center {
   justify-content: center;
 }
 
+.justify-space-around {
+  justify-content: space-around;
+}
+
+.justify-space-between {
+  justify-content: space-between;
+}
+
+.w-10 {
+  width: 10%;
+}
+.w-50 {
+  width: 50%;
+}
+.w-100 {
+  width: 100%;
+}
+
+
+/* PAGE CSS */
 .job-listing-list-body {
   min-height: calc(100vh - 190px);
   width: 95%;
+}
+
+.subject-section-form:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -7.5%;
+  bottom: 0;
+  width: 15%;
+  -webkit-transform: skewX(-10deg);
+  -ms-transform: skewX(-10deg);
+  transform: skewX(-10deg);
+  background-color: rgb(67, 141, 194);
 }

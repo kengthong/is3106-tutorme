@@ -17,6 +17,7 @@ export class UserService {
                 if(res.ok) {
                     const token = await res.text();
                     const user = jwt(token);
+                    console.log("token=", token);
                     localStorage.setItem("token", token);
                     store.dispatch({
                         type: LOGIN_SUCCESSFUL,
