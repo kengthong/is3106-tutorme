@@ -11,7 +11,6 @@ import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import exception.TutorNotFoundException;
-import java.text.ParseException;
 import filter.JWTTokenNeeded;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import session.RatingSessionLocal;
 import session.TutorSessionLocal;
 
 /**
@@ -98,7 +96,8 @@ public class TutorResource {
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateTutorById(JsonObject json) {
-        Long tutorId = Long.valueOf(json.getJsonString("tutorId").getString());
+        int tutorIdInt = json.getInt("tutorId");
+        Long tutorId = Long.valueOf(tutorIdInt);
         System.out.println("Updating Tutor Id is ... " + tutorId);
 
         String firstName = json.getJsonString("firstName").getString();
@@ -144,50 +143,3 @@ public class TutorResource {
         }
     }
 }
-
-//    @POST
-//    @Path("/tutorProfile")
-//    @JWTTokenNeeded
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response updateTutorById(JsonObject json) {
-//        Long tutorId = Long.valueOf(json.getJsonString("tutorId").getString());
-//        System.out.println("Updating Tutor Id is ... " + tutorId);
-//
-//        String firstName = json.getJsonString("firstName").getString();
-//        String lastName = json.getJsonString("lastName").getString();
-//        String mobileNum = json.getJsonString("mobileNum").getString();
-//
-//        String gender = json.getJsonString("gender").getString();
-//        String qualification = json.getJsonString("highestQualification").getString();
-//        String citizenship = json.getJsonString("citizenship").getString();
-//        String race = json.getJsonString("race").getString();
-//        String profileDesc = json.getJsonString("profileDesc").getString();
-//
-//        GenderEnum genderEnum = gender.equals("M") ? GenderEnum.MALE : GenderEnum.FEMALE;
-//        QualificationEnum qualiEnum = QualificationEnum.valueOf(QualificationEnum.class, qualification.toUpperCase());
-//        CitizenshipEnum citiEnum = CitizenshipEnum.valueOf(CitizenshipEnum.class, citizenship.toUpperCase());
-//        RaceEnum raceEnum = RaceEnum.valueOf(RaceEnum.class, race.toUpperCase());
-//
-//        String dob = json.getJsonString("dob").getString();
-//        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY");
-//        Date parsedDob = new Date();
-//        try {
-//            parsedDob = formatter.parse(dob);
-//        } catch (java.text.ParseException ex) {
-//            ex.printStackTrace();
-//        }
-//        try {
-//            Tutor result = tutorSession.updateTutorProfile(tutorId, firstName, lastName, mobileNum, genderEnum, parsedDob, qualiEnum, citiEnum, raceEnum, profileDesc);
-////            *Start debug code
-////            result.setPassword(null);
-////            result.setSalt(null);
-////            result.setMessages(null);
-////            result.setJobListings(null);
-////            GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
-////            };
-////            *End debug code
-//            JsonObjectBuilder payload = Json.createObjectBuilder();
-//            payload.add("tutorId", tutorId);
-//            payload.add("success", true);
-//            return Response.status(200).entity(payload.build()).build();
-//}
