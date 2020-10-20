@@ -56,7 +56,7 @@ public class TutorResource {
             for (Tutor t : tutors) {
                 t.setSalt(null);
                 t.setPassword(null);
-                t.setMessages(null);
+                t.setChats(null);
                 t.setJobListings(null);
                 System.out.println(t);
             }
@@ -80,7 +80,7 @@ public class TutorResource {
             Tutor result = tutorSession.retrieveTutorById(tutorId);
             result.setPassword(null);
             result.setSalt(null);
-            result.setMessages(null);
+            result.setChats(null);
             result.setJobListings(null);
             GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
             };
@@ -96,8 +96,8 @@ public class TutorResource {
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateTutorById(JsonObject json) {
-        int tutorIdInt = json.getInt("tutorId");
-        Long tutorId = Long.valueOf(tutorIdInt);
+        String tutorIdStr = json.getString("tutorId");
+        Long tutorId = Long.valueOf(tutorIdStr);
         System.out.println("Updating Tutor Id is ... " + tutorId);
 
         String firstName = json.getJsonString("firstName").getString();

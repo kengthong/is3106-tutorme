@@ -21,7 +21,6 @@ import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import enumeration.ShiftEnum;
 import exception.InvalidSubjectChoiceException;
-import exception.PersonNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -91,7 +90,7 @@ public class DataInitializationBean {
         Calendar c = Calendar.getInstance();
         c.set(1990, 0, 0);
         Date randomStartDate = c.getTime();
-        
+
         c.set(2015, 12, 31);
         Date randomEndDate = c.getTime();
 
@@ -109,7 +108,7 @@ public class DataInitializationBean {
         Calendar c = Calendar.getInstance();
         c.set(1990, 0, 0);
         Date randomStartDate = c.getTime();
-        
+
         c.set(2015, 12, 31);
         Date randomEndDate = c.getTime();
 
@@ -126,7 +125,7 @@ public class DataInitializationBean {
         Calendar c = Calendar.getInstance();
         c.set(1990, 0, 0);
         Date randomStartDate = c.getTime();
-        
+
         c.set(2015, 12, 31);
         Date randomEndDate = c.getTime();
 
@@ -213,7 +212,7 @@ public class DataInitializationBean {
         subjectSession.createSubject("Primary 6", "Character and Citizenship Education");
 
         subjectSession.createSubject("Secondary 1 (O)", "English Language");
-        subjectSession.createSubject("Secondary 1 (O)", "Mother Tongue Languages");
+        subjectSession.createSubject("Secondary 1 (O)", "Mother Tongue Language");
         subjectSession.createSubject("Secondary 1 (O)", "Mathematics");
         subjectSession.createSubject("Secondary 1 (O)", "Physics");
         subjectSession.createSubject("Secondary 1 (O)", "Biology");
@@ -227,7 +226,7 @@ public class DataInitializationBean {
         subjectSession.createSubject("Secondary 1 (O)", "Art");
         subjectSession.createSubject("Secondary 1 (O)", "Music");
         subjectSession.createSubject("Secondary 2 (O)", "English Language");
-        subjectSession.createSubject("Secondary 2 (O)", "Mother Tongue Languages");
+        subjectSession.createSubject("Secondary 2 (O)", "Mother Tongue Language");
         subjectSession.createSubject("Secondary 2 (O)", "Mathematics");
         subjectSession.createSubject("Secondary 2 (O)", "Physics");
         subjectSession.createSubject("Secondary 2 (O)", "Biology");
@@ -241,7 +240,7 @@ public class DataInitializationBean {
         subjectSession.createSubject("Secondary 2 (O)", "Art");
         subjectSession.createSubject("Secondary 2 (O)", "Music");
         subjectSession.createSubject("Secondary 3 (O)", "English Language");
-        subjectSession.createSubject("Secondary 3 (O)", "Mother Tongue Languages");
+        subjectSession.createSubject("Secondary 3 (O)", "Mother Tongue Language");
         subjectSession.createSubject("Secondary 3 (O)", "Elementary Mathematics");
         subjectSession.createSubject("Secondary 3 (O)", "Additional Mathematics");
         subjectSession.createSubject("Secondary 3 (O)", "Pure Physics");
@@ -262,7 +261,7 @@ public class DataInitializationBean {
         subjectSession.createSubject("Secondary 3 (O)", "Art");
         subjectSession.createSubject("Secondary 3 (O)", "Music");
         subjectSession.createSubject("Secondary 4 (O)", "English Language");
-        subjectSession.createSubject("Secondary 4 (O)", "Mother Tongue Languages");
+        subjectSession.createSubject("Secondary 4 (O)", "Mother Tongue Language");
         subjectSession.createSubject("Secondary 4 (O)", "Elementary Mathematics");
         subjectSession.createSubject("Secondary 4 (O)", "Additional Mathematics");
         subjectSession.createSubject("Secondary 4 (O)", "Pure Physics");
@@ -405,41 +404,39 @@ public class DataInitializationBean {
             List<Subject> subjects = jobListing.getSubjects();
             int randomSubjectIndex = randomNumberGenerator(0, subjects.size());
             Subject chosenSubject = subjects.get(randomSubjectIndex);
+            
+            int randomNumSessions = randomNumberGenerator(2, 8);
 
             Date startDate = new Date();
             try {
-                offerSession.createOffer(rates, startDate, tutee, chosenSubject, jobListing, "I love learning");
+                offerSession.createOffer(rates, startDate, tutee, chosenSubject, jobListing, randomNumSessions, 2, "I love learning");
             } catch (InvalidSubjectChoiceException ex) {
                 ex.printStackTrace();
             }
         }
     }
-    
+
     private void initRatings() {
         List<Offer> offers = offerSession.retrieveAllOffers();
-        for (int i=0; i<50; i++) {
+        for (int i = 0; i < 50; i++) {
             int randomOfferIndex = randomNumberGenerator(1, offers.size());
             Offer offer = offers.get(randomOfferIndex);
-            double value = (double) randomNumberGenerator(1,5);
+            double value = (double) randomNumberGenerator(1, 5);
             ratingSession.createRating(value, "the tutor was great/bad", offer);
         }
     }
-    
+
     private void initMessages() {
         List<Person> persons = persionSession.retrieveAllPersons();
-        for (int i=0; i<100; i++) {
+        for (int i = 0; i < 100; i++) {
             int randomSenderIndex = randomNumberGenerator(0, persons.size());
             int randomReceiverIndex = randomNumberGenerator(0, persons.size());
             Person sender = persons.get(randomSenderIndex);
             Person receiver = persons.get(randomReceiverIndex);
-            try {
-                messageSession.createMessage(sender.getPersonId(), receiver.getPersonId(), "test message from Person_"+sender.getPersonId()+" to Person_"+receiver.getPersonId());
-            } catch (PersonNotFoundException ex) {
-                ex.printStackTrace();
-            }
+            messageSession.createMessage(sender.getPersonId(), receiver.getPersonId(), "test message from Person_" + sender.getPersonId() + " to Person_" + receiver.getPersonId());
         }
     }
-    
+
     public static Date randomDateBetween(Date startInclusive, Date endExclusive) {
         long startMillis = startInclusive.getTime();
         long endMillis = endExclusive.getTime();

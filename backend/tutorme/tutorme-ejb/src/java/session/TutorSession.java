@@ -17,7 +17,6 @@ import exception.JobListingNotFoundException;
 import exception.OfferNotFoundException;
 import exception.RatingNotFoundException;
 import exception.TutorNotFoundException;
-import exception.PersonLoginFailException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
@@ -157,7 +156,7 @@ public class TutorSession implements TutorSessionLocal {
         query.setParameter("inputEmail", email);
         Tutor tutor = (Tutor) query.getSingleResult();
         if (tutor != null) {
-            tutor.getMessages();
+            tutor.getChats();
             tutor.getJobListings();
             return tutor;
         } else {
@@ -172,7 +171,7 @@ public class TutorSession implements TutorSessionLocal {
         List<Tutor> results = query.getResultList();
         if (!results.isEmpty()) { // if empty then return message in REST
             for (Tutor t : results) {
-                t.getMessages();
+                t.getChats();
                 t.getJobListings();
             }
             return results;
@@ -191,7 +190,7 @@ public class TutorSession implements TutorSessionLocal {
         }
         Tutor tutor = jobListing.getTutor();
         tutor.getJobListings();
-        tutor.getMessages();
+        tutor.getChats();
         return tutor;
     }
 
@@ -205,7 +204,7 @@ public class TutorSession implements TutorSessionLocal {
         }
         Tutor tutor = offer.getJobListing().getTutor();
         tutor.getJobListings();
-        tutor.getMessages();
+        tutor.getChats();
         return tutor;
     }
 
@@ -219,7 +218,7 @@ public class TutorSession implements TutorSessionLocal {
         }
         Tutor tutor = rating.getOffer().getJobListing().getTutor();
         tutor.getJobListings();
-        tutor.getMessages();
+        tutor.getChats();
         return tutor;
     }
 

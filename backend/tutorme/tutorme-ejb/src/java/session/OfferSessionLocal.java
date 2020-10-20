@@ -25,7 +25,7 @@ public interface OfferSessionLocal {
 
     public Offer createOffer(Offer newOffer);
 
-    public Offer createOffer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, String additionalNote) throws InvalidSubjectChoiceException;
+    public Offer createOffer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, int numSessions, double numHoursPerSession, String additionalNote) throws InvalidSubjectChoiceException;
 
     public List<Offer> retrieveAllOffers();
 

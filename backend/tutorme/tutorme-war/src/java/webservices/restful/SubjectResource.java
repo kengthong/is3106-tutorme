@@ -35,7 +35,6 @@ public class SubjectResource {
 
     @GET
     @Path("/subjectList")
-    @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSubjectList() {
         System.out.println("Getting all subjects...");

@@ -5,11 +5,12 @@
  */
 package session;
 
+import entity.Chat;
 import entity.Message;
 import entity.Person;
+import exception.ChatNotFoundException;
 import exception.MessageNotFoundException;
 import exception.PersonNotFoundException;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -24,35 +25,30 @@ public class MessageSession implements MessageSessionLocal {
 
     @EJB
     private PersonSessionLocal personSession;
+    @EJB
+    private ChatSessionLocal chatSession;
     @PersistenceContext(unitName = "tutorme-ejbPU")
     private EntityManager em;
 
     @Override
-    public Message createMessage(Message newMessage) {
-        Person sender = newMessage.getSender();
-        Person receiver = newMessage.getReceiver();
-        em.persist(newMessage);
-        em.flush();
-
-        sender.getMessages().add(newMessage);
-        receiver.getMessages().add(newMessage);
-        em.merge(sender);
-        em.merge(receiver);
-        return newMessage;
-    }
-
-    @Override
-    public Message createMessage(Long senderId, Long receiverId, String body) throws PersonNotFoundException {
-        Person sender = personSession.retrievePersonById(senderId);
-        Person receiver = personSession.retrievePersonById(receiverId);
-        Message newMessage = new Message(sender, receiver, body);
-        em.persist(newMessage);
-
-        sender.getMessages().add(newMessage);
-        receiver.getMessages().add(newMessage);
-        em.merge(sender);
-        em.merge(receiver);
-        return newMessage;
+    public Message createMessage(Long senderId, Long receiverId, String body) {
+        Chat chat = new Chat();
+        try {
+            try {
+                chat = chatSession.retrieveChatByPersonIds(senderId, receiverId);
+            } catch (ChatNotFoundException ex) {
+                chat = chatSession.createChat(senderId, receiverId);
+                System.out.println("Chat not found when creating Message, new chat is created... chatId: " + chat.getChatId());
+            }
+            Person sender = personSession.retrievePersonById(senderId);
+            Person receiver = personSession.retrievePersonById(receiverId);
+            Message newMessage = new Message(chat, sender, receiver, body);
+            em.persist(newMessage);
+            return newMessage;
+        } catch (PersonNotFoundException ex) {
+            System.out.println("Person not found when creating Message");
+            return null;
+        }
     }
 
     @Override
@@ -63,13 +59,6 @@ public class MessageSession implements MessageSessionLocal {
         } else {
             throw new MessageNotFoundException("Message ID " + messageId + "does not exists.");
         }
-    }
-
-    @Override
-    public List<Message> retrieveMessagesByPersonId(Long userId) throws PersonNotFoundException {
-        Person user = personSession.retrievePersonById(userId);
-        List<Message> messages = user.getMessages();
-        return messages;
     }
 
     @Override

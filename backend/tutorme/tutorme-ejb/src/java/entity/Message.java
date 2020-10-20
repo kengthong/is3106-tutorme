@@ -32,6 +32,9 @@ public class Message implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Chat chat;
+
     @NotNull
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Person sender;
@@ -48,12 +51,13 @@ public class Message implements Serializable {
     public Message() {
     }
 
-    public Message(Person sender, Person receiver, String body) {
+    public Message(Chat chat, Person sender, Person receiver, String body) {
+        this.chat = chat;
         this.sender = sender;
         this.receiver = receiver;
         this.body = body;
         this.activeStatus = true;
-        this.createdDate = this.createdDate = Date.from(Instant.now());
+        this.createdDate = Date.from(Instant.now());
     }
 
     public Long getMessageId() {
@@ -102,6 +106,14 @@ public class Message implements Serializable {
 
     public void setActiveStatus(Boolean activeStatus) {
         this.activeStatus = activeStatus;
+    }
+
+    public Chat getChat() {
+        return chat;
+    }
+
+    public void setChat(Chat chat) {
+        this.chat = chat;
     }
 
 }

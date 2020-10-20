@@ -55,6 +55,12 @@ public class Offer implements Serializable {
     @Enumerated
     private OfferStatusEnum offerStatus;
 
+    @NotNull
+    private int numSessions;
+
+    @NotNull
+    private double numHoursPerSession;
+
     private String additionalNote;
 
     @OneToOne(mappedBy = "offer", fetch = FetchType.LAZY, optional = true)
@@ -63,12 +69,14 @@ public class Offer implements Serializable {
     public Offer() {
     }
 
-    public Offer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, String additionalNote) {
+    public Offer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, int numSessions, double numHoursPerSession, String additionalNote) {
         this.offeredRate = offeredRate;
         this.startDate = startDate;
         this.tutee = tutee;
         this.chosenSubject = chosenSubject;
         this.jobListing = jobListing;
+        this.numSessions = numSessions;
+        this.numHoursPerSession = numHoursPerSession;
         this.additionalNote = additionalNote;
         this.createdDate = Date.from(Instant.now());
         this.offerStatus = OfferStatusEnum.PENDING;
@@ -152,6 +160,22 @@ public class Offer implements Serializable {
 
     public void setRating(Rating rating) {
         this.rating = rating;
+    }
+
+    public int getNumSessions() {
+        return numSessions;
+    }
+
+    public void setNumSessions(int numSessions) {
+        this.numSessions = numSessions;
+    }
+
+    public double getNumHoursPerSession() {
+        return numHoursPerSession;
+    }
+
+    public void setNumHoursPerSession(int numHoursPerSession) {
+        this.numHoursPerSession = numHoursPerSession;
     }
 
 }

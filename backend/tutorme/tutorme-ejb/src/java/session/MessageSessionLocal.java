@@ -7,8 +7,6 @@ package session;
 
 import entity.Message;
 import exception.MessageNotFoundException;
-import exception.PersonNotFoundException;
-import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -18,13 +16,9 @@ import javax.ejb.Local;
 @Local
 public interface MessageSessionLocal {
 
-    public Message createMessage(Message newMessage);
-
-    public Message createMessage(Long senderId, Long receiverId, String body) throws PersonNotFoundException;
+    public Message createMessage(Long senderId, Long receiverId, String body);
 
     public Message retrieveMessageById(Long messageId) throws MessageNotFoundException;
-
-    public List<Message> retrieveMessagesByPersonId(Long userId) throws PersonNotFoundException;
 
     public void updateMessage(Message updatedMessage);
 

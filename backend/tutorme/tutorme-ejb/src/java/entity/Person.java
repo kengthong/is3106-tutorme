@@ -18,6 +18,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -68,13 +69,14 @@ public abstract class Person implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dob;
 
-    @OneToMany(targetEntity = Message.class, fetch = FetchType.LAZY)
-    private List<Message> messages;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn
+    private List<Chat> chats;
 
     public Person() {
         this.createdDate = new Date();
         this.activeStatus = true;
-        this.messages = new ArrayList();
+        this.chats = new ArrayList();
     }
 
     public Person(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) {
@@ -87,7 +89,7 @@ public abstract class Person implements Serializable {
         this.dob = dob;
         this.createdDate = Date.from(Instant.now());
         this.activeStatus = true;
-        this.messages = new ArrayList();
+        this.chats = new ArrayList();
     }
 
     public Long getPersonId() {
@@ -178,12 +180,11 @@ public abstract class Person implements Serializable {
         this.dob = dob;
     }
 
-    public List<Message> getMessages() {
-        return messages;
+    public List<Chat> getChats() {
+        return chats;
     }
 
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
+    public void setChats(List<Chat> chats) {
+        this.chats = chats;
     }
-
 }

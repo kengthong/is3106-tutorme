@@ -39,9 +39,9 @@ public class OfferSession implements OfferSessionLocal {
     }
 
     @Override
-    public Offer createOffer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, String additionalNote) throws InvalidSubjectChoiceException {
+    public Offer createOffer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, int numSessions, double numHoursPerSession, String additionalNote) throws InvalidSubjectChoiceException {
         if (jobListing.getSubjects().contains(chosenSubject)) {
-            Offer newOffer = new Offer(offeredRate, startDate, tutee, chosenSubject, jobListing, additionalNote);
+            Offer newOffer = new Offer(offeredRate, startDate, tutee, chosenSubject, jobListing, numSessions, numHoursPerSession, additionalNote);
         return createOffer(newOffer);
         } else {
             throw new InvalidSubjectChoiceException();
