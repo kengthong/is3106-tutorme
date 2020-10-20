@@ -5,11 +5,18 @@
  */
 package session;
 
+<<<<<<< HEAD
 import entity.JobListing;
 import entity.Message;
 import entity.Person;
 import entity.Tutee;
 import entity.Tutor;
+=======
+import entity.Chat;
+import entity.Message;
+import entity.Person;
+import exception.ChatNotFoundException;
+>>>>>>> 8bd1855... Chat WebResource
 import exception.MessageNotFoundException;
 import exception.PersonNotFoundException;
 import java.util.ArrayList;
