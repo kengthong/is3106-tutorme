@@ -40,7 +40,7 @@ const Header = () => {
                 <a href="index.html">Home</a>
               </li>
               <li>
-                <a href="#">About us</a>
+                <a href="/search">Search</a>
               </li>
               <li>
                 <a href="#">Shop</a>

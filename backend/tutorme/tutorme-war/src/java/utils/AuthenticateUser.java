@@ -5,13 +5,11 @@
  */
 package utils;
 
-import io.fusionauth.jwt.InvalidJWTSignatureException;
 import io.fusionauth.jwt.Verifier;
 import io.fusionauth.jwt.domain.JWT;
 import io.fusionauth.jwt.hmac.HMACSigner;
 import io.fusionauth.jwt.hmac.HMACVerifier;
 import java.time.ZonedDateTime;
-import javax.json.JsonObject;
 
 /**
  *
@@ -21,7 +19,6 @@ public class AuthenticateUser {
 
     private static final String key = "hsianghui";
     private static final HMACSigner signer = HMACSigner.newSHA256Signer(key);
-    private static final Verifier verifier = HMACVerifier.newVerifier(key);
 
     public static String issueJwt (Long personId) {
         // Create token
@@ -32,16 +29,6 @@ public class AuthenticateUser {
         // Sign token
         String encodedJWT = JWT.getEncoder().encode(jwt, signer);
         return encodedJWT;
-    }
-    
-    public static boolean verifyJwt (JsonObject json) {    
-        try {
-            String jwtSignature = json.getString("jwt");
-            JWT jwt = JWT.getDecoder().decode(jwtSignature, verifier);
-            return true;
-        } catch (InvalidJWTSignatureException | NullPointerException ex1) {
-            return false;
-        }
     }
 }
 

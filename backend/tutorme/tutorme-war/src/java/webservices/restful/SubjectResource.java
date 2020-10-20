@@ -6,6 +6,7 @@
 package webservices.restful;
 
 import entity.Subject;
+import filter.JWTTokenNeeded;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
@@ -34,6 +35,7 @@ public class SubjectResource {
 
     @GET
     @Path("/subjectList")
+    @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSubjectList() {
         System.out.println("Getting all subjects...");

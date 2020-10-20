@@ -18,6 +18,7 @@ import NotFoundPage from "../pages/Common/NotFoundPage/NotFoundPage";
 import tuteeProfile from "../pages/Common/Tutee/TuteeProfile";
 import TutorProfilePage from "../pages/Tutor/Settings/Profile";
 import TutorDetailsPage from "../pages/Tutor/Settings/PersonalDetails";
+import SearchPage from "../pages/Search/SearchPage";
 
 // services
 
@@ -28,6 +29,7 @@ const App = () => {
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/" exact component={LandingPage} isAuthenticated={true}/>
+          <Route path='/search:params?' component={SearchPage} />
           <ProtectedRoute path="/login" component={Login} />
           <ProtectedRoute path="/tutor/settings/profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true}/>
           <ProtectedRoute path="/tutor/settings/personal-details" allowedUser='tutor' exact component={TutorDetailsPage} isAuthenticated={true}/>
@@ -38,7 +40,7 @@ const App = () => {
           {/*<ProtectedRoute path="/settings" component={Settings}/>*/}
           {/*<ProtectedRoute component={Dashboard}/>*/}
           <Route path="/error" exact={true} component={NotFoundPage} />
-          <Redirect to="/error" exact={true} />
+          {/*<Redirect to="/error" exact={true} />*/}
         </Switch>
       </BrowserRouter>
     </ErrorBoundary>

@@ -42,3 +42,39 @@ label {
     transform: rotate(360deg);
   }
 }
+
+.custom-container {
+  max-width: 1260px;
+  flex: auto;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.flex-row {
+  display:flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.justify-space-around {
+  justify-content: space-around;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.job-listing-list-body {
+  min-height: calc(100vh - 190px);
+  width: 95%;
+}

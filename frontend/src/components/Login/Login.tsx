@@ -1,11 +1,16 @@
 import React, { useEffect, useState, Component, FormEvent } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import { REGISTRATION_URL } from "../../config/constants";
 import logo from "../../assets/logo.jpg";
 import { Input, Button } from "antd";
+import {UserService} from "../../services/User";
+import {UserState} from "../../reducer/user-reducer";
+import {useSelector} from "react-redux";
 
 const Login = () => {
   const history = useHistory();
+  const userState = useSelector<UserState, UserState>((state) => state);
+  console.log("user state =", userState);
   const handleRedirectToRegister = () => history.push(REGISTRATION_URL);
 
   const [formData, setFormData] = useState({
@@ -28,8 +33,13 @@ const Login = () => {
   const handleSubmit = (e: any) => {
     //Should call on
     //Skeleton
+    UserService.login(formData.email, formData.password);
     console.log("Submitted");
   };
+
+  const redirect = () => {
+
+  }
 
   return (
     <div>
@@ -43,6 +53,10 @@ const Login = () => {
         Welcome, Please log in
       </h1>
 
+      {userState.isAuthenticated && <Redirect to={"/"} />}
+      <div>
+        {userState.error? userState.errorMsg: null }
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="p-fluid">
           <div className="p-field">
