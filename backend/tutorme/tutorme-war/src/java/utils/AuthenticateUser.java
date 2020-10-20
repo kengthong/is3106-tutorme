@@ -5,10 +5,8 @@
  */
 package utils;
 
-import io.fusionauth.jwt.Verifier;
 import io.fusionauth.jwt.domain.JWT;
 import io.fusionauth.jwt.hmac.HMACSigner;
-import io.fusionauth.jwt.hmac.HMACVerifier;
 import java.time.ZonedDateTime;
 
 /**
