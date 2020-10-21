@@ -26,3 +26,9 @@ nbactions.xml
 nb-configuration.xml
 *.properties
 !dependencies/*.jar
+backend/tutorme/nbproject/project.properties
+backend/tutorme/tutorme-ejb/nbproject/build-impl.xml
+backend/tutorme/tutorme-ejb/nbproject/genfiles.properties
+backend/tutorme/tutorme-ejb/nbproject/project.properties
+backend/tutorme/tutorme-ejb/nbproject/project.xml
+backend/tutorme/tutorme-war/nbproject/project.properties
