@@ -23,7 +23,7 @@ public class Tutee extends Person implements Serializable {
 
     private String profileDesc;
 
-    @OneToMany(mappedBy = "tutee", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "tutee", fetch = FetchType.EAGER)
     private List<Offer> offers;
 
     public Tutee() {

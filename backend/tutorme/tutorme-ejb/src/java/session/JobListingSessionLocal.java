@@ -35,9 +35,11 @@ public interface JobListingSessionLocal {
     
     public List<JobListing> retrieveJobListingsBySubjectLevelAndName (String subjectLevel, String subjectName);
 
-    public List<JobListing> retrieveJobListingsByTutorId(Long userId) throws JobListingNotFoundException;
+    public List<JobListing> retrieveJobListingsByTutorId(Long userId);
 
-    public List<JobListing> retrieveJobListingsByTutorName(String inputName) throws JobListingNotFoundException;
+    public List<JobListing> retrieveJobListingsByTutorName(String inputName);
+    
+    public List<JobListing> retrieveJobListingsWithMultipleFilters(String subjectName, String subjectLevel, Double minPrice, Double maxPrice, String inputName) ;
     
     public JobListing retrieveJobListingByOffer(Long offerId) throws JobListingNotFoundException;
     

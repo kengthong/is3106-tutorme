@@ -42,13 +42,13 @@ public class Offer implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tutee tutee;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private JobListing jobListing;
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
     private Subject chosenSubject;
 
     @NotNull
@@ -63,7 +63,7 @@ public class Offer implements Serializable {
 
     private String additionalNote;
 
-    @OneToOne(mappedBy = "offer", fetch = FetchType.LAZY, optional = true)
+    @OneToOne(mappedBy = "offer", fetch = FetchType.EAGER, optional = true)
     private Rating rating;
 
     public Offer() {

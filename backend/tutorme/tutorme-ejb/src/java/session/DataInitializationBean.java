@@ -6,7 +6,9 @@
 package session;
 
 import entity.Area;
+import entity.Chat;
 import entity.JobListing;
+import entity.Message;
 import entity.Offer;
 import entity.Person;
 import entity.Subject;
@@ -81,8 +83,8 @@ public class DataInitializationBean {
         initTimeslots();
         initSubjects();
         initJobListings();
-        initOffers();
-        initRatings();
+//        initOffers();
+//        initRatings();
         initMessages();
     }
 
@@ -353,7 +355,7 @@ public class DataInitializationBean {
     }
 
     private void initJobListings() {
-        List<Tutor> tutors = tutorSession.retrieveAllTutors();
+        List<Tutor> tutors = tutorSession.retrieveAllTutors(); //all managed
         List<Subject> subjects = subjectSession.retrieveAllSubjects();
         List<Timeslot> timeslots = timeslotSession.retrieveAllTimeslots();
         List<Area> areas = areaSession.retrieveAllAreas();
@@ -378,13 +380,24 @@ public class DataInitializationBean {
 
             int numAreas = randomNumberGenerator(1, 4);
             List<Area> jlAreas = new ArrayList();
-            for (int j = 0; j < numTimeslots; j++) {
+            for (int j = 0; j < numAreas; j++) {
                 int randomAreaIndex = randomNumberGenerator(0, areas.size());
                 jlAreas.add(areas.get(randomAreaIndex));
             }
 
             double rates = (double) randomNumberGenerator(20, 100);
-            jobListingSession.createJobListing(tutor, jlSubjects, rates, jlTimeslots, jlAreas, "i love to teach");
+
+            JobListing joblisting = jobListingSession.createJobListing(tutor, jlSubjects, rates, jlTimeslots, jlAreas, "i love to teach");
+            em.flush();
+//            System.out.println(joblisting.getJobListingId());
+//            System.out.println(joblisting.getTutor());
+            em.refresh(joblisting);
+
+            Tutor tut = joblisting.getTutor();
+            tut.getJobListings().add(joblisting);
+            em.merge(tut);
+
+//            System.out.println("88888888888888888FLUSHED888888888888888");
         }
     }
 
@@ -404,7 +417,7 @@ public class DataInitializationBean {
             List<Subject> subjects = jobListing.getSubjects();
             int randomSubjectIndex = randomNumberGenerator(0, subjects.size());
             Subject chosenSubject = subjects.get(randomSubjectIndex);
-            
+
             int randomNumSessions = randomNumberGenerator(2, 8);
 
             Date startDate = new Date();
@@ -433,7 +446,13 @@ public class DataInitializationBean {
             int randomReceiverIndex = randomNumberGenerator(0, persons.size());
             Person sender = persons.get(randomSenderIndex);
             Person receiver = persons.get(randomReceiverIndex);
-            messageSession.createMessage(sender.getPersonId(), receiver.getPersonId(), "test message from Person_" + sender.getPersonId() + " to Person_" + receiver.getPersonId());
+            Message message = messageSession.createMessage(sender.getPersonId(), receiver.getPersonId(), "test message from Person_" + sender.getPersonId() + " to Person_" + receiver.getPersonId());
+//            em.flush();
+//            em.refresh(message);
+//            Chat chat = message.getChat();
+//            List<Message> messages = chat.getMessages();
+//            System.out.println("#### chatID: " + chat.getChatId() + "#### messageId:" + messages.get(0).getMessageId() );
+//            
         }
     }
 

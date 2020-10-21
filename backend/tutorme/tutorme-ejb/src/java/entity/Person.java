@@ -5,6 +5,7 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import enumeration.GenderEnum;
 import java.io.Serializable;
 import java.time.Instant;
@@ -18,7 +19,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -69,8 +69,8 @@ public abstract class Person implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dob;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
+    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinColumn
     private List<Chat> chats;
 
     public Person() {

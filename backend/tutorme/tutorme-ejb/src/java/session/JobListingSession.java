@@ -40,15 +40,16 @@ public class JobListingSession implements JobListingSessionLocal {
 
     @Override
     public JobListing createJobListing(JobListing newJobListing) {
-        em.merge(newJobListing);
-        em.flush();
+        em.persist(newJobListing);
         return newJobListing;
     }
 
     @Override
     public JobListing createJobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) {
         JobListing newJobListing = new JobListing(tutor, subjects, hourlyRates, preferredTimeslots, preferredAreas, jobListingDesc);
-        return createJobListing(newJobListing);
+        em.persist(newJobListing);
+        
+        return newJobListing;
     }
 
     @Override
@@ -118,8 +119,9 @@ public class JobListingSession implements JobListingSessionLocal {
     }
 
     @Override
-    public List<JobListing> retrieveJobListingsByTutorId(Long userId) throws JobListingNotFoundException {
-        List<JobListing> jobListings = retrieveAllJobListings();
+    public List<JobListing> retrieveJobListingsByTutorId(Long userId) {
+        List<JobListing> jobListings = new ArrayList<>();
+        jobListings = retrieveAllJobListings();
         List<JobListing> filteredJobListings = jobListings.stream()
                 .filter(jl -> jl.getTutor().getPersonId().equals(userId))
                 .collect(Collectors.toList());
@@ -127,12 +129,54 @@ public class JobListingSession implements JobListingSessionLocal {
     }
 
     @Override
-    public List<JobListing> retrieveJobListingsByTutorName(String inputName) throws JobListingNotFoundException {
-        List<JobListing> jobListings = retrieveAllJobListings();
+    public List<JobListing> retrieveJobListingsByTutorName(String inputName) {
+        List<JobListing> jobListings = new ArrayList<>();
+        jobListings = retrieveAllJobListings();
         List<JobListing> filteredJobListings = jobListings.stream()
                 .filter(jl -> jl.getTutor().getFirstName().equals(inputName) || jl.getTutor().getLastName().equals(inputName))
                 .collect(Collectors.toList());
         return filteredJobListings;
+    }
+
+    @Override
+    public List<JobListing> retrieveJobListingsWithMultipleFilters(String subjectName, String subjectLevel, Double minPrice, Double maxPrice, String inputName)  {
+        // filter by name
+        List<JobListing> result1 = retrieveJobListingsByTutorName(inputName);
+        // filter by price
+        result1.stream()
+                .filter(jl -> jl.getHourlyRates() >= minPrice)
+                .filter(jl -> jl.getHourlyRates() <= maxPrice)
+                .collect(Collectors.toList());
+        List<JobListing> result2 = new ArrayList<>();
+        // filter by subjectName
+        if (!subjectName.equals("")) {
+            for (JobListing jl : result1) {
+                List<Subject> subjects = jl.getSubjects();
+                for (Subject s : subjects) {
+                    if (s.getSubjectName().equals(subjectName)) {
+                        result2.add(jl);
+                        break;
+                    }
+                }
+            }
+        } else {
+            result2.addAll(result1);
+        }
+        List<JobListing> result3 = new ArrayList<>();
+        if (!subjectLevel.equals("")) {
+            for (JobListing jl : result2) {
+                List<Subject> subjects = jl.getSubjects();
+                for (Subject s : subjects) {
+                    if (s.getSubjectLevel().equals(subjectLevel)) {
+                        result3.add(jl);
+                        break;
+                    }
+                }
+            }
+        } else {
+            result3.addAll(result2);
+        }
+        return result3;
     }
 
     @Override
@@ -141,10 +185,10 @@ public class JobListingSession implements JobListingSessionLocal {
         try {
             Offer offer = offerSession.retrieveOfferById(offerId);
             jobListing = offer.getJobListing();
+            return jobListing;
         } catch (OfferNotFoundException ex) {
             throw new JobListingNotFoundException("JobListing was not found because OfferID " + offerId + "provided does not exists.");
         }
-        return jobListing;
     }
 
     @Override
@@ -154,10 +198,10 @@ public class JobListingSession implements JobListingSessionLocal {
             Rating rating = ratingSession.retrieveRatingById(ratingId);
             Offer offer = rating.getOffer();
             jobListing = offer.getJobListing();
+            return jobListing;
         } catch (RatingNotFoundException ex) {
             throw new JobListingNotFoundException("JobListing was not found because RatingID " + ratingId + "provided does not exists.");
         }
-        return jobListing;
     }
 
     @Override
@@ -193,4 +237,5 @@ public class JobListingSession implements JobListingSessionLocal {
         JobListing jobListing = retrieveJobListingById(jobListingId);
         em.remove(jobListing);
     }
+
 }

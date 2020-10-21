@@ -11,7 +11,6 @@ import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import exception.TutorNotFoundException;
-import exception.PersonLoginFailException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;

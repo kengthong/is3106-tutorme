@@ -5,14 +5,17 @@
  */
 package webservices.restful;
 
+import entity.JobListing;
 import filter.JWTTokenNeeded;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
 import javax.enterprise.context.RequestScoped;
-import javax.json.Json;
-import javax.json.JsonObject;
 import javax.ws.rs.GET;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import session.JobListingSessionLocal;
@@ -36,8 +39,33 @@ public class JobListingResource {
     @Path("/jobListingList")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFilteredJobListings(JsonObject json) {
-        JsonObject exception = Json.createObjectBuilder().add("error", "Unauthorized or missing JWT.").build();
-        return Response.status(400).entity(exception).build();
+    public Response getFilteredJobListings(@QueryParam("subject") String subject,
+            @QueryParam("level") String level,
+            @QueryParam("minPrice") String minPrice,
+            @QueryParam("maxPrice") String maxPrice,
+            @QueryParam("name") String name
+    ) {
+        System.out.println("Getting filtered jobListings with...");
+        double minPx = Double.valueOf(minPrice);
+        double maxPx = Double.valueOf(maxPrice);
+        List<JobListing> jobListings = jobListingSession.retrieveJobListingsWithMultipleFilters(subject, level, minPx, maxPx, name);
+        // return jobListing object with reviewCount and avgRatings
+        
+        
+//        if (!jobListings.isEmpty()) {
+        GenericEntity<List<JobListing>> packet = new GenericEntity<List<JobListing>>(jobListings) {
+        };
+        return Response.status(200).entity(packet).build();
+//        } else {
+//            JsonObject exception = Json.createObjectBuilder().add("error", "Unauthorized or missing JWT.").build();
+//            return Response.status(400).entity(exception).build();
+//        }
     }
+    
+//    @GET
+//    @Path("{id}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public JobListing find(@PathParam("id") Long id) {
+//        return jobListingSession.retrieveJobListingById(id);
+//    }
 }

@@ -38,7 +38,7 @@ public class MessageSession implements MessageSessionLocal {
                 chat = chatSession.retrieveChatByPersonIds(senderId, receiverId);
             } catch (ChatNotFoundException ex) {
                 chat = chatSession.createChat(senderId, receiverId);
-                System.out.println("Chat not found when creating Message, new chat is created... chatId: " + chat.getChatId());
+//                System.out.println("Chat not found when creating Message, new chat is created... chatId: " + chat.getChatId());
             }
             Person sender = personSession.retrievePersonById(senderId);
             Person receiver = personSession.retrievePersonById(receiverId);

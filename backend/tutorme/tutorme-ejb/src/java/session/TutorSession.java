@@ -66,7 +66,6 @@ public class TutorSession implements TutorSessionLocal {
 //            throw new PersonLoginFailException("Invalid login parameters.");
 //        }
 //    }
-
     @Override
     public Tutor createTutor(Tutor newTutor) {
         em.persist(newTutor);
@@ -104,14 +103,14 @@ public class TutorSession implements TutorSessionLocal {
     public List<Tutor> retrieveAllTutors() {
         Query query = em.createQuery("SELECT t FROM Tutor t");
         List<Tutor> tutors = query.getResultList();
-//        for (Tutor t : tutors) {
-//            t.getMessages();
-//            t.getJobListings();
-//        }
+        for (Tutor t : tutors) {
+            t.getChats();
+            t.getJobListings();
+        }
         return tutors;
     }
 
-    @Override 
+    @Override
     public Tutor retrieveTutorByIdDetach(Long personId) throws TutorNotFoundException {
         Tutor tutor = em.find(Tutor.class, personId);
         if (tutor != null) {
@@ -134,16 +133,17 @@ public class TutorSession implements TutorSessionLocal {
     @Override // in use
     public Tutor retrieveTutorById(Long personId) throws TutorNotFoundException {
         Tutor tutor = em.find(Tutor.class, personId);
+        System.out.println("###############");
+        for (JobListing jl : tutor.getJobListings()) {
+            System.out.println("### JobListingId:" + jl.getJobListingId());
+            jl.setTutor(null);
+        }
         if (tutor != null) {
-            List<Rating> tutorRatings = ratingSession.retrieveRatingsByTutorId(personId);
-            OptionalDouble avgRating = tutorRatings.stream()
-                    .mapToDouble(r -> r.getRatingValue())
-                    .average();
-            if (avgRating.isPresent()) {
-                tutor.setAvgRating(avgRating.getAsDouble());
-            } else {
-                tutor.setAvgRating(0.0);
-            }
+//            List<Rating> tutorRatings = ratingSession.retrieveRatingsByTutorId(personId);
+//            OptionalDouble avgRating = tutorRatings.stream()
+//                    .mapToDouble(r -> r.getRatingValue())
+//                    .average();
+//            tutor.setAvgRating(avgRating.getAsDouble());
             return tutor;
         } else {
             throw new TutorNotFoundException("TutorID " + personId + " does not exists.");

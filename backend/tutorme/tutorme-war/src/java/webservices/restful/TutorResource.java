@@ -48,7 +48,7 @@ public class TutorResource {
     @Path("/getTutors")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTutors(JsonObject json) {
+    public Response getTutors() {
         System.out.println("Getting tutors... ");
         List<Tutor> tutors = new ArrayList();
         tutors = tutorSession.retrieveAllTutors();
@@ -57,7 +57,7 @@ public class TutorResource {
                 t.setSalt(null);
                 t.setPassword(null);
                 t.setChats(null);
-                t.setJobListings(null);
+//                t.setJobListings(null);
                 System.out.println(t);
             }
             GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
@@ -78,10 +78,10 @@ public class TutorResource {
         System.out.println("Tutor Id is... " + tutorId);
         try {
             Tutor result = tutorSession.retrieveTutorById(tutorId);
-            result.setPassword(null);
-            result.setSalt(null);
-            result.setChats(null);
-            result.setJobListings(null);
+//            result.setPassword(null);
+//            result.setSalt(null);
+//            result.setChats(null);
+//            result.setJobListings(null);
             GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
             };
             return Response.status(200).entity(packet).build();

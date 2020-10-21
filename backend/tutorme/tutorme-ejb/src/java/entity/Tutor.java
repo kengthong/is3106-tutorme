@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -40,7 +41,7 @@ public class Tutor extends Person implements Serializable {
 
     private String profileDesc;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<JobListing> jobListings;
     
     private double avgRating;
@@ -56,7 +57,7 @@ public class Tutor extends Person implements Serializable {
         this.highestQualification = highestQualification;
         this.citizenship = citizenship;
         this.race = race;
-        this.jobListings = new ArrayList();
+        this.jobListings = new ArrayList<>();
     }
 
     public String getProfileDesc() {

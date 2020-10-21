@@ -28,7 +28,6 @@ public class TimeslotSession implements TimeslotSessionLocal {
     @Override
     public Timeslot createTimeslot(Timeslot timeslot) {
         em.persist(timeslot);
-        em.flush();
         return timeslot;
     }
 
