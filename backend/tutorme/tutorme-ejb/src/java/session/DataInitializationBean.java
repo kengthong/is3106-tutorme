@@ -73,8 +73,8 @@ public class DataInitializationBean {
         initTutees();
         initSubjects();
         initJobListings();
-        initOffers();
-        initRatings();
+//        initOffers();
+//        initRatings();
         initMessages();
         System.out.println("I HAVE DEPLOYED EVERYTHING");
     }
@@ -328,7 +328,7 @@ public class DataInitializationBean {
     }
 
     private void initJobListings() {
-        List<Tutor> tutors = tutorSession.retrieveAllTutors();
+        List<Tutor> tutors = tutorSession.retrieveAllTutors(); //all managed
         List<Subject> subjects = subjectSession.retrieveAllSubjects();
         try {
             for (int i = 0; i < 25; i++) {
@@ -377,7 +377,7 @@ public class DataInitializationBean {
             List<Subject> subjects = jobListing.getSubjects();
             int randomSubjectIndex = randomNumberGenerator(0, subjects.size());
             Subject chosenSubject = subjects.get(randomSubjectIndex);
-            
+
             int randomNumSessions = randomNumberGenerator(2, 8);
 
             int randomNumSessions = randomNumberGenerator(2, 8); 

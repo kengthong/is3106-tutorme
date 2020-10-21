@@ -5,6 +5,7 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import enumeration.GenderEnum;
 import enumeration.PersonEnum;
 import java.io.Serializable;
@@ -20,7 +21,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
