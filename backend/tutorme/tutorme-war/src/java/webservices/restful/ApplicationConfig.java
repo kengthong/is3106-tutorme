@@ -22,8 +22,7 @@ public class ApplicationConfig extends javax.ws.rs.core.Application {
         return resources;
     }
 
-=======
-        resources.add(webservices.restful.TutorResource.class)   
+ 
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(filter.CORSFilter.class);
@@ -37,7 +36,5 @@ public class ApplicationConfig extends javax.ws.rs.core.Application {
         resources.add(webservices.restful.SubjectResource.class);
         resources.add(webservices.restful.TutorResource.class);
     }
- }
->>>>>>> 8bd1855... Chat WebResource
     
 }

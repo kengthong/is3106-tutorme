@@ -29,14 +29,14 @@ public class Chat implements Serializable {
     private Long chatId;
 
     @NotNull
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Person p1;
 
     @NotNull
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Person p2;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat")
     private List<Message> messages;
 
     public Chat() {
