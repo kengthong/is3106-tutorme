@@ -73,8 +73,8 @@ public class DataInitializationBean {
         initTutees();
         initSubjects();
         initJobListings();
-//        initOffers();
-//        initRatings();
+        initOffers();
+        initRatings();
         initMessages();
         System.out.println("I HAVE DEPLOYED EVERYTHING");
     }
