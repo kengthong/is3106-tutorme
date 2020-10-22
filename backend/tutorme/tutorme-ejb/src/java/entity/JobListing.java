@@ -24,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -67,18 +68,19 @@ public class JobListing implements Serializable {
     private List<Offer> offers;
 
     public JobListing() {
+        this.createdDate = new Date();
+        this.activeStatus = true;
+        this.offers = new ArrayList();
     }
 
     public JobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) {
+        this();
         this.tutor = tutor;
         this.subjects = subjects;
         this.hourlyRates = hourlyRates;
         this.preferredTimeslots = preferredTimeslots;
         this.preferredAreas = preferredAreas;
         this.jobListingDesc = jobListingDesc;
-        this.createdDate = new Date();
-        this.activeStatus = true;
-        this.offers = new ArrayList();
     }
 
     public Long getJobListingId() {
@@ -97,6 +99,7 @@ public class JobListing implements Serializable {
         this.activeStatus = activeStatus;
     }
 
+    @XmlTransient
     public Tutor getTutor() {
         return tutor;
     }

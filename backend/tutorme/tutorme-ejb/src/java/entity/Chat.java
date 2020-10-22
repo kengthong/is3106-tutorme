@@ -40,12 +40,13 @@ public class Chat implements Serializable {
     private List<Message> messages;
 
     public Chat() {
+        this.messages = new ArrayList<>();
     }
 
     public Chat(Person p1, Person p2) {
+        this();
         this.p1 = p1;
-        this.p2 = p2;
-        this.messages = new ArrayList<>();
+        this.p2 = p2;    
     }
 
     public Person getP1() {

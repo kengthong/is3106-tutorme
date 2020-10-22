@@ -45,10 +45,11 @@ public class Rating implements Serializable {
     private Offer offer;
 
     public Rating() {
+        this.createdDate = Date.from(Instant.now());
     }
 
     public Rating(Double ratingValue, String comments, Offer offer) {
-        this.createdDate = Date.from(Instant.now());
+        this();
         this.ratingValue = ratingValue;
         this.comments = comments;
         this.offer = offer;

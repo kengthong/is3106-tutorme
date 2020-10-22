@@ -137,14 +137,14 @@ public class TutorSession implements TutorSessionLocal {
     @Override // in use
     public Tutor retrieveTutorById(Long personId) throws TutorNotFoundException {
         Tutor tutor = em.find(Tutor.class, personId);
-        System.out.println("###############");
-        for (JobListing jl : tutor.getJobListings()) {
-            System.out.println("### JobListingId:" + jl.getJobListingId());
-            //jl.setTutor(null);
-        }
-        List<Chat> chats = tutor.getChats();
-        System.out.println("### " + chats.size());
-        /////////////////////////////////////////////
+//        System.out.println("###############");
+//        for (JobListing jl : tutor.getJobListings()) {
+//            System.out.println("### JobListingId:" + jl.getJobListingId());
+////            jl.setTutor(null);
+//        }
+//        List<Chat> chats = tutor.getChats();
+//        System.out.println("### " + chats.size());
+//        /////////////////////////////////////////////
         if (tutor != null) {
 //            List<Rating> tutorRatings = ratingSession.retrieveRatingsByTutorId(personId);
 //            OptionalDouble avgRating = tutorRatings.stream()

@@ -67,9 +67,12 @@ public class Offer implements Serializable {
     private Rating rating;
 
     public Offer() {
+        this.createdDate = Date.from(Instant.now());
+        this.offerStatus = OfferStatusEnum.PENDING;
     }
 
     public Offer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, int numSessions, double numHoursPerSession, String additionalNote) {
+        this();
         this.offeredRate = offeredRate;
         this.startDate = startDate;
         this.tutee = tutee;
@@ -78,8 +81,6 @@ public class Offer implements Serializable {
         this.numSessions = numSessions;
         this.numHoursPerSession = numHoursPerSession;
         this.additionalNote = additionalNote;
-        this.createdDate = Date.from(Instant.now());
-        this.offerStatus = OfferStatusEnum.PENDING;
     }
 
     public Long getOfferId() {

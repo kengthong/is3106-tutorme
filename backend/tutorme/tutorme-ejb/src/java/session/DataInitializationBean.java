@@ -83,8 +83,8 @@ public class DataInitializationBean {
         initTimeslots();
         initSubjects();
         initJobListings();
-//        initOffers();
-//        initRatings();
+        initOffers();
+        initRatings();
         initMessages();
     }
 

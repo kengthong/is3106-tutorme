@@ -67,6 +67,7 @@ public class Tutor extends Person implements Serializable {
         this.highestQualification = highestQualification;
         this.citizenship = citizenship;
         this.race = race;
+        this.jobListings = new ArrayList<>();
         
     }
 

@@ -49,15 +49,16 @@ public class Message implements Serializable {
     private Boolean activeStatus;
 
     public Message() {
+        this.activeStatus = true;
+        this.createdDate = Date.from(Instant.now());
     }
 
     public Message(Chat chat, Person sender, Person receiver, String body) {
+        this();
         this.chat = chat;
         this.sender = sender;
         this.receiver = receiver;
         this.body = body;
-        this.activeStatus = true;
-        this.createdDate = Date.from(Instant.now());
     }
 
     public Long getMessageId() {

@@ -33,6 +33,7 @@ public class Tutee extends Person implements Serializable {
 
     public Tutee() {
         super();
+        this.offers = new ArrayList();
     }
 
     public Tutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, String profileDesc) {

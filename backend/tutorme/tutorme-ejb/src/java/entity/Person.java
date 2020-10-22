@@ -81,12 +81,13 @@ public abstract class Person implements Serializable {
     private List<Chat> chats;
 
     public Person() {
-        this.createdDate = new Date();
+        this.createdDate = Date.from(Instant.now());
         this.activeStatus = true;
         this.chats = new ArrayList();
     }
 
     public Person(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) {
+        this();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -94,9 +95,6 @@ public abstract class Person implements Serializable {
         this.mobileNum = mobileNum;
         this.gender = gender;
         this.dob = dob;
-        this.createdDate = Date.from(Instant.now());
-        this.activeStatus = true;
-        this.chats = new ArrayList();
     }
 
     public Long getPersonId() {

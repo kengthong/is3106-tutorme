@@ -5,6 +5,7 @@
  */
 package webservices.restful;
 
+import entity.JobListing;
 import entity.Tutor;
 import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;
@@ -58,6 +59,9 @@ public class TutorResource {
                 t.setPassword(null);
 //                t.setChats(null);
 //                t.setJobListings(null);
+                for (JobListing jl : t.getJobListings()) {
+                    jl.setTutor(null);
+                }
                 System.out.println(t);
             }
             GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
@@ -82,6 +86,9 @@ public class TutorResource {
 //            result.setSalt(null);
 //            result.setChats(null);
 //            result.setJobListings(null);
+            for (JobListing jl : result.getJobListings()) {
+                jl.setTutor(null);
+            }
             GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
             };
             return Response.status(200).entity(packet).build();
