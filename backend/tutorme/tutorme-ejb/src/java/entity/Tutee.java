@@ -5,6 +5,9 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import enumeration.GenderEnum;
 import enumeration.PersonEnum;
 import java.io.Serializable;
@@ -21,6 +24,8 @@ import javax.persistence.OneToMany;
  * @author Tay Z H Owen
  */
 @Entity
+//@JsonTypeName("tutee")
+//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class,property="@id", scope = Tutee.class)
 public class Tutee extends Person implements Serializable {
 
     private String profileDesc;
