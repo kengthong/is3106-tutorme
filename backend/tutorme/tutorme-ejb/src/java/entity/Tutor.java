@@ -51,7 +51,7 @@ public class Tutor extends Person implements Serializable {
     }
 
     public Tutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob,
-            QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc) {
+            QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race , String profileDesc) {
         super(firstName, lastName, email, password, mobileNum, gender, dob);
         this.profileDesc = profileDesc;
         this.highestQualification = highestQualification;
