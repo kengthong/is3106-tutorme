@@ -5,7 +5,6 @@
  */
 package session;
 
-import entity.Chat;
 import entity.JobListing;
 import entity.Tutor;
 import enumeration.CitizenshipEnum;

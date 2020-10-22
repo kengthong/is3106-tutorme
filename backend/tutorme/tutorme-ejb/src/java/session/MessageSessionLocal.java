@@ -7,6 +7,7 @@ package session;
 
 import entity.Message;
 import exception.MessageNotFoundException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
