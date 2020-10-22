@@ -7,6 +7,8 @@ package session;
 
 import entity.Message;
 import entity.Person;
+import entity.Tutee;
+import entity.Tutor;
 import exception.MessageNotFoundException;
 import exception.PersonNotFoundException;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.MessageDateComaparator;
 
 /**
  *
@@ -62,6 +65,44 @@ public class MessageSession implements MessageSessionLocal {
         query.setParameter("inputP1", p1Id);
         query.setParameter("inputP2", p2Id);
         conversation = query.getResultList();
+        for (Message m : conversation) {
+            em.detach(m);
+            Person sender = m.getSender();
+            em.detach(sender);
+            sender.setReceivedMessages(null);
+            sender.setSentMessages(null);
+            sender.setSalt(null);
+            sender.setPassword(null);
+
+            Person receiver = m.getReceiver();
+            em.detach(receiver);
+            receiver.setReceivedMessages(null);
+            receiver.setSentMessages(null);
+            receiver.setSalt(null);
+            receiver.setPassword(null);
+
+            switch (sender.getPersonEnum()) {
+                case TUTEE:
+                    Tutee tempTutee = (Tutee) sender;
+                    tempTutee.setOffers(null);
+                    break;
+                case TUTOR:
+                    Tutor tempTutor = (Tutor) sender;
+                    tempTutor.setJobListings(null);
+                    break;
+            }
+            switch (receiver.getPersonEnum()) {
+                case TUTEE:
+                    Tutee tempTutee = (Tutee) receiver;
+                    tempTutee.setOffers(null);
+                    break;
+                case TUTOR:
+                    Tutor tempTutor = (Tutor) receiver;
+                    tempTutor.setJobListings(null);
+                    break;
+            }
+        }
+        conversation.sort(new MessageDateComaparator());
         return conversation;
     }
 
@@ -71,7 +112,7 @@ public class MessageSession implements MessageSessionLocal {
         Query query = em.createQuery("SELECT m from Message m WHERE m.sender.personId=:inputPersonId OR m.receiver.personId=:inputPersonId");
         query.setParameter("inputPersonId", personId);
         messages = query.getResultList();
-        
+
         Set<Long> otherPersonIds = new HashSet<>();
         for (Message m : messages) {
             Long senderId = m.getSender().getPersonId();
@@ -82,9 +123,9 @@ public class MessageSession implements MessageSessionLocal {
                 otherPersonIds.add(senderId);
             }
         }
-        
+
         List<List<Message>> conversations = new ArrayList<>();
-        otherPersonIds.forEach(pId -> conversations.add(retrieveConversation(personId, pId)));      
+        otherPersonIds.forEach(pId -> conversations.add(retrieveConversation(personId, pId)));
         return conversations;
     }
 }

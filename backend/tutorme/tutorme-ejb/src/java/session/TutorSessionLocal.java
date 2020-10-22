@@ -22,8 +22,6 @@ import javax.ejb.Local;
 @Local
 public interface TutorSessionLocal {
 
-//    public Tutor loginTutor(String email, String password) throws PersonLoginFailException;
-
     public Tutor createTutor(Tutor newTutor);
 
     public Tutor createTutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob,

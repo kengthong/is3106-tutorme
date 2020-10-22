@@ -6,11 +6,13 @@
 package entity;
 
 import enumeration.GenderEnum;
+import enumeration.PersonEnum;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -54,6 +56,7 @@ public abstract class Person implements Serializable {
 
     @NotNull
     private String password;
+    @NotNull
     private String salt;
 
     @Size(min = 8, max = 8)
@@ -63,19 +66,26 @@ public abstract class Person implements Serializable {
     @NotNull
     @Enumerated
     private GenderEnum gender;
+    
+    @NotNull
+    @Enumerated
+    private PersonEnum personEnum;
 
     @NotNull
     @Temporal(TemporalType.DATE)
     private Date dob;
 
-    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinColumn
-    private List<Message> messages;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="sender")
+    private List<Message> sentMessages;
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="receiver")
+    private List<Message> receivedMessages;
 
     public Person() {
         this.createdDate = Date.from(Instant.now());
         this.activeStatus = true;
-        this.messages = new ArrayList();
+        this.sentMessages = new ArrayList();
+        this.receivedMessages = new ArrayList();
     }
 
     public Person(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) {
@@ -177,11 +187,29 @@ public abstract class Person implements Serializable {
         this.dob = dob;
     }
 
-    public List<Message> getMessages() {
-        return messages;
+    public List<Message> getSentMessages() {
+        return sentMessages;
     }
 
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
+    public void setSentMessages(List<Message> sentMessages) {
+        this.sentMessages = sentMessages;
     }
+
+    public List<Message> getReceivedMessages() {
+        return receivedMessages;
+    }
+
+    public void setReceivedMessages(List<Message> receivedMessages) {
+        this.receivedMessages = receivedMessages;
+    }
+
+    public PersonEnum getPersonEnum() {
+        return personEnum;
+    }
+
+    public void setPersonEnum(PersonEnum personEnum) {
+        this.personEnum = personEnum;
+    }
+
+    
 }

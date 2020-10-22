@@ -38,7 +38,7 @@ import session.TutorSessionLocal;
  */
 @Path("/tutor")
 public class TutorResource {
-    
+
     @EJB
     TutorSessionLocal tutorSession;
 
@@ -54,14 +54,6 @@ public class TutorResource {
         List<Tutor> tutors = new ArrayList();
         tutors = tutorSession.retrieveAllTutors();
         if (!tutors.isEmpty()) {
-//            for (Tutor t : tutors) {
-//                t.setSalt(null);
-//                t.setPassword(null);
-//                for (JobListing jl : t.getJobListings()) {
-//                    jl.setTutor(null);
-//                }
-//                System.out.println(t);
-//            }
             GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
             };
             return Response.status(200).entity(packet).build();
@@ -75,16 +67,10 @@ public class TutorResource {
     @Path("/tutorProfile")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTutorById(@QueryParam("tutorId") Long tutorId
-    ) {
+    public Response getTutorById(@QueryParam("tutorId") Long tutorId) {
         System.out.println("Tutor Id is... " + tutorId);
         try {
             Tutor result = tutorSession.retrieveTutorById(tutorId);
-//            result.setPassword(null);
-//            result.setSalt(null);
-//            for (JobListing jl : result.getJobListings()) {
-//                jl.setTutor(null);
-//            }
             GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
             };
             return Response.status(200).entity(packet).build();

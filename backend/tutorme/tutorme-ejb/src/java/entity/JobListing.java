@@ -5,8 +5,6 @@
  */
 package entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,16 +21,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Tay Z H Owen
  */
 @Entity
-//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class,property="@id", scope = JobListing.class)
-@XmlRootElement
 public class JobListing implements Serializable {
 
     @Id
@@ -45,18 +39,18 @@ public class JobListing implements Serializable {
     private Tutor tutor;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn
+    @JoinColumn // uni-directional r/s best to use @JoinColumn and omit mappedBy
     private List<Subject> subjects;
 
     @Column(nullable = false, precision = 2)
     private Double hourlyRates;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn
+    @JoinColumn // uni-directional r/s best to use @JoinColumn and omit mappedBy
     private List<Timeslot> preferredTimeslots;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn
+    @JoinColumn // uni-directional r/s best to use @JoinColumn and omit mappedBy
     private List<Area> preferredAreas;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -99,7 +93,6 @@ public class JobListing implements Serializable {
         this.activeStatus = activeStatus;
     }
 
-    @XmlTransient
     public Tutor getTutor() {
         return tutor;
     }

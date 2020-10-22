@@ -18,9 +18,11 @@ import enumeration.StaffPositionEnum;
 import enumeration.CitizenshipEnum;
 import enumeration.DowEnum;
 import enumeration.GenderEnum;
+import enumeration.PersonEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import enumeration.ShiftEnum;
+import exception.InvalidParamsException;
 import exception.InvalidSubjectChoiceException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -386,15 +388,21 @@ public class DataInitializationBean {
 
             double rates = (double) randomNumberGenerator(20, 100);
 
-            JobListing joblisting = jobListingSession.createJobListing(tutor, jlSubjects, rates, jlTimeslots, jlAreas, "i love to teach");
+            JobListing jobListing = jobListingSession.createJobListing(tutor, jlSubjects, rates, jlTimeslots, jlAreas, "i love to teach");
             em.flush();
-            System.out.println(joblisting.getJobListingId());
-            System.out.println(joblisting.getTutor());
-            em.refresh(joblisting);
-
-            Tutor tut = joblisting.getTutor();
-            tut.getJobListings().add(joblisting);
+            em.refresh(jobListing);
+            System.out.println("### JobListingId: " + jobListing.getJobListingId());
+            Tutor tut = jobListing.getTutor();
+            System.out.println("###$$$ TutorId: " + jobListing.getTutor().getPersonId());
+            List<JobListing> temp = tut.getJobListings();
+            temp.add(jobListing);
+            tut.setJobListings(temp);
             em.merge(tut);
+            /////
+            tut = em.find(Tutor.class, tut.getPersonId());
+            for (JobListing jl : tut.getJobListings()) {
+                System.out.println("###%%% " + jl.getJobListingId());
+            }
         }
     }
 
@@ -419,8 +427,19 @@ public class DataInitializationBean {
 
             Date startDate = new Date();
             try {
-                offerSession.createOffer(rates, startDate, tutee, chosenSubject, jobListing, randomNumSessions, 2, "I love learning");
-            } catch (InvalidSubjectChoiceException ex) {
+                Offer offer = offerSession.createOffer(rates, startDate, tutee.getPersonId(), chosenSubject.getSubjectId(), jobListing.getJobListingId(), randomNumSessions, 2, "I love learning");
+                em.flush();
+                em.refresh(offer);
+                List<Offer> tuteeOffers = tutee.getOffers();
+                tuteeOffers.add(offer);
+                tutee.setOffers(tuteeOffers);
+                em.merge(tutee);
+
+                List<Offer> jobListingOffers = jobListing.getOffers();
+                jobListingOffers.add(offer);
+                jobListing.setOffers(jobListingOffers);
+                em.merge(jobListing);
+            } catch (InvalidSubjectChoiceException | InvalidParamsException ex) {
                 ex.printStackTrace();
             }
         }
@@ -439,21 +458,35 @@ public class DataInitializationBean {
     private void initMessages() {
         List<Person> persons = persionSession.retrieveAllPersons();
         for (int i = 0; i < 100; i++) {
-            int randomSenderIndex = randomNumberGenerator(0, persons.size());
-            int randomReceiverIndex = randomNumberGenerator(0, persons.size());
-            Person sender = persons.get(randomSenderIndex);
-            Person receiver = persons.get(randomReceiverIndex);
-            Message message = messageSession.createMessage(sender.getPersonId(), receiver.getPersonId(), "test message from Person_" + sender.getPersonId() + " to Person_" + receiver.getPersonId());
+            int p1Index = randomNumberGenerator(0, persons.size());
+            int p2Index = randomNumberGenerator(0, persons.size());
+            if (p1Index == p2Index) {
+                p2Index = randomNumberGenerator(0, persons.size());
+            }
+            Person p1 = persons.get(p1Index);
+            Person p2 = persons.get(p2Index);
+            Message m1 = messageSession.createMessage(p1.getPersonId(), p2.getPersonId(), "test message from Person_" + p1.getPersonId() + " to Person_" + p2.getPersonId());
+            Message m2 = messageSession.createMessage(p2.getPersonId(), p1.getPersonId(), "test message from Person_" + p2.getPersonId() + " to Person_" + p1.getPersonId());
             em.flush();
-            em.refresh(message);
-//            List<Message> senderMessages = sender.getMessages();
-//            List<Message> receiverMessages = sender.getMessages();
-//            senderMessages.add(message);
-//            receiverMessages.add(message);
-//            sender.setMessages(senderMessages); // ERROR 23505: The statement was aborted because it would have caused a duplicate key value in a unique or primary key constraint or unique index identified by 'SQL201022202424220' defined on 'PERSON_MESSAGE'.
-//            receiver.setMessages(senderMessages);
-//            em.merge(sender);
-//            em.merge(receiver);
+            // add m1
+            em.refresh(m1);
+            List<Message> p1SentMessages = p1.getSentMessages();
+            List<Message> p2ReceivedMessages = p2.getReceivedMessages();
+            p1SentMessages.add(m1);
+            p2ReceivedMessages.add(m1);
+            // add m2
+            em.refresh(m2);
+            List<Message> p1ReceivedMessages = p1.getReceivedMessages();
+            List<Message> p2SentMessages = p2.getSentMessages();
+            p2SentMessages.add(m2);
+            p1ReceivedMessages.add(m2);
+            // set & merge
+            p1.setSentMessages(p1SentMessages);
+            p1.setReceivedMessages(p1ReceivedMessages);
+            p2.setSentMessages(p2SentMessages);
+            p2.setReceivedMessages(p2ReceivedMessages);
+            em.merge(p1);
+            em.merge(p2);
         }
     }
 

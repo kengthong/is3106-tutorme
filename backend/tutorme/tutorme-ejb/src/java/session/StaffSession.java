@@ -8,6 +8,7 @@ package session;
 import entity.Staff;
 import enumeration.StaffPositionEnum;
 import enumeration.GenderEnum;
+import enumeration.PersonEnum;
 import exception.StaffNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -31,29 +32,9 @@ public class StaffSession implements StaffSessionLocal {
     private EntityManager em;
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
-//    @Override
-//    public Staff loginStaff(String email, String password) throws StaffNotFoundException {
-//        try {
-//            Staff staff = retrieveStaffByEmail(email);
-//            String storedPassword = staff.getPassword();
-//            String salt = staff.getSalt();
-//            String hashedPassword = ch.byteArrayToHexString(ch.doHashPassword(password.concat(salt)));
-//            if (storedPassword.equals(hashedPassword)) {
-//                staff.setSalt(null);
-//                staff.getMessages();
-//                return staff;
-//            } else {
-//                throw new StaffNotFoundException("Invalid login parameters.");
-//            }
-//        } catch (StaffNotFoundException ex) {
-//            throw new StaffNotFoundException("Invalid login parameters.");
-//        }
-//    }
-
     @Override
     public Staff createStaff(Staff newStaff) {
         em.persist(newStaff);
-        em.flush();
         return newStaff;
     }
 

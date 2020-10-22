@@ -7,6 +7,7 @@ package entity;
 
 import enumeration.StaffPositionEnum;
 import enumeration.GenderEnum;
+import enumeration.PersonEnum;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
@@ -26,9 +27,10 @@ public class Staff extends Person implements Serializable {
 
     public Staff() {
         super();
+        this.setPersonEnum(PersonEnum.STAFF);
     }
 
-    public Staff(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, StaffPositionEnum staffPositionEnum) {
+    public Staff(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender,PersonEnum personEnum, Date dob, StaffPositionEnum staffPositionEnum) {
         super(firstName, lastName, email, password, mobileNum, gender, dob);
         this.staffPositionEnum = staffPositionEnum;
     }

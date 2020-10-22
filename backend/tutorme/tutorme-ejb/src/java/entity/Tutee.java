@@ -6,6 +6,7 @@
 package entity;
 
 import enumeration.GenderEnum;
+import enumeration.PersonEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,15 +24,16 @@ public class Tutee extends Person implements Serializable {
 
     private String profileDesc;
 
-    @OneToMany(mappedBy = "tutee", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tutee", fetch = FetchType.LAZY)
     private List<Offer> offers;
 
     public Tutee() {
         super();
+        this.setPersonEnum(PersonEnum.TUTEE);
         this.offers = new ArrayList();
     }
 
-    public Tutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, String profileDesc) {
+    public Tutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender,  Date dob, String profileDesc) {
         super(firstName, lastName, email, password, mobileNum, gender, dob);
         this.profileDesc = profileDesc;
         this.offers = new ArrayList();

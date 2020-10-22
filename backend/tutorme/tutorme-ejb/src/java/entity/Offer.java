@@ -59,7 +59,7 @@ public class Offer implements Serializable {
     private int numSessions;
 
     @NotNull
-    private double numHoursPerSession;
+    private double hoursPerSession;
 
     private String additionalNote;
 
@@ -71,7 +71,7 @@ public class Offer implements Serializable {
         this.offerStatus = OfferStatusEnum.PENDING;
     }
 
-    public Offer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, int numSessions, double numHoursPerSession, String additionalNote) {
+    public Offer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, int numSessions, double hoursPerSession, String additionalNote) {
         this();
         this.offeredRate = offeredRate;
         this.startDate = startDate;
@@ -79,7 +79,7 @@ public class Offer implements Serializable {
         this.chosenSubject = chosenSubject;
         this.jobListing = jobListing;
         this.numSessions = numSessions;
-        this.numHoursPerSession = numHoursPerSession;
+        this.hoursPerSession = hoursPerSession;
         this.additionalNote = additionalNote;
     }
 
@@ -172,11 +172,11 @@ public class Offer implements Serializable {
     }
 
     public double getNumHoursPerSession() {
-        return numHoursPerSession;
+        return hoursPerSession;
     }
 
-    public void setNumHoursPerSession(int numHoursPerSession) {
-        this.numHoursPerSession = numHoursPerSession;
+    public void setHoursPerSession(int hoursPerSession) {
+        this.hoursPerSession = hoursPerSession;
     }
 
 }

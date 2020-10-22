@@ -7,6 +7,7 @@ package entity;
 
 import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;
+import enumeration.PersonEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import java.io.Serializable;
@@ -19,8 +20,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -51,18 +50,18 @@ public class Tutor extends Person implements Serializable {
 
     public Tutor() {
         super();
+        this.setPersonEnum(PersonEnum.TUTOR);
         this.jobListings = new ArrayList<>();
     }
 
     public Tutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob,
-            QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc) {
+            QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race , String profileDesc) {
         super(firstName, lastName, email, password, mobileNum, gender, dob);
         this.profileDesc = profileDesc;
         this.highestQualification = highestQualification;
         this.citizenship = citizenship;
         this.race = race;
         this.jobListings = new ArrayList<>();
-        
     }
 
     public String getProfileDesc() {

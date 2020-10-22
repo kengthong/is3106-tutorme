@@ -12,7 +12,6 @@ import javax.ejb.EJB;
 import javax.ws.rs.Path;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
@@ -50,8 +49,6 @@ public class JobListingResource {
         double maxPx = Double.valueOf(maxPrice);
         List<JobListing> jobListings = jobListingSession.retrieveJobListingsWithMultipleFilters(subject, level, minPx, maxPx, name);
         // return jobListing object with reviewCount and avgRatings
-        
-        
 //        if (!jobListings.isEmpty()) {
         GenericEntity<List<JobListing>> packet = new GenericEntity<List<JobListing>>(jobListings) {
         };

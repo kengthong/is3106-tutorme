@@ -20,7 +20,6 @@ import exception.TutorNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
-import java.util.OptionalDouble;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -47,13 +46,13 @@ public class TutorSession implements TutorSessionLocal {
     private EntityManager em;
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
-    @Override
+    @Override // in use
     public Tutor createTutor(Tutor newTutor) {
         em.persist(newTutor);
         return newTutor;
     }
 
-    @Override
+    @Override // in use
     public Tutor createTutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc) {
         Tutor newTutor = new Tutor();
         try {
@@ -90,6 +89,7 @@ public class TutorSession implements TutorSessionLocal {
             t.setSalt(null);
             for (JobListing jl : t.getJobListings()) {
                 System.out.println("### JobListingId:" + jl.getJobListingId());
+//                em.detach(jl);
                 jl.setTutor(null);
             }
         }
@@ -99,13 +99,15 @@ public class TutorSession implements TutorSessionLocal {
     @Override // in use
     public Tutor retrieveTutorById(Long personId) throws TutorNotFoundException {
         Tutor tutor = em.find(Tutor.class, personId);
-        em.detach(tutor);
-        tutor.setPassword(null);
-        tutor.setSalt(null);
-        System.out.println("###############");
-        for (JobListing jl : tutor.getJobListings()) {
+//        em.detach(tutor);
+//        tutor.setPassword(null);
+//        tutor.setSalt(null);
+        List<JobListing> jobListings = tutor.getJobListings();
+        System.out.println("### joblistings size: "+jobListings.size());
+        for (JobListing jl : jobListings) {
             System.out.println("### JobListingId:" + jl.getJobListingId());
-            jl.setTutor(null);
+//            em.detach(jl);
+//            jl.setTutor(null);
         }
 //        if (tutor != null) {
 //            List<Rating> tutorRatings = ratingSession.retrieveRatingsByTutorId(personId);
@@ -126,7 +128,7 @@ public class TutorSession implements TutorSessionLocal {
         query.setParameter("inputEmail", email);
         Tutor tutor = (Tutor) query.getSingleResult();
         if (tutor != null) {
-            tutor.getMessages();
+//            tutor.getMessages();
             tutor.getJobListings();
             return tutor;
         } else {
@@ -141,7 +143,7 @@ public class TutorSession implements TutorSessionLocal {
         List<Tutor> results = query.getResultList();
         if (!results.isEmpty()) { // if empty then return message in REST
             for (Tutor t : results) {
-                t.getMessages();
+//                t.getMessages();
                 t.getJobListings();
             }
             return results;
@@ -160,7 +162,7 @@ public class TutorSession implements TutorSessionLocal {
         }
         Tutor tutor = jobListing.getTutor();
         tutor.getJobListings();
-        tutor.getMessages();
+//        tutor.getMessages();
         return tutor;
     }
 
@@ -174,7 +176,7 @@ public class TutorSession implements TutorSessionLocal {
         }
         Tutor tutor = offer.getJobListing().getTutor();
         tutor.getJobListings();
-        tutor.getMessages();
+//        tutor.getMessages();
         return tutor;
     }
 
@@ -188,7 +190,7 @@ public class TutorSession implements TutorSessionLocal {
         }
         Tutor tutor = rating.getOffer().getJobListing().getTutor();
         tutor.getJobListings();
-        tutor.getMessages();
+//        tutor.getMessages();
         return tutor;
     }
 

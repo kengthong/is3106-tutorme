@@ -5,10 +5,8 @@
  */
 package session;
 
-import entity.JobListing;
 import entity.Offer;
-import entity.Subject;
-import entity.Tutee;
+import exception.InvalidParamsException;
 import exception.InvalidSubjectChoiceException;
 import exception.OfferNotFoundException;
 import exception.OfferWithdrawException;
@@ -25,7 +23,7 @@ public interface OfferSessionLocal {
 
     public Offer createOffer(Offer newOffer);
 
-    public Offer createOffer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, int numSessions, double numHoursPerSession, String additionalNote) throws InvalidSubjectChoiceException;
+    public Offer createOffer(Double offeredRate, Date startDate, Long tuteeId, Long subjectId, Long jobListingId, int numSessions, double numHoursPerSession, String additionalNote) throws InvalidSubjectChoiceException, InvalidParamsException;
 
     public List<Offer> retrieveAllOffers();
 
@@ -34,8 +32,6 @@ public interface OfferSessionLocal {
     public List<Offer> retrieveOffersByTuteeId(Long userId);
 
     public List<Offer> retrieveOffersByJobListingId(Long jobListingId);
-
-    public void updateOffer(Offer updatedOffer);
 
     public void withdrawOffer(Long offerId) throws OfferNotFoundException, OfferWithdrawException;
 
