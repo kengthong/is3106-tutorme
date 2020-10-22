@@ -5,8 +5,6 @@
  */
 package entity;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import enumeration.GenderEnum;
 import java.io.Serializable;
 import java.time.Instant;
@@ -32,12 +30,6 @@ import javax.validation.constraints.Size;
  * @author Tay Z H Owen
  */
 @Entity
-//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
-//@JsonSubTypes({
-//    @JsonSubTypes.Type(value = Tutee.class, name = "tutee")
-//    ,
-//		@JsonSubTypes.Type(value = Tutor.class, name = "tutor")
-//})
 public abstract class Person implements Serializable {
 
     @Id
@@ -78,12 +70,12 @@ public abstract class Person implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER)
 //    @JoinColumn
-    private List<Chat> chats;
+    private List<Message> messages;
 
     public Person() {
         this.createdDate = Date.from(Instant.now());
         this.activeStatus = true;
-        this.chats = new ArrayList();
+        this.messages = new ArrayList();
     }
 
     public Person(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) {
@@ -185,11 +177,11 @@ public abstract class Person implements Serializable {
         this.dob = dob;
     }
 
-    public List<Chat> getChats() {
-        return chats;
+    public List<Message> getMessages() {
+        return messages;
     }
 
-    public void setChats(List<Chat> chats) {
-        this.chats = chats;
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }

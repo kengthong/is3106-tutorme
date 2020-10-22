@@ -30,8 +30,6 @@ public interface TutorSessionLocal {
             QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc);
 
     public List<Tutor> retrieveAllTutors();
-    
-    public Tutor retrieveTutorByIdDetach(Long personId) throws TutorNotFoundException;
 
     public Tutor retrieveTutorById(Long personId) throws TutorNotFoundException;
 

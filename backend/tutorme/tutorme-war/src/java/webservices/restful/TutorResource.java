@@ -54,16 +54,14 @@ public class TutorResource {
         List<Tutor> tutors = new ArrayList();
         tutors = tutorSession.retrieveAllTutors();
         if (!tutors.isEmpty()) {
-            for (Tutor t : tutors) {
-                t.setSalt(null);
-                t.setPassword(null);
-//                t.setChats(null);
-//                t.setJobListings(null);
-                for (JobListing jl : t.getJobListings()) {
-                    jl.setTutor(null);
-                }
-                System.out.println(t);
-            }
+//            for (Tutor t : tutors) {
+//                t.setSalt(null);
+//                t.setPassword(null);
+//                for (JobListing jl : t.getJobListings()) {
+//                    jl.setTutor(null);
+//                }
+//                System.out.println(t);
+//            }
             GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
             };
             return Response.status(200).entity(packet).build();
@@ -84,11 +82,9 @@ public class TutorResource {
             Tutor result = tutorSession.retrieveTutorById(tutorId);
 //            result.setPassword(null);
 //            result.setSalt(null);
-//            result.setChats(null);
-//            result.setJobListings(null);
-            for (JobListing jl : result.getJobListings()) {
-                jl.setTutor(null);
-            }
+//            for (JobListing jl : result.getJobListings()) {
+//                jl.setTutor(null);
+//            }
             GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
             };
             return Response.status(200).entity(packet).build();

@@ -5,7 +5,6 @@
  */
 package session;
 
-import entity.Chat;
 import entity.JobListing;
 import entity.Offer;
 import entity.Rating;
@@ -48,25 +47,6 @@ public class TutorSession implements TutorSessionLocal {
     private EntityManager em;
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
-//    @Override
-//    public Tutor loginTutor(String email, String password) throws PersonLoginFailException {
-//        try {
-//            Tutor tutor = retrieveTutorByEmail(email);
-//            String storedPassword = tutor.getPassword();
-//            String salt = tutor.getSalt();
-//            String hashedPassword = ch.byteArrayToHexString(ch.doHashPassword(password.concat(salt)));
-//            if (storedPassword.equals(hashedPassword)) {
-//                tutor.setSalt(null);
-//                tutor.getJobListings();
-//                tutor.getMessages();
-//                return tutor;
-//            } else {
-//                throw new PersonLoginFailException("Invalid login parameters.");
-//            }
-//        } catch (TutorNotFoundException ex) {
-//            throw new PersonLoginFailException("Invalid login parameters.");
-//        }
-//    }
     @Override
     public Tutor createTutor(Tutor newTutor) {
         em.persist(newTutor);
@@ -105,56 +85,39 @@ public class TutorSession implements TutorSessionLocal {
         Query query = em.createQuery("SELECT t FROM Tutor t");
         List<Tutor> tutors = query.getResultList();
         for (Tutor t : tutors) {
-            List<JobListing> jobListings = t.getJobListings();
-            if (jobListings == null) {
-                System.out.println("### null jobListing for..." + t.getEmail());
+            em.detach(t);
+            t.setPassword(null);
+            t.setSalt(null);
+            for (JobListing jl : t.getJobListings()) {
+                System.out.println("### JobListingId:" + jl.getJobListingId());
+                jl.setTutor(null);
             }
-//            System.out.println("### jobListing size: " + jobListings.size());
         }
         return tutors;
-    }
-
-    @Override
-    public Tutor retrieveTutorByIdDetach(Long personId) throws TutorNotFoundException {
-        Tutor tutor = em.find(Tutor.class, personId);
-        if (tutor != null) {
-            List<Rating> tutorRatings = ratingSession.retrieveRatingsByTutorId(personId);
-//            em.detach(tutor);
-            OptionalDouble avgRating = tutorRatings.stream()
-                    .mapToDouble(r -> r.getRatingValue())
-                    .average();
-            if (avgRating.isPresent()) {
-                tutor.setAvgRating(avgRating.getAsDouble());
-            } else {
-                tutor.setAvgRating(0.0);
-            }
-            return tutor;
-        } else {
-            throw new TutorNotFoundException("TutorID " + personId + " does not exists.");
-        }
     }
 
     @Override // in use
     public Tutor retrieveTutorById(Long personId) throws TutorNotFoundException {
         Tutor tutor = em.find(Tutor.class, personId);
-//        System.out.println("###############");
-//        for (JobListing jl : tutor.getJobListings()) {
-//            System.out.println("### JobListingId:" + jl.getJobListingId());
-////            jl.setTutor(null);
-//        }
-//        List<Chat> chats = tutor.getChats();
-//        System.out.println("### " + chats.size());
-//        /////////////////////////////////////////////
-        if (tutor != null) {
+        em.detach(tutor);
+        tutor.setPassword(null);
+        tutor.setSalt(null);
+        System.out.println("###############");
+        for (JobListing jl : tutor.getJobListings()) {
+            System.out.println("### JobListingId:" + jl.getJobListingId());
+            jl.setTutor(null);
+        }
+//        if (tutor != null) {
 //            List<Rating> tutorRatings = ratingSession.retrieveRatingsByTutorId(personId);
 //            OptionalDouble avgRating = tutorRatings.stream()
 //                    .mapToDouble(r -> r.getRatingValue())
 //                    .average();
 //            tutor.setAvgRating(avgRating.getAsDouble());
-            return tutor;
-        } else {
-            throw new TutorNotFoundException("TutorID " + personId + " does not exists.");
-        }
+//            return tutor;
+//        } else {
+//            throw new TutorNotFoundException("TutorID " + personId + " does not exists.");
+//        }
+        return tutor;
     }
 
     @Override
@@ -163,7 +126,7 @@ public class TutorSession implements TutorSessionLocal {
         query.setParameter("inputEmail", email);
         Tutor tutor = (Tutor) query.getSingleResult();
         if (tutor != null) {
-            tutor.getChats();
+            tutor.getMessages();
             tutor.getJobListings();
             return tutor;
         } else {
@@ -178,7 +141,7 @@ public class TutorSession implements TutorSessionLocal {
         List<Tutor> results = query.getResultList();
         if (!results.isEmpty()) { // if empty then return message in REST
             for (Tutor t : results) {
-                t.getChats();
+                t.getMessages();
                 t.getJobListings();
             }
             return results;
@@ -197,7 +160,7 @@ public class TutorSession implements TutorSessionLocal {
         }
         Tutor tutor = jobListing.getTutor();
         tutor.getJobListings();
-        tutor.getChats();
+        tutor.getMessages();
         return tutor;
     }
 
@@ -211,7 +174,7 @@ public class TutorSession implements TutorSessionLocal {
         }
         Tutor tutor = offer.getJobListing().getTutor();
         tutor.getJobListings();
-        tutor.getChats();
+        tutor.getMessages();
         return tutor;
     }
 
@@ -225,7 +188,7 @@ public class TutorSession implements TutorSessionLocal {
         }
         Tutor tutor = rating.getOffer().getJobListing().getTutor();
         tutor.getJobListings();
-        tutor.getChats();
+        tutor.getMessages();
         return tutor;
     }
 

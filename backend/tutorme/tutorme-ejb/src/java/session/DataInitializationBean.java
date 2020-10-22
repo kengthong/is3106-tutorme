@@ -6,7 +6,6 @@
 package session;
 
 import entity.Area;
-import entity.Chat;
 import entity.JobListing;
 import entity.Message;
 import entity.Offer;
@@ -396,8 +395,6 @@ public class DataInitializationBean {
             Tutor tut = joblisting.getTutor();
             tut.getJobListings().add(joblisting);
             em.merge(tut);
-
-//            System.out.println("88888888888888888FLUSHED888888888888888");
         }
     }
 
@@ -449,18 +446,14 @@ public class DataInitializationBean {
             Message message = messageSession.createMessage(sender.getPersonId(), receiver.getPersonId(), "test message from Person_" + sender.getPersonId() + " to Person_" + receiver.getPersonId());
             em.flush();
             em.refresh(message);
-            Chat chat = message.getChat();
-            List<Message> messages = chat.getMessages();
-            messages.add(message);
-            chat.setMessages(messages);
-            em.merge(chat);
-            if (messages == null) {
-                System.out.println("### null messages for chatId:" + chat.getChatId());
-            } else if (messages.isEmpty()) {
-                System.out.println("### empty messages for chatId:" + chat.getChatId());
-            } else {
-                System.out.println("### message  for chatId:" + chat.getChatId() + " is " + messages.get(0).getBody());
-            }            
+//            List<Message> senderMessages = sender.getMessages();
+//            List<Message> receiverMessages = sender.getMessages();
+//            senderMessages.add(message);
+//            receiverMessages.add(message);
+//            sender.setMessages(senderMessages); // ERROR 23505: The statement was aborted because it would have caused a duplicate key value in a unique or primary key constraint or unique index identified by 'SQL201022202424220' defined on 'PERSON_MESSAGE'.
+//            receiver.setMessages(senderMessages);
+//            em.merge(sender);
+//            em.merge(receiver);
         }
     }
 
