@@ -56,7 +56,7 @@ public class TutorResource {
             for (Tutor t : tutors) {
                 t.setSalt(null);
                 t.setPassword(null);
-                t.setChats(null);
+//                t.setChats(null);
 //                t.setJobListings(null);
                 System.out.println(t);
             }

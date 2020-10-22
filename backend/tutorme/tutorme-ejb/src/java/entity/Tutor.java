@@ -5,6 +5,9 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
@@ -19,12 +22,18 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Tay Z H Owen
  */
+
 @Entity
+//@JsonTypeName("tutor")
+//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class,property="@id", scope = Tutor.class)
+@XmlRootElement
 public class Tutor extends Person implements Serializable {
 
     @NotNull
@@ -41,13 +50,14 @@ public class Tutor extends Person implements Serializable {
 
     private String profileDesc;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<JobListing> jobListings;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "tutor")
+    private List<JobListing> jobListings; 
     
     private double avgRating;
 
     public Tutor() {
         super();
+        this.jobListings = new ArrayList<>();
     }
 
     public Tutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob,
@@ -57,7 +67,7 @@ public class Tutor extends Person implements Serializable {
         this.highestQualification = highestQualification;
         this.citizenship = citizenship;
         this.race = race;
-        this.jobListings = new ArrayList<>();
+        
     }
 
     public String getProfileDesc() {
@@ -92,6 +102,7 @@ public class Tutor extends Person implements Serializable {
         this.race = race;
     }
 
+    @XmlTransient
     public List<JobListing> getJobListings() {
         return jobListings;
     }

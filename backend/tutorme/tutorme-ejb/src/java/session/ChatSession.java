@@ -6,6 +6,7 @@
 package session;
 
 import entity.Chat;
+import entity.Message;
 import entity.Person;
 import exception.ChatNotFoundException;
 import exception.PersonNotFoundException;
@@ -50,6 +51,16 @@ public class ChatSession implements ChatSessionLocal {
     public Chat retrieveChatById(Long chatId) throws ChatNotFoundException {
         Chat chat = em.find(Chat.class, chatId);
         if (chat != null) {
+//            Person p1 = chat.getP1();
+//            Person p2 = chat.getP2();
+//            p1.setChats(null);
+//            p2.setChats(null);
+//            List<Message> messages = chat.getMessages();
+//            for (Message m : messages) {
+//                m.setChat(null);
+//                m.setSender(null);
+//                m.setReceiver(null);
+//            }
             return chat;
         } else {
             throw new ChatNotFoundException("Chat ID " + chatId + "does not exists.");

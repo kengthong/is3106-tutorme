@@ -5,6 +5,8 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +15,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,12 +23,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Tay Z H Owen
  */
 @Entity
+//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class,property="@id", scope = JobListing.class)
+@XmlRootElement
 public class JobListing implements Serializable {
 
     @Id
@@ -36,7 +40,7 @@ public class JobListing implements Serializable {
 
     private Boolean activeStatus;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tutor tutor;
 
     @OneToMany(fetch = FetchType.EAGER)
@@ -59,7 +63,7 @@ public class JobListing implements Serializable {
 
     private String jobListingDesc;
 
-    @OneToMany(mappedBy = "jobListing", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "jobListing", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Offer> offers;
 
     public JobListing() {

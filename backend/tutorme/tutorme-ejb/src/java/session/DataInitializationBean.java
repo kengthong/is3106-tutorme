@@ -389,8 +389,8 @@ public class DataInitializationBean {
 
             JobListing joblisting = jobListingSession.createJobListing(tutor, jlSubjects, rates, jlTimeslots, jlAreas, "i love to teach");
             em.flush();
-//            System.out.println(joblisting.getJobListingId());
-//            System.out.println(joblisting.getTutor());
+            System.out.println(joblisting.getJobListingId());
+            System.out.println(joblisting.getTutor());
             em.refresh(joblisting);
 
             Tutor tut = joblisting.getTutor();
@@ -447,12 +447,20 @@ public class DataInitializationBean {
             Person sender = persons.get(randomSenderIndex);
             Person receiver = persons.get(randomReceiverIndex);
             Message message = messageSession.createMessage(sender.getPersonId(), receiver.getPersonId(), "test message from Person_" + sender.getPersonId() + " to Person_" + receiver.getPersonId());
-//            em.flush();
-//            em.refresh(message);
-//            Chat chat = message.getChat();
-//            List<Message> messages = chat.getMessages();
-//            System.out.println("#### chatID: " + chat.getChatId() + "#### messageId:" + messages.get(0).getMessageId() );
-//            
+            em.flush();
+            em.refresh(message);
+            Chat chat = message.getChat();
+            List<Message> messages = chat.getMessages();
+            messages.add(message);
+            chat.setMessages(messages);
+            em.merge(chat);
+            if (messages == null) {
+                System.out.println("### null messages for chatId:" + chat.getChatId());
+            } else if (messages.isEmpty()) {
+                System.out.println("### empty messages for chatId:" + chat.getChatId());
+            } else {
+                System.out.println("### message  for chatId:" + chat.getChatId() + " is " + messages.get(0).getBody());
+            }            
         }
     }
 

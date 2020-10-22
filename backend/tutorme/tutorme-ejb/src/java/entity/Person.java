@@ -5,7 +5,8 @@
  */
 package entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import enumeration.GenderEnum;
 import java.io.Serializable;
 import java.time.Instant;
@@ -31,6 +32,12 @@ import javax.validation.constraints.Size;
  * @author Tay Z H Owen
  */
 @Entity
+//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+//@JsonSubTypes({
+//    @JsonSubTypes.Type(value = Tutee.class, name = "tutee")
+//    ,
+//		@JsonSubTypes.Type(value = Tutor.class, name = "tutor")
+//})
 public abstract class Person implements Serializable {
 
     @Id

@@ -5,6 +5,7 @@
  */
 package session;
 
+import entity.Chat;
 import entity.JobListing;
 import entity.Offer;
 import entity.Rating;
@@ -104,8 +105,11 @@ public class TutorSession implements TutorSessionLocal {
         Query query = em.createQuery("SELECT t FROM Tutor t");
         List<Tutor> tutors = query.getResultList();
         for (Tutor t : tutors) {
-            t.getChats();
-            t.getJobListings();
+            List<JobListing> jobListings = t.getJobListings();
+            if (jobListings == null) {
+                System.out.println("### null jobListing for..." + t.getEmail());
+            }
+//            System.out.println("### jobListing size: " + jobListings.size());
         }
         return tutors;
     }
@@ -136,8 +140,11 @@ public class TutorSession implements TutorSessionLocal {
         System.out.println("###############");
         for (JobListing jl : tutor.getJobListings()) {
             System.out.println("### JobListingId:" + jl.getJobListingId());
-            jl.setTutor(null);
+            //jl.setTutor(null);
         }
+        List<Chat> chats = tutor.getChats();
+        System.out.println("### " + chats.size());
+        /////////////////////////////////////////////
         if (tutor != null) {
 //            List<Rating> tutorRatings = ratingSession.retrieveRatingsByTutorId(personId);
 //            OptionalDouble avgRating = tutorRatings.stream()
