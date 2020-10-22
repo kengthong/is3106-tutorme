@@ -68,6 +68,10 @@ public abstract class Person implements Serializable {
     @NotNull
     @Enumerated
     private GenderEnum gender;
+    
+    @NotNull
+    @Enumerated
+    private PersonEnum personEnum;
 
     @NotNull
     @Enumerated
@@ -213,4 +217,10 @@ public abstract class Person implements Serializable {
     public void setPersonEnum(PersonEnum personEnum) {
         this.personEnum = personEnum;
     }
+
+    public void setPersonEnum(PersonEnum personEnum) {
+        this.personEnum = personEnum;
+    }
+
+    
 }

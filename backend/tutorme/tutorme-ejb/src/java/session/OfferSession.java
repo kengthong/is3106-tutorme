@@ -9,9 +9,11 @@ import entity.JobListing;
 import entity.Offer;
 import entity.Subject;
 import entity.Tutee;
+import entity.Tutor;
 import enumeration.OfferStatusEnum;
 import exception.InvalidParamsException;
 import exception.InvalidSubjectChoiceException;
+import exception.JobListingNotFoundException;
 import exception.OfferNotFoundException;
 import exception.OfferStatusException;
 import java.util.Date;
@@ -28,6 +30,12 @@ import javax.persistence.Query;
 @Stateless
 public class OfferSession implements OfferSessionLocal {
 
+    @EJB
+    TuteeSessionLocal tuteeSession;
+    @EJB
+    SubjectSessionLocal subjectSession;
+    @EJB
+    JobListingSessionLocal jobListingSession;
     @PersistenceContext(unitName = "tutorme-ejbPU")
     EntityManager em;
 
@@ -57,6 +65,25 @@ public class OfferSession implements OfferSessionLocal {
     public Offer retrieveOfferById(Long offerId) throws OfferNotFoundException {
         Offer offer = em.find(Offer.class, offerId);
         if (offer != null) {
+            JobListing jobListing = offer.getJobListing();
+            em.detach(jobListing);
+            jobListing.setOffers(null);
+
+            Tutor tutor = jobListing.getTutor();
+            em.detach(tutor);
+            tutor.setJobListings(null);
+            tutor.setSentMessages(null);
+            tutor.setReceivedMessages(null);
+            tutor.setSalt(null);
+            tutor.setPassword(null);
+
+            Tutee tutee = offer.getTutee();
+            em.detach(tutee);
+            tutee.setOffers(null);
+            tutee.setSentMessages(null);
+            tutee.setReceivedMessages(null);
+            tutee.setSalt(null);
+            tutee.setPassword(null);
             return offer;
         } else {
             throw new OfferNotFoundException("OfferID " + offerId + " does not exists.");

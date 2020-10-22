@@ -22,16 +22,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Tay Z H Owen
  */
 @Entity
-//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class,property="@id", scope = JobListing.class)
-@XmlRootElement
 public class JobListing implements Serializable {
 
     @Id
@@ -96,7 +92,6 @@ public class JobListing implements Serializable {
         this.activeStatus = activeStatus;
     }
 
-    @XmlTransient
     public Tutor getTutor() {
         return tutor;
     }
