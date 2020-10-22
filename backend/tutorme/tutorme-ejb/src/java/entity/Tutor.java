@@ -5,9 +5,6 @@
  */
 package entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;
 import enumeration.PersonEnum;
@@ -29,9 +26,6 @@ import javax.persistence.OneToMany;
  */
 
 @Entity
-//@JsonTypeName("tutor")
-//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class,property="@id", scope = Tutor.class)
-@XmlRootElement
 public class Tutor extends Person implements Serializable {
 
     @Enumerated
@@ -99,7 +93,6 @@ public class Tutor extends Person implements Serializable {
         this.race = race;
     }
 
-    @XmlTransient
     public List<JobListing> getJobListings() {
         return jobListings;
     }
