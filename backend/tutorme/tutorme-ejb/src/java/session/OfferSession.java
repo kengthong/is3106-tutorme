@@ -8,6 +8,7 @@ package session;
 import entity.JobListing;
 import entity.Message;
 import entity.Offer;
+import entity.Rating;
 import entity.Subject;
 import entity.Tutee;
 import entity.Tutor;
