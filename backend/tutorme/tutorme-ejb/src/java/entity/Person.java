@@ -68,7 +68,7 @@ public abstract class Person implements Serializable {
     @NotNull
     @Enumerated
     private GenderEnum gender;
-    
+
     @NotNull
     @Enumerated
     private PersonEnum personEnum;
