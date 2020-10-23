@@ -328,7 +328,7 @@ public class DataInitializationBean {
     }
 
     private void initJobListings() {
-        List<Tutor> tutors = tutorSession.retrieveAllTutors(); //all managed
+        List<Tutor> tutors = tutorSession.retrieveAllTutors();
         List<Subject> subjects = subjectSession.retrieveAllSubjects();
         try {
             for (int i = 0; i < 25; i++) {
