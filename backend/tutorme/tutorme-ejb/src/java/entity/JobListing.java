@@ -39,8 +39,8 @@ public class JobListing implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tutor tutor;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn // uni-directional r/s best to use @JoinColumn and omit mappedBy
+    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinColumn // uni-directional r/s best to use @JoinColumn and omit mappedBy
     private List<Subject> subjects;
 
     @Column(nullable = false, precision = 2)
