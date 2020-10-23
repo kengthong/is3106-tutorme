@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { ChatFeed, Message, ChatBubble, BubbleGroup } from "react-chat-ui";
-import MsgEntry from "../Chat/MessageEntry"
-import { Avatar, Layout, Menu, List } from "antd";
-
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
+import { Avatar, Input, List, Button } from "antd";
 
 const styles = {
     button: {
@@ -28,22 +24,41 @@ const styles = {
     },
 };
 
-const data = [
+//Fake data for testing
+const messages = [
     {
-        title: 'Ant Design Title 1',
+        id: "mark",
+        message: 'Hey guys!',
+        senderName: 'Mark'
     },
     {
-        title: 'Ant Design Title 2',
-    },
-    {
-        title: 'Ant Design Title 3',
-    },
-    {
-        title: 'Ant Design Title 4',
-    },
-];
+        id: 2,
+        message: 'Hey Evan here!',
+        senderName: 'Evan'
+    }
+]
 
 const Chat = () => {
+
+    const [formData, setFormData] = useState({
+        message: "",
+    });
+
+    const handleChange = (e: any) => {
+        console.log(e);
+        const name = e && e.target && e.target.name ? e.target.name : "";
+        const value = e && e.target && e.target.value ? e.target.value : "";
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+
+        console.log(formData);
+    };
+
+    const onMessageSubmit = (e: any) => {
+        console.log(e);
+    };
 
     return (
 
@@ -57,12 +72,12 @@ const Chat = () => {
 
                 <List
                     itemLayout="horizontal"
-                    dataSource={data}
+                    dataSource={messages}
                     renderItem={item => (
                         <List.Item>
                             <List.Item.Meta
                                 avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                title={<a href="https://ant.design">{item.title}</a>}
+                                title={<a href="https://ant.design">{item.senderName}</a>}
                             />
                         </List.Item>
                     )}
@@ -72,49 +87,27 @@ const Chat = () => {
 
 
             <div className="container" style={{ width: "80%", float: "right", height: "100%" }} >
-
                 <div className="chatfeed-wrapper">
-                    <ChatBubble
-                        message={new Message({ id: 1, message: 'I float to the left!' })}
-                    />
-                    <ChatBubble
-                        message={new Message({ id: 0, message: 'I float to the right!' })}
+                    <ChatFeed
+                        messages={messages}
+                        showSenderName
                     />
 
-                    <BubbleGroup
-                        messages={[
-                            new Message({ id: 1, message: 'Hey!' }),
-                            new Message({ id: 1, message: 'I forgot to mention...' }),
-                            new Message({
-                                id: 1,
-                                message:
-                                    "Oh no, I forgot... I think I was going to say I'm a BubbleGroup",
-                            }),
-                        ]}
-                        id={1}
-                        showSenderName={true}
-                        senderName={'Elon Musk'}
-                    />
-                    <ChatBubble
-                        message={new Message({ id: 2, message: "I 'm a single ChatBubble!" })}
-                    />
-                    <BubbleGroup
-                        messages={[
-                            new Message({ id: 0, message: 'How could you forget already?!' }),
-                            new Message({
-                                id: 0,
-                                message: "Oh well. I'm a BubbleGroup as well",
-                            }),
-                        ]}
-                        id={1}
-                        showSenderName={true}
-                        senderName={'Elon Musk'}
-                    />
+                    <footer style={{ position: "absolute", bottom: "10px", width: "100%" }}>
+                        <form onSubmit={e => onMessageSubmit(e)}>
+                            <Input
+                                name="message"
+                                placeholder="Type a message..."
+                                className="message-input"
+                                onChange={(e) => handleChange(e)}
+                                style={{ width: "50%" }}
+                            />
+                            <Button type="primary" onClick={onMessageSubmit} >Send</Button>
+                        </form>
+                    </footer>
                 </div>
 
-                <footer style={{ position: "absolute", bottom: "10px", width: "75%" }}>
-                    <MsgEntry />
-                </footer>
+
             </div>
 
         </div>

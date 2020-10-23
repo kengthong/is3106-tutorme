@@ -36,7 +36,7 @@ const App = () => {
           <Route path="/" exact component={LandingPage} isAuthenticated={true}/>
           <Route path='/search:params?' component={SearchPage} />
           <Route path="/tutor/createListing" component={CreateJobListing} />
-          <Route path="/chat" component={chat} />
+          <ProtectedRoute path="/chat" component={chat} isAuthenticated={true} />
           <ProtectedRoute path="/login" component={Login} />
           <ProtectedRoute path="/tutor/settings/profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
           <ProtectedRoute path="/tutor/settings/personal-details" allowedUser='tutor' exact component={TutorDetailsPage} isAuthenticated={true} />
