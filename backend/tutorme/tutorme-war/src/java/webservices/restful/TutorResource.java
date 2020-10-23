@@ -5,6 +5,7 @@
  */
 package webservices.restful;
 
+import entity.JobListing;
 import entity.Tutor;
 import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;
@@ -48,6 +49,7 @@ public class TutorResource {
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTutors() {
+        
         System.out.println("Getting tutors... ");
         List<Tutor> tutors = new ArrayList();
         tutors = tutorSession.retrieveAllTutors();
