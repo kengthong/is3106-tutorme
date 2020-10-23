@@ -73,8 +73,8 @@ public class DataInitializationBean {
         initTutees();
         initSubjects();
         initJobListings();
-        initOffers();
-        initRatings();
+//        initOffers();
+//        initRatings();
         initMessages();
         System.out.println("I HAVE DEPLOYED EVERYTHING");
     }
@@ -378,7 +378,7 @@ public class DataInitializationBean {
             int randomSubjectIndex = randomNumberGenerator(0, subjects.size());
             Subject chosenSubject = subjects.get(randomSubjectIndex);
 
-            int randomNumSessions = randomNumberGenerator(2, 8);
+            int randomNumSessions = randomNumberGenerator(2, 8); 
 
             int randomNumSessions = randomNumberGenerator(2, 8); 
 
