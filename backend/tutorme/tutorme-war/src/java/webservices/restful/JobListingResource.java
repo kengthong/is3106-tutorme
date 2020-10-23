@@ -44,12 +44,23 @@ public class JobListingResource {
             @QueryParam("maxPrice") String maxPrice,
             @QueryParam("name") String name
     ) {
-        System.out.println("Getting filtered jobListings with...");
-        double minPx = Double.valueOf(minPrice);
-        double maxPx = Double.valueOf(maxPrice);
-        List<JobListing> jobListings = jobListingSession.retrieveJobListingsWithMultipleFilters(subject, level, minPx, maxPx, name);
+        System.out.println("Getting filtered jobListings...");
+        double minPx = 0;
+        double maxPx = 999;
+        if (!minPrice.isEmpty() && !minPrice.equals(" ")) {
+            minPx = Double.valueOf(minPrice);
+        }
+        if (!maxPrice.isEmpty() && !maxPrice.equals(" ")) {
+            maxPx = Double.valueOf(maxPrice);
+        }
+        System.out.println("###%%% filterJobListings params...");
+        System.out.println("...subject: " + subject);
+        System.out.println("...level: " + level);
+        System.out.println("...minPrice: " + minPx);
+        System.out.println("...maxPrice: " + maxPx);
+        System.out.println("...tutor's name: " + name);
+        List<JobListing> jobListings = jobListingSession.retrieveJobListingsWithMultipleFilters(subject.trim(), level.trim(), minPx, maxPx, name.trim());
         // return jobListing object with reviewCount and avgRatings
-//        if (!jobListings.isEmpty()) {
         GenericEntity<List<JobListing>> packet = new GenericEntity<List<JobListing>>(jobListings) {
         };
         return Response.status(200).entity(packet).build();
@@ -58,7 +69,7 @@ public class JobListingResource {
 //            return Response.status(400).entity(exception).build();
 //        }
     }
-    
+
 //    @GET
 //    @Path("{id}")
 //    @Produces(MediaType.APPLICATION_JSON)

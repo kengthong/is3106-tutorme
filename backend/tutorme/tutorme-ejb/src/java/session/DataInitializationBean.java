@@ -356,53 +356,70 @@ public class DataInitializationBean {
     }
 
     private void initJobListings() {
-        List<Tutor> tutors = tutorSession.retrieveAllTutors(); //all managed
+        List<Tutor> tutors = tutorSession.retrieveAllTutors();
         List<Subject> subjects = subjectSession.retrieveAllSubjects();
         List<Timeslot> timeslots = timeslotSession.retrieveAllTimeslots();
         List<Area> areas = areaSession.retrieveAllAreas();
-        for (int i = 0; i < 25; i++) {
-            int randomTutorIndex = randomNumberGenerator(0, tutors.size());
-            Tutor tutor;
-            tutor = tutors.get(randomTutorIndex);
+        try {
+            for (int i = 0; i < 25; i++) {
+                int randomTutorIndex = randomNumberGenerator(0, tutors.size());
+                Tutor tutor;
+                tutor = tutors.get(randomTutorIndex);
 
-            int numSubjects = randomNumberGenerator(1, 6);
-            List<Subject> jlSubjects = new ArrayList();
-            for (int j = 0; j < numSubjects; j++) {
-                int randomSubjectIndex = randomNumberGenerator(0, subjects.size());
-                jlSubjects.add(subjects.get(randomSubjectIndex));
+                List<Subject> jlSubjects = new ArrayList();
+                int randomSubjectIndex1 = randomNumberGenerator(0, subjects.size());
+                Subject firstSubject = subjects.get(randomSubjectIndex1);
+                List<Subject> sameNameSubjects = subjectSession.retrieveSubjectsByName(firstSubject.getSubjectName());
+                int numSameNameSubjects = randomNumberGenerator(1, sameNameSubjects.size());
+                for (int j = 0; j < numSameNameSubjects; j++) {
+                    int randomSubjectIndex2 = randomNumberGenerator(0, sameNameSubjects.size());
+                    Subject temp = sameNameSubjects.get(randomSubjectIndex2);
+                    if (!jlSubjects.contains(temp)){
+                        jlSubjects.add(temp);
+                    }
+                    
+                }
+
+//                System.out.println("********");
+//                for (Subject s : jlSubjects) {
+//                    System.out.println("### jobListing loop #" + i + " " + s.getSubjectName() + " " + s.getSubjectLevel());
+//                }
+
+                int numTimeslots = randomNumberGenerator(1, 4);
+                List<Timeslot> jlTimeslots = new ArrayList();
+                for (int j = 0; j < numTimeslots; j++) {
+                    int randomTimeslotIndex = randomNumberGenerator(0, timeslots.size());
+                    jlTimeslots.add(timeslots.get(randomTimeslotIndex));
+                }
+
+                int numAreas = randomNumberGenerator(1, 4);
+                List<Area> jlAreas = new ArrayList();
+                for (int j = 0; j < numAreas; j++) {
+                    int randomAreaIndex = randomNumberGenerator(0, areas.size());
+                    jlAreas.add(areas.get(randomAreaIndex));
+                }
+
+                double rates = (double) randomNumberGenerator(20, 100);
+
+                JobListing jobListing = jobListingSession.createJobListing(tutor, jlSubjects, rates, jlTimeslots, jlAreas, "i love to teach");
+                em.flush();
+                em.refresh(jobListing);
+                System.out.println("### JobListingId: " + jobListing.getJobListingId());
+                Tutor tut = jobListing.getTutor();
+                System.out.println("###$$$ TutorId: " + jobListing.getTutor().getPersonId());
+                List<JobListing> temp = tut.getJobListings();
+                temp.add(jobListing);
+                tut.setJobListings(temp);
+                em.merge(tut);
+                em.flush();
+                /////
+                tut = em.find(Tutor.class, tut.getPersonId());
+                for (JobListing jl : tut.getJobListings()) {
+                    System.out.println("###%%% jobListingId after merging tutor: " + jl.getJobListingId());
+                }
             }
-
-            int numTimeslots = randomNumberGenerator(1, 6);
-            List<Timeslot> jlTimeslots = new ArrayList();
-            for (int j = 0; j < numTimeslots; j++) {
-                int randomTimeslotIndex = randomNumberGenerator(0, timeslots.size());
-                jlTimeslots.add(timeslots.get(randomTimeslotIndex));
-            }
-
-            int numAreas = randomNumberGenerator(1, 4);
-            List<Area> jlAreas = new ArrayList();
-            for (int j = 0; j < numAreas; j++) {
-                int randomAreaIndex = randomNumberGenerator(0, areas.size());
-                jlAreas.add(areas.get(randomAreaIndex));
-            }
-
-            double rates = (double) randomNumberGenerator(20, 100);
-
-            JobListing jobListing = jobListingSession.createJobListing(tutor, jlSubjects, rates, jlTimeslots, jlAreas, "i love to teach");
-            em.flush();
-            em.refresh(jobListing);
-            System.out.println("### JobListingId: " + jobListing.getJobListingId());
-            Tutor tut = jobListing.getTutor();
-            System.out.println("###$$$ TutorId: " + jobListing.getTutor().getPersonId());
-            List<JobListing> temp = tut.getJobListings();
-            temp.add(jobListing);
-            tut.setJobListings(temp);
-            em.merge(tut);
-            /////
-            tut = em.find(Tutor.class, tut.getPersonId());
-            for (JobListing jl : tut.getJobListings()) {
-                System.out.println("###%%% " + jl.getJobListingId());
-            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

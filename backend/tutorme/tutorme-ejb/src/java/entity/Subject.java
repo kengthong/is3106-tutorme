@@ -20,30 +20,30 @@ import javax.validation.constraints.Size;
  * @author Tay Z H Owen
  */
 @Table(
-    uniqueConstraints=
-        @UniqueConstraint(columnNames={"subjectName", "subjectLevel"})
+        uniqueConstraints
+        = @UniqueConstraint(columnNames = {"subjectLevel", "subjectName"})
 )
 @Entity
 public class Subject implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long subjectId;
-    
-    @NotNull
-    @Size(min = 1, max = 50)
-    private String subjectName;
-    
+
     @NotNull
     @Size(min = 1, max = 50)
     private String subjectLevel;
 
+    @NotNull
+    @Size(min = 1, max = 50)
+    private String subjectName;
+
     public Subject() {
     }
-    
-    public Subject (String subjectName, String subjectLevel) {
-        this.subjectName = subjectName;
+
+    public Subject(String subjectLevel, String subjectName) {
         this.subjectLevel = subjectLevel;
+        this.subjectName = subjectName;
     }
 
     public Long getSubjectId() {
@@ -52,6 +52,14 @@ public class Subject implements Serializable {
 
     public void setSubjectId(Long subjectId) {
         this.subjectId = subjectId;
+    }
+    
+    public String getSubjectLevel() {
+        return subjectLevel;
+    }
+
+    public void setSubjectLevel(String subjectLevel) {
+        this.subjectLevel = subjectLevel;
     }
 
     public String getSubjectName() {
@@ -62,17 +70,9 @@ public class Subject implements Serializable {
         this.subjectName = subjectName;
     }
 
-    public String getSubjectLevel() {
-        return subjectLevel;
-    }
-
-    public void setSubjectLevel(String subjectLevel) {
-        this.subjectLevel = subjectLevel;
-    }
-
     @Override
     public String toString() {
         return "Subject{" + "subjectId=" + subjectId + ", subjectName=" + subjectName + ", subjectLevel=" + subjectLevel + '}';
     }
-    
+
 }

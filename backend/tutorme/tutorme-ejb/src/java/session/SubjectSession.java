@@ -27,13 +27,12 @@ public class SubjectSession implements SubjectSessionLocal {
     @Override
     public Subject createSubject(Subject newSubject) {
         em.persist(newSubject);
-        em.flush();
         return newSubject;
     }
 
     @Override
-    public Subject createSubject(String subjectName, String subjectLevel) {
-        Subject newSubject = new Subject(subjectName, subjectLevel);
+    public Subject createSubject(String subjectLevel, String subjectName) {
+        Subject newSubject = new Subject(subjectLevel, subjectName);
         return createSubject(newSubject);
     }
 

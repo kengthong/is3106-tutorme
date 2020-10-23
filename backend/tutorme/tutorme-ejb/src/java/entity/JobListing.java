@@ -61,6 +61,9 @@ public class JobListing implements Serializable {
     @OneToMany(mappedBy = "jobListing", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Offer> offers;
 
+    private double reviewScore;
+    private int reviewCount;
+
     public JobListing() {
         this.createdDate = new Date();
         this.activeStatus = true;
@@ -156,5 +159,22 @@ public class JobListing implements Serializable {
     public void setOffers(List<Offer> offers) {
         this.offers = offers;
     }
+
+    public double getReviewScore() {
+        return reviewScore;
+    }
+
+    public void setReviewScore(double reviewScore) {
+        this.reviewScore = reviewScore;
+    }
+
+    public int getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
 
 }

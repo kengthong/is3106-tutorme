@@ -5,7 +5,6 @@
  */
 package webservices.restful;
 
-import entity.JobListing;
 import entity.Tutor;
 import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;

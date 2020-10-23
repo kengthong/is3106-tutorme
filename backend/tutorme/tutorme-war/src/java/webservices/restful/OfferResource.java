@@ -108,7 +108,7 @@ public class OfferResource {
             String notes = json.getString("notes");
 
             System.out.println("Making new offer...tuteeId: " + tuteeId + " for jobListingId:" + jobListingId);
-            Offer offer = offerSession.createOffer(offeredRate, startDate, tuteeId, subjectId, jobListingId, numSessions, hoursPerSession, notes);
+            Offer offer = offerSession.createOffer(offeredRate, startDate, tuteeId, subjectId, jobListingId, numSessions, hoursPerSession, notes.trim());
             JsonObjectBuilder payload = Json.createObjectBuilder();
             payload.add("offerId", offer.getOfferId());
             payload.add("success", true);

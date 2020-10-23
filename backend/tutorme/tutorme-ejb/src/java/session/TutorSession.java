@@ -81,12 +81,16 @@ public class TutorSession implements TutorSessionLocal {
 
     @Override // in use
     public List<Tutor> retrieveAllTutors() {
+        System.out.println("Retrieving all tutors from tutorSession...");
         Query query = em.createQuery("SELECT t FROM Tutor t");
         List<Tutor> tutors = query.getResultList();
         for (Tutor t : tutors) {
             em.detach(t);
             t.setPassword(null);
             t.setSalt(null);
+            if (t.getJobListings().isEmpty()) {
+                System.out.println("emptmttyyyyyyy");
+            }
             for (JobListing jl : t.getJobListings()) {
                 System.out.println("### JobListingId:" + jl.getJobListingId());
 //                em.detach(jl);
@@ -106,8 +110,8 @@ public class TutorSession implements TutorSessionLocal {
         System.out.println("### joblistings size: "+jobListings.size());
         for (JobListing jl : jobListings) {
             System.out.println("### JobListingId:" + jl.getJobListingId());
-//            em.detach(jl);
-//            jl.setTutor(null);
+            em.detach(jl);
+            jl.setTutor(null);
         }
 //        if (tutor != null) {
 //            List<Rating> tutorRatings = ratingSession.retrieveRatingsByTutorId(personId);
