@@ -50,7 +50,22 @@ public class JobListingSession implements JobListingSessionLocal {
 
     @Override
     public JobListing createJobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) throws NewJobListingException {
-        JobListing newJobListing = new JobListing(tutor, subjects, hourlyRates, preferredTimeslots, preferredAreas, jobListingDesc);
+        //get managed entity em.find
+        Tutor managedTutor = em.find(Tutor.class, tutor.getPersonId());
+        List<Subject> managedSubjects = new ArrayList<>();
+        List<Timeslot> managedTimeslots = new ArrayList<>();
+        List<Area> managedAreas = new ArrayList<>();
+        for (Subject s : subjects) {
+            managedSubjects.add(em.find(Subject.class, s.getSubjectId()));
+        }
+        for (Timeslot ts : preferredTimeslots) {
+            managedTimeslots.add(em.find(Timeslot.class, ts.getTimeslotId()));
+        }
+        for (Area a : preferredAreas) {
+            managedAreas.add(em.find(Area.class, a.getAreaId()));
+        }
+        JobListing newJobListing = new JobListing(managedTutor, managedSubjects, hourlyRates, managedTimeslots, managedAreas, jobListingDesc);
+        managedTutor.getJobListings().add(newJobListing);
         String subjectName = subjects.get(0).getSubjectName();
         for (Subject s : subjects) {
             if (!s.getSubjectName().equals(subjectName)) {

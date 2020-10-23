@@ -84,9 +84,10 @@ public class DataInitializationBean {
         initTimeslots();
         initSubjects();
         initJobListings();
-        initOffers();
-        initRatings();
+//        initOffers();
+//        initRatings();
         initMessages();
+        System.out.println("I HAVE DEPLOYED EVERYTHING");
     }
 
     private void initStaff() {
@@ -401,6 +402,8 @@ public class DataInitializationBean {
                 double rates = (double) randomNumberGenerator(20, 100);
 
                 JobListing jobListing = jobListingSession.createJobListing(tutor, jlSubjects, rates, jlTimeslots, jlAreas, "i love to teach");
+                em.flush(); 
+                tutorSession.retrieveAllTutors();
 //                em.flush();
 //                em.refresh(jobListing);
 //                System.out.println("### JobListingId: " + jobListing.getJobListingId());
@@ -439,7 +442,7 @@ public class DataInitializationBean {
             int randomSubjectIndex = randomNumberGenerator(0, subjects.size());
             Subject chosenSubject = subjects.get(randomSubjectIndex);
 
-            int randomNumSessions = randomNumberGenerator(2, 8);
+            int randomNumSessions = randomNumberGenerator(2, 8); 
 
             Date startDate = new Date();
             try {

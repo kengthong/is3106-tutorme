@@ -85,16 +85,16 @@ public class TutorSession implements TutorSessionLocal {
         Query query = em.createQuery("SELECT t FROM Tutor t");
         List<Tutor> tutors = query.getResultList();
         for (Tutor t : tutors) {
-            em.detach(t);
-            t.setPassword(null);
-            t.setSalt(null);
+//            em.detach(t); //IF YOU DETACH IN SESSION BEAN, YOU WILL HAVE NO RELATIONSHIP NO LOVE LIFE
+//            t.setPassword(null);
+//            t.setSalt(null);
             if (t.getJobListings().isEmpty()) {
                 System.out.println("emptmttyyyyyyy");
             }
             for (JobListing jl : t.getJobListings()) {
                 System.out.println("### JobListingId:" + jl.getJobListingId());
 //                em.detach(jl);
-                jl.setTutor(null);
+//                jl.setTutor(null);
             }
         }
         return tutors;
@@ -106,13 +106,15 @@ public class TutorSession implements TutorSessionLocal {
 //        em.detach(tutor);
 //        tutor.setPassword(null);
 //        tutor.setSalt(null);
-        List<JobListing> jobListings = tutor.getJobListings();
-        System.out.println("### joblistings size: "+jobListings.size());
-        for (JobListing jl : jobListings) {
-            System.out.println("### JobListingId:" + jl.getJobListingId());
-            em.detach(jl);
-            jl.setTutor(null);
-        }
+
+//        List<JobListing> jobListings = tutor.getJobListings();
+//        System.out.println("### joblistings size: "+jobListings.size());
+//        for (JobListing jl : jobListings) {
+//            System.out.println("### JobListingId:" + jl.getJobListingId());
+//            em.detach(jl);
+//            jl.setTutor(null);
+//        }
+        
 //        if (tutor != null) {
 //            List<Rating> tutorRatings = ratingSession.retrieveRatingsByTutorId(personId);
 //            OptionalDouble avgRating = tutorRatings.stream()

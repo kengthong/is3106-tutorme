@@ -5,6 +5,7 @@
  */
 package webservices.restful;
 
+import entity.JobListing;
 import entity.Tutor;
 import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;
@@ -49,10 +50,19 @@ public class TutorResource {
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTutors() {
+        
         System.out.println("Getting tutors... ");
         List<Tutor> tutors = new ArrayList();
         tutors = tutorSession.retrieveAllTutors();
         if (!tutors.isEmpty()) {
+            for (Tutor t : tutors) {
+                t.setPassword(null);
+                t.setSalt(null);
+                for ( JobListing j : t.getJobListings()) {
+                    j.setTutor(null);
+                }
+                
+            }
             GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
             };
             return Response.status(200).entity(packet).build();
@@ -69,8 +79,13 @@ public class TutorResource {
     public Response getTutorById(@QueryParam("tutorId") Long tutorId) {
         System.out.println("Tutor Id is... " + tutorId);
         try {
-            Tutor result = tutorSession.retrieveTutorById(tutorId);
-            GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
+            Tutor t = tutorSession.retrieveTutorById(tutorId);
+            t.setPassword(null);
+                t.setSalt(null);
+                for ( JobListing j : t.getJobListings()) {
+                    j.setTutor(null);
+                }
+            GenericEntity<Tutor> packet = new GenericEntity<Tutor>(t) {
             };
             return Response.status(200).entity(packet).build();
         } catch (TutorNotFoundException ex) {
