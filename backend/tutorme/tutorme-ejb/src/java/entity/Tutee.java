@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany; 
@@ -24,7 +25,7 @@ public class Tutee extends Person implements Serializable {
 
     private String profileDesc;
 
-    @OneToMany(mappedBy = "tutee", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "tutee", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<Offer> offers;
 
     public Tutee() {

@@ -9,6 +9,7 @@ import enumeration.OfferStatusEnum;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -63,7 +64,7 @@ public class Offer implements Serializable {
 
     private String additionalNote;
 
-    @OneToOne(mappedBy = "offer", fetch = FetchType.EAGER, optional = true)
+    @OneToOne(mappedBy = "offer", fetch = FetchType.EAGER, optional = true, cascade = {CascadeType.ALL})
     private Rating rating;
 
     public Offer() {

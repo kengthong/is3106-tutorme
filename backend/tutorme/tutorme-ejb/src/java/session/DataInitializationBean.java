@@ -10,6 +10,7 @@ import entity.JobListing;
 import entity.Message;
 import entity.Offer;
 import entity.Person;
+import entity.Rating;
 import entity.Subject;
 import entity.Timeslot;
 import entity.Tutee;
@@ -18,7 +19,6 @@ import enumeration.StaffPositionEnum;
 import enumeration.CitizenshipEnum;
 import enumeration.DowEnum;
 import enumeration.GenderEnum;
-import enumeration.PersonEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import enumeration.ShiftEnum;
@@ -374,17 +374,16 @@ public class DataInitializationBean {
                 for (int j = 0; j < numSameNameSubjects; j++) {
                     int randomSubjectIndex2 = randomNumberGenerator(0, sameNameSubjects.size());
                     Subject temp = sameNameSubjects.get(randomSubjectIndex2);
-                    if (!jlSubjects.contains(temp)){
+                    if (!jlSubjects.contains(temp)) {
                         jlSubjects.add(temp);
                     }
-                    
+
                 }
 
 //                System.out.println("********");
 //                for (Subject s : jlSubjects) {
 //                    System.out.println("### jobListing loop #" + i + " " + s.getSubjectName() + " " + s.getSubjectLevel());
 //                }
-
                 int numTimeslots = randomNumberGenerator(1, 4);
                 List<Timeslot> jlTimeslots = new ArrayList();
                 for (int j = 0; j < numTimeslots; j++) {
@@ -402,21 +401,21 @@ public class DataInitializationBean {
                 double rates = (double) randomNumberGenerator(20, 100);
 
                 JobListing jobListing = jobListingSession.createJobListing(tutor, jlSubjects, rates, jlTimeslots, jlAreas, "i love to teach");
-                em.flush();
-                em.refresh(jobListing);
-                System.out.println("### JobListingId: " + jobListing.getJobListingId());
-                Tutor tut = jobListing.getTutor();
-                System.out.println("###$$$ TutorId: " + jobListing.getTutor().getPersonId());
-                List<JobListing> temp = tut.getJobListings();
-                temp.add(jobListing);
-                tut.setJobListings(temp);
-                em.merge(tut);
-                em.flush();
+//                em.flush();
+//                em.refresh(jobListing);
+//                System.out.println("### JobListingId: " + jobListing.getJobListingId());
+//                Tutor tut = jobListing.getTutor();
+//                System.out.println("###$$$ TutorId: " + jobListing.getTutor().getPersonId());
+//                List<JobListing> temp = tut.getJobListings();
+//                temp.add(jobListing);
+//                tut.setJobListings(temp);
+//                em.merge(tut);
+//                em.flush();
                 /////
-                tut = em.find(Tutor.class, tut.getPersonId());
-                for (JobListing jl : tut.getJobListings()) {
-                    System.out.println("###%%% jobListingId after merging tutor: " + jl.getJobListingId());
-                }
+//                tut = em.find(Tutor.class, tut.getPersonId());
+//                for (JobListing jl : tut.getJobListings()) {
+//                    System.out.println("###%%% jobListingId after merging tutor: " + jl.getJobListingId());
+//                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -445,17 +444,17 @@ public class DataInitializationBean {
             Date startDate = new Date();
             try {
                 Offer offer = offerSession.createOffer(rates, startDate, tutee.getPersonId(), chosenSubject.getSubjectId(), jobListing.getJobListingId(), randomNumSessions, 2, "I love learning");
-                em.flush();
-                em.refresh(offer);
-                List<Offer> tuteeOffers = tutee.getOffers();
-                tuteeOffers.add(offer);
-                tutee.setOffers(tuteeOffers);
-                em.merge(tutee);
+//                em.flush();
+//                em.refresh(offer);
+//                List<Offer> tuteeOffers = tutee.getOffers();
+//                tuteeOffers.add(offer);
+//                tutee.setOffers(tuteeOffers);
+//                em.merge(tutee);
 
-                List<Offer> jobListingOffers = jobListing.getOffers();
-                jobListingOffers.add(offer);
-                jobListing.setOffers(jobListingOffers);
-                em.merge(jobListing);
+//                List<Offer> jobListingOffers = jobListing.getOffers();
+//                jobListingOffers.add(offer);
+//                jobListing.setOffers(jobListingOffers);
+//                em.merge(jobListing);
             } catch (InvalidSubjectChoiceException | InvalidParamsException ex) {
                 ex.printStackTrace();
             }
@@ -464,11 +463,19 @@ public class DataInitializationBean {
 
     private void initRatings() {
         List<Offer> offers = offerSession.retrieveAllOffers();
+        List<Integer> used = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             int randomOfferIndex = randomNumberGenerator(1, offers.size());
-            Offer offer = offers.get(randomOfferIndex);
-            double value = (double) randomNumberGenerator(1, 5);
-            ratingSession.createRating(value, "the tutor was great/bad", offer);
+            if (!used.contains(randomOfferIndex)) {
+                used.add(randomOfferIndex);
+                Offer offer = offers.get(randomOfferIndex);
+                double value = (double) randomNumberGenerator(1, 5);
+                Rating rating = ratingSession.createRating(value, "the tutor was great/bad", offer);
+//                em.flush();
+//                em.refresh(rating);
+//                Offer o = rating.getOffer();
+//                System.out.println(">>>>>>>> OfferId: " + o.getOfferId());
+            }
         }
     }
 
@@ -484,26 +491,26 @@ public class DataInitializationBean {
             Person p2 = persons.get(p2Index);
             Message m1 = messageSession.createMessage(p1.getPersonId(), p2.getPersonId(), "test message from Person_" + p1.getPersonId() + " to Person_" + p2.getPersonId());
             Message m2 = messageSession.createMessage(p2.getPersonId(), p1.getPersonId(), "test message from Person_" + p2.getPersonId() + " to Person_" + p1.getPersonId());
-            em.flush();
-            // add m1
-            em.refresh(m1);
-            List<Message> p1SentMessages = p1.getSentMessages();
-            List<Message> p2ReceivedMessages = p2.getReceivedMessages();
-            p1SentMessages.add(m1);
-            p2ReceivedMessages.add(m1);
-            // add m2
-            em.refresh(m2);
-            List<Message> p1ReceivedMessages = p1.getReceivedMessages();
-            List<Message> p2SentMessages = p2.getSentMessages();
-            p2SentMessages.add(m2);
-            p1ReceivedMessages.add(m2);
-            // set & merge
-            p1.setSentMessages(p1SentMessages);
-            p1.setReceivedMessages(p1ReceivedMessages);
-            p2.setSentMessages(p2SentMessages);
-            p2.setReceivedMessages(p2ReceivedMessages);
-            em.merge(p1);
-            em.merge(p2);
+//            em.flush();
+//            // add m1
+//            em.refresh(m1);
+//            List<Message> p1SentMessages = p1.getSentMessages();
+//            List<Message> p2ReceivedMessages = p2.getReceivedMessages();
+//            p1SentMessages.add(m1);
+//            p2ReceivedMessages.add(m1);
+//            // add m2
+//            em.refresh(m2);
+//            List<Message> p1ReceivedMessages = p1.getReceivedMessages();
+//            List<Message> p2SentMessages = p2.getSentMessages();
+//            p2SentMessages.add(m2);
+//            p1ReceivedMessages.add(m2);
+//            // set & merge
+//            p1.setSentMessages(p1SentMessages);
+//            p1.setReceivedMessages(p1ReceivedMessages);
+//            p2.setSentMessages(p2SentMessages);
+//            p2.setReceivedMessages(p2ReceivedMessages);
+//            em.merge(p1);
+//            em.merge(p2);
         }
     }
 

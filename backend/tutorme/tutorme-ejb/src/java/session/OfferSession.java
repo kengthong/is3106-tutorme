@@ -7,6 +7,7 @@ package session;
 
 import entity.JobListing;
 import entity.Offer;
+import entity.Rating;
 import entity.Subject;
 import entity.Tutee;
 import entity.Tutor;
@@ -20,8 +21,6 @@ import exception.SubjectNotFoundException;
 import exception.TuteeNotFoundException;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -61,15 +60,15 @@ public class OfferSession implements OfferSessionLocal {
                 Offer newOffer = new Offer(offeredRate, startDate, tutee, subject, jobListing, numSessions, numHoursPerSession, additionalNote);
                 em.persist(newOffer);
                 
-                List<Offer> tuteeOffers = tutee.getOffers();
-                tuteeOffers.add(newOffer);
-                tutee.setOffers(tuteeOffers);
-                em.merge(tutee);
-                
-                List<Offer> jobListingOffers = jobListing.getOffers();
-                jobListingOffers.add(newOffer);
-                jobListing.setOffers(jobListingOffers);
-                em.merge(jobListing);
+//                List<Offer> tuteeOffers = tutee.getOffers();
+//                tuteeOffers.add(newOffer);
+//                tutee.setOffers(tuteeOffers);
+//                em.merge(tutee);
+//                
+//                List<Offer> jobListingOffers = jobListing.getOffers();
+//                jobListingOffers.add(newOffer);
+//                jobListing.setOffers(jobListingOffers);
+//                em.merge(jobListing);
                 return newOffer;
             } else {
                 throw new InvalidSubjectChoiceException();
@@ -85,6 +84,9 @@ public class OfferSession implements OfferSessionLocal {
         List<Offer> offers = query.getResultList();
         for (Offer o : offers) {
             em.detach(o);
+//            Rating rating = o.getRating();
+//            em.detach(rating);
+//            rating.setOffer(null);
 
             JobListing jobListing = o.getJobListing();
             em.detach(jobListing);

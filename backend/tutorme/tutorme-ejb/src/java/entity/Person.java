@@ -66,7 +66,7 @@ public abstract class Person implements Serializable {
     @NotNull
     @Enumerated
     private GenderEnum gender;
-    
+
     @NotNull
     @Enumerated
     private PersonEnum personEnum;
@@ -75,10 +75,10 @@ public abstract class Person implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dob;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="sender")
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "sender")
     private List<Message> sentMessages;
-    
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="receiver")
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "receiver")
     private List<Message> receivedMessages;
 
     public Person() {
@@ -211,5 +211,4 @@ public abstract class Person implements Serializable {
         this.personEnum = personEnum;
     }
 
-    
 }

@@ -58,7 +58,7 @@ public class JobListing implements Serializable {
 
     private String jobListingDesc;
 
-    @OneToMany(mappedBy = "jobListing", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "jobListing", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<Offer> offers;
 
     private double reviewScore;
@@ -175,6 +175,5 @@ public class JobListing implements Serializable {
     public void setReviewCount(int reviewCount) {
         this.reviewCount = reviewCount;
     }
-
 
 }
