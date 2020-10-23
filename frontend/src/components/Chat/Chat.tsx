@@ -62,8 +62,8 @@ const Chat = () => {
 
     return (
 
-        <div className="Row">
-            <h1 className="text-center">Chat page</h1>
+        <div className="" style={{border: '1px solid #e8e8e8', height: '100%'}}>
+            {/*<h1 className="text-center">Chat page</h1>*/}
 
             <br />
 
