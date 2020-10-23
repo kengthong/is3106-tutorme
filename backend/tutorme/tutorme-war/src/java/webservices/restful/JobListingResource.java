@@ -47,10 +47,10 @@ public class JobListingResource {
         System.out.println("Getting filtered jobListings...");
         double minPx = 0;
         double maxPx = 999;
-        if (!minPrice.isEmpty() && !minPrice.equals(" ")) {
+        if (!minPrice.trim().isEmpty()) {
             minPx = Double.valueOf(minPrice);
         }
-        if (!maxPrice.isEmpty() && !maxPrice.equals(" ")) {
+        if (!maxPrice.trim().isEmpty()) {
             maxPx = Double.valueOf(maxPrice);
         }
         System.out.println("###%%% filterJobListings params...");
