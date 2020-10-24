@@ -5,10 +5,8 @@ import LoginComponent from "../../../components/Login/Login";
 
 const Login = () => {
   return (
-    <div>
-      <BodyContainer>
-        <LoginComponent />
-      </BodyContainer>
+    <div className="custom-container">
+      <LoginComponent />
     </div>
   );
 };

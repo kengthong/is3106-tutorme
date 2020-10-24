@@ -60,7 +60,7 @@ label {
 }
 
 .flex-row {
-  display:flex;
+  display: flex;
   flex-direction: row;
 }
 
@@ -116,6 +116,9 @@ label {
   width: 100%;
 }
 
+.myProfileButton {
+  background-color: rgb(255, 227, 41);
+}
 
 /* PAGE CSS */
 .job-listing-list-body {

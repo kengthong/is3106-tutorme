@@ -4,10 +4,8 @@ import RegistrationComponent from "../../../components/Login/Registration";
 
 const Registration = () => {
   return (
-    <div>
-      <BodyContainer>
-        <RegistrationComponent />
-      </BodyContainer>
+    <div className="custom-container">
+      <RegistrationComponent />
     </div>
   );
 };
