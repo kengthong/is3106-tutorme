@@ -50,7 +50,7 @@ const Header = () => {
               <a href="/search">Search</a>
             </li>
             <li>
-              <a href="#">FAQs</a>
+              <a href="/FAQ">FAQs</a>
             </li>
 
             <li>
