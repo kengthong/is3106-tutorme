@@ -45,5 +45,3 @@ export const userReducer = (state: UserState = defaultState, action: Action) => 
             return state;
     }
 }
-
-export default userReducer;

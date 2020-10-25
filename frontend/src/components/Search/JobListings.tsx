@@ -1,21 +1,32 @@
 import React, {useEffect, useState} from 'react';
-import {useLocation} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import qs from "qs";
 import TuteeService from "../../services/tutee";
 import {Card, Col, Rate, Row} from "antd";
 
 const JobListings = () => {
     const location = useLocation();
-    const params: {[key: string]:any} = qs.parse(location.search.substring(1), { ignoreQueryPrefix: true });
+    const history = useHistory();
+
     const [jobListingList, setJobListingList] = useState<getJobListingListWithParamResposeProps>([]);
     const [loading, setLoading] = useState(true)
+    const handleClick = (id?: number ) => {
+        if(id) {
+            const newPath = '/job?id=' + id;
+            history.push(newPath)
+        }
+    }
     // let jobListingList: getJobListingListWithParamResposeProps = [];
     useEffect(() => {
-        const result: getJobListingListWithParamResposeProps = TuteeService.getJobListingListWithParams({});
-        setTimeout(() => {
-            setJobListingList(result);
-            setLoading(false);
-        },1000)
+        const params: {[key: string]:any} = qs.parse(location.search.substring(1), { ignoreQueryPrefix: true });
+        const getJobListing = async() => {
+            const result: getJobListingListWithParamResposeProps = await TuteeService.getJobListingListWithParams(params);
+            setTimeout(() => {
+                setJobListingList(result);
+                setLoading(false);
+            },1000)
+        }
+        getJobListing();
     },[]);
     return (
         <div className={'flex-row justify-center job-listing-list-body'}>
@@ -23,18 +34,20 @@ const JobListings = () => {
                 {loading?
                     [1,2,3,4,5,6].map( (r, i) => <JobListingCard key={i} loading={loading}/>)
                     :
-                    jobListingList.map( (r: jobListingType, i: number) => <JobListingCard key={i} {...r} /> )}
+                    jobListingList.map( (r: jobListingType, i: number) => <JobListingCard handleClick={handleClick} key={i} {...r} /> )}
             </Row>
         </div>
     )
 };
 
-const JobListingCard = (props: jobListingType) => {
-    const {name, img, price, reviewCount, reviewScore, education, loading } = props;
+const JobListingCard = (props: jobListingCardProps) => {
+    const {id, name, img, price, reviewCount, reviewScore, education, loading, handleClick } = props;
     return (
         <Col span={6} style={{marginTop: '20px'}}>
             <Card
+                onClick={() => handleClick && handleClick(id) || null}
                 style={{height: '500px', width: '100%', minWidth: 267.5}}
+                className={"clickable"}
                 loading={loading}
                     cover={<img style={{width: '100%', height: '300px', objectFit: 'cover'}} src={img} />}>
                 <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
@@ -63,6 +76,6 @@ const JobListingCard = (props: jobListingType) => {
             </Card>
         </Col>
     )
-}
+};
 
 export default JobListings;

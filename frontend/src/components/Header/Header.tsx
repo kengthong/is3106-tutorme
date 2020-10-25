@@ -18,7 +18,7 @@ const Header = () => {
               <span className="icon-bar"></span>{" "}
               <span className="icon-bar"></span>
             </button>
-            <a className="navbar-brand" href="index.html">
+            <a className="navbar-brand" href="/">
               <img
                 src={logo}
                 alt="logo"
@@ -37,7 +37,7 @@ const Header = () => {
           >
             <ul className="nav navbar-nav">
               <li>
-                <a href="index.html">Home</a>
+                <a href="/">Home</a>
               </li>
               <li>
                 <a href="/search">Search</a>
