@@ -17,12 +17,10 @@ import enumeration.StaffPositionEnum;
 import enumeration.GenderEnum;
 import exception.InvalidParamsException;
 import exception.InvalidSubjectChoiceException;
-<<<<<<< HEAD
 import exception.OfferNotFoundException;
 import exception.PersonNotFoundException;
 import java.io.FileInputStream;
-=======
->>>>>>> 8bd1855... Chat WebResource
+import exception.PersonNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -79,8 +77,8 @@ public class DataInitializationBean {
         initTutees();
         initSubjects();
         initJobListings();
-//        initOffers();
-//        initRatings();
+        initOffers();
+        initRatings();
         initMessages();
         System.out.println("I HAVE DEPLOYED EVERYTHING");
     }
