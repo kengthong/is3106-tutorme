@@ -7,14 +7,10 @@ package enumeration;
 
 /**
  *
- * @author Tay Z H Owen
+ * @author Owen Tay
  */
-public enum DowEnum {
-    MONDAY,
-    TUESDAY,
-    WEDNESDAY,
-    THURSDAY,
-    FRIDAY,
-    SATURDAY,
-    SUNDAY
+public enum PersonEnum {
+    TUTOR,
+    TUTEE,
+    STAFF,
 }

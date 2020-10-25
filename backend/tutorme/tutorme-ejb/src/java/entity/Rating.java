@@ -5,6 +5,7 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
@@ -32,6 +33,7 @@ public class Rating implements Serializable {
     private Long ratingId;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date createdDate;
 
     @NotNull
@@ -45,10 +47,11 @@ public class Rating implements Serializable {
     private Offer offer;
 
     public Rating() {
+        this.createdDate = Date.from(Instant.now());
     }
 
     public Rating(Double ratingValue, String comments, Offer offer) {
-        this.createdDate = Date.from(Instant.now());
+        this();
         this.ratingValue = ratingValue;
         this.comments = comments;
         this.offer = offer;

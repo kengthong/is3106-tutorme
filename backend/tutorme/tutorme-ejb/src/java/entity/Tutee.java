@@ -6,13 +6,15 @@
 package entity;
 
 import enumeration.GenderEnum;
+import enumeration.PersonEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToMany; 
 
 /**
  *
@@ -23,16 +25,19 @@ public class Tutee extends Person implements Serializable {
 
     private String profileDesc;
 
-    @OneToMany(mappedBy = "tutee", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "tutee", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<Offer> offers;
 
     public Tutee() {
         super();
+        this.setPersonEnum(PersonEnum.TUTEE);
+        this.offers = new ArrayList();
     }
 
-    public Tutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, String profileDesc) {
+    public Tutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender,  Date dob, String profileDesc) {
         super(firstName, lastName, email, password, mobileNum, gender, dob);
         this.profileDesc = profileDesc;
+        this.setPersonEnum(PersonEnum.TUTEE);
         this.offers = new ArrayList();
     }
 

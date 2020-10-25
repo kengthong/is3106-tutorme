@@ -6,14 +6,12 @@
 package session;
 
 import entity.Staff;
-import enumeration.StaffPositionEnum;
 import enumeration.GenderEnum;
+import enumeration.StaffPositionEnum;
 import exception.StaffNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,32 +29,6 @@ public class StaffSession implements StaffSessionLocal {
     private EntityManager em;
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
-//    @Override
-//    public Staff loginStaff(String email, String password) throws StaffNotFoundException {
-//        try {
-//            Staff staff = retrieveStaffByEmail(email);
-//            String storedPassword = staff.getPassword();
-//            String salt = staff.getSalt();
-//            String hashedPassword = ch.byteArrayToHexString(ch.doHashPassword(password.concat(salt)));
-//            if (storedPassword.equals(hashedPassword)) {
-//                staff.setSalt(null);
-//                staff.getMessages();
-//                return staff;
-//            } else {
-//                throw new StaffNotFoundException("Invalid login parameters.");
-//            }
-//        } catch (StaffNotFoundException ex) {
-//            throw new StaffNotFoundException("Invalid login parameters.");
-//        }
-//    }
-
-    @Override
-    public Staff createStaff(Staff newStaff) {
-        em.persist(newStaff);
-        em.flush();
-        return newStaff;
-    }
-
     @Override
     public Staff createStaff(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, StaffPositionEnum staffPositionEnum) {
         Staff newStaff = new Staff();
@@ -73,10 +45,12 @@ public class StaffSession implements StaffSessionLocal {
             newStaff.setGender(gender);
             newStaff.setDob(dob);
             newStaff.setStaffPositionEnum(staffPositionEnum);
+            em.persist(newStaff);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(TuteeSession.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Hashing error when creating staff.");
         }
-        return createStaff(newStaff);
+
+        return newStaff;
     }
 
     @Override
@@ -108,30 +82,25 @@ public class StaffSession implements StaffSessionLocal {
     }
 
     @Override
-    public void updateStaff(Staff updatedStaff) {
-        em.merge(updatedStaff);
-    }
-
-    @Override
-    public void updateStaff(Long personId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob) throws StaffNotFoundException {
+    public Staff updateStaff(Long personId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob) throws StaffNotFoundException {
         Staff staff = retrieveStaffById(personId);
         staff.setFirstName(firstName);
         staff.setLastName(lastName);
         staff.setMobileNum(mobileNum);
         staff.setGender(gender);
         staff.setDob(dob);
-        updateStaff(staff);
+        return staff;
     }
 
     @Override
-    public void changeStaffActiveStatus(Long personId) throws StaffNotFoundException {
+    public Staff changeStaffActiveStatus(Long personId) throws StaffNotFoundException {
         Staff staff = retrieveStaffById(personId);
         if (staff.getActiveStatus()) {
             staff.setActiveStatus(true);
         } else {
             staff.setActiveStatus(false);
         }
-        updateStaff(staff);
+        return staff;
     }
 
     @Override

@@ -7,17 +7,18 @@ package entity;
 
 import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;
+import enumeration.PersonEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -26,27 +27,26 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Tutor extends Person implements Serializable {
 
-    @NotNull
     @Enumerated
     private QualificationEnum highestQualification;
 
-    @NotNull
     @Enumerated
     private CitizenshipEnum citizenship;
 
-    @NotNull
     @Enumerated
     private RaceEnum race;
 
     private String profileDesc;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "tutor")
     private List<JobListing> jobListings;
-    
+
     private double avgRating;
 
     public Tutor() {
         super();
+        this.setPersonEnum(PersonEnum.TUTOR);
+        this.jobListings = new ArrayList<>();
     }
 
     public Tutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob,
@@ -56,7 +56,8 @@ public class Tutor extends Person implements Serializable {
         this.highestQualification = highestQualification;
         this.citizenship = citizenship;
         this.race = race;
-        this.jobListings = new ArrayList();
+        this.setPersonEnum(PersonEnum.TUTOR);
+        this.jobListings = new ArrayList<>();
     }
 
     public String getProfileDesc() {
@@ -100,11 +101,27 @@ public class Tutor extends Person implements Serializable {
     }
 
     public double getAvgRating() {
-        return avgRating;
-    }
-
-    public void setAvgRating(double avgRating) {
-        this.avgRating = avgRating;
+        double sum = 0;
+        int count = 0;
+        if (this.jobListings != null) {
+            for (JobListing jl : this.jobListings) {
+                if (jl.getOffers() != null) {
+                    for (Offer o : jl.getOffers()) {
+                        Rating rating = o.getRating();
+                        if (o.getRating() != null) {
+                            sum = rating.getRatingValue();
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        double avg = sum / count;
+        if (Double.isNaN(avg) || Double.isInfinite(avg)) {
+            return 0;
+        } else {
+            return avg;
+        }
     }
 
     @Override

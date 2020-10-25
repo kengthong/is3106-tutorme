@@ -5,20 +5,15 @@
  */
 package session;
 
-import entity.Area;
 import entity.JobListing;
 import entity.Offer;
 import entity.Rating;
 import entity.Subject;
-import entity.Timeslot;
 import entity.Tutor;
 import exception.JobListingNotFoundException;
-import exception.OfferNotFoundException;
-import exception.RatingNotFoundException;
+import exception.NewJobListingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,31 +26,26 @@ import javax.persistence.Query;
 @Stateless
 public class JobListingSession implements JobListingSessionLocal {
 
-    @EJB
-    RatingSessionLocal ratingSession;
-    @EJB
-    OfferSessionLocal offerSession;
     @PersistenceContext(unitName = "tutorme-ejbPU")
-    EntityManager em;
+    private EntityManager em;
 
     @Override
-    public JobListing createJobListing(JobListing newJobListing) {
-        em.merge(newJobListing);
-        em.flush();
+    public JobListing createJobListing(Long tutorId, List<Long> subjectIds, Double hourlyRates, String timeslots, String areas, String jobListingDesc) throws NewJobListingException {
+        Tutor managedTutor = em.find(Tutor.class, tutorId);
+        List<Subject> managedSubjects = new ArrayList<>();
+        for (Long subjectId : subjectIds) {
+            managedSubjects.add(em.find(Subject.class, subjectId));
+        }
+        JobListing newJobListing = new JobListing(managedTutor, managedSubjects, hourlyRates, timeslots, areas, jobListingDesc);
+        em.persist(newJobListing);
+        managedTutor.getJobListings().add(newJobListing);
+        String subjectName = managedSubjects.get(0).getSubjectName();
+        for (Subject s : managedSubjects) {
+            if (!s.getSubjectName().equals(subjectName)) {
+                throw new NewJobListingException("JobListing can only be created with same subject name but different levels.");
+            }
+        }
         return newJobListing;
-    }
-
-    @Override
-    public JobListing createJobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) {
-        JobListing newJobListing = new JobListing(tutor, subjects, hourlyRates, preferredTimeslots, preferredAreas, jobListingDesc);
-        return createJobListing(newJobListing);
-    }
-
-    @Override
-    public List<JobListing> retrieveAllJobListings() {
-        Query query = em.createQuery("SELECT jl FROM JobListing jl");
-        List<JobListing> results = query.getResultList();
-        return results;
     }
 
     @Override
@@ -69,112 +59,122 @@ public class JobListingSession implements JobListingSessionLocal {
     }
 
     @Override
-    public List<JobListing> retrieveJobListingsBySubjectLevel(String subjectLevel) {
-        List<JobListing> jobListings = retrieveAllJobListings();
-        List<JobListing> filteredJobListings = new ArrayList();
-        for (JobListing jl : jobListings) {
-            if (!filteredJobListings.contains(jl)) {
-                for (Subject s : jl.getSubjects()) {
+    public List<JobListing> retrieveAllJobListings() {
+        Query query = em.createQuery("SELECT jl FROM JobListing jl");
+        List<JobListing> results = query.getResultList();
+        return results;
+    }
+
+    @Override
+    public List<JobListing> retrieveJobListingsByTutorId(Long tutorId) {
+        Query query = em.createQuery("SELECT jl FROM JobListing jl WHERE jl.tutor.personId = :inputTutorId");
+        query.setParameter("inputTutorId", tutorId);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<JobListing> retrieveJobListingsWithMultipleFilters(String subjectName, String subjectLevel, Double minPrice, Double maxPrice, String inputName) {
+        System.out.println("### inside JobListingSession's retrieveJobListingsWithMultipleFilters...");
+        System.out.println("... subJectName: " + subjectName);
+        System.out.println("... subjectLevel: " + subjectLevel);
+        System.out.println("... minPrice: " + minPrice);
+        System.out.println("... maxPrice: " + maxPrice);
+        System.out.println("... inputName: " + inputName);
+        // filter by name & price
+        Query query = em.createQuery("SELECT jl FROM JobListing jl "
+                + "WHERE (jl.tutor.firstName = :inputName OR jl.tutor.lastName = :inputName) "
+                + "AND jl.hourlyRates >= :inputMinPrice "
+                + "AND jl.hourlyRates <= :inputMaxPrice");
+        query.setParameter("inputName", inputName);
+        query.setParameter("inputMinPrice", minPrice);
+        query.setParameter("inputMaxPrice", maxPrice);
+        List<JobListing> result2 = query.getResultList();
+        // filter by price
+//        List<JobListing> result2 = new ArrayList<>();
+//        for (JobListing jl : result1) {
+//            if (jl.getHourlyRates() >= minPrice && jl.getHourlyRates() <= maxPrice) {
+//                result2.add(jl);
+//            }
+//        }
+        for (JobListing jl : result2) {
+            System.out.println("### filtered by tutorName and price=" + jl.getHourlyRates() + " >> jobListingId:" + jl.getJobListingId());
+        }
+        List<JobListing> result3 = new ArrayList<>();
+        // filter by subjectName
+        if (!subjectName.equals(" ") && !subjectName.isEmpty()) {
+            System.out.println("###%%% filtering subjectName...");
+            for (JobListing jl : result2) {
+                List<Subject> subjects = jl.getSubjects();
+                for (Subject s : subjects) {
+//                    System.out.println(">> Comparing subjectName db: " + s.getSubjectName() + " and input: " + subjectName);
+                    if (s.getSubjectName().equals(subjectName)) {
+                        System.out.println("###$$$ Matched subjectName db: " + s.getSubjectName() + " and input: " + subjectName);
+                        result3.add(jl);
+                        break;
+                    }
+                }
+            }
+        } else {
+            result3.addAll(result2);
+        }
+        for (JobListing jl : result3) {
+            System.out.println("### filtered by tutorName, price and subjectName >> jobListingId:" + jl.getJobListingId());
+        }
+        List<JobListing> result4 = new ArrayList<>();
+        if (!subjectLevel.equals(" ") && !subjectLevel.isEmpty()) {
+            System.out.println("###%%% filtering subjectLevel...");
+            for (JobListing jl : result3) {
+                List<Subject> subjects = jl.getSubjects();
+                for (Subject s : subjects) {
+//                    System.out.println(">> Comparing subjectLevel db: " + s.getSubjectLevel() + " and input: " + subjectLevel);
                     if (s.getSubjectLevel().equals(subjectLevel)) {
-                        filteredJobListings.add(jl);
+                        System.out.println("###$$$ Matched subjectLevel db: " + s.getSubjectLevel() + " and input: " + subjectLevel);
+                        result4.add(jl);
                         break;
                     }
                 }
             }
+        } else {
+            result4.addAll(result3);
         }
-        return filteredJobListings;
+        for (JobListing jl : result4) {
+            System.out.println("### filtered by tutorName, price, subjectName and subjectLevel >> jobListingId:" + jl.getJobListingId());
+        }
+        return result4;
     }
 
     @Override
-    public List<JobListing> retrieveJobListingsBySubjectName(String subjectName) {
-        List<JobListing> jobListings = retrieveAllJobListings();
-        List<JobListing> filteredJobListings = new ArrayList();
-        for (JobListing jl : jobListings) {
-            if (!filteredJobListings.contains(jl)) {
-                Subject s = jl.getSubjects().get(0);
-                if (s.getSubjectName().equals(subjectName)) {
-                    filteredJobListings.add(jl);
-                }
+    public double retrieveJobListingRatingValue(Long jobListingId) throws JobListingNotFoundException {
+        double ratingValue = 0;
+        double ratingCount = 0;
+
+        JobListing jobListing = retrieveJobListingById(jobListingId);
+        List<Offer> offers = jobListing.getOffers();
+        for (Offer o : offers) {
+            Rating rating = o.getRating();
+            if (rating != null) {
+                ratingValue += rating.getRatingValue();
+                ratingCount++;
             }
         }
-        return filteredJobListings;
-    }
 
-    @Override
-    public List<JobListing> retrieveJobListingsBySubjectLevelAndName(String subjectLevel, String subjectName) {
-        List<JobListing> jobListings = retrieveAllJobListings();
-        List<JobListing> filteredJobListings = new ArrayList();
-        for (JobListing jl : jobListings) {
-            if (!filteredJobListings.contains(jl)) {
-                for (Subject s : jl.getSubjects()) {
-                    if (s.getSubjectLevel().equals(subjectLevel) && s.getSubjectName().equals(subjectName)) {
-                        filteredJobListings.add(jl);
-                        break;
-                    }
-                }
-            }
+        double avgRatingValue = ratingValue / ratingCount;
+        if (Double.isNaN(avgRatingValue) || Double.isInfinite(avgRatingValue)) {
+            return 0;
+        } else {
+            return avgRatingValue;
         }
-        return filteredJobListings;
     }
 
     @Override
-    public List<JobListing> retrieveJobListingsByTutorId(Long userId) throws JobListingNotFoundException {
-        List<JobListing> jobListings = retrieveAllJobListings();
-        List<JobListing> filteredJobListings = jobListings.stream()
-                .filter(jl -> jl.getTutor().getPersonId().equals(userId))
-                .collect(Collectors.toList());
-        return filteredJobListings;
-    }
-
-    @Override
-    public List<JobListing> retrieveJobListingsByTutorName(String inputName) throws JobListingNotFoundException {
-        List<JobListing> jobListings = retrieveAllJobListings();
-        List<JobListing> filteredJobListings = jobListings.stream()
-                .filter(jl -> jl.getTutor().getFirstName().equals(inputName) || jl.getTutor().getLastName().equals(inputName))
-                .collect(Collectors.toList());
-        return filteredJobListings;
-    }
-
-    @Override
-    public JobListing retrieveJobListingByOffer(Long offerId) throws JobListingNotFoundException {
-        JobListing jobListing = null;
-        try {
-            Offer offer = offerSession.retrieveOfferById(offerId);
-            jobListing = offer.getJobListing();
-        } catch (OfferNotFoundException ex) {
-            throw new JobListingNotFoundException("JobListing was not found because OfferID " + offerId + "provided does not exists.");
-        }
-        return jobListing;
-    }
-
-    @Override
-    public JobListing retrieveJobListingByRating(Long ratingId) throws JobListingNotFoundException {
-        JobListing jobListing = null;
-        try {
-            Rating rating = ratingSession.retrieveRatingById(ratingId);
-            Offer offer = rating.getOffer();
-            jobListing = offer.getJobListing();
-        } catch (RatingNotFoundException ex) {
-            throw new JobListingNotFoundException("JobListing was not found because RatingID " + ratingId + "provided does not exists.");
-        }
-        return jobListing;
-    }
-
-    @Override
-    public void updateJobListing(JobListing updatedJobListing) {
-        em.merge(updatedJobListing);
-    }
-
-    @Override
-    public void updateJobListing(Long jobListingId, List<Subject> subjects, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) throws JobListingNotFoundException {
+    public void updateJobListing(Long jobListingId, List<Subject> subjects, Double hourlyRates, String timeslots, String areas, String jobListingDesc) throws JobListingNotFoundException {
         JobListing jobListing = retrieveJobListingById(jobListingId);
         jobListing.setSubjects(subjects);
         jobListing.setHourlyRates(hourlyRates);
-        jobListing.setPreferredTimeslots(preferredTimeslots);
-        jobListing.setPreferredAreas(preferredAreas);
+        jobListing.setTimeslots(timeslots);
+        jobListing.setAreas(areas);
         jobListing.setHourlyRates(hourlyRates);
         jobListing.setJobListingDesc(jobListingDesc);
-        updateJobListing(jobListing);
     }
 
     @Override
@@ -185,7 +185,6 @@ public class JobListingSession implements JobListingSessionLocal {
         } else {
             jobListing.setActiveStatus(true);
         }
-        updateJobListing(jobListing);
     }
 
     @Override
@@ -193,4 +192,5 @@ public class JobListingSession implements JobListingSessionLocal {
         JobListing jobListing = retrieveJobListingById(jobListingId);
         em.remove(jobListing);
     }
+
 }

@@ -7,24 +7,24 @@ package exception;
 
 /**
  *
- * @author Tay Z H Owen
+ * @author Owen Tay
  */
-public class OfferWithdrawException extends Exception {
+public class NewJobListingException extends Exception {
 
     /**
-     * Creates a new instance of <code>OfferWithdrawException</code> without
-     * detail message.
+     * Creates a new instance of <code>NewJobListingError</code> without detail
+     * message.
      */
-    public OfferWithdrawException() {
+    public NewJobListingException() {
     }
 
     /**
-     * Constructs an instance of <code>OfferWithdrawException</code> with the
+     * Constructs an instance of <code>NewJobListingError</code> with the
      * specified detail message.
      *
      * @param msg the detail message.
      */
-    public OfferWithdrawException(String msg) {
+    public NewJobListingException(String msg) {
         super(msg);
     }
 }

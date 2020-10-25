@@ -10,12 +10,12 @@ import entity.Offer;
 import entity.Subject;
 import entity.Tutee;
 import enumeration.OfferStatusEnum;
+import exception.InvalidParamsException;
 import exception.InvalidSubjectChoiceException;
 import exception.OfferNotFoundException;
-import exception.OfferWithdrawException;
+import exception.OfferStatusException;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,28 +32,25 @@ public class OfferSession implements OfferSessionLocal {
     EntityManager em;
 
     @Override
-    public Offer createOffer(Offer newOffer) {
-        em.persist(newOffer);
-        em.flush();
-        return newOffer;
-    }
+    public Offer createOffer(Double offeredRate, Date startDate, Long tuteeId, Long subjectId, Long jobListingId, int numSessions, double numHoursPerSession, String additionalNote) throws InvalidSubjectChoiceException, InvalidParamsException {
+        Tutee tutee = em.find(Tutee.class, tuteeId);
+        Subject subject = em.find(Subject.class, subjectId);
+        JobListing jobListing = em.find(JobListing.class, jobListingId);
+        if (tutee == null || subject == null || jobListing == null) {
+            throw new InvalidParamsException("### OfferSession: Either tutee, subject, jobListing does not exists.");
+        }
+        if (jobListing.getSubjects().contains(subject)) {
+            Offer newOffer = new Offer(offeredRate, startDate, tutee, subject, jobListing, numSessions, numHoursPerSession, additionalNote);
+            em.persist(newOffer);
+            List<Offer> tuteeOffers = tutee.getOffers();
+            tuteeOffers.add(newOffer);
 
-    @Override
-    public Offer createOffer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, String additionalNote) throws InvalidSubjectChoiceException {
-        if (jobListing.getSubjects().contains(chosenSubject)) {
-            Offer newOffer = new Offer(offeredRate, startDate, tutee, chosenSubject, jobListing, additionalNote);
-        return createOffer(newOffer);
+            List<Offer> jobListingOffers = jobListing.getOffers();
+            jobListingOffers.add(newOffer);
+            return newOffer;
         } else {
             throw new InvalidSubjectChoiceException();
         }
-        
-    }
-
-    @Override
-    public List<Offer> retrieveAllOffers() {
-        Query query = em.createQuery("SELECT o FROM Offer o");
-        List<Offer> results = query.getResultList();
-        return results;
     }
 
     @Override
@@ -67,45 +64,62 @@ public class OfferSession implements OfferSessionLocal {
     }
 
     @Override
-    public List<Offer> retrieveOffersByTuteeId(Long userId) {
-        List<Offer> offers = retrieveAllOffers();
-        List<Offer> filteredOffers = offers.stream()
-                .filter(o -> o.getTutee().getPersonId().equals(userId))
-                .collect(Collectors.toList());
-        return filteredOffers;
+    public List<Offer> retrieveAllOffers() {
+        Query query = em.createQuery("SELECT o FROM Offer o");
+        List<Offer> offers = query.getResultList();
+        return offers;
+    }
+
+    @Override
+    public List<Offer> retrieveOffersByTuteeId(Long tuteeId) {
+        Query query = em.createQuery("SELECT o from Offer o WHERE o.tutee.personId = :inputTuteeId");
+        query.setParameter("inputTuteeId", tuteeId);
+        return query.getResultList();
     }
 
     @Override
     public List<Offer> retrieveOffersByJobListingId(Long jobListingId) {
-        List<Offer> offers = retrieveAllOffers();
-        List<Offer> filteredOffers = offers.stream()
-                .filter(o -> o.getJobListing().getJobListingId().equals(jobListingId))
-                .collect(Collectors.toList());
-        return filteredOffers;
+        Query query = em.createQuery("SELECT o from Offer o WHERE o.jobListing.jobListingId = :inputJobListingId");
+        query.setParameter("inputJobListingId", jobListingId);
+        return query.getResultList();
     }
 
     @Override
-    public void updateOffer(Offer updatedOffer) {
-        em.merge(updatedOffer);
+    public Offer acceptOffer(Long offerId) throws OfferNotFoundException, OfferStatusException {
+        Offer offer = retrieveOfferById(offerId);
+        OfferStatusEnum offerStatus = offer.getOfferStatus();
+        switch (offerStatus) {
+            case PENDING:
+                System.out.println("OfferID " + offerId + " has been successfully accepted.");
+                offer.setOfferStatus(OfferStatusEnum.ACCEPTED);
+                break;
+            case WITHDRAWN:
+                throw new OfferStatusException("OfferID " + offerId + " was withdrawn previously.");
+            case ACCEPTED:
+                throw new OfferStatusException("OfferID " + offerId + " has already been accepted.");
+            case REJECTED:
+                throw new OfferStatusException("OfferID " + offerId + " has already been rejected.");
+        }
+        return offer;
     }
 
     @Override
-    public void withdrawOffer(Long offerId) throws OfferNotFoundException, OfferWithdrawException {
+    public Offer withdrawOffer(Long offerId) throws OfferNotFoundException, OfferStatusException {
         Offer offer = retrieveOfferById(offerId);
         OfferStatusEnum offerStatus = offer.getOfferStatus();
         switch (offerStatus) {
             case PENDING:
                 System.out.println("OfferID " + offerId + " has been successfully withdrawn.");
                 offer.setOfferStatus(OfferStatusEnum.WITHDRAWN);
-                updateOffer(offer);
                 break;
             case WITHDRAWN:
-                throw new OfferWithdrawException("OfferID " + offerId + " was withdrawn previously.");
+                throw new OfferStatusException("OfferID " + offerId + " was withdrawn previously.");
             case ACCEPTED:
-                throw new OfferWithdrawException("OfferID " + offerId + " has already been accepted and cannot be withdrawn.");
+                throw new OfferStatusException("OfferID " + offerId + " was accepted already.");
             case REJECTED:
-                throw new OfferWithdrawException("OfferID " + offerId + " has already been rejected.");
+                throw new OfferStatusException("OfferID " + offerId + " has already been rejected.");
         }
+        return offer;
     }
 
     @Override
@@ -113,4 +127,5 @@ public class OfferSession implements OfferSessionLocal {
         Offer offer = retrieveOfferById(offerId);
         em.remove(offer);
     }
+
 }

@@ -18,19 +18,12 @@ import javax.ejb.Local;
 @Local
 public interface MessageSessionLocal {
 
-    public Message createMessage(Message newMessage);
-
     public Message createMessage(Long senderId, Long receiverId, String body) throws PersonNotFoundException;
 
     public Message retrieveMessageById(Long messageId) throws MessageNotFoundException;
 
-    public List<Message> retrieveMessagesByPersonId(Long userId) throws PersonNotFoundException;
+    public List<Message> retrieveConversation(Long p1Id, Long p2Id);
+    
+    public List<List<Message>> retrieveAllConversations(Long personId);
 
-    public void updateMessage(Message updatedMessage);
-
-    public void updateMessage(Long messageId, String updatedMessage) throws MessageNotFoundException;
-
-    public void deactivateMessage(Long messageId) throws MessageNotFoundException;
-
-    public void deleteMessage(Long messageId) throws MessageNotFoundException;
 }

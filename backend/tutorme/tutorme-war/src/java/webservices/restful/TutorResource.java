@@ -5,6 +5,7 @@
  */
 package webservices.restful;
 
+import entity.JobListing;
 import entity.Tutor;
 import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;
@@ -19,12 +20,11 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -35,9 +35,9 @@ import session.TutorSessionLocal;
  *
  * @author Owen Tay
  */
-@Path("/tutor")
+@Path("tutor")
 public class TutorResource {
-    
+
     @EJB
     TutorSessionLocal tutorSession;
 
@@ -45,24 +45,27 @@ public class TutorResource {
     }
 
     @GET
-    @Path("/getTutors")
+    @Path("/tutors")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTutors(JsonObject json) {
+    public Response getTutors() {
         System.out.println("Getting tutors... ");
         List<Tutor> tutors = new ArrayList();
         tutors = tutorSession.retrieveAllTutors();
         if (!tutors.isEmpty()) {
             for (Tutor t : tutors) {
-                t.setSalt(null);
                 t.setPassword(null);
-                t.setMessages(null);
-                t.setJobListings(null);
-                System.out.println(t);
+                t.setSalt(null);
+                t.setSentMessages(null);
+                t.setReceivedMessages(null);
+                for (JobListing jl : t.getJobListings()) {
+                    jl.setTutor(null);
+                    jl.setOffers(null);
+                }
             }
-            GenericEntity<List<Tutor>> packet = new GenericEntity<List<Tutor>>(tutors) {
+            GenericEntity<List<Tutor>> payload = new GenericEntity<List<Tutor>>(tutors) {
             };
-            return Response.status(200).entity(packet).build();
+            return Response.status(200).entity(payload).build();
         } else {
             JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getTutors").build();
             return Response.status(400).entity(exception).build();
@@ -70,34 +73,35 @@ public class TutorResource {
     }
 
     @GET
-    @Path("/tutorProfile")
+    @Path("/{tutorId}")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTutorById(@QueryParam("tutorId") Long tutorId
-    ) {
+    public Response getTutorById(@PathParam("tutorId") Long tutorId) {
         System.out.println("Tutor Id is... " + tutorId);
         try {
-            Tutor result = tutorSession.retrieveTutorById(tutorId);
-            result.setPassword(null);
-            result.setSalt(null);
-            result.setMessages(null);
-            result.setJobListings(null);
-            GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
+            Tutor t = tutorSession.retrieveTutorById(tutorId);
+            t.setPassword(null);
+            t.setSalt(null);
+            t.setSentMessages(null);
+            t.setReceivedMessages(null);
+            for (JobListing jl : t.getJobListings()) {
+                jl.setTutor(null);
+                jl.setOffers(null);
+            }
+            GenericEntity<Tutor> payload = new GenericEntity<Tutor>(t) {
             };
-            return Response.status(200).entity(packet).build();
+            return Response.status(200).entity(payload).build();
         } catch (TutorNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "tutorId does not exists").build();
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
         }
     }
 
     @POST
-    @Path("/tutorProfile")
+    @Path("/{tutorId}")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateTutorById(JsonObject json) {
-        int tutorIdInt = json.getInt("tutorId");
-        Long tutorId = Long.valueOf(tutorIdInt);
+    public Response updateTutorById(@PathParam("tutorId") Long tutorId, JsonObject json) {
         System.out.println("Updating Tutor Id is ... " + tutorId);
 
         String firstName = json.getJsonString("firstName").getString();
@@ -110,7 +114,7 @@ public class TutorResource {
         String race = json.getJsonString("race").getString();
         String profileDesc = json.getJsonString("profileDesc").getString();
 
-        GenderEnum genderEnum = gender.equals("M") ? GenderEnum.MALE : GenderEnum.FEMALE;
+        GenderEnum genderEnum = gender.equals("Male") ? GenderEnum.MALE : GenderEnum.FEMALE;
         QualificationEnum qualiEnum = QualificationEnum.valueOf(QualificationEnum.class, qualification.toUpperCase());
         CitizenshipEnum citiEnum = CitizenshipEnum.valueOf(CitizenshipEnum.class, citizenship.toUpperCase());
         RaceEnum raceEnum = RaceEnum.valueOf(RaceEnum.class, race.toUpperCase());
@@ -124,21 +128,20 @@ public class TutorResource {
             ex.printStackTrace();
         }
         try {
-            Tutor result = tutorSession.updateTutorProfile(tutorId, firstName, lastName, mobileNum, genderEnum, parsedDob, qualiEnum, citiEnum, raceEnum, profileDesc);
-//            *Start debug code
-//            result.setPassword(null);
-//            result.setSalt(null);
-//            result.setMessages(null);
-//            result.setJobListings(null);
-//            GenericEntity<Tutor> packet = new GenericEntity<Tutor>(result) {
-//            };
-//            *End debug code
-            JsonObjectBuilder payload = Json.createObjectBuilder();
-            payload.add("tutorId", tutorId);
-            payload.add("success", true);
-            return Response.status(200).entity(payload.build()).build();
+            Tutor tutor = tutorSession.updateTutorProfile(tutorId, firstName, lastName, mobileNum, genderEnum, parsedDob, qualiEnum, citiEnum, raceEnum, profileDesc);
+            tutor.setPassword(null);
+            tutor.setSalt(null);
+            tutor.setSentMessages(null);
+            tutor.setReceivedMessages(null);
+            for (JobListing jl : tutor.getJobListings()) {
+                jl.setTutor(null);
+                jl.setOffers(null);
+            }
+            GenericEntity<Tutor> payload = new GenericEntity<Tutor>(tutor) {
+            };
+            return Response.status(200).entity(payload).build();
         } catch (TutorNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "tutorId does not exists").build();
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
         }
     }

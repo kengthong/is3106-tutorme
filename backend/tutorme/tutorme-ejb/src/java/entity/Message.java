@@ -5,6 +5,7 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
@@ -30,30 +31,29 @@ public class Message implements Serializable {
     private Long messageId;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     private Date createdDate;
 
     @NotNull
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Person sender;
 
     @NotNull
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Person receiver;
 
     @NotNull
     private String body;
 
-    private Boolean activeStatus;
-
     public Message() {
+        this.createdDate = Date.from(Instant.now());
     }
 
     public Message(Person sender, Person receiver, String body) {
+        this();
         this.sender = sender;
         this.receiver = receiver;
         this.body = body;
-        this.activeStatus = true;
-        this.createdDate = this.createdDate = Date.from(Instant.now());
     }
 
     public Long getMessageId() {
@@ -95,13 +95,5 @@ public class Message implements Serializable {
     public void setBody(String body) {
         this.body = body;
     }
-
-    public Boolean getActiveStatus() {
-        return activeStatus;
-    }
-
-    public void setActiveStatus(Boolean activeStatus) {
-        this.activeStatus = activeStatus;
-    }
-
+   
 }

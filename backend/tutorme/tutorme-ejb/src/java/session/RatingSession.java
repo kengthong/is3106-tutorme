@@ -26,15 +26,10 @@ public class RatingSession implements RatingSessionLocal {
     EntityManager em;
 
     @Override
-    public Rating createRating(Rating newRating) {
-        em.persist(newRating);
-        return newRating;
-    }
-
-    @Override
     public Rating createRating(Double ratingValue, String comments, Offer offer) {
         Rating newRating = new Rating(ratingValue, comments, offer);
-        return createRating(newRating);
+        em.persist(newRating);
+        return newRating;
     }
 
     @Override
@@ -54,36 +49,47 @@ public class RatingSession implements RatingSessionLocal {
         }
     }
 
-    @Override // should this return be List<Rating>
+    @Override
     public Rating retrieveRatingByOfferId(Long offerId) {
-        List<Rating> ratings = retrieveAllRatings();
-        List<Rating> filteredRatings = ratings.stream()
-                .filter(r -> r.getOffer().getOfferId().equals(offerId))
-                .collect(Collectors.toList());
-        return filteredRatings.get(0);
+        Query query = em.createQuery("SELECT r FROM Rating r WHERE r.offer.offerId = :inputOfferId");
+        query.setParameter("inputOfferId", offerId);
+        return (Rating) query.getSingleResult();
     }
 
     @Override
     public List<Rating> retrieveRatingsByTutorId(Long tutorId) {
-        List<Rating> ratings = retrieveAllRatings();
-        List<Rating> filteredRatings = ratings.stream()
-                .filter(r -> r.getOffer().getJobListing().getTutor().getPersonId().equals(tutorId))
-                .collect(Collectors.toList());
-        return filteredRatings;
+        Query query = em.createQuery("SELECT r FROM Tutor t JOIN JobListing jl JOIN Offer o JOIN Rating r WHERE t.personId = :inputTutorId");
+        query.setParameter("inputTutorId", tutorId);
+        List<Rating> ratings = query.getResultList();
+        return ratings;
+//        double ratingValues = 0;
+//        for (Rating r : ratings) {
+//            ratingValues += r.getRatingValue();
+//        }
+//        double avgRatingValue = ratingValues / ratings.size();
+//        if (Double.isNaN(avgRatingValue) || Double.isInfinite(avgRatingValue)) {
+//            return 0;
+//        } else {
+//            return avgRatingValue;
+//        }
     }
 
     @Override
     public List<Rating> retrieveRatingsByJobListingId(Long jobListingId) {
-        List<Rating> ratings = retrieveAllRatings();
-        List<Rating> filteredRatings = ratings.stream()
-                .filter(r -> r.getOffer().getJobListing().getJobListingId().equals(jobListingId))
-                .collect(Collectors.toList());
-        return filteredRatings;
-    }
-
-    @Override
-    public void updateRating(Rating updatedRating) {
-        em.merge(updatedRating);
+        Query query = em.createQuery("SELECT r JobListing jl JOIN Offer o JOIN Rating r WHERE t.personId = :inputJobListingId");
+        query.setParameter("inputJobListingId", jobListingId);
+        List<Rating> ratings = query.getResultList();
+        return ratings;
+//        double ratingValues = 0;
+//        for (Rating r : ratings) {
+//            ratingValues += r.getRatingValue();
+//        }
+//        double avgRatingValue = ratingValues / ratings.size();
+//        if (Double.isNaN(avgRatingValue) || Double.isInfinite(avgRatingValue)) {
+//            return 0;
+//        } else {
+//            return avgRatingValue;
+//        }
     }
 
     @Override

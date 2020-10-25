@@ -5,21 +5,17 @@
  */
 package session;
 
-import entity.Area;
 import entity.JobListing;
+import entity.Message;
 import entity.Offer;
 import entity.Person;
+import entity.Rating;
 import entity.Subject;
-import entity.Timeslot;
 import entity.Tutee;
 import entity.Tutor;
 import enumeration.StaffPositionEnum;
-import enumeration.CitizenshipEnum;
-import enumeration.DowEnum;
 import enumeration.GenderEnum;
-import enumeration.QualificationEnum;
-import enumeration.RaceEnum;
-import enumeration.ShiftEnum;
+import exception.InvalidParamsException;
 import exception.InvalidSubjectChoiceException;
 import exception.PersonNotFoundException;
 import java.util.ArrayList;
@@ -27,6 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -50,11 +48,7 @@ public class DataInitializationBean {
     @EJB
     SubjectSessionLocal subjectSession;
     @EJB
-    AreaSessionLocal areaSession;
-    @EJB
     StaffSessionLocal staffSession;
-    @EJB
-    TimeslotSessionLocal timeslotSession;
     @EJB
     TutorSessionLocal tutorSession;
     @EJB
@@ -78,20 +72,19 @@ public class DataInitializationBean {
         initStaff();
         initTutors();
         initTutees();
-        initArea();
-        initTimeslots();
         initSubjects();
         initJobListings();
         initOffers();
         initRatings();
         initMessages();
+        System.out.println("I HAVE DEPLOYED EVERYTHING");
     }
 
     private void initStaff() {
         Calendar c = Calendar.getInstance();
         c.set(1990, 0, 0);
         Date randomStartDate = c.getTime();
-        
+
         c.set(2015, 12, 31);
         Date randomEndDate = c.getTime();
 
@@ -101,7 +94,7 @@ public class DataInitializationBean {
             GenderEnum gender = mobileNum % 2 == 0 ? GenderEnum.MALE : GenderEnum.FEMALE;
             StaffPositionEnum adminPosition = mobileNum % 2 == 0 ? StaffPositionEnum.MANAGER : StaffPositionEnum.OPERATOR;
             Date dob = randomDateBetween(randomStartDate, randomEndDate);
-            staffSession.createStaff("test", "admin", email, "password", String.valueOf(mobileNum), gender, randomStartDate, adminPosition);
+            staffSession.createStaff("test", "admin", email, "password", String.valueOf(mobileNum), gender, dob, adminPosition);
         }
     }
 
@@ -109,7 +102,7 @@ public class DataInitializationBean {
         Calendar c = Calendar.getInstance();
         c.set(1990, 0, 0);
         Date randomStartDate = c.getTime();
-        
+
         c.set(2015, 12, 31);
         Date randomEndDate = c.getTime();
 
@@ -118,7 +111,7 @@ public class DataInitializationBean {
             int mobileNum = randomNumberGenerator(80000001, 99999998);
             GenderEnum gender = mobileNum % 2 == 0 ? GenderEnum.MALE : GenderEnum.FEMALE;
             Date dob = randomDateBetween(randomStartDate, randomEndDate);
-            tutorSession.createTutor("test", "tutor", email, "password", String.valueOf(mobileNum), gender, dob, QualificationEnum.BACHELOR, CitizenshipEnum.SINGAPORE, RaceEnum.CHINESE, "i am test tutor ".concat(String.valueOf(i)));
+            tutorSession.createTutor("test", "tutor", email, "password", String.valueOf(mobileNum), gender, dob);
         }
     }
 
@@ -126,7 +119,6 @@ public class DataInitializationBean {
         Calendar c = Calendar.getInstance();
         c.set(1990, 0, 0);
         Date randomStartDate = c.getTime();
-        
         c.set(2015, 12, 31);
         Date randomEndDate = c.getTime();
 
@@ -135,25 +127,8 @@ public class DataInitializationBean {
             int mobileNum = randomNumberGenerator(80000001, 99999998);
             GenderEnum gender = mobileNum % 2 == 0 ? GenderEnum.MALE : GenderEnum.FEMALE;
             Date dob = randomDateBetween(randomStartDate, randomEndDate);
-            tuteeSession.createTutee("test", "tutee", email, "password", String.valueOf(mobileNum), gender, dob, "i am test tutee ".concat(String.valueOf(i)));
+            tuteeSession.createTutee("test", "tutee", email, "password", String.valueOf(mobileNum), gender, dob);
         }
-    }
-
-    private void initArea() {
-        areaSession.createArea("NORTH");
-        areaSession.createArea("NORTH-EAST");
-        areaSession.createArea("WEST");
-        areaSession.createArea("CENTRAL");
-        areaSession.createArea("EAST");
-    }
-
-    private void initTimeslots() {
-        for (DowEnum day : DowEnum.values()) {
-            for (ShiftEnum shift : ShiftEnum.values()) {
-                timeslotSession.createTimeslot(day, shift);
-            }
-        }
-
     }
 
     private void initSubjects() {
@@ -213,7 +188,7 @@ public class DataInitializationBean {
         subjectSession.createSubject("Primary 6", "Character and Citizenship Education");
 
         subjectSession.createSubject("Secondary 1 (O)", "English Language");
-        subjectSession.createSubject("Secondary 1 (O)", "Mother Tongue Languages");
+        subjectSession.createSubject("Secondary 1 (O)", "Mother Tongue Language");
         subjectSession.createSubject("Secondary 1 (O)", "Mathematics");
         subjectSession.createSubject("Secondary 1 (O)", "Physics");
         subjectSession.createSubject("Secondary 1 (O)", "Biology");
@@ -227,7 +202,7 @@ public class DataInitializationBean {
         subjectSession.createSubject("Secondary 1 (O)", "Art");
         subjectSession.createSubject("Secondary 1 (O)", "Music");
         subjectSession.createSubject("Secondary 2 (O)", "English Language");
-        subjectSession.createSubject("Secondary 2 (O)", "Mother Tongue Languages");
+        subjectSession.createSubject("Secondary 2 (O)", "Mother Tongue Language");
         subjectSession.createSubject("Secondary 2 (O)", "Mathematics");
         subjectSession.createSubject("Secondary 2 (O)", "Physics");
         subjectSession.createSubject("Secondary 2 (O)", "Biology");
@@ -241,7 +216,7 @@ public class DataInitializationBean {
         subjectSession.createSubject("Secondary 2 (O)", "Art");
         subjectSession.createSubject("Secondary 2 (O)", "Music");
         subjectSession.createSubject("Secondary 3 (O)", "English Language");
-        subjectSession.createSubject("Secondary 3 (O)", "Mother Tongue Languages");
+        subjectSession.createSubject("Secondary 3 (O)", "Mother Tongue Language");
         subjectSession.createSubject("Secondary 3 (O)", "Elementary Mathematics");
         subjectSession.createSubject("Secondary 3 (O)", "Additional Mathematics");
         subjectSession.createSubject("Secondary 3 (O)", "Pure Physics");
@@ -262,7 +237,7 @@ public class DataInitializationBean {
         subjectSession.createSubject("Secondary 3 (O)", "Art");
         subjectSession.createSubject("Secondary 3 (O)", "Music");
         subjectSession.createSubject("Secondary 4 (O)", "English Language");
-        subjectSession.createSubject("Secondary 4 (O)", "Mother Tongue Languages");
+        subjectSession.createSubject("Secondary 4 (O)", "Mother Tongue Language");
         subjectSession.createSubject("Secondary 4 (O)", "Elementary Mathematics");
         subjectSession.createSubject("Secondary 4 (O)", "Additional Mathematics");
         subjectSession.createSubject("Secondary 4 (O)", "Pure Physics");
@@ -356,36 +331,34 @@ public class DataInitializationBean {
     private void initJobListings() {
         List<Tutor> tutors = tutorSession.retrieveAllTutors();
         List<Subject> subjects = subjectSession.retrieveAllSubjects();
-        List<Timeslot> timeslots = timeslotSession.retrieveAllTimeslots();
-        List<Area> areas = areaSession.retrieveAllAreas();
-        for (int i = 0; i < 25; i++) {
-            int randomTutorIndex = randomNumberGenerator(0, tutors.size());
-            Tutor tutor;
-            tutor = tutors.get(randomTutorIndex);
+        try {
+            for (int i = 0; i < 25; i++) {
+                int randomTutorIndex = randomNumberGenerator(0, tutors.size());
+                Tutor tutor;
+                tutor = tutors.get(randomTutorIndex);
 
-            int numSubjects = randomNumberGenerator(1, 6);
-            List<Subject> jlSubjects = new ArrayList();
-            for (int j = 0; j < numSubjects; j++) {
-                int randomSubjectIndex = randomNumberGenerator(0, subjects.size());
-                jlSubjects.add(subjects.get(randomSubjectIndex));
+                List<Long> jlSubjectIds = new ArrayList();
+                int randomSubjectIndex1 = randomNumberGenerator(0, subjects.size());
+                Subject firstSubject = subjects.get(randomSubjectIndex1);
+                List<Subject> sameNameSubjects = subjectSession.retrieveSubjectsByName(firstSubject.getSubjectName());
+                int numSameNameSubjects = randomNumberGenerator(1, sameNameSubjects.size());
+                for (int j = 0; j < numSameNameSubjects; j++) {
+                    int randomSubjectIndex2 = randomNumberGenerator(0, sameNameSubjects.size());
+                    Subject temp = sameNameSubjects.get(randomSubjectIndex2);
+                    if (!jlSubjectIds.contains(temp.getSubjectId())) {
+                        jlSubjectIds.add(temp.getSubjectId());
+                    }
+
+                }
+
+                double rates = (double) randomNumberGenerator(20, 100);
+
+                JobListing jobListing = jobListingSession.createJobListing(tutor.getPersonId(), jlSubjectIds, rates, "i like these timings", "i prefer these areas", "i love to teach");
+                em.flush(); 
+                tutorSession.retrieveAllTutors();
             }
-
-            int numTimeslots = randomNumberGenerator(1, 6);
-            List<Timeslot> jlTimeslots = new ArrayList();
-            for (int j = 0; j < numTimeslots; j++) {
-                int randomTimeslotIndex = randomNumberGenerator(0, timeslots.size());
-                jlTimeslots.add(timeslots.get(randomTimeslotIndex));
-            }
-
-            int numAreas = randomNumberGenerator(1, 4);
-            List<Area> jlAreas = new ArrayList();
-            for (int j = 0; j < numTimeslots; j++) {
-                int randomAreaIndex = randomNumberGenerator(0, areas.size());
-                jlAreas.add(areas.get(randomAreaIndex));
-            }
-
-            double rates = (double) randomNumberGenerator(20, 100);
-            jobListingSession.createJobListing(tutor, jlSubjects, rates, jlTimeslots, jlAreas, "i love to teach");
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -406,40 +379,51 @@ public class DataInitializationBean {
             int randomSubjectIndex = randomNumberGenerator(0, subjects.size());
             Subject chosenSubject = subjects.get(randomSubjectIndex);
 
+            int randomNumSessions = randomNumberGenerator(2, 8); 
+
             Date startDate = new Date();
             try {
-                offerSession.createOffer(rates, startDate, tutee, chosenSubject, jobListing, "I love learning");
-            } catch (InvalidSubjectChoiceException ex) {
+                Offer offer = offerSession.createOffer(rates, startDate, tutee.getPersonId(), chosenSubject.getSubjectId(), jobListing.getJobListingId(), randomNumSessions, 2, "I love learning");
+            } catch (InvalidSubjectChoiceException | InvalidParamsException ex) {
                 ex.printStackTrace();
             }
         }
     }
-    
+
     private void initRatings() {
         List<Offer> offers = offerSession.retrieveAllOffers();
-        for (int i=0; i<50; i++) {
+        List<Integer> used = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
             int randomOfferIndex = randomNumberGenerator(1, offers.size());
-            Offer offer = offers.get(randomOfferIndex);
-            double value = (double) randomNumberGenerator(1,5);
-            ratingSession.createRating(value, "the tutor was great/bad", offer);
-        }
-    }
-    
-    private void initMessages() {
-        List<Person> persons = persionSession.retrieveAllPersons();
-        for (int i=0; i<100; i++) {
-            int randomSenderIndex = randomNumberGenerator(0, persons.size());
-            int randomReceiverIndex = randomNumberGenerator(0, persons.size());
-            Person sender = persons.get(randomSenderIndex);
-            Person receiver = persons.get(randomReceiverIndex);
-            try {
-                messageSession.createMessage(sender.getPersonId(), receiver.getPersonId(), "test message from Person_"+sender.getPersonId()+" to Person_"+receiver.getPersonId());
-            } catch (PersonNotFoundException ex) {
-                ex.printStackTrace();
+            if (!used.contains(randomOfferIndex)) {
+                used.add(randomOfferIndex);
+                Offer offer = offers.get(randomOfferIndex);
+                double value = (double) randomNumberGenerator(1, 5);
+                Rating rating = ratingSession.createRating(value, "the tutor was great/bad", offer);
             }
         }
     }
-    
+
+    private void initMessages() {
+        List<Person> persons = persionSession.retrieveAllPersons();
+        for (int i = 0; i < 20; i++) {
+            try {
+                int p1Index = randomNumberGenerator(0, persons.size());
+                int p2Index = randomNumberGenerator(0, persons.size());
+                if (p1Index == p2Index) {
+                    p2Index = randomNumberGenerator(0, persons.size());
+                }
+                Person p1 = persons.get(p1Index);
+                Person p2 = persons.get(p2Index);
+                Message m1 = messageSession.createMessage(p1.getPersonId(), p2.getPersonId(), "test message from Person_" + p1.getPersonId() + " to Person_" + p2.getPersonId());
+                Message m2 = messageSession.createMessage(p2.getPersonId(), p1.getPersonId(), "test message from Person_" + p2.getPersonId() + " to Person_" + p1.getPersonId());
+
+            } catch (PersonNotFoundException ex) {
+                Logger.getLogger(DataInitializationBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     public static Date randomDateBetween(Date startInclusive, Date endExclusive) {
         long startMillis = startInclusive.getTime();
         long endMillis = endExclusive.getTime();

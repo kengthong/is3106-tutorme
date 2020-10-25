@@ -18,10 +18,8 @@ import javax.ejb.Local;
 @Local
 public interface RatingSessionLocal {
 
-    public Rating createRating(Rating newRating);
-
     public Rating createRating(Double ratingValue, String comments, Offer offer);
-    
+
     public List<Rating> retrieveAllRatings();
 
     public Rating retrieveRatingById(Long ratingId) throws RatingNotFoundException;
@@ -32,7 +30,5 @@ public interface RatingSessionLocal {
 
     public List<Rating> retrieveRatingsByJobListingId(Long jobListingId);
 
-    public void updateRating(Rating updatedRating);
-
-    public void deleteRating(Long ratingId)throws RatingNotFoundException;
+    public void deleteRating(Long ratingId) throws RatingNotFoundException;
 }
