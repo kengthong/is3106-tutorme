@@ -105,6 +105,7 @@ public class Tutor extends Person implements Serializable {
     }
 
     public double getAvgRating() {
+        //loop through jl calculate rating
         return avgRating;
     }
 
