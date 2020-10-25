@@ -25,7 +25,7 @@ public class Tutee extends Person implements Serializable {
 
     private String profileDesc;
 
-    @OneToMany(mappedBy = "tutee", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "tutee", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<Offer> offers;
 
     public Tutee() {
@@ -37,6 +37,7 @@ public class Tutee extends Person implements Serializable {
     public Tutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender,  Date dob, String profileDesc) {
         super(firstName, lastName, email, password, mobileNum, gender, dob);
         this.profileDesc = profileDesc;
+        this.setPersonEnum(PersonEnum.TUTEE);
         this.offers = new ArrayList();
     }
 

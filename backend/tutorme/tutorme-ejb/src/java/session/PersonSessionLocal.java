@@ -6,6 +6,7 @@
 package session;
 
 import entity.Person;
+import exception.PersonLoginFailException;
 import exception.PersonNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
@@ -17,7 +18,7 @@ import javax.ejb.Local;
 @Local
 public interface PersonSessionLocal {
     
-    public Person login(String email, String password);
+    public Person login(String email, String password)  throws PersonLoginFailException;
 
     public Person retrievePersonById(Long userId) throws PersonNotFoundException;
     

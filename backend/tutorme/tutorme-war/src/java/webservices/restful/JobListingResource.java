@@ -6,6 +6,7 @@
 package webservices.restful;
 
 import entity.JobListing;
+import entity.Tutor;
 import filter.JWTTokenNeeded;
 import java.util.List;
 import javax.ejb.EJB;
@@ -19,21 +20,26 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import session.JobListingSessionLocal;
 
+///////////////////////////////////////////////////
+/// To-do
+/// - create new joblisting
+///////////////////////////////////////////////////
 /**
  * REST Web Service
  *
  * @author Owen Tay
  */
+// TODO create new joblisting
 @Path("jobListing")
 @RequestScoped
 public class JobListingResource {
-
+    
     @EJB
     private JobListingSessionLocal jobListingSession;
-
+    
     public JobListingResource() {
     }
-
+    
     @GET
     @Path("/jobListingList")
     @JWTTokenNeeded
@@ -61,13 +67,19 @@ public class JobListingResource {
         System.out.println("...tutor's name: " + name);
         List<JobListing> jobListings = jobListingSession.retrieveJobListingsWithMultipleFilters(subject.trim(), level.trim(), minPx, maxPx, name.trim());
         // return jobListing object with reviewCount and avgRatings
+        for (JobListing jl : jobListings) {
+            Tutor tutor = jl.getTutor();
+            tutor.setSalt(null);
+            tutor.setPassword(null);
+            tutor.setSentMessages(null);
+            tutor.setReceivedMessages(null);
+            tutor.setJobListings(null);
+            
+            jl.setOffers(null);
+        }
         GenericEntity<List<JobListing>> packet = new GenericEntity<List<JobListing>>(jobListings) {
         };
         return Response.status(200).entity(packet).build();
-//        } else {
-//            JsonObject exception = Json.createObjectBuilder().add("error", "Unauthorized or missing JWT.").build();
-//            return Response.status(400).entity(exception).build();
-//        }
     }
 
 //    @GET

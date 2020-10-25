@@ -5,6 +5,7 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +17,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -40,21 +40,16 @@ public class JobListing implements Serializable {
     private Tutor tutor;
 
     @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinColumn // uni-directional r/s best to use @JoinColumn and omit mappedBy
     private List<Subject> subjects;
 
     @Column(nullable = false, precision = 2)
     private Double hourlyRates;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn // uni-directional r/s best to use @JoinColumn and omit mappedBy
-    private List<Timeslot> preferredTimeslots;
-
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn // uni-directional r/s best to use @JoinColumn and omit mappedBy
-    private List<Area> preferredAreas;
+    private String timeslots;
+    private String areas;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date createdDate;
 
     private String jobListingDesc;
@@ -71,13 +66,13 @@ public class JobListing implements Serializable {
         this.offers = new ArrayList();
     }
 
-    public JobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) {
+    public JobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, String timeslots, String areas, String jobListingDesc) {
         this();
         this.tutor = tutor;
         this.subjects = subjects;
         this.hourlyRates = hourlyRates;
-        this.preferredTimeslots = preferredTimeslots;
-        this.preferredAreas = preferredAreas;
+        this.timeslots = timeslots;
+        this.areas = areas;
         this.jobListingDesc = jobListingDesc;
     }
 
@@ -121,20 +116,20 @@ public class JobListing implements Serializable {
         this.hourlyRates = hourlyRates;
     }
 
-    public List<Timeslot> getPreferredTimeslots() {
-        return preferredTimeslots;
+    public String getTimeslots() {
+        return timeslots;
     }
 
-    public void setPreferredTimeslots(List<Timeslot> preferredTimeslots) {
-        this.preferredTimeslots = preferredTimeslots;
+    public void setTimeslots(String timeslots) {
+        this.timeslots = timeslots;
     }
 
-    public List<Area> getPreferredAreas() {
-        return preferredAreas;
+    public String getAreas() {
+        return areas;
     }
 
-    public void setPreferredAreas(List<Area> preferredAreas) {
-        this.preferredAreas = preferredAreas;
+    public void setAreas(String areas) {
+        this.areas = areas;
     }
 
     public Date getCreatedDate() {
@@ -162,19 +157,38 @@ public class JobListing implements Serializable {
     }
 
     public double getReviewScore() {
-        return reviewScore;
-    }
-
-    public void setReviewScore(double reviewScore) {
-        this.reviewScore = reviewScore;
+        double sum = 0;
+        int count = 0;
+        if (this.offers != null) {
+            for (Offer o : this.offers) {
+                Rating rating = o.getRating();
+                if (o.getRating() != null) {
+                    sum = rating.getRatingValue();
+                    count++;
+                }
+            }
+        }
+        double avg = sum / count;
+        if (Double.isNaN(avg) || Double.isInfinite(avg)) {
+            return 0;
+        } else {
+            return avg;
+        }
     }
 
     public int getReviewCount() {
-        return reviewCount;
-    }
-
-    public void setReviewCount(int reviewCount) {
-        this.reviewCount = reviewCount;
+        double sum = 0;
+        int count = 0;
+        if (this.offers != null) {
+            for (Offer o : this.offers) {
+                Rating rating = o.getRating();
+                if (o.getRating() != null) {
+                    sum = rating.getRatingValue();
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
 }

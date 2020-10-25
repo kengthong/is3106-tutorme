@@ -7,24 +7,24 @@ package exception;
 
 /**
  *
- * @author Owen Tay
+ * @author Tay Z H Owen
  */
-public class TimeslotNotFoundException extends Exception {
+public class OfferStatusException extends Exception {
 
     /**
-     * Creates a new instance of <code>TimeslotNotFoundException</code> without
+     * Creates a new instance of <code>OfferWithdrawException</code> without
      * detail message.
      */
-    public TimeslotNotFoundException() {
+    public OfferStatusException() {
     }
 
     /**
-     * Constructs an instance of <code>TimeslotNotFoundException</code> with the
+     * Constructs an instance of <code>OfferWithdrawException</code> with the
      * specified detail message.
      *
      * @param msg the detail message.
      */
-    public TimeslotNotFoundException(String msg) {
+    public OfferStatusException(String msg) {
         super(msg);
     }
 }

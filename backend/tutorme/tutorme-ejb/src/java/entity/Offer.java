@@ -5,6 +5,7 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import enumeration.OfferStatusEnum;
 import java.io.Serializable;
 import java.time.Instant;
@@ -34,6 +35,7 @@ public class Offer implements Serializable {
     private Long offerId;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     private Date createdDate;
 
     @NotNull
@@ -41,6 +43,7 @@ public class Offer implements Serializable {
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date startDate;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)

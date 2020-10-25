@@ -7,15 +7,12 @@ package session;
 
 import entity.Message;
 import entity.Person;
-import entity.Tutee;
-import entity.Tutor;
 import exception.MessageNotFoundException;
 import exception.PersonNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,22 +26,19 @@ import util.MessageDateComaparator;
 @Stateless
 public class MessageSession implements MessageSessionLocal {
 
-    @EJB
-    private PersonSessionLocal personSession;
     @PersistenceContext(unitName = "tutorme-ejbPU")
     private EntityManager em;
 
     @Override
-    public Message createMessage(Long senderId, Long receiverId, String body) {
-        try {
-            Person sender = personSession.retrievePersonById(senderId);
-            Person receiver = personSession.retrievePersonById(receiverId);
+    public Message createMessage(Long senderId, Long receiverId, String body) throws PersonNotFoundException {
+        Person sender = em.find(Person.class, senderId);
+        Person receiver = em.find(Person.class, receiverId);
+        if (sender == null || receiver == null) {
+            throw new PersonNotFoundException("Either users not found when creating message.");
+        } else {
             Message newMessage = new Message(sender, receiver, body);
             em.persist(newMessage);
             return newMessage;
-        } catch (PersonNotFoundException ex) {
-            System.out.println("Person not found when creating Message");
-            return null;
         }
     }
 
@@ -65,43 +59,7 @@ public class MessageSession implements MessageSessionLocal {
         query.setParameter("inputP1", p1Id);
         query.setParameter("inputP2", p2Id);
         conversation = query.getResultList();
-        for (Message m : conversation) {
-            em.detach(m);
-            Person sender = m.getSender();
-            em.detach(sender);
-            sender.setReceivedMessages(null);
-            sender.setSentMessages(null);
-            sender.setSalt(null);
-            sender.setPassword(null);
-
-            Person receiver = m.getReceiver();
-            em.detach(receiver);
-            receiver.setReceivedMessages(null);
-            receiver.setSentMessages(null);
-            receiver.setSalt(null);
-            receiver.setPassword(null);
-
-            switch (sender.getPersonEnum()) {
-                case TUTEE:
-                    Tutee tempTutee = (Tutee) sender;
-                    tempTutee.setOffers(null);
-                    break;
-                case TUTOR:
-                    Tutor tempTutor = (Tutor) sender;
-                    tempTutor.setJobListings(null);
-                    break;
-            }
-            switch (receiver.getPersonEnum()) {
-                case TUTEE:
-                    Tutee tempTutee = (Tutee) receiver;
-                    tempTutee.setOffers(null);
-                    break;
-                case TUTOR:
-                    Tutor tempTutor = (Tutor) receiver;
-                    tempTutor.setJobListings(null);
-                    break;
-            }
-        }
+        
         conversation.sort(new MessageDateComaparator());
         return conversation;
     }

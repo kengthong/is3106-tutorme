@@ -5,6 +5,7 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
@@ -30,6 +31,7 @@ public class Message implements Serializable {
     private Long messageId;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     private Date createdDate;
 
     @NotNull
@@ -93,4 +95,5 @@ public class Message implements Serializable {
     public void setBody(String body) {
         this.body = body;
     }
+   
 }

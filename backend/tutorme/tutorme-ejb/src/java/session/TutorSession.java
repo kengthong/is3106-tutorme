@@ -6,23 +6,15 @@
 package session;
 
 import entity.JobListing;
-import entity.Offer;
-import entity.Rating;
 import entity.Tutor;
 import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
-import exception.JobListingNotFoundException;
-import exception.OfferNotFoundException;
-import exception.RatingNotFoundException;
 import exception.TutorNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,24 +28,12 @@ import util.security.CryptoHelper;
 @Stateless
 public class TutorSession implements TutorSessionLocal {
 
-    @EJB
-    RatingSessionLocal ratingSession;
-    @EJB
-    OfferSessionLocal offerSession;
-    @EJB
-    JobListingSessionLocal jobListingSession;
     @PersistenceContext(unitName = "tutorme-ejbPU")
     private EntityManager em;
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
-    @Override // in use
-    public Tutor createTutor(Tutor newTutor) {
-        em.persist(newTutor);
-        return newTutor;
-    }
-
-    @Override // in use
-    public Tutor createTutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc) {
+    @Override
+    public Tutor createTutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) {
         Tutor newTutor = new Tutor();
         try {
             String salt = ch.generateRandomString(64);
@@ -67,65 +47,41 @@ public class TutorSession implements TutorSessionLocal {
             newTutor.setMobileNum(mobileNum);
             newTutor.setGender(gender);
             newTutor.setDob(dob);
-            newTutor.setHighestQualification(highestQualification);
-            newTutor.setCitizenship(citizenship);
-            newTutor.setRace(race);
-            newTutor.setProfileDesc(profileDesc);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(TutorSession.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Hashing error when creating tutor.");
         }
-        return createTutor(newTutor);
+        em.persist(newTutor);
+        return newTutor;
 
     }
 
-    @Override // in use
+    @Override
     public List<Tutor> retrieveAllTutors() {
         System.out.println("Retrieving all tutors from tutorSession...");
         Query query = em.createQuery("SELECT t FROM Tutor t");
         List<Tutor> tutors = query.getResultList();
         for (Tutor t : tutors) {
-//            em.detach(t); //IF YOU DETACH IN SESSION BEAN, YOU WILL HAVE NO RELATIONSHIP NO LOVE LIFE
-//            t.setPassword(null);
-//            t.setSalt(null);
             if (t.getJobListings().isEmpty()) {
-                System.out.println("emptmttyyyyyyy");
+                System.out.println("### empty jobListings");
             }
             for (JobListing jl : t.getJobListings()) {
                 System.out.println("### JobListingId:" + jl.getJobListingId());
-//                em.detach(jl);
-//                jl.setTutor(null);
             }
         }
         return tutors;
     }
 
-    @Override // in use
+    @Override
     public Tutor retrieveTutorById(Long personId) throws TutorNotFoundException {
         Tutor tutor = em.find(Tutor.class, personId);
-//        em.detach(tutor);
-//        tutor.setPassword(null);
-//        tutor.setSalt(null);
-
-//        List<JobListing> jobListings = tutor.getJobListings();
-//        System.out.println("### joblistings size: "+jobListings.size());
-//        for (JobListing jl : jobListings) {
-//            System.out.println("### JobListingId:" + jl.getJobListingId());
-//            em.detach(jl);
-//            jl.setTutor(null);
-//        }
-        
-//        if (tutor != null) {
-//            List<Rating> tutorRatings = ratingSession.retrieveRatingsByTutorId(personId);
-//            OptionalDouble avgRating = tutorRatings.stream()
-//                    .mapToDouble(r -> r.getRatingValue())
-//                    .average();
-//            tutor.setAvgRating(avgRating.getAsDouble());
-//            return tutor;
-//        } else {
-//            throw new TutorNotFoundException("TutorID " + personId + " does not exists.");
-//        }
-        return tutor;
+        if (tutor.getJobListings() == null ) {
+            System.out.println("### tutor does not have joblisting");
+        }
+        if (tutor == null) {
+            throw new TutorNotFoundException("TutorID " + personId + " does not exists.");
+        } else {
+            return tutor;
+        }
     }
 
     @Override
@@ -134,8 +90,6 @@ public class TutorSession implements TutorSessionLocal {
         query.setParameter("inputEmail", email);
         Tutor tutor = (Tutor) query.getSingleResult();
         if (tutor != null) {
-//            tutor.getMessages();
-            tutor.getJobListings();
             return tutor;
         } else {
             throw new TutorNotFoundException("Tutor with email " + email + " does not exists.");
@@ -143,66 +97,11 @@ public class TutorSession implements TutorSessionLocal {
     }
 
     @Override
-    public List<Tutor> retrieveTutorsByName(String inputName) throws TutorNotFoundException {
+    public List<Tutor> retrieveTutorsByName(String inputName) {
         Query query = em.createQuery("SELECT t FROM Tutor t WHERE t.firstName LIKE :inputName OR t.lastName LIKE :inputName");
         query.setParameter("inputName", inputName);
         List<Tutor> results = query.getResultList();
-        if (!results.isEmpty()) { // if empty then return message in REST
-            for (Tutor t : results) {
-//                t.getMessages();
-                t.getJobListings();
-            }
-            return results;
-        } else {
-            throw new TutorNotFoundException("No tutor by the name " + inputName + " was found.");
-        }
-    }
-
-    @Override
-    public Tutor retrieveTutorByJobListing(Long jobListingId) throws TutorNotFoundException {
-        JobListing jobListing = null;
-        try {
-            jobListing = jobListingSession.retrieveJobListingById(jobListingId);
-        } catch (JobListingNotFoundException ex) {
-            throw new TutorNotFoundException("No tutor found because JobListingID " + jobListingId + " does not exists.");
-        }
-        Tutor tutor = jobListing.getTutor();
-        tutor.getJobListings();
-//        tutor.getMessages();
-        return tutor;
-    }
-
-    @Override
-    public Tutor retrieveTutorByOffer(Long offerId) throws TutorNotFoundException {
-        Offer offer = null;
-        try {
-            offer = offerSession.retrieveOfferById(offerId);
-        } catch (OfferNotFoundException ex) {
-            throw new TutorNotFoundException("No tutor found because OfferID " + offerId + " does not exists.");
-        }
-        Tutor tutor = offer.getJobListing().getTutor();
-        tutor.getJobListings();
-//        tutor.getMessages();
-        return tutor;
-    }
-
-    @Override
-    public Tutor retrieveTutorByRating(Long ratingId) throws TutorNotFoundException {
-        Rating rating = null;
-        try {
-            rating = ratingSession.retrieveRatingById(ratingId);
-        } catch (RatingNotFoundException ex) {
-            throw new TutorNotFoundException("No tutor found because RatingID " + ratingId + " does not exists.");
-        }
-        Tutor tutor = rating.getOffer().getJobListing().getTutor();
-        tutor.getJobListings();
-//        tutor.getMessages();
-        return tutor;
-    }
-
-    @Override
-    public Tutor updateTutorProfile(Tutor updatedTutor) {
-        return em.merge(updatedTutor);
+        return results;
     }
 
     @Override
@@ -217,7 +116,7 @@ public class TutorSession implements TutorSessionLocal {
         tutor.setCitizenship(citizenship);
         tutor.setRace(race);
         tutor.setProfileDesc(profileDesc);
-        return updateTutorProfile(tutor);
+        return tutor;
     }
 
     @Override
@@ -228,7 +127,7 @@ public class TutorSession implements TutorSessionLocal {
         } else {
             tutor.setActiveStatus(true);
         }
-        return updateTutorProfile(tutor);
+        return tutor;
     }
 
     @Override

@@ -30,8 +30,9 @@ public class Staff extends Person implements Serializable {
         this.setPersonEnum(PersonEnum.STAFF);
     }
 
-    public Staff(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender,PersonEnum personEnum, Date dob, StaffPositionEnum staffPositionEnum) {
+    public Staff(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) {
         super(firstName, lastName, email, password, mobileNum, gender, dob);
+        this.setPersonEnum(PersonEnum.STAFF);
         this.staffPositionEnum = staffPositionEnum;
     }
 

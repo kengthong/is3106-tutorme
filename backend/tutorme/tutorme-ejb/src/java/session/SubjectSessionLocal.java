@@ -17,8 +17,6 @@ import javax.ejb.Local;
 @Local
 public interface SubjectSessionLocal {
 
-    public Subject createSubject(Subject newSubject);
-
     public Subject createSubject(String subjectName, String subjectLevel);
 
     public Subject retrieveSubjectById(Long subjectId) throws SubjectNotFoundException;
@@ -29,11 +27,9 @@ public interface SubjectSessionLocal {
 
     public List<Subject> retrieveSubjectsLevel(String subjectLevel) throws SubjectNotFoundException;
 
-    public Subject retrieveSubject(String subjectName, String subjectLevel) throws SubjectNotFoundException;
+    public Subject retrieveSubjectByNameAndLevel(String subjectName, String subjectLevel) throws SubjectNotFoundException;
 
-    public void updateSubject(Subject subject) throws SubjectNotFoundException;
-
-    public void updateSubject(Long subjectId, String subjectName, String subjectLevel) throws SubjectNotFoundException;
+    public Subject updateSubject(Long subjectId, String subjectName, String subjectLevel) throws SubjectNotFoundException;
 
     public void deleteSubject(Long subjectId) throws SubjectNotFoundException;
 
