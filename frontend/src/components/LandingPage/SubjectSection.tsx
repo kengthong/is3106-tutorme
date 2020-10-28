@@ -11,6 +11,8 @@ import {SubjectState} from "../../reducer/subject-reducer";
 const { Option } = Select;
 
 export const SubjectSection = () => {
+    const test = new Date(1504095567183).toDateString();
+    console.log(test);
 
     const subjectState = useSelector<any,SubjectState>((state) => state.subjectReducer);
     const [selectedSub, setSelected] = useState<string>("");

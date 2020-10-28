@@ -8,14 +8,15 @@ const JobListings = () => {
     const location = useLocation();
     const params: {[key: string]:any} = qs.parse(location.search.substring(1), { ignoreQueryPrefix: true });
     const [jobListingList, setJobListingList] = useState<getJobListingListWithParamResposeProps>([]);
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
     // let jobListingList: getJobListingListWithParamResposeProps = [];
     useEffect(() => {
-        const result: getJobListingListWithParamResposeProps = TuteeService.getJobListingListWithParams({});
-        setTimeout(() => {
+        const getJobListings = async () => {
+            const result: getJobListingListWithParamResposeProps = await TuteeService.getJobListingListWithParams({});
             setJobListingList(result);
             setLoading(false);
-        },1000)
+        }
+        getJobListings();
     },[]);
     return (
         <div className={'flex-row justify-center job-listing-list-body'}>
@@ -29,7 +30,7 @@ const JobListings = () => {
     )
 };
 
-const JobListingCard = (props: jobListingType) => {
+const JobListingCard = (props: jobListingCardProps) => {
     const {name, img, price, reviewCount, reviewScore, education, loading } = props;
     return (
         <Col span={6} style={{marginTop: '20px'}}>
