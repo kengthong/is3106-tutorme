@@ -4,6 +4,7 @@ import { Select } from 'antd';
 
 const { Option } = Select;
 type filterProps = {
+    labels: string[];
     label: string;
     _key: string;
     params: {[key:string]: any};
@@ -12,13 +13,13 @@ type filterProps = {
 }
 
 const Filter = (props: filterProps) => {
-    const { params, _key, data, label, pushUrl } = props;
+    const { params, _key, data, label, labels, pushUrl } = props;
     const defaultVal = params[_key] ? '' + params[_key] : '';
 
     const handleChange = (value:any) => {
         pushUrl({
             ...params,
-            [_key]: value
+            [_key]: value === undefined? "" : value
         })
     }
 
@@ -27,9 +28,13 @@ const Filter = (props: filterProps) => {
             <div >
                 {label}
             </div>
-            <Select defaultValue={defaultVal} style={{ width: 180 }} onChange={handleChange}>
+            <Select
+                defaultValue={defaultVal}
+                style={{ width: 180 }}
+                allowClear
+                onChange={handleChange}>
                 {data.map( (d, i) => (
-                    <Option key={i} value={d}>{d}</Option>
+                    <Option key={i} value={d}>{labels[i]}</Option>
                 ))}
             </Select>
         </div>

@@ -11,13 +11,13 @@ const jsonHeader= {
 export class SubjectsService {
     public static async getAllSubjects(): Promise<void> {
         const url = BACKEND_BASE_URL + '/subject/subjectList';
-        const response = await Utility.fetchBuilder(url, 'GET', jsonHeader, null)
+        await Utility.fetchBuilder(url, 'GET', jsonHeader, null)
             .then( async res => {
                 if(res.ok) {
 
                     const result: subjectResponseType = await res.json();
-                    console.log(result);
-                    const uniqueSubjects = Array.from(new Set(result.map(sub => sub.subjectLevel)));
+                    // console.log(result);
+                    const uniqueSubjects = Array.from(new Set(result.map(sub => sub.subjectName)));
                     const payload: SubjectState = {
                         uniqueSubjects,
                         subjects: result

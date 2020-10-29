@@ -82,10 +82,10 @@ public class JobListingSession implements JobListingSessionLocal {
         System.out.println("... inputName: " + inputName);
         // filter by name & price
         Query query = em.createQuery("SELECT jl FROM JobListing jl "
-                + "WHERE (jl.tutor.firstName = :inputName OR jl.tutor.lastName = :inputName) "
+                + "WHERE (jl.tutor.firstName like :inputName OR jl.tutor.lastName like :inputName) "
                 + "AND jl.hourlyRates >= :inputMinPrice "
                 + "AND jl.hourlyRates <= :inputMaxPrice");
-        query.setParameter("inputName", inputName);
+        query.setParameter("inputName", "%" + inputName + "%");
         query.setParameter("inputMinPrice", minPrice);
         query.setParameter("inputMaxPrice", maxPrice);
         List<JobListing> result2 = query.getResultList();
@@ -107,9 +107,9 @@ public class JobListingSession implements JobListingSessionLocal {
                 List<Subject> subjects = jl.getSubjects();
                 for (Subject s : subjects) {
 //                    System.out.println(">> Comparing subjectName db: " + s.getSubjectName() + " and input: " + subjectName);
-                    if (s.getSubjectName().equals(subjectName)) {
+                    if (s.getSubjectName().toLowerCase().equals(subjectName.toLowerCase())) {
                         System.out.println("###$$$ Matched subjectName db: " + s.getSubjectName() + " and input: " + subjectName);
-                        result3.add(jl);
+                        result3.add(jl);            
                         break;
                     }
                 }

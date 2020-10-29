@@ -15,7 +15,7 @@ const NameFilter = (props: filterProps) => {
     const handleApply = (value:string ) => {
         pushUrl({
             ...params,
-            [_key]: value
+            [_key]: value === undefined? "" : value
         })
     };
 
@@ -25,9 +25,11 @@ const NameFilter = (props: filterProps) => {
                 {label}
             </div>
             <div className={'flex-row'}>
-                <Search placeholder={'Name of tutor'}
-                        onSearch={(value) => handleApply(value)}
-                        defaultValue={defaultVal}/>
+                <Search
+                    defaultValue={defaultVal}
+                    placeholder={'Name of tutor'}
+                    onSearch={(value) => handleApply(value)}
+                    allowClear/>
             </div>
         </div>
     )

@@ -42,9 +42,10 @@ public class JobListingResource {
     
     @GET
     @Path("/jobListingList")
-    @JWTTokenNeeded
+//    @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFilteredJobListings(@QueryParam("subject") String subject,
+    public Response getFilteredJobListings(
+            @QueryParam("subject") String subject,
             @QueryParam("level") String level,
             @QueryParam("minPrice") String minPrice,
             @QueryParam("maxPrice") String maxPrice,
@@ -53,11 +54,11 @@ public class JobListingResource {
         System.out.println("Getting filtered jobListings...");
         double minPx = 0;
         double maxPx = 999;
-        if (!minPrice.trim().isEmpty()) {
-            minPx = Double.valueOf(minPrice);
+        if (!minPrice.isEmpty()) {
+            minPx = Double.valueOf(minPrice.trim());
         }
-        if (!maxPrice.trim().isEmpty()) {
-            maxPx = Double.valueOf(maxPrice);
+        if (!maxPrice.isEmpty()) {
+            maxPx = Double.valueOf(maxPrice.trim());
         }
         System.out.println("###%%% filterJobListings params...");
         System.out.println("...subject: " + subject);
