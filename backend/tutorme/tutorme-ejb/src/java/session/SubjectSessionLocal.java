@@ -17,7 +17,7 @@ import javax.ejb.Local;
 @Local
 public interface SubjectSessionLocal {
 
-    public Subject createSubject(String subjectName, String subjectLevel);
+    public Subject createSubject(String subjectLevel, String subjectName);
 
     public Subject retrieveSubjectById(Long subjectId) throws SubjectNotFoundException;
     

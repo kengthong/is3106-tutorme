@@ -21,7 +21,7 @@ export const SubjectSection = () => {
         await SubjectsService.getAllSubjects();
     }
     useEffect(() => {
-        if(subjectState.uniqueSubjects && subjectState.uniqueSubjects.length === 0) {
+        if(!subjectState || !subjectState.uniqueSubjects || subjectState.uniqueSubjects.length === 0) {
             loadSubjects();
         }
     },[]);
