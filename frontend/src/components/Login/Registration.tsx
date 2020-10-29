@@ -43,7 +43,6 @@ const RegisterComponent = () => {
         content: "Please ensure password is identical to retyped password",
       });
     } else {
-      console.log("failed");
       Modal.error({
         title: "Error",
         content: "Please ensure all fields are filled",
@@ -54,7 +53,6 @@ const RegisterComponent = () => {
   const handleRedirectToLogin = () => history.push(LOGIN_URL);
 
   const handleChange = (e: any) => {
-    console.log(e);
     const name = e && e.target && e.target.name ? e.target.name : "";
     const value = e && e.target && e.target.value ? e.target.value : "";
     setFormData((prevState) => ({
@@ -62,7 +60,6 @@ const RegisterComponent = () => {
       [name]: value,
     }));
 
-    console.log(formData);
   };
 
   //Need this to be separated because DatePicker returns 2 values
