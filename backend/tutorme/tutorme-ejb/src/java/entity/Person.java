@@ -74,6 +74,10 @@ public abstract class Person implements Serializable {
     private PersonEnum personEnum;
 
     @NotNull
+    @Enumerated
+    private PersonEnum personEnum;
+
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date dob;
@@ -214,4 +218,9 @@ public abstract class Person implements Serializable {
         this.personEnum = personEnum;
     }
 
+    public void setPersonEnum(PersonEnum personEnum) {
+        this.personEnum = personEnum;
+    }
+
+    
 }

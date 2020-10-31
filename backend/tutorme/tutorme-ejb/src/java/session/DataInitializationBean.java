@@ -17,7 +17,9 @@ import enumeration.StaffPositionEnum;
 import enumeration.GenderEnum;
 import exception.InvalidParamsException;
 import exception.InvalidSubjectChoiceException;
+import exception.OfferNotFoundException;
 import exception.PersonNotFoundException;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -132,6 +134,7 @@ public class DataInitializationBean {
     }
 
     private void initSubjects() {
+//        FileInputStream subjectLevelStream = new FileInputStream();
         subjectSession.createSubject("Primary 1", "English Language");
         subjectSession.createSubject("Primary 1", "Mother Tongue Language (MTL)");
         subjectSession.createSubject("Primary 1", "Mathematics");
@@ -332,7 +335,7 @@ public class DataInitializationBean {
         List<Tutor> tutors = tutorSession.retrieveAllTutors();
         List<Subject> subjects = subjectSession.retrieveAllSubjects();
         try {
-            for (int i = 0; i < 25; i++) {
+            for (int i = 0; i < 10; i++) {
                 int randomTutorIndex = randomNumberGenerator(0, tutors.size());
                 Tutor tutor;
                 tutor = tutors.get(randomTutorIndex);
@@ -365,7 +368,7 @@ public class DataInitializationBean {
     private void initOffers() {
         List<JobListing> jobListings = jobListingSession.retrieveAllJobListings();
         List<Tutee> tutees = tuteeSession.retrieveAllTutees();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 20; i++) {
             int randomJobListingIndex = randomNumberGenerator(0, jobListings.size());
             JobListing jobListing = jobListings.get(randomJobListingIndex);
             int randomTuteeIndex = randomNumberGenerator(0, tutees.size());
@@ -381,6 +384,8 @@ public class DataInitializationBean {
 
             int randomNumSessions = randomNumberGenerator(2, 8); 
 
+            int randomNumSessions = randomNumberGenerator(2, 8); 
+
             Date startDate = new Date();
             try {
                 Offer offer = offerSession.createOffer(rates, startDate, tutee.getPersonId(), chosenSubject.getSubjectId(), jobListing.getJobListingId(), randomNumSessions, 2, "I love learning");
@@ -393,13 +398,17 @@ public class DataInitializationBean {
     private void initRatings() {
         List<Offer> offers = offerSession.retrieveAllOffers();
         List<Integer> used = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 10; i++) {
             int randomOfferIndex = randomNumberGenerator(1, offers.size());
             if (!used.contains(randomOfferIndex)) {
-                used.add(randomOfferIndex);
-                Offer offer = offers.get(randomOfferIndex);
-                double value = (double) randomNumberGenerator(1, 5);
-                Rating rating = ratingSession.createRating(value, "the tutor was great/bad", offer);
+                try {
+                    used.add(randomOfferIndex);
+                    Offer offer = offers.get(randomOfferIndex);
+                    double value = (double) randomNumberGenerator(1, 5);
+                    Rating rating = ratingSession.createRating(value, "the tutor was great/bad", offer.getOfferId());
+                } catch (OfferNotFoundException ex) {
+                    System.out.println("initRatings failure");
+                }
             }
         }
     }

@@ -6,6 +6,7 @@
 package webservices.restful;
 
 import entity.JobListing;
+import entity.Message;
 import entity.Offer;
 import entity.Rating;
 import entity.Tutee;
@@ -13,13 +14,12 @@ import exception.InvalidParamsException;
 import exception.InvalidSubjectChoiceException;
 import exception.OfferNotFoundException;
 import exception.OfferStatusException;
+import exception.PersonNotFoundException;
 import filter.JWTTokenNeeded;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
@@ -32,6 +32,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import session.MessageSessionLocal;
 import session.OfferSessionLocal;
 
 /**
@@ -45,6 +46,8 @@ public class OfferResource {
 
     @EJB
     OfferSessionLocal offerSession;
+    @EJB
+    MessageSessionLocal messageSession;
 
     @GET
     @Path("/offers")
@@ -116,10 +119,10 @@ public class OfferResource {
             tutee.setPassword(null);
             tutee.setSalt(null);
             tutee.setOffers(null);
-            Rating rating = o.getRating();
-            if (rating != null) {
-                rating.setOffer(null);
-            }
+//            Rating rating = o.getRating();
+//            if (rating == null) {
+//                rating.setOffer(null);
+//            }
 
             JobListing jobListing = o.getJobListing();
             jobListing.setOffers(null);
@@ -177,11 +180,14 @@ public class OfferResource {
                 jobListing.setOffers(null);
                 jobListing.setTutor(null);
             }
+            
+            // Create offer message notification
+            Message message = messageSession.createOfferMessage(tuteeId, jobListingId, "TuteeId: "+tuteeId+" has made an offer for your post with jobListingID: "+jobListingId);
 
             GenericEntity<List<Offer>> payload = new GenericEntity<List<Offer>>(offers) {
             };
             return Response.status(200).entity(payload).build();
-        } catch (ParseException | InvalidParamsException | InvalidSubjectChoiceException ex) {
+        } catch (ParseException | InvalidParamsException | InvalidSubjectChoiceException | PersonNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
         }

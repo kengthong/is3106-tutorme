@@ -7,9 +7,9 @@ package session;
 
 import entity.Offer;
 import entity.Rating;
+import exception.OfferNotFoundException;
 import exception.RatingNotFoundException;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,10 +26,15 @@ public class RatingSession implements RatingSessionLocal {
     EntityManager em;
 
     @Override
-    public Rating createRating(Double ratingValue, String comments, Offer offer) {
-        Rating newRating = new Rating(ratingValue, comments, offer);
-        em.persist(newRating);
-        return newRating;
+    public Rating createRating(Double ratingValue, String comments, Long offerId) throws OfferNotFoundException {
+        Offer offer = em.find(Offer.class, offerId);
+        if (offer == null) {
+            throw new OfferNotFoundException("offerId does not exist");
+        } else {
+            Rating newRating = new Rating(ratingValue, comments, offer);
+            em.persist(newRating);
+            return newRating;
+        }
     }
 
     @Override
@@ -62,16 +67,6 @@ public class RatingSession implements RatingSessionLocal {
         query.setParameter("inputTutorId", tutorId);
         List<Rating> ratings = query.getResultList();
         return ratings;
-//        double ratingValues = 0;
-//        for (Rating r : ratings) {
-//            ratingValues += r.getRatingValue();
-//        }
-//        double avgRatingValue = ratingValues / ratings.size();
-//        if (Double.isNaN(avgRatingValue) || Double.isInfinite(avgRatingValue)) {
-//            return 0;
-//        } else {
-//            return avgRatingValue;
-//        }
     }
 
     @Override
@@ -80,16 +75,6 @@ public class RatingSession implements RatingSessionLocal {
         query.setParameter("inputJobListingId", jobListingId);
         List<Rating> ratings = query.getResultList();
         return ratings;
-//        double ratingValues = 0;
-//        for (Rating r : ratings) {
-//            ratingValues += r.getRatingValue();
-//        }
-//        double avgRatingValue = ratingValues / ratings.size();
-//        if (Double.isNaN(avgRatingValue) || Double.isInfinite(avgRatingValue)) {
-//            return 0;
-//        } else {
-//            return avgRatingValue;
-//        }
     }
 
     @Override
