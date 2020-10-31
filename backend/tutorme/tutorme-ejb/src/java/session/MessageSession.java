@@ -15,6 +15,8 @@ import entity.Message;
 import entity.Person;
 import entity.Message;
 import entity.Person;
+import entity.Tutee;
+import entity.Tutor;
 import exception.MessageNotFoundException;
 import exception.PersonNotFoundException;
 import java.util.ArrayList;
