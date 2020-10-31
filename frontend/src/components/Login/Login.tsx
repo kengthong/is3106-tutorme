@@ -1,49 +1,43 @@
-import React, { useEffect, useState, Component, FormEvent } from "react";
-import { useHistory, Redirect } from "react-router-dom";
-import { REGISTRATION_URL } from "../../config/constants";
+import React, {useState} from "react";
+import {Redirect, useHistory} from "react-router-dom";
+import {REGISTRATION_URL} from "../../config/constants";
 import logo from "../../assets/logo.jpg";
-import { Input, Button } from "antd";
+import {Button, Input} from "antd";
 import {UserService} from "../../services/User";
 import {UserState} from "../../reducer/user-reducer";
 import {useSelector} from "react-redux";
+import {IRootState} from "../../store";
 
 const Login = () => {
   const history = useHistory();
-  const userState = useSelector<UserState, UserState>((state) => state);
-  // console.log("user state =", userState);
+  const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
+  const [ hasSubmit, setHasSubmit] = useState(false);
   const handleRedirectToRegister = () => history.push(REGISTRATION_URL);
 
   const [formData, setFormData] = useState({
-    email: "5",
-    password: "43",
+    email: "",
+    password: "",
   });
 
   const handleChange = (e: any) => {
-    // console.log(e);
     const name = e && e.target && e.target.name ? e.target.name : "";
     const value = e && e.target && e.target.value ? e.target.value : "";
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
-
-    // console.log(formData);
   };
 
   const handleSubmit = (e: any) => {
     //Should call on
     //Skeleton
+    setHasSubmit(true);
     UserService.login(formData.email, formData.password);
-    // console.log("Submitted");
   };
-
-  const redirect = () => {
-
-  }
 
   return (
     <div>
-      <img src={logo} style={{ padding: 100 }} />
+      <img src={logo} style={{ padding: 100 }} alt='logo'/>
       <h1
         style={{
           fontSize: "3rem",
@@ -54,8 +48,8 @@ const Login = () => {
       </h1>
 
       {userState.isAuthenticated && <Redirect to={"/"} />}
-      <div>
-        {userState.error? userState.errorMsg: null }
+      <div style={{fontSize: '16px', color: 'red'}}>
+        {hasSubmit && userState.error? userState.errorMsg: null }
       </div>
       <form onSubmit={handleSubmit}>
         <div className="p-fluid">
@@ -65,6 +59,7 @@ const Login = () => {
               name="email"
               id="emailinput"
               type="text"
+              onPressEnter={handleSubmit}
               onChange={(e) => handleChange(e)}
             />
           </div>
@@ -74,6 +69,7 @@ const Login = () => {
               name="password"
               id="passwordinput"
               type="password"
+              onPressEnter={handleSubmit}
               onChange={(e) => handleChange(e)}
             />
           </div>

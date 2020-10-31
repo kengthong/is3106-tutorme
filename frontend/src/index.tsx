@@ -5,13 +5,17 @@ import App from "./App/App";
 import * as serviceWorker from "./serviceWorker";
 import {Provider} from "react-redux";
 import {store} from "./store";
+import {PersistGate} from 'redux-persist/integration/react';
+import {persistStore} from 'redux-persist';
 
 // import 'primeicons/primeicons.css';
-
+const persist = persistStore(store);
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-        <App />
+        <PersistGate persistor={persist}>
+            <App />
+        </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

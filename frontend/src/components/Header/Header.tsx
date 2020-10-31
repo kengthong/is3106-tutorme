@@ -1,20 +1,26 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React from "react";
 import logo from "../../assets/logo.jpg";
-import { UserService } from "../../services/User";
-import { UserState } from "../../reducer/user-reducer";
-
-
+import {UserService} from "../../services/User";
+import {UserState} from "../../reducer/user-reducer";
+import {useSelector} from "react-redux";
+import {IRootState} from "../../store";
+import {Avatar, Popover} from "antd";
+import {useHistory} from "react-router-dom";
 
 const Header = () => {
-  const [currUser, setCurrUser] = useState(""); //Need to Update this
-  const [isTutor, setisTutor] = useState(false); //Need to Update this
-
+  const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
+  const history = useHistory();
   const handleLogout = () => {
     UserService.logout();
+    history.push("/");
+  }
+
+  const handleProfileClick = () => {
+
   }
 
   return (
-    <div className="navbar navbar-inverse navbar-fixed-top">
+    <div className="navbar navbar-inverse navbar-fixed-top" style={{zIndex: 0}}>
       <div className="container">
         <div className="col-lg-2 col-sm-1">
           <div className="navbar-header">
@@ -57,13 +63,13 @@ const Header = () => {
               <a href="contact_us.html">Contact us</a>
             </li>
 
-            {currUser == "" ?
+            {!userState.isAuthenticated ?
               <li>
                 <a href="/registration">Register</a>
               </li>
               :
 
-              isTutor == false ?
+                userState.currentUser && userState.currentUser.personEnum === "TUTEE" ?
                 <li>
                   <a href="/tuteeProfile">My Profile</a>
                 </li>
@@ -71,29 +77,55 @@ const Header = () => {
                 <li>
                   <a href="/tutorMenu">Menu</a>
                 </li>
-
             }
-
-
-
+            {userState.isAuthenticated?
+              <li>
+                <a href="/chat">Chat</a>
+              </li>
+              :
+              null
+            }
           </ul>
         </div>
 
         <div
-          className="col-lg-4 col-sm-3"
+          className="col-lg-4 col-sm-3 flex-row align-center"
           style={{ paddingTop: "20px" }}
         >
+          {userState.isAuthenticated && userState.currentUser ?
+              <Popover placement="bottomRight" content={ProfileContent(userState.currentUser.personEnum, handleLogout)} trigger="click" className='clickable'>
+                <div className='flex-row align-center justify-center border-e8' style={{minWidth: '100px', padding: '8px 16px', borderRadius: '4px'}}
+                     onClick={handleProfileClick}
+                >
+                  <div>
+                    <Avatar style={{backgroundColor: '#C2175B'}}>
+                      {userState.currentUser?.firstName.substring(0,1).toUpperCase()}
+                    </Avatar>
+                  </div>
 
-          <ul className="nav navbar-nav myProfileButton">
-            {currUser != "" ?
-              <li>
-                <a onClick={() => handleLogout()}>Sign Out</a>
-              </li>
-              : <li>
-                <a href="/login">Sign In</a>
-              </li>
-            }
-          </ul>
+                  <div style={{paddingLeft: '8px'}}>
+                    {userState.currentUser?.firstName}
+                  </div>
+                </div>
+              </Popover>
+
+          :
+              <ul className="nav navbar-nav myProfileButton">
+                <li>
+                  <a href="/login">Sign In</a>
+                </li>
+              </ul>
+          }
+          {/*<ul className="nav navbar-nav myProfileButton">*/}
+          {/*  {userState.isAuthenticated ?*/}
+          {/*    <li>*/}
+          {/*      <a onClick={() => handleLogout()}>Sign Out</a>*/}
+          {/*    </li>*/}
+          {/*    : <li>*/}
+          {/*      <a href="/login">Sign In</a>*/}
+          {/*    </li>*/}
+          {/*  }*/}
+          {/*</ul>*/}
 
         </div>
 
@@ -101,5 +133,27 @@ const Header = () => {
     </div>
   );
 };
+
+const ProfileContent = (personEnum: string, handleLogout: () => void) => {
+
+  return (
+    <div style={{height: '150px', width: '150px'}}>
+      <div className='clickable highlightable'>
+        <a className='selection w-100' href={`${personEnum === 'TUTEE'? '/tutee-profile' : '/tutor-profile'}`}>
+          My Profile
+        </a>
+      </div>
+      <div className='clickable highlightable'>
+        <a className='selection w-100' href={`/${personEnum === 'TUTEE'? 'tutee' : 'tutor'}/settings/profile`}>
+          Settings
+        </a>
+      </div>
+      <div className='clickable highlightable'>
+        <div className='selection w-100' onClick={handleLogout}>
+          <a>Log Out</a>
+        </div>
+      </div>
+    </div>
+)};
 
 export default Header;

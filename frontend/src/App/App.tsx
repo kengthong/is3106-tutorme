@@ -42,10 +42,10 @@ const App = () => {
           <ProtectedRoute path="/login" component={Login} />
           <ProtectedRoute path="/tutor/settings/profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
           <ProtectedRoute path="/tutor/settings/personal-details" allowedUser='tutor' exact component={TutorDetailsPage} isAuthenticated={true} />
-          <ProtectedRoute path="/tutor-profile" allowedUser='tutee' exact component={TutorProfilePage} isAuthenticated={true} />
+          <ProtectedRoute path="/tutor-profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
 
           <Route path="/registration" component={Registration} />
-          <Route path="/tuteeProfile" component={tuteeProfile} />
+          <Route path="/tutee-profile" component={tuteeProfile} />
           {/*<ProtectedRoute path="/settings" component={Settings}/>*/}
           {/*<ProtectedRoute component={Dashboard}/>*/}
           <Route path="/error" exact={true} component={NotFoundPage} />

@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "../../../components/Header/Header";
-import BodyContainer from "../../../components/Layout/BodyContainer";
 import {SubjectSection} from "../../../components/LandingPage/SubjectSection";
 import {Footer} from "../../../components/LandingPage/Footer";
 

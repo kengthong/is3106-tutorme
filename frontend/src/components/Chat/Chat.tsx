@@ -1,118 +1,146 @@
-import React, { useState } from "react";
-import { ChatFeed, Message, ChatBubble, BubbleGroup } from "react-chat-ui";
-import { Avatar, Input, List, Button } from "antd";
+import React, {ChangeEvent, useEffect, useState} from 'react';
+import {Avatar, Input, List, message} from "antd";
+import {ChatBubble, Message} from "react-chat-ui";
+import {ChatService} from "../../services/Chat";
+import {useSelector} from "react-redux";
+import {IRootState} from "../../store";
+import {UserState} from "../../reducer/user-reducer";
 
-const styles = {
-    button: {
-        backgroundColor: '#fff',
-        borderColor: '#1D2129',
-        borderStyle: 'solid',
-        borderRadius: 20,
-        borderWidth: 2,
-        color: '#1D2129',
-        fontSize: 18,
-        fontWeight: '300',
-        paddingTop: 8,
-        paddingBottom: 8,
-        paddingLeft: 16,
-        paddingRight: 16,
-    },
-    selected: {
-        color: '#fff',
-        backgroundColor: '#0084FF',
-        borderColor: '#0084FF',
-    },
-};
-
-//Fake data for testing
-const messages = [
-    {
-        id: "mark",
-        message: 'Hey guys!',
-        senderName: 'Mark'
-    },
-    {
-        id: 2,
-        message: 'Hey Evan here!',
-        senderName: 'Evan'
-    }
-]
+// const currUserId = 1;
+const activeStyle = {
+    backgroundColor: 'rgb(237 247 255)'
+}
+const {Search } = Input;
 
 const Chat = () => {
+    const [chatList, setChatList] = useState<chatListType>([]);
+    const [activeUserChatId, setActiveUserChatId] = useState("");
+    const [messageInput, setMessageInput] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [chatMessages, setChatMessages] = useState<Message[]>([]);
+    const [ currUserId, setCurrUserId ] = useState(-1);
+    const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
 
-    const [formData, setFormData] = useState({
-        message: "",
-    });
+    useEffect(() => {
+        const getChatList = async () => {
+            const id = userState.currentUser ? userState.currentUser.personId : -1;
+            setCurrUserId(id);
+            if(id !== -1) {
+                const chatList: chatListResponseType = await ChatService.getChatList(id);
+                const _chatList = chatList.map( c => ({
+                    userId: c[0] ? c[0].sender.personId === id? c[0].receiver.personId : c[0].sender.personId : -1,
+                    message: c[0] ? c[0].body : "",
+                    senderName: c[0] ? c[0].sender.personId === id? c[0].receiver.firstName : c[0].sender.firstName : "",
+                }));
+                setChatList(_chatList);
+            }
 
-    const handleChange = (e: any) => {
-        console.log(e);
-        const name = e && e.target && e.target.name ? e.target.name : "";
-        const value = e && e.target && e.target.value ? e.target.value : "";
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
+        }
 
-        console.log(formData);
-    };
+        getChatList();
 
-    const onMessageSubmit = (e: any) => {
-        console.log(e);
-    };
+    }, [])
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const words = e.target.value;
+        setMessageInput(words);
+    }
+    const onMessageSubmit = () => {
+        const sendMessage = async () => {
 
+            const ok = await ChatService.sendMessage(currUserId.toString(), activeUserChatId, messageInput);
+            setChatList(chatList);
+            if(ok) {
+                setLoading(true);
+                const newChatMessages: Message[] = chatMessages;
+                newChatMessages.push(new Message({
+                    id: 0,
+                    message: messageInput
+                }));
+                setChatMessages(newChatMessages);
+                setMessageInput("");
+                setLoading(false);
+            } else {
+                // message error
+                message.error('This is an error message');
+            }
+        }
+
+        if(messageInput !== "") {
+            sendMessage();
+        }
+
+    }
+
+    const onSelectChat = (id: number) => {
+        const getMessagesByUserIds = async () => {
+            const chatMessages = await ChatService.getMessagesByUserIds(currUserId.toString(), id.toString());
+            const chatMsgObj = chatMessages.map( (m,i) => {
+                return new Message({
+                    id: m.sender.personId === currUserId? 0 : 1,
+                    message: m.body
+                })
+            })
+            setChatMessages(chatMsgObj);
+        }
+
+        getMessagesByUserIds();
+        setActiveUserChatId(id.toString());
+    }
     return (
-
-        <div className="" style={{border: '1px solid #e8e8e8', height: '100%'}}>
-            {/*<h1 className="text-center">Chat page</h1>*/}
-
-            <br />
-
-            <div className="container" style={{ width: "20%", float: "left", borderRight: "solid", height: "100%" }}>
-                <h4 className="text-center">Chat List</h4>
-
+        <div className='flex-row h-100' style={{border: '1px solid #e8e8e8'}}>
+            <div className='w-30'>
                 <List
                     itemLayout="horizontal"
-                    dataSource={messages}
+                    dataSource={chatList}
                     renderItem={item => (
-                        <List.Item>
-                            <List.Item.Meta
-                                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                title={<a href="https://ant.design">{item.senderName}</a>}
-                            />
-                        </List.Item>
+                        <div onClick={() => onSelectChat(item.userId)} className="clickable" style={item.userId.toString() === activeUserChatId? activeStyle : {}}>
+                            <List.Item>
+                                <List.Item.Meta
+                                    avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                                    title={item.senderName}
+                                />
+                            </List.Item>
+                        </div>
                     )}
                 />
-
             </div>
 
-
-            <div className="container" style={{ width: "80%", float: "right", height: "100%" }} >
-                <div className="chatfeed-wrapper">
-                    <ChatFeed
-                        messages={messages}
-                        showSenderName
-                    />
-
-                    <footer style={{ position: "absolute", bottom: "10px", width: "100%" }}>
-                        <form onSubmit={e => onMessageSubmit(e)}>
-                            <Input
-                                name="message"
-                                placeholder="Type a message..."
-                                className="message-input"
-                                onChange={(e) => handleChange(e)}
-                                style={{ width: "50%" }}
-                            />
-                            <Button type="primary" onClick={onMessageSubmit} >Send</Button>
-                        </form>
-                    </footer>
+            <div className="chatfeed-wrapper flex-col justify-space-between w-70" style={{borderLeft: '1px solid #e8e8e8'}}>
+                <div className="w-100 h-100" style={{overflow: 'auto'}}>
+                    {!loading && activeUserChatId !== ""?
+                        chatMessages.map( (m,i) => {
+                            return (
+                                <ChatBubble
+                                    key={i}
+                                    message={m}
+                                />
+                            )
+                        })
+                    :
+                        <div className="opacity-65 fs-32 flex-row justify-center align-center h-100 w-100">
+                            Select a chat
+                        </div>
+                    }
                 </div>
-
-
+                {!loading && activeUserChatId !== "" ?
+                    (<div>
+                        <Search
+                            name="message"
+                            placeholder="Type a message..."
+                            className="message-input"
+                            value={messageInput}
+                            onChange={(e) => handleChange(e)}
+                            onSearch={onMessageSubmit}
+                            style={{width: "100%"}}
+                            enterButton={"Send"}
+                        />
+                    </div>)
+                    :
+                    null
+                }
             </div>
-
         </div>
-    );
-
+    )
 }
 
 export default Chat;

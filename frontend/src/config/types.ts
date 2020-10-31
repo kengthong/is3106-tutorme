@@ -6,74 +6,40 @@ type chatListType = {
     senderName: string;
 }[];
 
-type chatListResponseType = {
-    body: string;
-    createdDate?: string;
-    messageId?: number;
-    receiver: {
-        activeStatus?: boolean,
-        createdDate?: string;
-        dob?: string;
-        email?: string;
-        firstName: string;
-        gender?: string;
-        lastName?: string;
-        mobileNum?: string;
-        personEnum?: string;
-        personId: number;
-        profileDesc?: string;
-    },
-    sender: {
-        activeStatus?: boolean,
-        createdDate?: string;
-        dob?: string;
-        email?: string;
-        firstName: string;
-        gender?: string;
-        lastName?: string;
-        mobileNum?: string;
-        personEnum?: string;
-        personId: number;
-        avgRating?: number;
-        citizenship?: string;
-        highestQualification?: string;
-        profileDesc?: string;
-        race?: string;
-    }
-}[]
+type chatListResponseType = chatMessagesType[]
 
 type chatMessagesType = {
-    body?: string;
-    createdDate?: string;
-    messageId?: number;
-    receiver?: {
+    body: string;
+    createdDate: string;
+    messageId: number;
+    receiver: {
         activeStatus?: boolean;
         createdDate?: string;
         dob?: string;
         email?: string;
-        firstName?: string;
+        firstName: string;
         gender?: string;
         lastName?: string;
         mobileNum?: string;
         personEnum?: string;
-        personId?: number;
+        personId: number;
         avgRating?: number;
         citizenship?: string;
         highestQualification?: string;
         profileDesc?: string;
         race?: string;
     },
-    sender?: {
+    sender: {
         activeStatus?: boolean;
         createdDate?: string;
         dob?: string;
         email?: string;
-        firstName?: string;
+        firstName: string;
         gender?: string;
         lastName?: string;
         mobileNum?: string;
         personEnum?: string;
-        personId?: number;
+        personId: number;
         staffPositionEnum?: string;
     }
 }[];

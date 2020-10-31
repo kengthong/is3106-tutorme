@@ -16,15 +16,16 @@ import javax.ws.rs.ext.Provider;
  */
 
 
-@Provider
+@Provider   
 public class CORSFilter implements ContainerResponseFilter {
 
    @Override
    public void filter(final ContainerRequestContext requestContext,
                       final ContainerResponseContext cres) throws IOException {
-      cres.getHeaders().putSingle("Access-Control-Allow-Origin", "*");
-    cres.getHeaders().putSingle("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
-    cres.getHeaders().putSingle("Access-Control-Allow-Headers", "Content-Type");
+    cres.getHeaders().add("Access-Control-Allow-Origin", "*");
+    cres.getHeaders().add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    cres.getHeaders().add("Access-Control-Allow-Credentials", "true");
+    cres.getHeaders().add("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS,HEAD");
    }
 
 }
