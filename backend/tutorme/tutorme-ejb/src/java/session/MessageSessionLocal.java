@@ -19,6 +19,8 @@ import javax.ejb.Local;
 public interface MessageSessionLocal {
 
     public Message createMessage(Long senderId, Long receiverId, String body) throws PersonNotFoundException;
+    
+    public Message createOfferMessage(Long senderId, Long jobListingId, String body) throws PersonNotFoundException;
 
     public Message retrieveMessageById(Long messageId) throws MessageNotFoundException;
 
