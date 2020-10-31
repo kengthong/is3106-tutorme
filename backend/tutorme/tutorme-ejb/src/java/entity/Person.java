@@ -76,10 +76,6 @@ public abstract class Person implements Serializable {
     private String profileImage;
 
     @NotNull
-    @Enumerated
-    private PersonEnum personEnum;
-
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date dob;

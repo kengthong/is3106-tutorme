@@ -52,7 +52,7 @@ public class EmailSession implements EmailSessionLocal {
 
             // Enter your correct gmail UserID and Password
             // if you have 2FA enabled then provide App Specific Password
-            transport.connect("smtp.gmail.com", "faith.zhihong@gmail.com", "Hateznlovez2020");
+            transport.connect("smtp.gmail.com", "is3106dummy@gmail.com", "#IS3106dummy");
             transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
             transport.close();
 
