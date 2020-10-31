@@ -5,7 +5,6 @@
  */
 package session;
 
-import java.util.Date;
 import java.util.Properties;
 import javax.ejb.Stateless;
 import javax.mail.Message;
