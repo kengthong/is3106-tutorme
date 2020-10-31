@@ -6,7 +6,6 @@
 package session;
 
 import entity.JobListing;
-import entity.Message;
 import entity.Offer;
 import entity.Subject;
 import entity.Tutee;
@@ -67,6 +66,16 @@ public class OfferSession implements OfferSessionLocal {
     @Override
     public List<Offer> retrieveAllOffers() {
         Query query = em.createQuery("SELECT o FROM Offer o");
+        List<Offer> offers = query.getResultList();
+        return offers;
+    }
+
+    @Override
+    public List<Offer> retrieveOffersByPeriod(Date startDate, Date endDate) {
+        System.out.println("Inside OfferSession startDate " + startDate + " endDate " + endDate);
+        Query query = em.createQuery("SELECT o FROM Offer o WHERE o.createdDate >= :inputStartDate AND o.createdDate <= :inputEndDate");
+        query.setParameter("inputStartDate", startDate);
+        query.setParameter("inputEndDate", endDate);
         List<Offer> offers = query.getResultList();
         return offers;
     }

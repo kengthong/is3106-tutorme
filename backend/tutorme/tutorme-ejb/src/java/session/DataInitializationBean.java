@@ -386,10 +386,6 @@ public class DataInitializationBean {
 
             int randomNumSessions = randomNumberGenerator(2, 8); 
 
-            int randomNumSessions = randomNumberGenerator(2, 8); 
-
-            int randomNumSessions = randomNumberGenerator(2, 8); 
-
             Date startDate = new Date();
             try {
                 Offer offer = offerSession.createOffer(rates, startDate, tutee.getPersonId(), chosenSubject.getSubjectId(), jobListing.getJobListingId(), randomNumSessions, 2, "I love learning");

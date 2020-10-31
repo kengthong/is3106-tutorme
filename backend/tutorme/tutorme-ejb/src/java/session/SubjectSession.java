@@ -32,7 +32,7 @@ public class SubjectSession implements SubjectSessionLocal {
 
     @Override
     public List<Subject> retrieveAllSubjects() {
-        Query query = em.createQuery("SELECT s from Subject s");
+        Query query = em.createQuery("SELECT s FROM Subject s");
         List<Subject> subjects = query.getResultList();
         return subjects;
     }
