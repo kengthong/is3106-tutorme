@@ -36,6 +36,7 @@ import javax.json.JsonObjectBuilder;
 import javax.ws.rs.POST;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import session.EmailSessionLocal;
 import session.PersonSessionLocal;
 import session.StaffSessionLocal;
 import session.TuteeSessionLocal;
@@ -59,6 +60,8 @@ public class PersonResource implements Serializable {
     TutorSessionLocal tutorSession;
     @EJB
     StaffSessionLocal staffSession;
+    @EJB
+    EmailSessionLocal emailSession;
 
     private final String key = "hsianghui";
     private final HMACSigner signer = HMACSigner.newSHA256Signer(key);
@@ -171,6 +174,7 @@ public class PersonResource implements Serializable {
                     encodedJWT = AuthenticateUser.issueJwt(tutor.getPersonId());
                     String jsonTutor = mapper.writeValueAsString(tutor);
                     payload.add("user", jsonTutor);
+                    emailSession.send(tutor.getFirstName(), tutor.getEmail());
                     break;
                 case "tutee":
                     Tutee tutee = tuteeSession.createTutee(firstName, lastName, email, password, mobileNum, genderEnum, dob);
@@ -182,6 +186,7 @@ public class PersonResource implements Serializable {
                     encodedJWT = AuthenticateUser.issueJwt(tutee.getPersonId());
                     String jsonTutee = mapper.writeValueAsString(tutee);
                     payload.add("user", jsonTutee);
+                    emailSession.send(tutee.getFirstName(), tutee.getEmail());
                     break;
             }
             payload.add("jwtToken", encodedJWT);
