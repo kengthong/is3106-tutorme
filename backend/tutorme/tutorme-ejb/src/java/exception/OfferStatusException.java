@@ -7,24 +7,24 @@ package exception;
 
 /**
  *
- * @author Owen Tay
+ * @author Tay Z H Owen
  */
-public class AreaNotFoundException extends Exception {
+public class OfferStatusException extends Exception {
 
     /**
-     * Creates a new instance of <code>AreaNotFoundException</code> without
+     * Creates a new instance of <code>OfferWithdrawException</code> without
      * detail message.
      */
-    public AreaNotFoundException() {
+    public OfferStatusException() {
     }
 
     /**
-     * Constructs an instance of <code>AreaNotFoundException</code> with the
+     * Constructs an instance of <code>OfferWithdrawException</code> with the
      * specified detail message.
      *
      * @param msg the detail message.
      */
-    public AreaNotFoundException(String msg) {
+    public OfferStatusException(String msg) {
         super(msg);
     }
 }

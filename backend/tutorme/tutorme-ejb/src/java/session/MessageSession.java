@@ -9,11 +9,15 @@ import entity.Message;
 import entity.Person;
 import exception.MessageNotFoundException;
 import exception.PersonNotFoundException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import javax.ejb.EJB;
+import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import util.MessageDateComaparator;
 
 /**
  *
@@ -22,37 +26,20 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class MessageSession implements MessageSessionLocal {
 
-    @EJB
-    private PersonSessionLocal personSession;
     @PersistenceContext(unitName = "tutorme-ejbPU")
     private EntityManager em;
 
     @Override
-    public Message createMessage(Message newMessage) {
-        Person sender = newMessage.getSender();
-        Person receiver = newMessage.getReceiver();
-        em.persist(newMessage);
-        em.flush();
-
-        sender.getMessages().add(newMessage);
-        receiver.getMessages().add(newMessage);
-        em.merge(sender);
-        em.merge(receiver);
-        return newMessage;
-    }
-
-    @Override
     public Message createMessage(Long senderId, Long receiverId, String body) throws PersonNotFoundException {
-        Person sender = personSession.retrievePersonById(senderId);
-        Person receiver = personSession.retrievePersonById(receiverId);
-        Message newMessage = new Message(sender, receiver, body);
-        em.persist(newMessage);
-
-        sender.getMessages().add(newMessage);
-        receiver.getMessages().add(newMessage);
-        em.merge(sender);
-        em.merge(receiver);
-        return newMessage;
+        Person sender = em.find(Person.class, senderId);
+        Person receiver = em.find(Person.class, receiverId);
+        if (sender == null || receiver == null) {
+            throw new PersonNotFoundException("Either users not found when creating message.");
+        } else {
+            Message newMessage = new Message(sender, receiver, body);
+            em.persist(newMessage);
+            return newMessage;
+        }
     }
 
     @Override
@@ -66,37 +53,37 @@ public class MessageSession implements MessageSessionLocal {
     }
 
     @Override
-    public List<Message> retrieveMessagesByPersonId(Long userId) throws PersonNotFoundException {
-        Person user = personSession.retrievePersonById(userId);
-        List<Message> messages = user.getMessages();
-        return messages;
+    public List<Message> retrieveConversation(Long p1Id, Long p2Id) {
+        List<Message> conversation = new ArrayList<>();
+        Query query = em.createQuery("SELECT m from Message m WHERE m.sender.personId=:inputP1 AND m.receiver.personId=:inputP2 OR m.sender.personId=:inputP2 AND m.receiver.personId=:inputP1");
+        query.setParameter("inputP1", p1Id);
+        query.setParameter("inputP2", p2Id);
+        conversation = query.getResultList();
+        
+        conversation.sort(new MessageDateComaparator());
+        return conversation;
     }
 
     @Override
-    public void updateMessage(Message updatedMessage) {
-        em.merge(updatedMessage);
-    }
+    public List<List<Message>> retrieveAllConversations(Long personId) {
+        List<Message> messages = new ArrayList<>();
+        Query query = em.createQuery("SELECT m from Message m WHERE m.sender.personId=:inputPersonId OR m.receiver.personId=:inputPersonId");
+        query.setParameter("inputPersonId", personId);
+        messages = query.getResultList();
 
-    @Override
-    public void updateMessage(Long messageId, String updatedMessage) throws MessageNotFoundException {
-        Message message = retrieveMessageById(messageId);
-        message.setBody(updatedMessage);
-        updateMessage(message);
-    }
-
-    @Override
-    public void deactivateMessage(Long messageId) throws MessageNotFoundException {
-        Message message = retrieveMessageById(messageId);
-        if (message.getActiveStatus()) {
-            message.setActiveStatus(false);
-            updateMessage(message);
+        Set<Long> otherPersonIds = new HashSet<>();
+        for (Message m : messages) {
+            Long senderId = m.getSender().getPersonId();
+            Long receiverId = m.getReceiver().getPersonId();
+            if (senderId.equals(personId)) {
+                otherPersonIds.add(receiverId);
+            } else {
+                otherPersonIds.add(senderId);
+            }
         }
-    }
 
-    @Override
-    public void deleteMessage(Long messageId) throws MessageNotFoundException {
-        Message message = retrieveMessageById(messageId);
-        em.remove(message);
+        List<List<Message>> conversations = new ArrayList<>();
+        otherPersonIds.forEach(pId -> conversations.add(retrieveConversation(personId, pId)));
+        return conversations;
     }
-
 }

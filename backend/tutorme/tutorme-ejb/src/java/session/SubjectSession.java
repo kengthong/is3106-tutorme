@@ -7,7 +7,6 @@ package session;
 
 import entity.Subject;
 import exception.SubjectNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,16 +24,10 @@ public class SubjectSession implements SubjectSessionLocal {
     EntityManager em;
 
     @Override
-    public Subject createSubject(Subject newSubject) {
+    public Subject createSubject(String subjectLevel, String subjectName) {
+        Subject newSubject = new Subject(subjectLevel, subjectName);
         em.persist(newSubject);
-        em.flush();
         return newSubject;
-    }
-
-    @Override
-    public Subject createSubject(String subjectName, String subjectLevel) {
-        Subject newSubject = new Subject(subjectName, subjectLevel);
-        return createSubject(newSubject);
     }
 
     @Override
@@ -59,11 +52,7 @@ public class SubjectSession implements SubjectSessionLocal {
         Query query = em.createQuery("SELECT s FROM Subject s WHERE s.subjectName = :inputSubjectName");
         query.setParameter("inputSubjectName", subjectName);
         List<Subject> results = query.getResultList();
-        if (!results.isEmpty()) { // if empty then return message in REST
-            return results;
-        } else {
-            throw new SubjectNotFoundException("No Subjects by the name " + subjectName + " was found.");
-        }
+        return results;
     }
 
     @Override
@@ -71,15 +60,11 @@ public class SubjectSession implements SubjectSessionLocal {
         Query query = em.createQuery("SELECT s FROM Subject s WHERE s.subjectLevel = :inputSubjectLevel");
         query.setParameter("inputSubjectLevel", subjectLevel);
         List<Subject> results = query.getResultList();
-        if (!results.isEmpty()) { // if empty then return message in REST
-            return results;
-        } else {
-            throw new SubjectNotFoundException("No Subjects by the level " + subjectLevel + " was found.");
-        }
+        return results;
     }
 
     @Override
-    public Subject retrieveSubject(String subjectName, String subjectLevel) throws SubjectNotFoundException {
+    public Subject retrieveSubjectByNameAndLevel(String subjectName, String subjectLevel) throws SubjectNotFoundException {
         Query query = em.createQuery("SELECT s FROM Subject s WHERE s.subjectLevel = :inputSubjectLevel AND s.subjectName = :inputSubjectName");
         query.setParameter("inputSubjectLevel", subjectLevel);
         query.setParameter("inputSubjectName", subjectName);
@@ -92,16 +77,11 @@ public class SubjectSession implements SubjectSessionLocal {
     }
 
     @Override
-    public void updateSubject(Subject subject) throws SubjectNotFoundException {
-        em.merge(subject);
-    }
-
-    @Override
-    public void updateSubject(Long subjectId, String subjectName, String subjectLevel) throws SubjectNotFoundException {
+    public Subject updateSubject(Long subjectId, String subjectName, String subjectLevel) throws SubjectNotFoundException {
         Subject subject = retrieveSubjectById(subjectId);
         subject.setSubjectName(subjectName);
         subject.setSubjectLevel(subjectLevel);
-        updateSubject(subject);
+        return subject;
     }
 
     @Override

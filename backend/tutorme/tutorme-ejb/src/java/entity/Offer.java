@@ -5,10 +5,12 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import enumeration.OfferStatusEnum;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -33,6 +35,7 @@ public class Offer implements Serializable {
     private Long offerId;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     private Date createdDate;
 
     @NotNull
@@ -40,38 +43,48 @@ public class Offer implements Serializable {
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date startDate;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tutee tutee;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private JobListing jobListing;
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
     private Subject chosenSubject;
 
     @NotNull
     @Enumerated
     private OfferStatusEnum offerStatus;
 
+    @NotNull
+    private int numSessions;
+
+    @NotNull
+    private double hoursPerSession;
+
     private String additionalNote;
 
-    @OneToOne(mappedBy = "offer", fetch = FetchType.LAZY, optional = true)
+    @OneToOne(mappedBy = "offer", fetch = FetchType.EAGER, optional = true, cascade = {CascadeType.ALL})
     private Rating rating;
 
     public Offer() {
+        this.createdDate = Date.from(Instant.now());
+        this.offerStatus = OfferStatusEnum.PENDING;
     }
 
-    public Offer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, String additionalNote) {
+    public Offer(Double offeredRate, Date startDate, Tutee tutee, Subject chosenSubject, JobListing jobListing, int numSessions, double hoursPerSession, String additionalNote) {
+        this();
         this.offeredRate = offeredRate;
         this.startDate = startDate;
         this.tutee = tutee;
         this.chosenSubject = chosenSubject;
         this.jobListing = jobListing;
+        this.numSessions = numSessions;
+        this.hoursPerSession = hoursPerSession;
         this.additionalNote = additionalNote;
-        this.createdDate = Date.from(Instant.now());
-        this.offerStatus = OfferStatusEnum.PENDING;
     }
 
     public Long getOfferId() {
@@ -152,6 +165,22 @@ public class Offer implements Serializable {
 
     public void setRating(Rating rating) {
         this.rating = rating;
+    }
+
+    public int getNumSessions() {
+        return numSessions;
+    }
+
+    public void setNumSessions(int numSessions) {
+        this.numSessions = numSessions;
+    }
+
+    public double getNumHoursPerSession() {
+        return hoursPerSession;
+    }
+
+    public void setHoursPerSession(int hoursPerSession) {
+        this.hoursPerSession = hoursPerSession;
     }
 
 }

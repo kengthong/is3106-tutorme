@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     useHistory,
     useLocation,
@@ -11,10 +11,22 @@ import qs from "qs";
 import {Row} from "antd";
 import {qualifications} from "../../config/constants";
 import NameFilter from "./NameFilter";
+import {useSelector} from "react-redux";
+import {SubjectState} from "../../reducer/subject-reducer";
+import {SubjectsService} from "../../services/Subjects";
 
-const Index = () => {
+const SearchFilter = () => {
     const history = useHistory();
     const location = useLocation();
+    const subjectState = useSelector<any,SubjectState>((state) => state.subjectReducer);
+    const loadSubjects = async() => {
+        await SubjectsService.getAllSubjects();
+    }
+    useEffect(() => {
+        if(!subjectState || !subjectState.uniqueSubjects || subjectState.uniqueSubjects.length === 0) {
+            loadSubjects();
+        }
+    },[]);
 
     const handleSubmit = () => {
         history.push('/component-two',{params:'Hello World'})
@@ -43,10 +55,10 @@ const Index = () => {
             <div className={'custom-container'}>
                 <div className={'flex-row justify-space-around w-100'}>
                     <NameFilter label={'Name'} _key={'name'} {...filterProps} />
-                    <Filter label={'Subject'} _key={'subject'} {...filterProps} data={['Maths', 'English', 'Chinese']} />
-                    <Filter label={'Level'} _key={'level'} {...filterProps} data={qualifications} />
-                    <Filter label={'Price'} _key={'price'} {...filterProps} data={['s', 'm', 'l']} />
-                    <Filter label={'Gender'} _key={'gender'} {...filterProps} data={['M','F']} />
+                    <Filter label={'Subject'} _key={'subject'} {...filterProps} data={subjectState.uniqueSubjects} labels={subjectState.uniqueSubjects}/>
+                    <Filter label={'Level'} _key={'level'} {...filterProps} data={qualifications} labels={qualifications} />
+                    <Filter label={'Price'} _key={'price'} {...filterProps} data={['s', 'm', 'l']} labels={['<$30', '$30/hr - $60/hr', '>$60/hr']} />
+                    {/*<Filter label={'Gender'} _key={'gender'} {...filterProps} data={['M','F']} labels={['M','F']} />*/}
                 </div>
 
             </div>
@@ -54,4 +66,4 @@ const Index = () => {
     )
 };
 
-export default Index;
+export default SearchFilter;

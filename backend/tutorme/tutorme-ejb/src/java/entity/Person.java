@@ -6,11 +6,13 @@
 package entity;
 
 import enumeration.GenderEnum;
+import enumeration.PersonEnum;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -24,6 +26,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  *
@@ -37,6 +40,7 @@ public abstract class Person implements Serializable {
     private Long personId;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date createdDate;
 
     private Boolean activeStatus;
@@ -54,6 +58,7 @@ public abstract class Person implements Serializable {
 
     @NotNull
     private String password;
+    @NotNull
     private String salt;
 
     @Size(min = 8, max = 8)
@@ -65,19 +70,29 @@ public abstract class Person implements Serializable {
     private GenderEnum gender;
 
     @NotNull
-    @Temporal(TemporalType.DATE)
+    @Enumerated
+    private PersonEnum personEnum;
+
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date dob;
 
-    @OneToMany(targetEntity = Message.class, fetch = FetchType.LAZY)
-    private List<Message> messages;
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "sender")
+    private List<Message> sentMessages;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "receiver")
+    private List<Message> receivedMessages;
 
     public Person() {
-        this.createdDate = new Date();
+        this.createdDate = Date.from(Instant.now());
         this.activeStatus = true;
-        this.messages = new ArrayList();
+        this.sentMessages = new ArrayList();
+        this.receivedMessages = new ArrayList();
     }
 
     public Person(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) {
+        this();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -85,9 +100,6 @@ public abstract class Person implements Serializable {
         this.mobileNum = mobileNum;
         this.gender = gender;
         this.dob = dob;
-        this.createdDate = Date.from(Instant.now());
-        this.activeStatus = true;
-        this.messages = new ArrayList();
     }
 
     public Long getPersonId() {
@@ -178,12 +190,28 @@ public abstract class Person implements Serializable {
         this.dob = dob;
     }
 
-    public List<Message> getMessages() {
-        return messages;
+    public List<Message> getSentMessages() {
+        return sentMessages;
     }
 
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
+    public void setSentMessages(List<Message> sentMessages) {
+        this.sentMessages = sentMessages;
+    }
+
+    public List<Message> getReceivedMessages() {
+        return receivedMessages;
+    }
+
+    public void setReceivedMessages(List<Message> receivedMessages) {
+        this.receivedMessages = receivedMessages;
+    }
+
+    public PersonEnum getPersonEnum() {
+        return personEnum;
+    }
+
+    public void setPersonEnum(PersonEnum personEnum) {
+        this.personEnum = personEnum;
     }
 
 }

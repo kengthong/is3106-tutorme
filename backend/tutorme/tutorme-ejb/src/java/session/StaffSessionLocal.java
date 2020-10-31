@@ -7,8 +7,8 @@ package session;
 
 import exception.StaffNotFoundException;
 import entity.Staff;
-import enumeration.StaffPositionEnum;
 import enumeration.GenderEnum;
+import enumeration.StaffPositionEnum;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -20,11 +20,7 @@ import javax.ejb.Local;
 @Local
 public interface StaffSessionLocal {
 
-//    public Staff loginStaff(String email, String password) throws StaffNotFoundException;
-
-    public Staff createStaff(Staff newStaff);
-
-    public Staff createStaff(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, StaffPositionEnum adminPositionEnum);
+    public Staff createStaff(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, StaffPositionEnum staffPositionEnum);
 
     public List<Staff> retrieveAllStaffs();
 
@@ -32,11 +28,9 @@ public interface StaffSessionLocal {
 
     public Staff retrieveStaffByEmail(String email) throws StaffNotFoundException;
 
-    public void updateStaff(Staff updatedStaff);
+    public Staff updateStaff(Long personId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob) throws StaffNotFoundException;
 
-    public void updateStaff(Long personId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob) throws StaffNotFoundException;
-
-    public void changeStaffActiveStatus(Long personId) throws StaffNotFoundException;
+    public Staff changeStaffActiveStatus(Long personId) throws StaffNotFoundException;
 
     public void deleteStaff(Long personId) throws StaffNotFoundException;
 

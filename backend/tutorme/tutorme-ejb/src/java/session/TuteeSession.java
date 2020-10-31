@@ -5,19 +5,14 @@
  */
 package session;
 
-import entity.Offer;
-import entity.Rating;
 import entity.Tutee;
 import enumeration.GenderEnum;
-import exception.OfferNotFoundException;
-import exception.RatingNotFoundException;
 import exception.TuteeNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,43 +26,12 @@ import util.security.CryptoHelper;
 @Stateless
 public class TuteeSession implements TuteeSessionLocal {
 
-    @EJB
-    RatingSessionLocal ratingSession;
-    @EJB
-    OfferSessionLocal offerSession;
     @PersistenceContext(unitName = "tutorme-ejbPU")
     private EntityManager em;
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
-//    @Override
-//    public Tutee loginTutee(String email, String password) throws TuteeNotFoundException {
-//        try {
-//            Tutee tutee = retrieveTuteeByEmail(email);
-//            String storedPassword = tutee.getPassword();
-//            String salt = tutee.getSalt();
-//            String hashedPassword = ch.byteArrayToHexString(ch.doHashPassword(password.concat(salt)));
-//            if (storedPassword.equals(hashedPassword)) {
-//                tutee.setSalt(null);
-//                tutee.getOffers();
-//                tutee.getMessages();
-//                return tutee;
-//            } else {
-//                throw new TuteeNotFoundException("Invalid login parameters.");
-//            }
-//        } catch (TuteeNotFoundException ex) {
-//            throw new TuteeNotFoundException("Invalid login parameters.");
-//        }
-//    }
-
     @Override
-    public Tutee createTutee(Tutee newTutee) {
-        em.persist(newTutee);
-        em.flush();
-        return newTutee;
-    }
-
-    @Override
-    public Tutee createTutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, String profileDesc) {
+    public Tutee createTutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) {
         Tutee newTutee = new Tutee();
         try {
             String salt = ch.generateRandomString(64);
@@ -81,11 +45,11 @@ public class TuteeSession implements TuteeSessionLocal {
             newTutee.setMobileNum(mobileNum);
             newTutee.setGender(gender);
             newTutee.setDob(dob);
-            newTutee.setProfileDesc(profileDesc);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(TuteeSession.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Hashing error when creating tutee.");
         }
-        return createTutee(newTutee);
+        em.persist(newTutee);
+        return newTutee;
     }
 
     @Override
@@ -117,43 +81,34 @@ public class TuteeSession implements TuteeSessionLocal {
     }
 
     @Override
-    public List<Tutee> retrieveTuteeByName(String inputName) throws TuteeNotFoundException {
+    public List<Tutee> retrieveTuteeByName(String inputName) {
         Query query = em.createQuery("SELECT t FROM Tutee t WHERE t.firstName LIKE :inputName OR t.lastName LIKE :inputName");
         query.setParameter("inputName", inputName);
         List<Tutee> results = query.getResultList();
-        if (!results.isEmpty()) { // if empty then return message in REST
-            return results;
-        } else {
-            throw new TuteeNotFoundException("No tutee by the name " + inputName + " was found.");
-        }
+        return results;
     }
 
-    @Override
-    public Tutee retrieveTuteeByOffer(Long offerId) throws TuteeNotFoundException {
-        Offer offer = null;
-        try {
-            offer = offerSession.retrieveOfferById(offerId);
-        } catch (OfferNotFoundException ex) {
-            System.out.println("Tutee was not found because OfferID " + offerId + " does not exists.");
-        }
-        return offer.getTutee();
-    }
-
-    @Override
-    public Tutee retrieveTuteeByRating(Long ratingId) throws TuteeNotFoundException {
-        Rating rating = null;
-        try {
-            rating = ratingSession.retrieveRatingById(ratingId);
-        } catch (RatingNotFoundException ex) {
-            System.out.println("Tutee was not found because RatingID " + ratingId + " does not exists.");
-        }
-        return rating.getOffer().getTutee();
-    }
-
-    @Override
-    public void updateTutee(Tutee updatedTutee) {
-        em.merge(updatedTutee);
-    }
+//    @Override
+//    public Tutee retrieveTuteeByOffer(Long offerId) throws TuteeNotFoundException {
+//        Offer offer = null;
+//        try {
+//            offer = offerSession.retrieveOfferById(offerId);
+//        } catch (OfferNotFoundException ex) {
+//            System.out.println("Tutee was not found because OfferID " + offerId + " does not exists.");
+//        }
+//        return offer.getTutee();
+//    }
+//
+//    @Override
+//    public Tutee retrieveTuteeByRating(Long ratingId) throws TuteeNotFoundException {
+//        Rating rating = null;
+//        try {
+//            rating = ratingSession.retrieveRatingById(ratingId);
+//        } catch (RatingNotFoundException ex) {
+//            System.out.println("Tutee was not found because RatingID " + ratingId + " does not exists.");
+//        }
+//        return rating.getOffer().getTutee();
+//    }
 
     @Override
     public void updateTutee(Long personId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc) throws TuteeNotFoundException {
@@ -164,7 +119,6 @@ public class TuteeSession implements TuteeSessionLocal {
         tutee.setGender(gender);
         tutee.setDob(dob);
         tutee.setProfileDesc(profileDesc);
-        updateTutee(tutee);
     }
 
     @Override
@@ -175,7 +129,6 @@ public class TuteeSession implements TuteeSessionLocal {
         } else {
             tutee.setActiveStatus(false);
         }
-        updateTutee(tutee);
     }
 
     @Override

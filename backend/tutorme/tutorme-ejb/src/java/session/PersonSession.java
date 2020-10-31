@@ -6,6 +6,7 @@
 package session;
 
 import entity.Person;
+import exception.PersonLoginFailException;
 import exception.PersonNotFoundException;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -27,7 +28,7 @@ public class PersonSession implements PersonSessionLocal {
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
     @Override
-    public Person login(String email, String password) {
+    public Person login(String email, String password) throws PersonLoginFailException {
         Query query = em.createQuery("SELECT p from Person p WHERE p.email=:email");
         query.setParameter("email", email);
         try {
@@ -36,10 +37,10 @@ public class PersonSession implements PersonSessionLocal {
             if (person.getPassword().equals(hashedInputPassword)) {
                 return person;
             } else {
-                return null;
+                throw new PersonLoginFailException("Invalid login credentials.");
             }
         } catch (NoResultException ex) {
-            return null;
+            throw new PersonLoginFailException("Invalid login credentials.");
         }
     }
 
@@ -72,6 +73,8 @@ public class PersonSession implements PersonSessionLocal {
         }
     }
 
+    
+    // TODO
     @Override
     public Person changePassword(Long userId, String oldPassword, String newPassword) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -87,7 +90,6 @@ public class PersonSession implements PersonSessionLocal {
             } else {
                 user.setActiveStatus(true);
             }
-            em.merge(user);
         } catch (PersonNotFoundException ex) {
             System.out.println("Person ID " + userId + "does not exists.");
         }

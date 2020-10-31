@@ -9,22 +9,22 @@ package exception;
  *
  * @author Owen Tay
  */
-public class TimeslotNotFoundException extends Exception {
+public class InvalidParamsException extends Exception {
 
     /**
-     * Creates a new instance of <code>TimeslotNotFoundException</code> without
+     * Creates a new instance of <code>InvalidParametersException</code> without
      * detail message.
      */
-    public TimeslotNotFoundException() {
+    public InvalidParamsException() {
     }
 
     /**
-     * Constructs an instance of <code>TimeslotNotFoundException</code> with the
-     * specified detail message.
+     * Constructs an instance of <code>InvalidParametersException</code> with
+     * the specified detail message.
      *
      * @param msg the detail message.
      */
-    public TimeslotNotFoundException(String msg) {
+    public InvalidParamsException(String msg) {
         super(msg);
     }
 }

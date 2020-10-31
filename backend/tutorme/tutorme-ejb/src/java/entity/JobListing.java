@@ -5,17 +5,19 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -34,45 +36,44 @@ public class JobListing implements Serializable {
 
     private Boolean activeStatus;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tutor tutor;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Subject> subjects;
 
     @Column(nullable = false, precision = 2)
     private Double hourlyRates;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
-    private List<Timeslot> preferredTimeslots;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
-    private List<Area> preferredAreas;
+    private String timeslots;
+    private String areas;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date createdDate;
 
     private String jobListingDesc;
 
-    @OneToMany(mappedBy = "jobListing", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "jobListing", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<Offer> offers;
 
-    public JobListing() {
-    }
+    private double reviewScore;
+    private int reviewCount;
 
-    public JobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, List<Timeslot> preferredTimeslots, List<Area> preferredAreas, String jobListingDesc) {
-        this.tutor = tutor;
-        this.subjects = subjects;
-        this.hourlyRates = hourlyRates;
-        this.preferredTimeslots = preferredTimeslots;
-        this.preferredAreas = preferredAreas;
-        this.jobListingDesc = jobListingDesc;
+    public JobListing() {
         this.createdDate = new Date();
         this.activeStatus = true;
         this.offers = new ArrayList();
+    }
+
+    public JobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, String timeslots, String areas, String jobListingDesc) {
+        this();
+        this.tutor = tutor;
+        this.subjects = subjects;
+        this.hourlyRates = hourlyRates;
+        this.timeslots = timeslots;
+        this.areas = areas;
+        this.jobListingDesc = jobListingDesc;
     }
 
     public Long getJobListingId() {
@@ -115,20 +116,20 @@ public class JobListing implements Serializable {
         this.hourlyRates = hourlyRates;
     }
 
-    public List<Timeslot> getPreferredTimeslots() {
-        return preferredTimeslots;
+    public String getTimeslots() {
+        return timeslots;
     }
 
-    public void setPreferredTimeslots(List<Timeslot> preferredTimeslots) {
-        this.preferredTimeslots = preferredTimeslots;
+    public void setTimeslots(String timeslots) {
+        this.timeslots = timeslots;
     }
 
-    public List<Area> getPreferredAreas() {
-        return preferredAreas;
+    public String getAreas() {
+        return areas;
     }
 
-    public void setPreferredAreas(List<Area> preferredAreas) {
-        this.preferredAreas = preferredAreas;
+    public void setAreas(String areas) {
+        this.areas = areas;
     }
 
     public Date getCreatedDate() {
@@ -153,6 +154,41 @@ public class JobListing implements Serializable {
 
     public void setOffers(List<Offer> offers) {
         this.offers = offers;
+    }
+
+    public double getReviewScore() {
+        double sum = 0;
+        int count = 0;
+        if (this.offers != null) {
+            for (Offer o : this.offers) {
+                Rating rating = o.getRating();
+                if (o.getRating() != null) {
+                    sum = rating.getRatingValue();
+                    count++;
+                }
+            }
+        }
+        double avg = sum / count;
+        if (Double.isNaN(avg) || Double.isInfinite(avg)) {
+            return 0;
+        } else {
+            return avg;
+        }
+    }
+
+    public int getReviewCount() {
+        double sum = 0;
+        int count = 0;
+        if (this.offers != null) {
+            for (Offer o : this.offers) {
+                Rating rating = o.getRating();
+                if (o.getRating() != null) {
+                    sum = rating.getRatingValue();
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
 }

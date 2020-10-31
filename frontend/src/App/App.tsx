@@ -32,7 +32,7 @@ const App = () => {
           <Route path="/tutee/listings" component={TuteeListingPage} />
           <Route path="/tutor/listings" component={TutorListingPage} />
           <Route path="/login" component={Login} />
-          <Route path="/" exact component={LandingPage} isAuthenticated={true} />
+          <Route path="/" exact component={LandingPage} isAuthenticated={true}/>
           <Route path='/search:params?' component={SearchPage} />
           <Route path="/tutor/createListing" component={CreateJobListing} />
           <ProtectedRoute path="/login" component={Login} />
@@ -59,12 +59,11 @@ const ProtectedRoute = ({ component, isAuthenticated, allowedUser, ...rest }: an
   const isAppropriateUser = (!allowedUser) || (allowedUser && userType === allowedUser);
 
   const routeComponent = (props: any) =>
-
-    isAuthenticated ?
-      isAppropriateUser ?
-        (React.createElement(component, props))
-        : (<Redirect to={{ pathname: "/" }} />)
-      : (<Redirect to={{ pathname: "/login" }} />);
+    isAuthenticated?
+        isAppropriateUser ?
+            ( React.createElement(component, props))
+        : ( <Redirect to={{ pathname: "/" }} /> )
+    : (<Redirect to={{ pathname: "/login" }} /> );
   return <Route {...rest} render={routeComponent} />;
 };
 

@@ -4,16 +4,19 @@ export const REGISTRATION_URL = "/registration";
   export const BACKEND_BASE_URL = 'http://localhost:8080/tutorme-war/webresources';
 
 export const qualifications = [
-  "Doctoral",
-  "Master",
-  "Bachelor",
-  "Vocational",
-  "Higher NITEC",
-  "ITE",
-  "Polythenic",
-  "A Level",
-  "O Level",
-  "PSLE",
+  "Primary 1",
+  "Primary 2",
+  "Primary 3",
+  "Primary 4",
+  "Primary 5",
+  "Primary 6",
+  "Secondary 1 (O)",
+  "Secondary 2 (O)",
+  "Secondary 3 (O)",
+  "Secondary 4 (O)",
+  "H1",
+  "H2",
+  "H3"
 ];
 export const races = ["Chinese", "Malay", "Indian", "Other"];
 

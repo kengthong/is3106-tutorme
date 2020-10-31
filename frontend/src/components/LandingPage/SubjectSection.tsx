@@ -19,14 +19,13 @@ export const SubjectSection = () => {
         await SubjectsService.getAllSubjects();
     }
     useEffect(() => {
-        if(subjectState.uniqueSubjects && subjectState.uniqueSubjects.length === 0) {
+        if(!subjectState || !subjectState.uniqueSubjects || subjectState.uniqueSubjects.length === 0) {
             loadSubjects();
         }
     },[]);
 
     const onChange = (val: string) => {
         setSelected(val);
-        console.log('searched', val)
     };
 
     const searchSubject = () => {

@@ -10,7 +10,7 @@ import {useSelector} from "react-redux";
 const Login = () => {
   const history = useHistory();
   const userState = useSelector<UserState, UserState>((state) => state);
-  console.log("user state =", userState);
+  // console.log("user state =", userState);
   const handleRedirectToRegister = () => history.push(REGISTRATION_URL);
 
   const [formData, setFormData] = useState({
@@ -19,7 +19,7 @@ const Login = () => {
   });
 
   const handleChange = (e: any) => {
-    console.log(e);
+    // console.log(e);
     const name = e && e.target && e.target.name ? e.target.name : "";
     const value = e && e.target && e.target.value ? e.target.value : "";
     setFormData((prevState) => ({
@@ -27,14 +27,14 @@ const Login = () => {
       [name]: value,
     }));
 
-    console.log(formData);
+    // console.log(formData);
   };
 
   const handleSubmit = (e: any) => {
     //Should call on
     //Skeleton
     UserService.login(formData.email, formData.password);
-    console.log("Submitted");
+    // console.log("Submitted");
   };
 
   const redirect = () => {
