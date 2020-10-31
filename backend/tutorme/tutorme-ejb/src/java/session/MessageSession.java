@@ -5,8 +5,11 @@
  */
 package session;
 
+import entity.JobListing;
 import entity.Message;
 import entity.Person;
+import entity.Tutee;
+import entity.Tutor;
 import exception.MessageNotFoundException;
 import exception.PersonNotFoundException;
 import java.util.ArrayList;
@@ -33,6 +36,21 @@ public class MessageSession implements MessageSessionLocal {
     public Message createMessage(Long senderId, Long receiverId, String body) throws PersonNotFoundException {
         Person sender = em.find(Person.class, senderId);
         Person receiver = em.find(Person.class, receiverId);
+        if (sender == null || receiver == null) {
+            throw new PersonNotFoundException("Either users not found when creating message.");
+        } else {
+            Message newMessage = new Message(sender, receiver, body);
+            em.persist(newMessage);
+            return newMessage;
+        }
+    }
+    
+    
+    @Override
+    public Message createOfferMessage(Long senderId, Long jobListingId, String body) throws PersonNotFoundException {
+        Tutee sender = em.find(Tutee.class, senderId);
+        JobListing jobListing = em.find(JobListing.class, jobListingId);
+        Tutor receiver = jobListing.getTutor();
         if (sender == null || receiver == null) {
             throw new PersonNotFoundException("Either users not found when creating message.");
         } else {
@@ -86,4 +104,5 @@ public class MessageSession implements MessageSessionLocal {
         otherPersonIds.forEach(pId -> conversations.add(retrieveConversation(personId, pId)));
         return conversations;
     }
+
 }
