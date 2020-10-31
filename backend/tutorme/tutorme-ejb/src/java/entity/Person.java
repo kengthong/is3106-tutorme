@@ -72,10 +72,8 @@ public abstract class Person implements Serializable {
     @NotNull
     @Enumerated
     private PersonEnum personEnum;
-
-    @NotNull
-    @Enumerated
-    private PersonEnum personEnum;
+    
+    private String profileImage;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
@@ -216,11 +214,14 @@ public abstract class Person implements Serializable {
 
     public void setPersonEnum(PersonEnum personEnum) {
         this.personEnum = personEnum;
+    }    
+
+    public String getProfileImage() {
+        return profileImage;
     }
 
-    public void setPersonEnum(PersonEnum personEnum) {
-        this.personEnum = personEnum;
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
-    
 }

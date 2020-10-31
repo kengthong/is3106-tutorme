@@ -39,9 +39,6 @@ public class MessageResource {
     @EJB
     MessageSessionLocal messageSession;
 
-    /**
-     * Creates a new instance of MessageResource
-     */
     public MessageResource() {
     }
 

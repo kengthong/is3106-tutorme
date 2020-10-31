@@ -26,6 +26,8 @@ public interface OfferSessionLocal {
     public Offer retrieveOfferById(Long offerId) throws OfferNotFoundException;
 
     public List<Offer> retrieveAllOffers();
+    
+    public List<Offer> retrieveOffersByPeriod(Date startDate, Date endDate);
 
     public List<Offer> retrieveOffersByTuteeId(Long userId);
 

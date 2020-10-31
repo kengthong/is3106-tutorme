@@ -34,6 +34,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import session.MessageSessionLocal;
 import session.OfferSessionLocal;
+import session.StaffSessionLocal;
 
 /**
  * REST Web Service
@@ -48,6 +49,8 @@ public class OfferResource {
     OfferSessionLocal offerSession;
     @EJB
     MessageSessionLocal messageSession;
+    @EJB
+    StaffSessionLocal staffSession;
 
     @GET
     @Path("/offers")
@@ -180,9 +183,9 @@ public class OfferResource {
                 jobListing.setOffers(null);
                 jobListing.setTutor(null);
             }
-            
+
             // Create offer message notification
-            Message message = messageSession.createOfferMessage(tuteeId, jobListingId, "TuteeId: "+tuteeId+" has made an offer for your post with jobListingID: "+jobListingId);
+            Message message = messageSession.createOfferMessage(tuteeId, jobListingId, "TuteeId: " + tuteeId + " has made an offer for your post with jobListingID: " + jobListingId);
 
             GenericEntity<List<Offer>> payload = new GenericEntity<List<Offer>>(offers) {
             };
@@ -223,7 +226,7 @@ public class OfferResource {
             return Response.status(400).entity(exception).build();
         }
     }
-    
+
     @POST
     @Path("/withdraw/{offerId}")
     @JWTTokenNeeded

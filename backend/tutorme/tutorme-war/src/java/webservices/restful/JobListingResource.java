@@ -7,7 +7,6 @@ package webservices.restful;
 
 import entity.JobListing;
 import entity.Tutor;
-import filter.JWTTokenNeeded;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
@@ -29,7 +28,6 @@ import session.JobListingSessionLocal;
  *
  * @author Owen Tay
  */
-// TODO create new joblisting
 @Path("jobListing")
 @RequestScoped
 public class JobListingResource {
@@ -42,7 +40,6 @@ public class JobListingResource {
     
     @GET
     @Path("/jobListingList")
-//    @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFilteredJobListings(
             @QueryParam("subject") String subject,
@@ -82,11 +79,4 @@ public class JobListingResource {
         };
         return Response.status(200).entity(packet).build();
     }
-
-//    @GET
-//    @Path("{id}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public JobListing find(@PathParam("id") Long id) {
-//        return jobListingSession.retrieveJobListingById(id);
-//    }
 }
