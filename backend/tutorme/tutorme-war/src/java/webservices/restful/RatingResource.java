@@ -28,7 +28,7 @@ import session.RatingSessionLocal;
  *
  * @author Owen Tay
  */
-@Path("rating")
+@Path("/rating")
 @RequestScoped
 public class RatingResource {
 

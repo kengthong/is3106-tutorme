@@ -35,7 +35,7 @@ import session.TutorSessionLocal;
  *
  * @author Owen Tay
  */
-@Path("tutor")
+@Path("/tutor")
 public class TutorResource {
 
     @EJB

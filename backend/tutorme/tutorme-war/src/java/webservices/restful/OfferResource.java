@@ -41,7 +41,7 @@ import session.StaffSessionLocal;
  *
  * @author Owen Tay
  */
-@Path("offer")
+@Path("/offer")
 @RequestScoped
 public class OfferResource {
 
@@ -81,6 +81,39 @@ public class OfferResource {
     }
 
     @GET
+    @Path("/{offerId}")
+    @JWTTokenNeeded
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOffer(@PathParam("offerId") Long offerId) {
+        try {
+            System.out.println("Getting offerId..." + offerId);
+            Offer offer = offerSession.retrieveOfferById(offerId);
+            Tutee tutee = offer.getTutee();
+            tutee.setReceivedMessages(null);
+            tutee.setSentMessages(null);
+            tutee.setPassword(null);
+            tutee.setSalt(null);
+            tutee.setOffers(null);
+            Rating rating = offer.getRating();
+            if (rating != null) {
+                rating.setOffer(null);
+            }
+
+            JobListing jobListing = offer.getJobListing();
+            jobListing.setOffers(null);
+            jobListing.setTutor(null);
+
+            GenericEntity<Offer> payload = new GenericEntity<Offer>(offer) {
+            };
+            return Response.status(200).entity(payload).build();
+        } catch (OfferNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(400).entity(exception).build();
+        }
+    }
+
+    // Considering to remove, use TuteeResources's getTutee to retrieve associated offers
+    @GET
     @Path("/tuteeOffers/{tuteeId}")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
@@ -108,6 +141,7 @@ public class OfferResource {
         return Response.status(200).entity(payload).build();
     }
 
+    // Considering to remove, use JobListingResource's getJobListing to retrieve associated offers
     @GET
     @Path("/jobListingOffers/{jobListingId}")
     @JWTTokenNeeded

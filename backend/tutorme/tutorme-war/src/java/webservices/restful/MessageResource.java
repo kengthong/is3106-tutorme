@@ -189,7 +189,7 @@ public class MessageResource {
             };
             return Response.status(200).entity(payload).build();
         } catch (PersonNotFoundException ex) {
-            JsonObjectBuilder exception = Json.createObjectBuilder().add("Bad Request", ex.getMessage());
+            JsonObject exception = Json.createObjectBuilder().add("Bad Request", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
         }
     }

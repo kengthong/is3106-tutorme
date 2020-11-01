@@ -56,8 +56,6 @@ public class EmailSession implements EmailSessionLocal {
             transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
             transport.close();
 
-//            String host = "smtp.gmail.com";
-//            String user = "faith.zhihong@gmail.com";
 //            String to = email;
 //            String from = "faith.zhihong@gmail.com";
 //            String subject = "Tutor-Me Account Successfully Registered";

@@ -38,7 +38,7 @@ public class Tutor extends Person implements Serializable {
 
     private String profileDesc;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "tutor")
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "tutor")
     private List<JobListing> jobListings;
 
     private double avgRating;
