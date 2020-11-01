@@ -1,7 +1,5 @@
-import jwt from 'jwt-decode'
 import {AUTHENTICATION_ERROR, BACKEND_BASE_URL, LOGIN_SUCCESSFUL, LOGOUT_SUCCESSFUL} from "../config/constants";
-import { Dispatch } from "redux"
-import { store } from "../store";
+import {store} from "../store";
 import {Utility} from "../config/Utility";
 
 const jsonHeader= {
@@ -14,22 +12,27 @@ export class UserService {
         const body = { email, password };
         await Utility.fetchBuilder(url, 'POST', jsonHeader, body)
             .then(async (res) => {
+                console.log('logging in res =', res)
                 if(res.ok) {
-                    const token = await res.text();
-                    const user = jwt(token);
-                    console.log("token=", token);
+                    const text = await res.text();
+                    const data = JSON.parse(text);
+                    const user = JSON.parse(data.user);
+                    const token = data.jwtToken;
                     localStorage.setItem("token", token);
                     store.dispatch({
                         type: LOGIN_SUCCESSFUL,
                         payload: user
                     })
                 } else {
-                    const body = await res.text();
+                    const body = await res.json();
                     store.dispatch({
                         type: AUTHENTICATION_ERROR,
-                        payload: body
+                        payload: body.error
                     })
                 }
+            })
+            .catch( err => {
+                console.log(err);
             })
     }
 

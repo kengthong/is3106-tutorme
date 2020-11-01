@@ -32,7 +32,7 @@ import session.MessageSessionLocal;
  *
  * @author Owen Tay
  */
-@Path("message")
+@Path("/message")
 @RequestScoped
 public class MessageResource {
 

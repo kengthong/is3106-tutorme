@@ -130,12 +130,12 @@ public class PersonResource implements Serializable {
                     payload.add("user", jsonStaff);
                     return Response.status(200).entity(payload.build()).build();
             }
-        } catch (TutorNotFoundException | TuteeNotFoundException | StaffNotFoundException | JsonProcessingException ex) {
-            exception.add("Login error", ex.getMessage());
-            return Response.status(401).entity(exception).build();
+        } catch (TutorNotFoundException | TuteeNotFoundException | StaffNotFoundException | JsonProcessingException | PersonLoginFailException ex) {
+            exception.add("error", ex.getMessage());
+            return Response.status(401).entity(exception.build()).build();
         }
-        exception.add("Unknown error", "Unknown error when logging in.");
-        return Response.status(400).entity(exception).build();
+        exception.add("error", "Unknown error when logging in.");
+        return Response.status(400).entity(exception.build()).build();
     }
 
     @POST

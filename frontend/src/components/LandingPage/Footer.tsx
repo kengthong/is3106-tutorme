@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from "antd";
+import { Button } from "antd";
 
 export const Footer = () => {
     return (
@@ -11,20 +11,20 @@ export const Footer = () => {
                             <ul className="footer_list">
                                 <li><a href="/company-information">Company information</a></li>
                                 <li><a href="/about-us">About us</a></li>
-                                <li><a href="/faq">FAQs</a></li>
+                                <li><a href="/FAQ">FAQs</a></li>
                                 <li><a href="#">Contact Support</a></li>
                                 <li><a href="#">Report Abuse</a></li>
                             </ul>
                         </div>
                         <div className="flex-col align-center">
-                            <span  style={{fontSize: '40px', fontWeight: 300}}>
+                            <span style={{ fontSize: '40px', fontWeight: 300 }}>
                                 We're here to help
                             </span>
-                            <br/>
+                            <br />
                             <span>
                                 support@tutorme.com
                             </span>
-                            <br/>
+                            <br />
                             <Button>
                                 Contact Us
                             </Button>

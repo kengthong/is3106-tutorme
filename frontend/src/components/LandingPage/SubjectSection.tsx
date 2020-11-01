@@ -6,13 +6,16 @@ import {SubjectsService} from "../../services/Subjects";
 import {useSelector} from "react-redux";
 import {UserState} from "../../reducer/user-reducer";
 import {SubjectState} from "../../reducer/subject-reducer";
+import {IRootState} from "../../store";
 
 
 const { Option } = Select;
 
 export const SubjectSection = () => {
 
-    const subjectState = useSelector<any,SubjectState>((state) => state.subjectReducer);
+    const subjectState = useSelector<IRootState,SubjectState>((state) => state.subjectReducer);
+    const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
+    console.log('usersrt =', userState)
     const [selectedSub, setSelected] = useState<string>("");
     const history = useHistory();
     const loadSubjects = async() => {

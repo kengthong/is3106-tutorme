@@ -46,6 +46,18 @@ label {
 .align-center {
   align-items: center;
 }
+
+.ant-popover-arrow {
+  display: none !important;
+}
+
+.ant-popover-inner-content {
+  padding: 0px !important;
+}
+
+.border-e8 {
+  border: 1px solid #e8e8e8;
+}
 .clickable:hover {
   cursor: pointer;
 }
@@ -60,7 +72,7 @@ label {
 }
 
 .flex-row {
-  display:flex;
+  display: flex;
   flex-direction: row;
 }
 
@@ -70,6 +82,14 @@ label {
 
 .fs-24 {
   font-size: 24px;
+}
+
+.fs-32 {
+  font-size: 32px;
+}
+
+.highlightable:hover {
+  background-color: rgb(237 247 255);
 }
 
 .justify-end {
@@ -88,16 +108,33 @@ label {
   justify-content: space-between;
 }
 
+.opacity-65 {
+  opacity: 0.65;
+}
+
 .w-10 {
   width: 10%;
 }
+
+.w-30 {
+  width: 30%;
+}
+
 .w-50 {
   width: 50%;
 }
+
+.w-70 {
+  width: 70%;
+}
+
 .w-100 {
   width: 100%;
 }
 
+.myProfileButton {
+  background-color: rgb(255, 227, 41);
+}
 
 /* PAGE CSS */
 .job-listing-list-body {
@@ -133,4 +170,9 @@ label {
 .job-listing-list-body {
   min-height: calc(100vh - 190px);
   width: 95%;
+}
+
+.selection {
+  padding: 8px 20px;
+  display: block;
 }

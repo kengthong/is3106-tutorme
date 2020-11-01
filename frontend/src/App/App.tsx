@@ -22,6 +22,8 @@ import SearchPage from "../pages/Search/SearchPage";
 import TuteeListingPage from "../pages/Tutee/TuteeListingPage";
 import TutorListingPage from "../pages/Tutor/TutorListingPage";
 import CreateJobListing from "../pages/Tutor/CreateListingPage";
+import Chat from "../pages/Common/Chat/Chat"
+import FAQ from "../pages/Common/FAQs"
 // services
 
 const App = () => {
@@ -35,13 +37,15 @@ const App = () => {
           <Route path="/" exact component={LandingPage} isAuthenticated={true}/>
           <Route path='/search:params?' component={SearchPage} />
           <Route path="/tutor/createListing" component={CreateJobListing} />
+          <Route path="/FAQ" component={FAQ} />
+          <ProtectedRoute path="/chat" component={Chat} isAuthenticated={true} />
           <ProtectedRoute path="/login" component={Login} />
           <ProtectedRoute path="/tutor/settings/profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
           <ProtectedRoute path="/tutor/settings/personal-details" allowedUser='tutor' exact component={TutorDetailsPage} isAuthenticated={true} />
-          <ProtectedRoute path="/tutor-profile" allowedUser='tutee' exact component={TutorProfilePage} isAuthenticated={true} />
+          <ProtectedRoute path="/tutor-profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
 
           <Route path="/registration" component={Registration} />
-          <Route path="/tuteeProfile" component={tuteeProfile} />
+          <Route path="/tutee-profile" component={tuteeProfile} />
           {/*<ProtectedRoute path="/settings" component={Settings}/>*/}
           {/*<ProtectedRoute component={Dashboard}/>*/}
           <Route path="/error" exact={true} component={NotFoundPage} />

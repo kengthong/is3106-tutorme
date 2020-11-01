@@ -1,6 +1,5 @@
 import React from 'react';
-import qs from 'qs';
-import { Select } from 'antd';
+import {Select} from 'antd';
 
 const { Option } = Select;
 type filterProps = {
