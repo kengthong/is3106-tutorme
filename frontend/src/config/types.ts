@@ -1,5 +1,49 @@
 type Action = {type: string, payload: any }
 
+type chatListType = {
+    userId: number;
+    message: string;
+    senderName: string;
+}[];
+
+type chatListResponseType = chatMessagesType[]
+
+type chatMessagesType = {
+    body: string;
+    createdDate: string;
+    messageId: number;
+    receiver: {
+        activeStatus?: boolean;
+        createdDate?: string;
+        dob?: string;
+        email?: string;
+        firstName: string;
+        gender?: string;
+        lastName?: string;
+        mobileNum?: string;
+        personEnum?: string;
+        personId: number;
+        avgRating?: number;
+        citizenship?: string;
+        highestQualification?: string;
+        profileDesc?: string;
+        race?: string;
+    },
+    sender: {
+        activeStatus?: boolean;
+        createdDate?: string;
+        dob?: string;
+        email?: string;
+        firstName: string;
+        gender?: string;
+        lastName?: string;
+        mobileNum?: string;
+        personEnum?: string;
+        personId: number;
+        staffPositionEnum?: string;
+    }
+}[];
+
 type getJobListingListWithParamsProps = {
     subject?: string;
     level?: string;
@@ -62,3 +106,4 @@ type subjectResponseType = {
     subjectName: string;
     subjectLevel: string;
 }[];
+

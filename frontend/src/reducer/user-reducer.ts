@@ -2,7 +2,19 @@ import {AUTHENTICATION_ERROR, LOGIN_SUCCESSFUL, LOGOUT_SUCCESSFUL} from "../conf
 
 export interface UserState {
     currentUser?: {
-        personId: string;
+        personId: number;
+        createdDate: string;
+        activeStatus: boolean,
+        firstName: string;
+        lastName: string;
+        email: string;
+        mobileNum: string;
+        gender: string;
+        personEnum: string;
+        dob: string;
+        highestQualification: string;
+        profileDesc: string;
+        avgRating: number;
     },
     isAuthenticated: boolean,
     error?: boolean,
@@ -18,6 +30,7 @@ type Action = {type: string, payload: any }
 export const userReducer = (state: UserState = defaultState, action: Action) => {
     switch(action.type) {
         case LOGIN_SUCCESSFUL:
+            console.log('payload = ', action.payload)
             return {
                 ...state,
                 error: false,
@@ -30,7 +43,7 @@ export const userReducer = (state: UserState = defaultState, action: Action) => 
                 ...state,
                 error: true,
                 isAuthenticated: false,
-                errorMsg: JSON.parse(action.payload).error
+                errorMsg: action.payload
             }
 
         case LOGOUT_SUCCESSFUL:

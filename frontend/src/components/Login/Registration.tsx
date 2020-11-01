@@ -20,14 +20,14 @@ const RegisterComponent = () => {
   const history = useHistory();
 
   const verifyForm = () => {
-    let a = formData.firstName != "";
-    let b = formData.lastName != "";
-    let c = formData.password != "";
-    let d = formData.confirmPassword != "";
-    let e = formData.phoneNumber != "";
-    let f = formData.date != "";
-    let g = formData.email != "";
-    let h = formData.password == formData.confirmPassword;
+    let a = formData.firstName !== "";
+    let b = formData.lastName !== "";
+    let c = formData.password !== "";
+    let d = formData.confirmPassword !== "";
+    let e = formData.phoneNumber !== "";
+    let f = formData.date !== "";
+    let g = formData.email !== "";
+    let h = formData.password === formData.confirmPassword;
     return a && b && c && d && e && f && g && h;
   };
 
@@ -37,7 +37,7 @@ const RegisterComponent = () => {
     //Skeleton
     if (verifyForm()) {
       UserService.register();
-    } else if (formData.password != formData.confirmPassword) {
+    } else if (formData.password !== formData.confirmPassword) {
       Modal.error({
         title: "Error",
         content: "Please ensure password is identical to retyped password",
@@ -72,7 +72,7 @@ const RegisterComponent = () => {
 
   return (
     <div>
-      <img src={logo} style={{ padding: 100 }} />
+      <img src={logo} style={{ padding: 100 }} alt='logo'/>
       <h1
         style={{
           fontSize: "3rem",

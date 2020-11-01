@@ -24,8 +24,7 @@ export class JobListingService {
         }
         const response = await Utility.fetchBuilder(url, 'GET', header, null);
         if(response.ok) {
-            const data = await response.json();
-            return data;
+            return await response.json();
             // console.log('data = ', data)
         } else {
             return [];
@@ -38,14 +37,17 @@ export class JobListingService {
             switch(price) {
                 case "s":
                     maxPrice = 30;
+                    break;
 
                 case "m":
                     minPrice = 30;
                     maxPrice = 60;
+                    break;
 
                 case "l":
                     minPrice = 60;
                     maxPrice = 999;
+                    break;
 
                 default:
                     break;

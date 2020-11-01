@@ -1,11 +1,28 @@
 import React from "react";
 import logo from "../../assets/logo.jpg";
+import {UserService} from "../../services/User";
+import {UserState} from "../../reducer/user-reducer";
+import {useSelector} from "react-redux";
+import {IRootState} from "../../store";
+import {Avatar, Popover} from "antd";
+import {useHistory} from "react-router-dom";
 
 const Header = () => {
+  const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
+  const history = useHistory();
+  const handleLogout = () => {
+    UserService.logout();
+    history.push("/");
+  }
+
+  const handleProfileClick = () => {
+
+  }
+
   return (
-    <div className="navbar navbar-inverse navbar-fixed-top">
+    <div className="navbar navbar-inverse navbar-fixed-top" style={{zIndex: 0}}>
       <div className="container">
-        <div className="col-lg-3 col-sm-2">
+        <div className="col-lg-2 col-sm-1">
           <div className="navbar-header">
             <button
               type="button"
@@ -28,75 +45,115 @@ const Header = () => {
           </div>
         </div>
         <div
-          className="col-lg-7  col-md-8 col-sm-8"
+          className="col-lg-6 col-sm-8"
           style={{ paddingTop: "20px" }}
         >
-          <div
-            className="collapse navbar-collapse"
-            id="bs-example-navbar-collapse-1"
-          >
-            <ul className="nav navbar-nav">
+          <ul className="nav navbar-nav">
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li>
+              <a href="/search">Search</a>
+            </li>
+            <li>
+              <a href="/FAQ">FAQs</a>
+            </li>
+
+            <li>
+              <a href="contact_us.html">Contact us</a>
+            </li>
+
+            {!userState.isAuthenticated ?
               <li>
-                <a href="/">Home</a>
+                <a href="/registration">Register</a>
               </li>
+              :
+
+                userState.currentUser && userState.currentUser.personEnum === "TUTEE" ?
+                <li>
+                  <a href="/tuteeProfile">My Profile</a>
+                </li>
+                :
+                <li>
+                  <a href="/tutorMenu">Menu</a>
+                </li>
+            }
+            {userState.isAuthenticated?
               <li>
-                <a href="/search">Search</a>
+                <a href="/chat">Chat</a>
               </li>
-              <li>
-                <a href="#">Shop</a>
-              </li>
-              <li>
-                <a href="blog.html">Blog</a>
-              </li>
-              <li className="dropdown">
-                <a className="dropdown-toggle" data-toggle="dropdown" href="#">
-                  Pages
-                </a>
-                <ul className="dropdown-menu" role="menu">
-                  <li>
-                    <a href="product_page.html">Product Page</a>
-                  </li>
-                  <li>
-                    <a href="product_details.html">Product Detail</a>
-                  </li>
-                  <li>
-                    <a href="blog.html">Blog</a>
-                  </li>
-                  <li>
-                    <a href="blog_details.html">Blog Detail</a>
-                  </li>
-                  <li>
-                    <a href="cart_page.html">Our Cart Page</a>
-                  </li>
-                  <li>
-                    <a href="checkout.html">Checkout</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="contact_us.html">Contact us</a>
-              </li>
-            </ul>
-          </div>
+              :
+              null
+            }
+          </ul>
         </div>
-        <div className="col-lg-2 col-sm-2" style={{ paddingTop: "20px" }}>
-          <div className="cart-area">
-            <a href="cart_page.html">
-              <h3>
-                <span>2</span>
-              </h3>
-            </a>
-            <div>
-              <a href="cart_page.html">
-                <h4>My Cart</h4>
-                <h5>$29.00</h5>
-              </a>
-            </div>
-          </div>
+
+        <div
+          className="col-lg-4 col-sm-3 flex-row align-center"
+          style={{ paddingTop: "20px" }}
+        >
+          {userState.isAuthenticated && userState.currentUser ?
+              <Popover placement="bottomRight" content={ProfileContent(userState.currentUser.personEnum, handleLogout)} trigger="click" className='clickable'>
+                <div className='flex-row align-center justify-center border-e8' style={{minWidth: '100px', padding: '8px 16px', borderRadius: '4px'}}
+                     onClick={handleProfileClick}
+                >
+                  <div>
+                    <Avatar style={{backgroundColor: '#C2175B'}}>
+                      {userState.currentUser?.firstName.substring(0,1).toUpperCase()}
+                    </Avatar>
+                  </div>
+
+                  <div style={{paddingLeft: '8px'}}>
+                    {userState.currentUser?.firstName}
+                  </div>
+                </div>
+              </Popover>
+
+          :
+              <ul className="nav navbar-nav myProfileButton">
+                <li>
+                  <a href="/login">Sign In</a>
+                </li>
+              </ul>
+          }
+          {/*<ul className="nav navbar-nav myProfileButton">*/}
+          {/*  {userState.isAuthenticated ?*/}
+          {/*    <li>*/}
+          {/*      <a onClick={() => handleLogout()}>Sign Out</a>*/}
+          {/*    </li>*/}
+          {/*    : <li>*/}
+          {/*      <a href="/login">Sign In</a>*/}
+          {/*    </li>*/}
+          {/*  }*/}
+          {/*</ul>*/}
+
         </div>
+
       </div>
     </div>
   );
 };
+
+const ProfileContent = (personEnum: string, handleLogout: () => void) => {
+
+  return (
+    <div style={{height: '150px', width: '150px'}}>
+      <div className='clickable highlightable'>
+        <a className='selection w-100' href={`${personEnum === 'TUTEE'? '/tutee-profile' : '/tutor-profile'}`}>
+          My Profile
+        </a>
+      </div>
+      <div className='clickable highlightable'>
+        <a className='selection w-100' href={`/${personEnum === 'TUTEE'? 'tutee' : 'tutor'}/settings/profile`}>
+          Settings
+        </a>
+      </div>
+      <div className='clickable highlightable'>
+        <div className='selection w-100' onClick={handleLogout}>
+          <a>Log Out</a>
+        </div>
+      </div>
+    </div>
+)};
 
 export default Header;

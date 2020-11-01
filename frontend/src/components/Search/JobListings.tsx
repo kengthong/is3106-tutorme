@@ -49,7 +49,7 @@ const JobListingCard = (props: jobListingCardProps) => {
                 style={{width: '100%', minWidth: 267.5}}
                 className={"clickable"}
                 loading={loading}
-                    cover={<img style={{width: '100%', height: '300px', objectFit: 'cover'}} src={img} />}>
+                    cover={<img style={{width: '100%', height: '300px', objectFit: 'cover'}} src={img} alt={img} />}>
                 <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '150px'}}>
                     <div>
                         <Row>

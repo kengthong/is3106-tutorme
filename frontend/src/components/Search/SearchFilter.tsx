@@ -1,36 +1,29 @@
 import React, {useEffect} from 'react';
-import {
-    useHistory,
-    useLocation,
-    useParams
-} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 
 
 import Filter from "./Filter";
 import qs from "qs";
-import {Row} from "antd";
 import {qualifications} from "../../config/constants";
 import NameFilter from "./NameFilter";
 import {useSelector} from "react-redux";
 import {SubjectState} from "../../reducer/subject-reducer";
 import {SubjectsService} from "../../services/Subjects";
+import {IRootState} from "../../store";
 
 const SearchFilter = () => {
     const history = useHistory();
     const location = useLocation();
-    const subjectState = useSelector<any,SubjectState>((state) => state.subjectReducer);
+    const subjectState = useSelector<IRootState,SubjectState>((state) => state.subjectReducer);
     const loadSubjects = async() => {
         await SubjectsService.getAllSubjects();
-    }
+    };
+
     useEffect(() => {
         if(!subjectState || !subjectState.uniqueSubjects || subjectState.uniqueSubjects.length === 0) {
             loadSubjects();
         }
     },[]);
-
-    const handleSubmit = () => {
-        history.push('/component-two',{params:'Hello World'})
-    };
 
     const params: {[key: string]:any} = qs.parse(location.search.substring(1), { ignoreQueryPrefix: true });
 
@@ -41,8 +34,6 @@ const SearchFilter = () => {
         const newPath = location.pathname+'?' + paramsList.join('&');
         history.push(newPath)
     };
-
-    const pathName = location.pathname + '?subject=maths&price=l';
 
     const filterProps = {
         pushUrl: handlePush,
