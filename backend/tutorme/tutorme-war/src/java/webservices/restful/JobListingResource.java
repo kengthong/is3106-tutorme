@@ -18,6 +18,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.GET;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
@@ -90,11 +91,17 @@ public class JobListingResource {
     @Path("/{jobListingId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJobListing(
-            @QueryParam("jobListingId") Long jobListingId) {
+            @PathParam("jobListingId") Long jobListingId) {
         try {
             System.out.println("Getting jobListingID..." + jobListingId);
             JobListing jobListing = jobListingSession.retrieveJobListingById(jobListingId);
             // return jobListing object with reviewCount and avgRatings
+
+            System.out.println(jobListing.getOffers().get(0).getRating().getRatingValue());
+            
+            Integer correctReviewCount = jobListing.getReviewCount();
+            Double correctReviewScore = jobListing.getReviewScore();          
+            
             Tutor tutor = jobListing.getTutor();
             tutor.setSalt(null);
             tutor.setPassword(null);
@@ -115,10 +122,12 @@ public class JobListingResource {
                     rating.setOffer(null);
                 }
 
-                JobListing jl = o.getJobListing();
-                jl.setOffers(null);
-                jl.setTutor(null);
+                o.setJobListing(null);
+//                JobListing jl = o.getJobListing();
+//                jl.setOffers(null);
+//                jl.setTutor(null);
             }
+
             GenericEntity<JobListing> packet = new GenericEntity<JobListing>(jobListing) {
             };
             return Response.status(200).entity(packet).build();

@@ -33,6 +33,7 @@ public class RatingSession implements RatingSessionLocal {
         } else {
             Rating newRating = new Rating(ratingValue, comments, offer);
             em.persist(newRating);
+            offer.setRating(newRating);
             return newRating;
         }
     }
