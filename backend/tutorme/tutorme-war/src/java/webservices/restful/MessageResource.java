@@ -17,7 +17,6 @@ import javax.ws.rs.Path;
 import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
@@ -187,7 +186,7 @@ public class MessageResource {
             }
             GenericEntity<List<Message>> payload = new GenericEntity<List<Message>>(conversation) {
             };
-            return Response.status(200).entity(payload).build();
+            return Response.status(201).entity(payload).build();
         } catch (PersonNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("Bad Request", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();

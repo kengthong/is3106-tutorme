@@ -17,6 +17,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -68,6 +69,7 @@ public class Offer implements Serializable {
     private String additionalNote;
 
     @OneToOne(mappedBy = "offer", fetch = FetchType.EAGER, optional = true, cascade = {CascadeType.ALL})
+    @JoinColumn(unique = true)
     private Rating rating;
 
     public Offer() {

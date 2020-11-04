@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
@@ -223,14 +224,14 @@ public class OfferResource {
 
             GenericEntity<List<Offer>> payload = new GenericEntity<List<Offer>>(offers) {
             };
-            return Response.status(200).entity(payload).build();
+            return Response.status(201).entity(payload).build();
         } catch (ParseException | InvalidParamsException | InvalidSubjectChoiceException | PersonNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
         }
     }
 
-    @POST
+    @PUT
     @Path("/accept/{offerId}")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
@@ -255,13 +256,16 @@ public class OfferResource {
             GenericEntity<Offer> payload = new GenericEntity<Offer>(offer) {
             };
             return Response.status(200).entity(payload).build();
-        } catch (OfferNotFoundException | OfferStatusException ex) {
+        } catch (OfferNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
+        } catch (OfferStatusException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(406).entity(exception).build();
         }
     }
 
-    @POST
+    @PUT
     @Path("/withdraw/{offerId}")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
@@ -286,9 +290,12 @@ public class OfferResource {
             GenericEntity<Offer> payload = new GenericEntity<Offer>(offer) {
             };
             return Response.status(200).entity(payload).build();
-        } catch (OfferNotFoundException | OfferStatusException ex) {
+        } catch (OfferNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
+        } catch (OfferStatusException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(406).entity(exception).build();
         }
     }
 }

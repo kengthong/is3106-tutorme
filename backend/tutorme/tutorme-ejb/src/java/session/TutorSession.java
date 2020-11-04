@@ -72,13 +72,10 @@ public class TutorSession implements TutorSessionLocal {
     }
 
     @Override
-    public Tutor retrieveTutorById(Long personId) throws TutorNotFoundException {
-        Tutor tutor = em.find(Tutor.class, personId);
-        if (tutor.getJobListings() == null) {
-            System.out.println("### tutor does not have joblisting");
-        }
+    public Tutor retrieveTutorById(Long tutorId) throws TutorNotFoundException {
+        Tutor tutor = em.find(Tutor.class, tutorId);
         if (tutor == null) {
-            throw new TutorNotFoundException("TutorID " + personId + " does not exists.");
+            throw new TutorNotFoundException("TutorID " + tutorId + " does not exists.");
         } else {
             return tutor;
         }
@@ -105,43 +102,48 @@ public class TutorSession implements TutorSessionLocal {
     }
 
     @Override
-    public Tutor updateTutorProfile(Long personId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc, String profileImage) throws TutorNotFoundException {
-        Tutor tutor = retrieveTutorById(personId);
-        tutor.setFirstName(firstName);
-        tutor.setLastName(lastName);
-        tutor.setMobileNum(mobileNum);
-        tutor.setGender(gender);
-        tutor.setDob(dob);
-        tutor.setHighestQualification(highestQualification);
-        tutor.setCitizenship(citizenship);
-        tutor.setRace(race);
-        tutor.setProfileDesc(profileDesc);
-        tutor.setProfileImage(profileImage);
-        return tutor;
+    public Tutor updateTutorProfile(Long tutorId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc, String profileImage) throws TutorNotFoundException {
+        Tutor tutor = em.find(Tutor.class, tutorId);
+        if (tutor == null) {
+            throw new TutorNotFoundException("TutorID " + tutorId + " does not exists.");
+        } else {
+            tutor.setFirstName(firstName);
+            tutor.setLastName(lastName);
+            tutor.setMobileNum(mobileNum);
+            tutor.setGender(gender);
+            tutor.setDob(dob);
+            tutor.setHighestQualification(highestQualification);
+            tutor.setCitizenship(citizenship);
+            tutor.setRace(race);
+            tutor.setProfileDesc(profileDesc);
+            tutor.setProfileImage(profileImage);
+            return tutor;
+        }
     }
 
     @Override
     public Tutor activateTutor(Long tutorId) throws TutorNotFoundException {
-        Tutor tutor = retrieveTutorById(tutorId);
-        if (!tutor.getActiveStatus()) {
-            tutor.setActiveStatus(true);
+        Tutor tutor = em.find(Tutor.class, tutorId);
+        if (tutor == null) {
+            throw new TutorNotFoundException("TutorID " + tutorId + " does not exists.");
+        } else {
+            if (!tutor.getActiveStatus()) {
+                tutor.setActiveStatus(true);
+            }
+            return tutor;
         }
-        return tutor;
     }
 
     @Override
     public Tutor deactivateTutor(Long tutorId) throws TutorNotFoundException {
-        Tutor tutor = retrieveTutorById(tutorId);
-        if (tutor.getActiveStatus()) {
-            tutor.setActiveStatus(false);
+        Tutor tutor = em.find(Tutor.class, tutorId);
+        if (tutor == null) {
+            throw new TutorNotFoundException("TutorID " + tutorId + " does not exists.");
+        } else {
+            if (!tutor.getActiveStatus()) {
+                tutor.setActiveStatus(false);
+            }
+            return tutor;
         }
-        return tutor;
     }
-
-    @Override
-    public void deleteTutor(Long tutorId) throws TutorNotFoundException {
-        Tutor tutor = retrieveTutorById(tutorId);
-        em.remove(tutor);
-    }
-
 }

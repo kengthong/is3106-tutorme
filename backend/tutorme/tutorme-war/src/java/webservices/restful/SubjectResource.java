@@ -62,7 +62,7 @@ public class SubjectResource {
         List<Subject> subjects = subjectSession.retrieveAllSubjects();
         GenericEntity<List<Subject>> payload = new GenericEntity<List<Subject>>(subjects) {
         };
-        return Response.status(200).entity(payload).build();
+        return Response.status(201).entity(payload).build();
     }
 
     @DELETE

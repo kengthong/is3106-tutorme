@@ -41,12 +41,13 @@ public class Tutor extends Person implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "tutor")
     private List<JobListing> jobListings;
 
-    private double avgRating;
+    private Double avgRating;
 
     public Tutor() {
         super();
         this.setPersonEnum(PersonEnum.TUTOR);
         this.jobListings = new ArrayList<>();
+        this.avgRating = 0.0;
     }
 
     public Tutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob,
@@ -58,6 +59,7 @@ public class Tutor extends Person implements Serializable {
         this.race = race;
         this.setPersonEnum(PersonEnum.TUTOR);
         this.jobListings = new ArrayList<>();
+        this.avgRating = 0.0;
     }
 
     public String getProfileDesc() {
@@ -100,27 +102,27 @@ public class Tutor extends Person implements Serializable {
         this.jobListings = jobListings;
     }
 
-    public double getAvgRating() {
-        double sum = 0;
-        int count = 0;
+    public void setAvgRating(Double dummy) {
+        this.avgRating = dummy;
+    }
+
+    public Double getAvgRating() {
+        Double sum = 0.0;
+        Integer count = 0;
         if (this.jobListings != null) {
             for (JobListing jl : this.jobListings) {
-                if (jl.getOffers() != null) {
-                    for (Offer o : jl.getOffers()) {
-                        Rating rating = o.getRating();
-                        if (o.getRating() != null) {
-                            sum = rating.getRatingValue();
-                            count++;
-                        }
-                    }
-                }
+                count++;
+                Double score = jl.getReviewScore();
+                sum += jl.getReviewScore();
             }
-        }
-        double avg = sum / count;
-        if (Double.isNaN(avg) || Double.isInfinite(avg)) {
-            return 0;
+            Double avg = sum / count;
+            if (Double.isNaN(avg) || Double.isInfinite(avg)) {
+                return 0.0;
+            } else {
+                return avg;
+            }
         } else {
-            return avg;
+            return 0.0;
         }
     }
 

@@ -164,8 +164,8 @@ public class JobListing implements Serializable {
     }
 
     public Double getReviewScore() {
-        double sum = 0.0;
-        int count = 0;
+        Double sum = 0.0;
+        Integer count = 0;
         if (this.offers != null) {
             for (Offer o : this.offers) {
                 Rating rating = o.getRating();
@@ -175,9 +175,13 @@ public class JobListing implements Serializable {
                 }
             }
         }
-        double avg = sum / count;
+        Double avg = sum / count;
         System.out.println("*** Setting reviewScore: " + avg);
-        return avg;
+        if (Double.isNaN(avg) || Double.isInfinite(avg)) {
+            return 0.0;
+        } else {
+            return avg;
+        }
     }
 
     public void setReviewCount(Integer dummy) {
@@ -185,7 +189,7 @@ public class JobListing implements Serializable {
     }
 
     public Integer getReviewCount() {
-        int count = 0;
+        Integer count = 0;
         if (this.offers != null) {
             for (Offer o : this.offers) {
                 Rating rating = o.getRating();

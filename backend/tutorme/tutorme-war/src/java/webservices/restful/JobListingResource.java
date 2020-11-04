@@ -80,7 +80,21 @@ public class JobListingResource {
             tutor.setReceivedMessages(null);
             tutor.setJobListings(null);
 
-            jl.setOffers(null);
+            List<Offer> offers = jl.getOffers();
+            for (Offer o : offers) {
+                Tutee tutee = o.getTutee();
+                tutee.setReceivedMessages(null);
+                tutee.setSentMessages(null);
+                tutee.setPassword(null);
+                tutee.setSalt(null);
+                tutee.setOffers(null);
+                Rating rating = o.getRating();
+                if (rating != null) {
+                    rating.setOffer(null);
+                }
+
+                o.setJobListing(null);
+            }
         }
         GenericEntity<List<JobListing>> packet = new GenericEntity<List<JobListing>>(jobListings) {
         };
@@ -95,13 +109,10 @@ public class JobListingResource {
         try {
             System.out.println("Getting jobListingID..." + jobListingId);
             JobListing jobListing = jobListingSession.retrieveJobListingById(jobListingId);
-            // return jobListing object with reviewCount and avgRatings
 
-            System.out.println(jobListing.getOffers().get(0).getRating().getRatingValue());
-            
-            Integer correctReviewCount = jobListing.getReviewCount();
-            Double correctReviewScore = jobListing.getReviewScore();          
-            
+//            System.out.println(jobListing.getOffers().get(0).getRating().getRatingValue());
+//            Integer correctReviewCount = jobListing.getReviewCount();
+//            Double correctReviewScore = jobListing.getReviewScore();          
             Tutor tutor = jobListing.getTutor();
             tutor.setSalt(null);
             tutor.setPassword(null);
@@ -123,9 +134,6 @@ public class JobListingResource {
                 }
 
                 o.setJobListing(null);
-//                JobListing jl = o.getJobListing();
-//                jl.setOffers(null);
-//                jl.setTutor(null);
             }
 
             GenericEntity<JobListing> packet = new GenericEntity<JobListing>(jobListing) {

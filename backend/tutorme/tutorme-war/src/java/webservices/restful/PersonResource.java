@@ -189,7 +189,7 @@ public class PersonResource implements Serializable {
                     break;
             }
             payload.add("jwtToken", encodedJWT);
-            return Response.status(200).entity(payload.build()).build();
+            return Response.status(201).entity(payload.build()).build();
         } catch (ParseException | JsonProcessingException ex) {
             exception.add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
