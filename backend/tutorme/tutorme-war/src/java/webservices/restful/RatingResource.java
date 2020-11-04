@@ -16,6 +16,7 @@ import javax.ws.rs.Path;
 import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.persistence.PersistenceException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
@@ -28,7 +29,7 @@ import session.RatingSessionLocal;
  *
  * @author Owen Tay
  */
-@Path("rating")
+@Path("/rating")
 @RequestScoped
 public class RatingResource {
 
@@ -68,10 +69,13 @@ public class RatingResource {
 
             GenericEntity<Rating> payload = new GenericEntity<Rating>(rating) {
             };
-            return Response.status(200).entity(payload).build();
+            return Response.status(201).entity(payload).build();
         } catch (OfferNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
-            return Response.status(400).entity(exception).build();
+            return Response.status(404).entity(exception).build();
+        } catch (Exception ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", "Rating for this offer has already been made.").build();
+            return Response.status(409).entity(exception).build();
         }
     }
 }

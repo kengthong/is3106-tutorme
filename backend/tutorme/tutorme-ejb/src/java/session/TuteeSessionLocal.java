@@ -23,16 +23,16 @@ public interface TuteeSessionLocal {
 
     public List<Tutee> retrieveAllTutees();
 
-    public Tutee retrieveTuteeById(Long personId) throws TuteeNotFoundException;
+    public Tutee retrieveTuteeById(Long tuteeId) throws TuteeNotFoundException;
 
     public Tutee retrieveTuteeByEmail(String email) throws TuteeNotFoundException;
 
     public List<Tutee> retrieveTuteeByName(String inputName);
 
-    public void updateTutee(Long personId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc) throws TuteeNotFoundException;
+    public Tutee updateTuteeProfile(Long tuteeId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc) throws TuteeNotFoundException;
 
-    public void changeTuteeActiveStatus(Long personId) throws TuteeNotFoundException;
+    public Tutee activateTuteeStatus(Long tuteeId) throws TuteeNotFoundException;
 
-    public void deleteTutee(Long personId) throws TuteeNotFoundException;
+    public Tutee deactivateTuteeStatus(Long tuteeId) throws TuteeNotFoundException;
 
 }

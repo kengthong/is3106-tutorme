@@ -7,8 +7,6 @@ package webservices.restful;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import entity.JobListing;
-import entity.Offer;
 import entity.Person;
 import entity.Staff;
 import entity.Tutee;
@@ -25,7 +23,6 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Produces;
@@ -91,16 +88,17 @@ public class PersonResource implements Serializable {
                     tutor.setPassword(null);
                     tutor.setSentMessages(null);
                     tutor.setReceivedMessages(null);
-                    List<JobListing> jobListings = tutor.getJobListings();
-                    jobListings.forEach(jl -> jl.setTutor(null));
-                    for (JobListing jl : jobListings) {
-                        jl.setTutor(null);
-                        List<Offer> offers = jl.getOffers();
-                        for (Offer o : offers) {
-                            o.setJobListing(null);
-                            o.setTutee(null);
-                        }
-                    }
+                    tutor.setJobListings(null);
+//                    List<JobListing> jobListings = tutor.getJobListings();
+//                    jobListings.forEach(jl -> jl.setTutor(null));
+//                    for (JobListing jl : jobListings) {
+//                        jl.setTutor(null);
+//                        List<Offer> offers = jl.getOffers();
+//                        for (Offer o : offers) {
+//                            o.setJobListing(null);
+//                            o.setTutee(null);
+//                        }
+//                    }
                     String jsonTutor = mapper.writeValueAsString(tutor);
                     payload.add("user", jsonTutor);
                     return Response.status(200).entity(payload.build()).build();
@@ -110,13 +108,14 @@ public class PersonResource implements Serializable {
                     tutee.setPassword(null);
                     tutee.setSentMessages(null);
                     tutee.setReceivedMessages(null);
-                    List<Offer> offers = tutee.getOffers();
-                    for (Offer o : offers) {
-                        o.setTutee(null);
-                        JobListing jobListing = o.getJobListing();
-                        jobListing.setOffers(null);
-                        jobListing.setTutor(null);
-                    }
+                    tutee.setOffers(null);
+//                    List<Offer> offers = tutee.getOffers();
+//                    for (Offer o : offers) {
+//                        o.setTutee(null);
+//                        JobListing jobListing = o.getJobListing();
+//                        jobListing.setOffers(null);
+//                        jobListing.setTutor(null);
+//                    }
                     String jsonTutee = mapper.writeValueAsString(tutee);
                     payload.add("user", jsonTutee);
                     return Response.status(200).entity(payload.build()).build();
@@ -190,7 +189,7 @@ public class PersonResource implements Serializable {
                     break;
             }
             payload.add("jwtToken", encodedJWT);
-            return Response.status(200).entity(payload.build()).build();
+            return Response.status(201).entity(payload.build()).build();
         } catch (ParseException | JsonProcessingException ex) {
             exception.add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();

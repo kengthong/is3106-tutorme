@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
@@ -41,7 +42,7 @@ import session.StaffSessionLocal;
  *
  * @author Owen Tay
  */
-@Path("offer")
+@Path("/offer")
 @RequestScoped
 public class OfferResource {
 
@@ -81,6 +82,39 @@ public class OfferResource {
     }
 
     @GET
+    @Path("/{offerId}")
+    @JWTTokenNeeded
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOffer(@PathParam("offerId") Long offerId) {
+        try {
+            System.out.println("Getting offerId..." + offerId);
+            Offer offer = offerSession.retrieveOfferById(offerId);
+            Tutee tutee = offer.getTutee();
+            tutee.setReceivedMessages(null);
+            tutee.setSentMessages(null);
+            tutee.setPassword(null);
+            tutee.setSalt(null);
+            tutee.setOffers(null);
+            Rating rating = offer.getRating();
+            if (rating != null) {
+                rating.setOffer(null);
+            }
+
+            JobListing jobListing = offer.getJobListing();
+            jobListing.setOffers(null);
+            jobListing.setTutor(null);
+
+            GenericEntity<Offer> payload = new GenericEntity<Offer>(offer) {
+            };
+            return Response.status(200).entity(payload).build();
+        } catch (OfferNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(400).entity(exception).build();
+        }
+    }
+
+    // Considering to remove, use TuteeResources's getTutee to retrieve associated offers
+    @GET
     @Path("/tuteeOffers/{tuteeId}")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
@@ -108,6 +142,7 @@ public class OfferResource {
         return Response.status(200).entity(payload).build();
     }
 
+    // Considering to remove, use JobListingResource's getJobListing to retrieve associated offers
     @GET
     @Path("/jobListingOffers/{jobListingId}")
     @JWTTokenNeeded
@@ -189,14 +224,14 @@ public class OfferResource {
 
             GenericEntity<List<Offer>> payload = new GenericEntity<List<Offer>>(offers) {
             };
-            return Response.status(200).entity(payload).build();
+            return Response.status(201).entity(payload).build();
         } catch (ParseException | InvalidParamsException | InvalidSubjectChoiceException | PersonNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
         }
     }
 
-    @POST
+    @PUT
     @Path("/accept/{offerId}")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
@@ -221,13 +256,16 @@ public class OfferResource {
             GenericEntity<Offer> payload = new GenericEntity<Offer>(offer) {
             };
             return Response.status(200).entity(payload).build();
-        } catch (OfferNotFoundException | OfferStatusException ex) {
+        } catch (OfferNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
+        } catch (OfferStatusException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(406).entity(exception).build();
         }
     }
 
-    @POST
+    @PUT
     @Path("/withdraw/{offerId}")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
@@ -252,9 +290,12 @@ public class OfferResource {
             GenericEntity<Offer> payload = new GenericEntity<Offer>(offer) {
             };
             return Response.status(200).entity(payload).build();
-        } catch (OfferNotFoundException | OfferStatusException ex) {
+        } catch (OfferNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
+        } catch (OfferStatusException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(406).entity(exception).build();
         }
     }
 }

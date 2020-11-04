@@ -11,8 +11,6 @@ import exception.TuteeNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -59,12 +57,12 @@ public class TuteeSession implements TuteeSessionLocal {
     }
 
     @Override
-    public Tutee retrieveTuteeById(Long personId) throws TuteeNotFoundException {
-        Tutee tutee = em.find(Tutee.class, personId);
+    public Tutee retrieveTuteeById(Long tuteeId) throws TuteeNotFoundException {
+        Tutee tutee = em.find(Tutee.class, tuteeId);
         if (tutee != null) {
             return tutee;
         } else {
-            throw new TuteeNotFoundException("TuteeID " + personId + " does not exists.");
+            throw new TuteeNotFoundException("TuteeID " + tuteeId + " does not exists.");
         }
     }
 
@@ -88,53 +86,42 @@ public class TuteeSession implements TuteeSessionLocal {
         return results;
     }
 
-//    @Override
-//    public Tutee retrieveTuteeByOffer(Long offerId) throws TuteeNotFoundException {
-//        Offer offer = null;
-//        try {
-//            offer = offerSession.retrieveOfferById(offerId);
-//        } catch (OfferNotFoundException ex) {
-//            System.out.println("Tutee was not found because OfferID " + offerId + " does not exists.");
-//        }
-//        return offer.getTutee();
-//    }
-//
-//    @Override
-//    public Tutee retrieveTuteeByRating(Long ratingId) throws TuteeNotFoundException {
-//        Rating rating = null;
-//        try {
-//            rating = ratingSession.retrieveRatingById(ratingId);
-//        } catch (RatingNotFoundException ex) {
-//            System.out.println("Tutee was not found because RatingID " + ratingId + " does not exists.");
-//        }
-//        return rating.getOffer().getTutee();
-//    }
-
     @Override
-    public void updateTutee(Long personId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc) throws TuteeNotFoundException {
-        Tutee tutee = retrieveTuteeById(personId);
-        tutee.setFirstName(firstName);
-        tutee.setLastName(lastName);
-        tutee.setMobileNum(mobileNum);
-        tutee.setGender(gender);
-        tutee.setDob(dob);
-        tutee.setProfileDesc(profileDesc);
-    }
-
-    @Override
-    public void changeTuteeActiveStatus(Long personId) throws TuteeNotFoundException {
-        Tutee tutee = retrieveTuteeById(personId);
-        if (tutee.getActiveStatus()) {
-            tutee.setActiveStatus(true);
+    public Tutee updateTuteeProfile(Long tuteeId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc) throws TuteeNotFoundException {
+        Tutee tutee = em.find(Tutee.class, tuteeId);
+        if (tutee != null) {
+            tutee.setFirstName(firstName);
+            tutee.setLastName(lastName);
+            tutee.setMobileNum(mobileNum);
+            tutee.setGender(gender);
+            tutee.setDob(dob);
+            tutee.setProfileDesc(profileDesc);
+            return tutee;
         } else {
-            tutee.setActiveStatus(false);
+            throw new TuteeNotFoundException("TuteeID " + tuteeId + " does not exists.");
         }
     }
 
     @Override
-    public void deleteTutee(Long personId) throws TuteeNotFoundException {
-        Tutee tutee = retrieveTuteeById(personId);
-        em.remove(tutee);
+    public Tutee activateTuteeStatus(Long tuteeId) throws TuteeNotFoundException {
+        Tutee tutee = em.find(Tutee.class, tuteeId);
+        if (tutee != null && !tutee.getActiveStatus()) {
+            tutee.setActiveStatus(true);
+            return tutee;
+        } else {
+            throw new TuteeNotFoundException("TuteeID " + tuteeId + " does not exists.");
+        }
+    }
+
+    @Override
+    public Tutee deactivateTuteeStatus(Long tuteeId) throws TuteeNotFoundException {
+        Tutee tutee = em.find(Tutee.class, tuteeId);
+        if (tutee != null && tutee.getActiveStatus()) {
+            tutee.setActiveStatus(false);
+            return tutee;
+        } else {
+            throw new TuteeNotFoundException("TuteeID " + tuteeId + " does not exists.");
+        }
     }
 
 }
