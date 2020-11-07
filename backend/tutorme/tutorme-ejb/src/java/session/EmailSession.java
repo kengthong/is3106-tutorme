@@ -22,7 +22,6 @@ import util.email.SMTPAuthenticator;
  */
 @Stateless
 public class EmailSession implements EmailSessionLocal {
-    //TODO replace javax library pathing
 
     public EmailSession() {
     }

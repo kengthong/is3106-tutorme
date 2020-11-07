@@ -43,7 +43,7 @@ public class TuteeResource {
     @Path("/tutees")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTutees(JsonObject json) {
+    public Response getTutees() {
         System.out.println("Getting tutees...");
         List<Tutee> tutees = new ArrayList();
         tutees = tuteeSession.retrieveAllTutees();

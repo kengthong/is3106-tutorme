@@ -82,9 +82,8 @@ public class PersonSession implements PersonSessionLocal {
 
     @Override
     public void changePersonActiveStatus(Long userId) {
-        Person user;
         try {
-            user = retrievePersonById(userId);
+            Person user = retrievePersonById(userId);
             if (user.getActiveStatus()) {
                 user.setActiveStatus(false);
             } else {
