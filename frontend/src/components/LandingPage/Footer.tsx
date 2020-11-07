@@ -3,16 +3,15 @@ import { Button } from "antd";
 
 export const Footer = () => {
     return (
-        <div>
+        <div style={{minHeight: '286px'}}>
             <div className="footer-area">
                 <div className="container">
                     <div className="flex-row justify-space-around">
                         <div className="footer_bx links_txt">
                             <ul className="footer_list">
-                                <li><a href="/company-information">Company information</a></li>
-                                <li><a href="/AboutUs">About us</a></li>
-                                <li><a href="/FAQ">FAQs</a></li>
-                                <li><a href="/Feedback">Feedback</a></li>
+                                <li><a href="/about-us">About us</a></li>
+                                <li><a href="/faq">FAQs</a></li>
+                                <li><a href="/feedback">Feedback</a></li>
                             </ul>
                         </div>
                         <div className="flex-col align-center">

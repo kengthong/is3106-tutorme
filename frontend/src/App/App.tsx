@@ -40,10 +40,10 @@ const App = () => {
           <Route path="/" exact component={LandingPage} isAuthenticated={true} />
           <Route path='/search:params?' component={SearchPage} />
           <Route path="/tutor/createListing" component={CreateJobListing} />
-          <Route path="/FAQ" component={FAQ} />
-          <Route path="/AboutUs" component={AboutUs} />
-          <Route path="/ContactUs" component={ContactUs} />
-          <Route path="/Feedback" component={Feedback} />
+          <Route path="/faq" component={FAQ} />
+          <Route path="/about-us" component={AboutUs} />
+          <Route path="/contact-us" component={ContactUs} />
+          <Route path="/feedback" component={Feedback} />
           <ProtectedRoute path="/chat" component={Chat} isAuthenticated={true} />
           <ProtectedRoute path="/login" component={Login} />
           <ProtectedRoute path="/tutor/settings/profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
