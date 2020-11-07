@@ -6,4 +6,11 @@ export class Utility {
             body: body ? JSON.stringify(body) : null
         })
     }
+
+    public static getJsonHeader() {
+        return {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        };
+    }
 }

@@ -48,7 +48,8 @@ const App = () => {
           <ProtectedRoute path="/login" component={Login} />
           <ProtectedRoute path="/tutor/settings/profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
           <ProtectedRoute path="/tutor/settings/personal-details" allowedUser='tutor' exact component={TutorDetailsPage} isAuthenticated={true} />
-          <ProtectedRoute path="/tutor-profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
+          {/*For viewing tutor profile directly*/}
+          {/*<ProtectedRoute path="/tutor-profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />*/}
 
           <Route path="/registration" component={Registration} />
           <Route path="/tutee-profile" component={tuteeProfile} />

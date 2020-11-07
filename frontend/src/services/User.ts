@@ -12,7 +12,6 @@ export class UserService {
         const body = { email, password };
         await Utility.fetchBuilder(url, 'POST', jsonHeader, body)
             .then(async (res) => {
-                console.log('logging in res =', res)
                 if(res.ok) {
                     const text = await res.text();
                     const data = JSON.parse(text);

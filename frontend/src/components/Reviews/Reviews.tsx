@@ -1,36 +1,21 @@
 import React from "react";
 import { Col, Rate, Row } from "antd";
 
-const ReviewsComponent = (props: any) => {
+type reviewProps = {
+    ratings?: offerType[],
+    avgRating: number;
+    ratingCount?: number;
+}
+const ReviewsComponent = (props: reviewProps) => {
   const value = 5;
-  const ratingData = [
-    {
-      rating: 4,
-      name: "Tom",
-      comment:
-        "Everything was very well explained and it was a very enjoyable lessonj",
-    },
-    {
-      rating: 5,
-      name: "Harry",
-      comment: "",
-    },
-    {
-      rating: 4,
-      name: "Wayne",
-      comment: "",
-    },
-    {
-      rating: 5,
-      name: "Terrence",
-      comment: "",
-    },
-    {
-      rating: 5,
-      name: "Winny",
-      comment: "",
-    },
-  ];
+  console.log(props.ratings)
+  const ratingData = props.ratings && props.ratings.map(r => {
+    return {
+        rating: r.rating.ratingValue,
+        name: r.tutee.firstName,
+        comment: r.rating.comments
+    }
+  }) || [];
   return (
     <div style={{ marginTop: "50px" }}>
       <div style={{ fontSize: "16px", fontWeight: "bold", padding: "10px 0" }}>
@@ -48,10 +33,10 @@ const ReviewsComponent = (props: any) => {
       >
         <Col span={70}>
           <div style={{ fontSize: "72px", fontWeight: 300, color: "#fada15" }}>
-            5
+              {props.avgRating}
           </div>
           <div>
-            <Rate value={value} disabled /> 10 Reviews
+            <Rate value={value} disabled /> {props.ratingCount} Reviews
           </div>
         </Col>
         <Col span={30}>

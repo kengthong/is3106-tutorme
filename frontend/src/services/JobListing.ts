@@ -7,7 +7,7 @@ const jsonHeader= {
 };
 export class JobListingService {
     static async getJobListingListWithParams(params: getJobListingListWithParamsProps): Promise<getJobListingListWithParamResposeProps | []> {
-        console.log("getJobListingListWithParams:", params);
+        // console.log("getJobListingListWithParams:", params);
         const { subject, level, name, price } = params;
         const priceRange = this.getPriceRange(price);
         const url = BACKEND_BASE_URL + '/jobListing/jobListingList?' + new URLSearchParams({
