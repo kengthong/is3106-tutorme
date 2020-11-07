@@ -339,7 +339,7 @@ public class DataInitializationBean {
             Subject subject1 = subjectSession.retrieveSubjectById(1L);
             List<Long> subject1AsLongList = new ArrayList<>();
             subject1AsLongList.add(subject1.getSubjectId());
-            JobListing jobListing = jobListingSession.createJobListing(tutor1.getPersonId(), subject1AsLongList, 1.23, "preferred timeslots", "preferred areas", "job description");
+            JobListing jobListing = jobListingSession.createJobListing(tutor1.getPersonId(), subject1AsLongList, 1.23, "preferred timeslots", "preferred areas", "job title", "job description");
             em.flush();
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -16,6 +16,9 @@ import exception.OfferNotFoundException;
 import exception.OfferStatusException;
 import exception.PersonNotFoundException;
 import filter.JWTTokenNeeded;
+import filter.StaffJWTTokenNeeded;
+import filter.TuteeJWTTokenNeeded;
+import filter.TutorJWTTokenNeeded;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,35 +57,7 @@ public class OfferResource {
     StaffSessionLocal staffSession;
 
     @GET
-    @Path("/offers")
-    @JWTTokenNeeded
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllOffers() {
-        System.out.println("Getting all offers...");
-        List<Offer> offers = offerSession.retrieveAllOffers();
-        for (Offer o : offers) {
-            Tutee tutee = o.getTutee();
-            tutee.setReceivedMessages(null);
-            tutee.setSentMessages(null);
-            tutee.setPassword(null);
-            tutee.setSalt(null);
-            tutee.setOffers(null);
-            Rating rating = o.getRating();
-            if (rating != null) {
-                rating.setOffer(null);
-            }
-
-            JobListing jobListing = o.getJobListing();
-            jobListing.setOffers(null);
-            jobListing.setTutor(null);
-        }
-        GenericEntity<List<Offer>> payload = new GenericEntity<List<Offer>>(offers) {
-        };
-        return Response.status(200).entity(payload).build();
-    }
-
-    @GET
-    @Path("/{offerId}")
+    @Path("/get/{offerId}")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOffer(@PathParam("offerId") Long offerId) {
@@ -233,7 +208,7 @@ public class OfferResource {
 
     @PUT
     @Path("/accept/{offerId}")
-    @JWTTokenNeeded
+    @TutorJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response acceptOffer(@PathParam("offerId") Long offerId) {
         try {
@@ -267,12 +242,46 @@ public class OfferResource {
 
     @PUT
     @Path("/withdraw/{offerId}")
-    @JWTTokenNeeded
+    @TuteeJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response withdrawOffer(@PathParam("offerId") Long offerId) {
         try {
             System.out.println("Withdrawing offerId..." + offerId);
             Offer offer = offerSession.withdrawOffer(offerId);
+            Tutee tutee = offer.getTutee();
+            tutee.setReceivedMessages(null);
+            tutee.setSentMessages(null);
+            tutee.setPassword(null);
+            tutee.setSalt(null);
+            tutee.setOffers(null);
+            Rating rating = offer.getRating();
+            if (rating != null) {
+                rating.setOffer(null);
+            }
+
+            JobListing jobListing = offer.getJobListing();
+            jobListing.setOffers(null);
+            jobListing.setTutor(null);
+            GenericEntity<Offer> payload = new GenericEntity<Offer>(offer) {
+            };
+            return Response.status(200).entity(payload).build();
+        } catch (OfferNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(400).entity(exception).build();
+        } catch (OfferStatusException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(406).entity(exception).build();
+        }
+    }
+
+    @PUT
+    @Path("/reject/{offerId}")
+    @TutorJWTTokenNeeded
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response rejectOffer(@PathParam("offerId") Long offerId) {
+        try {
+            System.out.println("Rejecting offerId..." + offerId);
+            Offer offer = offerSession.rejectOffer(offerId);
             Tutee tutee = offer.getTutee();
             tutee.setReceivedMessages(null);
             tutee.setSentMessages(null);

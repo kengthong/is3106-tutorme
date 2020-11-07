@@ -30,7 +30,7 @@ public class JobListingSession implements JobListingSessionLocal {
     private EntityManager em;
 
     @Override
-    public JobListing createJobListing(Long tutorId, List<Long> subjectIds, Double hourlyRates, String timeslots, String areas, String jobListingDesc) throws NewJobListingException {
+    public JobListing createJobListing(Long tutorId, List<Long> subjectIds, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws NewJobListingException {
         Tutor managedTutor = em.find(Tutor.class, tutorId);
         List<Subject> managedSubjects = new ArrayList<>();
         for (Long subjectId : subjectIds) {
@@ -42,7 +42,7 @@ public class JobListingSession implements JobListingSessionLocal {
                 throw new NewJobListingException("JobListing can only be created with same subject name but different levels.");
             }
         }
-        JobListing newJobListing = new JobListing(managedTutor, managedSubjects, hourlyRates, timeslots, areas, jobListingDesc);
+        JobListing newJobListing = new JobListing(managedTutor, managedSubjects, hourlyRates, timeslots, areas, jobListingTitle, jobListingDesc);
         em.persist(newJobListing);
         List<JobListing> jobListings = managedTutor.getJobListings();
         jobListings.add(newJobListing);

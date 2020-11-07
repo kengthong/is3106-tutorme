@@ -5,7 +5,6 @@
  */
 package session;
 
-import entity.JobListing;
 import entity.Tutor;
 import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;
@@ -13,6 +12,7 @@ import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import exception.TutorNotFoundException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -86,14 +86,14 @@ public class TutorSession implements TutorSessionLocal {
         System.out.println("Retrieving all tutors from tutorSession...");
         Query query = em.createQuery("SELECT t FROM Tutor t");
         List<Tutor> tutors = query.getResultList();
-        for (Tutor t : tutors) {
-            if (t.getJobListings().isEmpty()) {
-                System.out.println("### empty jobListings");
-            }
-            for (JobListing jl : t.getJobListings()) {
-                System.out.println("### JobListingId:" + jl.getJobListingId());
-            }
-        }
+//        for (Tutor t : tutors) {
+//            if (t.getJobListings().isEmpty()) {
+//                System.out.println("### empty jobListings");
+//            }
+//            for (JobListing jl : t.getJobListings()) {
+//                System.out.println("### JobListingId:" + jl.getJobListingId());
+//            }
+//        }
         return tutors;
     }
 
@@ -153,9 +153,7 @@ public class TutorSession implements TutorSessionLocal {
         if (tutor == null) {
             throw new TutorNotFoundException("TutorID " + tutorId + " does not exists.");
         } else {
-            if (!tutor.getActiveStatus()) {
-                tutor.setActiveStatus(true);
-            }
+            tutor.setActiveStatus(true);
             return tutor;
         }
     }
@@ -166,11 +164,35 @@ public class TutorSession implements TutorSessionLocal {
         if (tutor == null) {
             throw new TutorNotFoundException("TutorID " + tutorId + " does not exists.");
         } else {
-            if (!tutor.getActiveStatus()) {
-                tutor.setActiveStatus(false);
-            }
+            tutor.setActiveStatus(false);
             return tutor;
         }
+    }
+
+    @Override
+    public Integer getActiveTutors() {
+        Query query = em.createQuery("SELECT t from Tutor t WHERE t.activeStatus=true");
+        List<Tutor> tutors = query.getResultList();
+        return tutors.size();
+    }
+
+    @Override
+    public Integer getTutorGrowth() {
+        Query query1 = em.createQuery("SELECT t FROM Tutor t WHERE t.createdDate < :inputDate");
+        Query query2 = em.createQuery("SELECT t FROM Tutor t WHERE t.createdDate >= :inputDate");
+
+        Calendar c = Calendar.getInstance();   // this takes current date
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        query1.setParameter("inputDate", c.getTime());
+        List<Tutor> tutors1 = query1.getResultList();
+
+        query2.setParameter("inputDate", c.getTime());
+        List<Tutor> tutors2 = query2.getResultList();
+
+        Integer t1 = tutors1.size();
+        Integer t2 = tutors2.size();
+        Integer newTutors = t2 - t1;
+        return newTutors;
     }
 
 }

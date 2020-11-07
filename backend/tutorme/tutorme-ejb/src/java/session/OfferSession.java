@@ -71,16 +71,6 @@ public class OfferSession implements OfferSessionLocal {
     }
 
     @Override
-    public List<Offer> retrieveOffersByPeriod(Date startDate, Date endDate) {
-        System.out.println("Inside OfferSession startDate " + startDate + " endDate " + endDate);
-        Query query = em.createQuery("SELECT o FROM Offer o WHERE o.createdDate >= :inputStartDate AND o.createdDate <= :inputEndDate");
-        query.setParameter("inputStartDate", startDate);
-        query.setParameter("inputEndDate", endDate);
-        List<Offer> offers = query.getResultList();
-        return offers;
-    }
-
-    @Override
     public List<Offer> retrieveOffersByTuteeId(Long tuteeId) {
         Query query = em.createQuery("SELECT o from Offer o WHERE o.tutee.personId = :inputTuteeId");
         query.setParameter("inputTuteeId", tuteeId);
@@ -96,40 +86,71 @@ public class OfferSession implements OfferSessionLocal {
 
     @Override
     public Offer acceptOffer(Long offerId) throws OfferNotFoundException, OfferStatusException {
-        Offer offer = retrieveOfferById(offerId);
-        OfferStatusEnum offerStatus = offer.getOfferStatus();
-        switch (offerStatus) {
-            case PENDING:
-                System.out.println("OfferID " + offerId + " has been successfully accepted.");
-                offer.setOfferStatus(OfferStatusEnum.ACCEPTED);
-                break;
-            case WITHDRAWN:
-                throw new OfferStatusException("OfferID " + offerId + " was withdrawn previously.");
-            case ACCEPTED:
-                throw new OfferStatusException("OfferID " + offerId + " has already been accepted.");
-            case REJECTED:
-                throw new OfferStatusException("OfferID " + offerId + " has already been rejected.");
+        Offer offer = em.find(Offer.class, offerId);
+        if (offer != null) {
+            OfferStatusEnum offerStatus = offer.getOfferStatus();
+            switch (offerStatus) {
+                case PENDING:
+                    System.out.println("OfferID " + offerId + " has been successfully accepted.");
+                    offer.setOfferStatus(OfferStatusEnum.ACCEPTED);
+                    break;
+                case WITHDRAWN:
+                    throw new OfferStatusException("OfferID " + offerId + " was withdrawn previously.");
+                case ACCEPTED:
+                    throw new OfferStatusException("OfferID " + offerId + " has already been accepted.");
+                case REJECTED:
+                    throw new OfferStatusException("OfferID " + offerId + " has already been rejected.");
+            }
+            return offer;
+        } else {
+            throw new OfferNotFoundException("OfferID " + offerId + " does not exists.");
         }
-        return offer;
+    }
+
+    @Override
+    public Offer rejectOffer(Long offerId) throws OfferNotFoundException, OfferStatusException {
+        Offer offer = em.find(Offer.class, offerId);
+        if (offer != null) {
+            OfferStatusEnum offerStatus = offer.getOfferStatus();
+            switch (offerStatus) {
+                case PENDING:
+                    System.out.println("OfferID " + offerId + " has been successfully rejected.");
+                    offer.setOfferStatus(OfferStatusEnum.REJECTED);
+                    break;
+                case WITHDRAWN:
+                    throw new OfferStatusException("OfferID " + offerId + " was withdrawn previously.");
+                case ACCEPTED:
+                    throw new OfferStatusException("OfferID " + offerId + " has already been accepted.");
+                case REJECTED:
+                    throw new OfferStatusException("OfferID " + offerId + " has already been rejected.");
+            }
+            return offer;
+        } else {
+            throw new OfferNotFoundException("OfferID " + offerId + " does not exists.");
+        }
     }
 
     @Override
     public Offer withdrawOffer(Long offerId) throws OfferNotFoundException, OfferStatusException {
-        Offer offer = retrieveOfferById(offerId);
-        OfferStatusEnum offerStatus = offer.getOfferStatus();
-        switch (offerStatus) {
-            case PENDING:
-                System.out.println("OfferID " + offerId + " has been successfully withdrawn.");
-                offer.setOfferStatus(OfferStatusEnum.WITHDRAWN);
-                break;
-            case WITHDRAWN:
-                throw new OfferStatusException("OfferID " + offerId + " was withdrawn previously.");
-            case ACCEPTED:
-                throw new OfferStatusException("OfferID " + offerId + " was accepted already.");
-            case REJECTED:
-                throw new OfferStatusException("OfferID " + offerId + " has already been rejected.");
+        Offer offer = em.find(Offer.class, offerId);
+        if (offer != null) {
+            OfferStatusEnum offerStatus = offer.getOfferStatus();
+            switch (offerStatus) {
+                case PENDING:
+                    System.out.println("OfferID " + offerId + " has been successfully rejected.");
+                    offer.setOfferStatus(OfferStatusEnum.WITHDRAWN);
+                    break;
+                case WITHDRAWN:
+                    throw new OfferStatusException("OfferID " + offerId + " was withdrawn previously.");
+                case ACCEPTED:
+                    throw new OfferStatusException("OfferID " + offerId + " has already been accepted.");
+                case REJECTED:
+                    throw new OfferStatusException("OfferID " + offerId + " has already been rejected.");
+            }
+            return offer;
+        } else {
+            throw new OfferNotFoundException("OfferID " + offerId + " does not exists.");
         }
-        return offer;
     }
 
     @Override

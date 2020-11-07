@@ -9,6 +9,9 @@ import entity.Tutee;
 import enumeration.GenderEnum;
 import exception.TuteeNotFoundException;
 import filter.JWTTokenNeeded;
+import filter.StaffJWTTokenNeeded;
+import filter.TuteeJWTTokenNeeded;
+import filter.UserPrincipal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,9 +24,11 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import session.TuteeSessionLocal;
 
 /**
@@ -40,7 +45,7 @@ public class TuteeResource {
     }
 
     @GET
-    @Path("/tutees")
+    @Path("/get")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTutees() {
@@ -65,7 +70,7 @@ public class TuteeResource {
     }
 
     @GET
-    @Path("/{tuteeId}")
+    @Path("/get/{tuteeId}")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTuteeById(@PathParam("tuteeId") Long tuteeId) {
@@ -87,10 +92,12 @@ public class TuteeResource {
     }
 
     @PUT
-    @Path("/{tuteeId}")
-    @JWTTokenNeeded
+    @Path("/update")
+    @TuteeJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateTuteeById(@PathParam("tuteeId") Long tuteeId, JsonObject json) {
+    public Response updateTuteeById(@Context SecurityContext securityContext, JsonObject json) {
+        UserPrincipal person = (UserPrincipal) securityContext.getUserPrincipal();
+        Long tuteeId = person.getPersonId();
         System.out.println("Updating Tutee Id is ... " + tuteeId);
 
         String firstName = json.getJsonString("firstName").getString();
@@ -127,7 +134,7 @@ public class TuteeResource {
 
     @PUT
     @Path("/ban/{tuteeId}")
-    @JWTTokenNeeded
+    @StaffJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response banTuteeById(@PathParam("tuteeId") Long tuteeId) {
         System.out.println("Banning Tutee Id is ... " + tuteeId);
@@ -149,7 +156,7 @@ public class TuteeResource {
     
     @PUT
     @Path("/unban/{tuteeId}")
-    @JWTTokenNeeded
+    @StaffJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response unbanTuteeById(@PathParam("tuteeId") Long tuteeId) {
         System.out.println("Banning Tutee Id is ... " + tuteeId);

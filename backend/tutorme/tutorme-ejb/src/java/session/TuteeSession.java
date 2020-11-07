@@ -6,9 +6,11 @@
 package session;
 
 import entity.Tutee;
+import entity.Tutor;
 import enumeration.GenderEnum;
 import exception.TuteeNotFoundException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -67,7 +69,7 @@ public class TuteeSession implements TuteeSessionLocal {
             newTutee.setMobileNum(mobileNum);
             newTutee.setGender(gender);
             newTutee.setDob(dob);
-            
+
         } catch (NoSuchAlgorithmException ex) {
             System.out.println("Hashing error when creating tutee.");
         }
@@ -148,6 +150,33 @@ public class TuteeSession implements TuteeSessionLocal {
         } else {
             throw new TuteeNotFoundException("TuteeID " + tuteeId + " does not exists.");
         }
+    }
+
+    @Override
+    public Integer getActiveTutees() {
+        Query query = em.createQuery("SELECT t from Tutee t WHERE t.activeStatus=true");
+        List<Tutee> tutees = query.getResultList();
+        return tutees.size();
+    }
+
+    @Override
+    public Integer getTuteeGrowth() {
+        Query query1 = em.createQuery("SELECT t FROM Tutee t WHERE t.createdDate < :inputDate");
+        Query query2 = em.createQuery("SELECT t FROM Tutee t WHERE t.createdDate >= :inputDate");
+
+        Calendar c = Calendar.getInstance();   // this takes current date
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        query1.setParameter("inputDate", c.getTime());
+        List<Tutee> tutees1 = query1.getResultList();
+
+        query2.setParameter("inputDate", c.getTime());
+        List<Tutee> tutees2 = query2.getResultList();
+
+        Integer t1 = tutees1.size();
+        Integer t2 = tutees2.size();
+        System.out.println("T1: " + t1);
+        System.out.println("T2: " + t2);
+        return t2-t1;
     }
 
 }

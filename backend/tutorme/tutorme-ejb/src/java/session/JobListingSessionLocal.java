@@ -20,7 +20,7 @@ import javax.ejb.Local;
 @Local
 public interface JobListingSessionLocal {
 
-    public JobListing createJobListing(Long tutorId, List<Long> subjectIds, Double hourlyRates, String timeslots, String areas, String jobListingDesc) throws NewJobListingException;
+    public JobListing createJobListing(Long tutorId, List<Long> subjectIds, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws NewJobListingException;
 
     public List<JobListing> retrieveAllJobListings();
 

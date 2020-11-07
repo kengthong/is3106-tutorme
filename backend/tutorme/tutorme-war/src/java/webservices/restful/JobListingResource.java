@@ -5,19 +5,29 @@
  */
 package webservices.restful;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.JobListing;
 import entity.Offer;
 import entity.Rating;
 import entity.Tutee;
 import entity.Tutor;
 import exception.JobListingNotFoundException;
+import filter.StaffJWTTokenNeeded;
+import filter.TutorJWTTokenNeeded;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
 import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -40,13 +50,13 @@ import session.JobListingSessionLocal;
 public class JobListingResource {
 
     @EJB
-    private JobListingSessionLocal jobListingSession;
+    JobListingSessionLocal jobListingSession;
 
     public JobListingResource() {
     }
 
     @GET
-    @Path("/jobListingList")
+    @Path("/get")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFilteredJobListings(
             @QueryParam("subject") String subject,
@@ -102,7 +112,7 @@ public class JobListingResource {
     }
 
     @GET
-    @Path("/{jobListingId}")
+    @Path("/get/{jobListingId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJobListing(
             @PathParam("jobListingId") Long jobListingId) {
@@ -143,5 +153,18 @@ public class JobListingResource {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
         }
+    }
+
+    @POST
+    @Path("/create")
+    @TutorJWTTokenNeeded
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createJobListing(JsonObject json) {
+        String subjectName = json.getString("subject");
+        String title = json.getString("listingTitle");
+        String desc = json.getString("listingDesc");
+        JsonArray subjectList = json.getJsonArray("subjectList");
+        JsonObject exception = Json.createObjectBuilder().add("error", "test").build();
+        return Response.status(400).entity(exception).build();
     }
 }

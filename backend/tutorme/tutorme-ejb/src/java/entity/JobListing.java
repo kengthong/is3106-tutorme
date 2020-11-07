@@ -52,6 +52,7 @@ public class JobListing implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date createdDate;
 
+    private String jobListingTitle;
     private String jobListingDesc;
 
     @OneToMany(mappedBy = "jobListing", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
@@ -69,13 +70,14 @@ public class JobListing implements Serializable {
         this.reviewCount = 0;
     }
 
-    public JobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, String timeslots, String areas, String jobListingDesc) {
+    public JobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) {
         this();
         this.tutor = tutor;
         this.subjects = subjects;
         this.hourlyRates = hourlyRates;
         this.timeslots = timeslots;
         this.areas = areas;
+        this.jobListingTitle = jobListingTitle;
         this.jobListingDesc = jobListingDesc;
     }
 
@@ -141,6 +143,14 @@ public class JobListing implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getJobListingTitle() {
+        return jobListingTitle;
+    }
+
+    public void setJobListingTitle(String jobListingTitle) {
+        this.jobListingTitle = jobListingTitle;
     }
 
     public String getJobListingDesc() {

@@ -9,7 +9,6 @@ import enumeration.StaffPositionEnum;
 import enumeration.GenderEnum;
 import enumeration.PersonEnum;
 import java.io.Serializable;
-import java.security.Principal;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -20,7 +19,7 @@ import javax.validation.constraints.NotNull;
  * @author Tay Z H Owen
  */
 @Entity
-public class Staff extends Person implements Serializable, Principal {
+public class Staff extends Person implements Serializable {
 
     @NotNull
     @Enumerated
@@ -44,10 +43,4 @@ public class Staff extends Person implements Serializable, Principal {
     public void setStaffPositionEnum(StaffPositionEnum adminPositionEnum) {
         this.staffPositionEnum = adminPositionEnum;
     }
-    
-    @Override
-    public String getName() {
-        return String.valueOf(this.getPersonId());
-    }
-
 }
