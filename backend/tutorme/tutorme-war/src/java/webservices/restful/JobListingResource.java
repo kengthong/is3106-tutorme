@@ -6,12 +6,19 @@
 package webservices.restful;
 
 import entity.JobListing;
+import entity.Offer;
+import entity.Rating;
+import entity.Tutee;
 import entity.Tutor;
+import exception.JobListingNotFoundException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
 import javax.enterprise.context.RequestScoped;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.GET;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
@@ -28,16 +35,16 @@ import session.JobListingSessionLocal;
  *
  * @author Owen Tay
  */
-@Path("jobListing")
+@Path("/jobListing")
 @RequestScoped
 public class JobListingResource {
-    
+
     @EJB
     private JobListingSessionLocal jobListingSession;
-    
+
     public JobListingResource() {
     }
-    
+
     @GET
     @Path("/jobListingList")
     @Produces(MediaType.APPLICATION_JSON)
@@ -72,11 +79,69 @@ public class JobListingResource {
             tutor.setSentMessages(null);
             tutor.setReceivedMessages(null);
             tutor.setJobListings(null);
-            
-            jl.setOffers(null);
+
+            List<Offer> offers = jl.getOffers();
+            for (Offer o : offers) {
+                Tutee tutee = o.getTutee();
+                tutee.setReceivedMessages(null);
+                tutee.setSentMessages(null);
+                tutee.setPassword(null);
+                tutee.setSalt(null);
+                tutee.setOffers(null);
+                Rating rating = o.getRating();
+                if (rating != null) {
+                    rating.setOffer(null);
+                }
+
+                o.setJobListing(null);
+            }
         }
         GenericEntity<List<JobListing>> packet = new GenericEntity<List<JobListing>>(jobListings) {
         };
         return Response.status(200).entity(packet).build();
+    }
+
+    @GET
+    @Path("/{jobListingId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getJobListing(
+            @PathParam("jobListingId") Long jobListingId) {
+        try {
+            System.out.println("Getting jobListingID..." + jobListingId);
+            JobListing jobListing = jobListingSession.retrieveJobListingById(jobListingId);
+
+//            System.out.println(jobListing.getOffers().get(0).getRating().getRatingValue());
+//            Integer correctReviewCount = jobListing.getReviewCount();
+//            Double correctReviewScore = jobListing.getReviewScore();          
+            Tutor tutor = jobListing.getTutor();
+            tutor.setSalt(null);
+            tutor.setPassword(null);
+            tutor.setSentMessages(null);
+            tutor.setReceivedMessages(null);
+            tutor.setJobListings(null);
+
+            List<Offer> offers = jobListing.getOffers();
+            for (Offer o : offers) {
+                Tutee tutee = o.getTutee();
+                tutee.setReceivedMessages(null);
+                tutee.setSentMessages(null);
+                tutee.setPassword(null);
+                tutee.setSalt(null);
+                tutee.setOffers(null);
+                Rating rating = o.getRating();
+                if (rating != null) {
+                    rating.setOffer(null);
+                }
+
+                o.setJobListing(null);
+            }
+
+            GenericEntity<JobListing> packet = new GenericEntity<JobListing>(jobListing) {
+            };
+            return Response.status(200).entity(packet).build();
+        } catch (JobListingNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(400).entity(exception).build();
+        }
     }
 }

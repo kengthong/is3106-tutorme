@@ -36,15 +36,16 @@ public class JobListingSession implements JobListingSessionLocal {
         for (Long subjectId : subjectIds) {
             managedSubjects.add(em.find(Subject.class, subjectId));
         }
-        JobListing newJobListing = new JobListing(managedTutor, managedSubjects, hourlyRates, timeslots, areas, jobListingDesc);
-        em.persist(newJobListing);
-        managedTutor.getJobListings().add(newJobListing);
         String subjectName = managedSubjects.get(0).getSubjectName();
         for (Subject s : managedSubjects) {
             if (!s.getSubjectName().equals(subjectName)) {
                 throw new NewJobListingException("JobListing can only be created with same subject name but different levels.");
             }
         }
+        JobListing newJobListing = new JobListing(managedTutor, managedSubjects, hourlyRates, timeslots, areas, jobListingDesc);
+        em.persist(newJobListing);
+        List<JobListing> jobListings = managedTutor.getJobListings();
+        jobListings.add(newJobListing);
         return newJobListing;
     }
 
@@ -109,7 +110,7 @@ public class JobListingSession implements JobListingSessionLocal {
 //                    System.out.println(">> Comparing subjectName db: " + s.getSubjectName() + " and input: " + subjectName);
                     if (s.getSubjectName().toLowerCase().equals(subjectName.toLowerCase())) {
                         System.out.println("###$$$ Matched subjectName db: " + s.getSubjectName() + " and input: " + subjectName);
-                        result3.add(jl);            
+                        result3.add(jl);
                         break;
                     }
                 }

@@ -8,20 +8,18 @@ package session;
 import entity.JobListing;
 import entity.Message;
 import entity.Offer;
-import entity.Person;
 import entity.Rating;
+import entity.Staff;
 import entity.Subject;
 import entity.Tutee;
 import entity.Tutor;
 import enumeration.StaffPositionEnum;
 import enumeration.GenderEnum;
-import exception.InvalidParamsException;
-import exception.InvalidSubjectChoiceException;
 import exception.OfferNotFoundException;
 import exception.PersonNotFoundException;
-import java.io.FileInputStream;
-import exception.PersonNotFoundException;
-import java.io.FileInputStream;
+import exception.StaffNotFoundException;
+import exception.TuteeNotFoundException;
+import exception.TutorNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -92,13 +90,13 @@ public class DataInitializationBean {
         c.set(2015, 12, 31);
         Date randomEndDate = c.getTime();
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 3; i++) {
             String email = "test_staff".concat(String.valueOf(i)).concat("@email.com");
             int mobileNum = randomNumberGenerator(80000001, 99999998);
             GenderEnum gender = mobileNum % 2 == 0 ? GenderEnum.MALE : GenderEnum.FEMALE;
             StaffPositionEnum adminPosition = mobileNum % 2 == 0 ? StaffPositionEnum.MANAGER : StaffPositionEnum.OPERATOR;
             Date dob = randomDateBetween(randomStartDate, randomEndDate);
-            staffSession.createStaff("test", "admin", email, "password", String.valueOf(mobileNum), gender, dob, adminPosition);
+            staffSession.createStaff("test", "staff", email, "password", String.valueOf(mobileNum), gender, dob, adminPosition);
         }
     }
 
@@ -110,7 +108,7 @@ public class DataInitializationBean {
         c.set(2015, 12, 31);
         Date randomEndDate = c.getTime();
 
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 5; i++) {
             String email = "test_tutor".concat(String.valueOf(i)).concat("@email.com");
             int mobileNum = randomNumberGenerator(80000001, 99999998);
             GenderEnum gender = mobileNum % 2 == 0 ? GenderEnum.MALE : GenderEnum.FEMALE;
@@ -136,7 +134,6 @@ public class DataInitializationBean {
     }
 
     private void initSubjects() {
-//        FileInputStream subjectLevelStream = new FileInputStream();
         subjectSession.createSubject("Primary 1", "English Language");
         subjectSession.createSubject("Primary 1", "Mother Tongue Language (MTL)");
         subjectSession.createSubject("Primary 1", "Mathematics");
@@ -334,102 +331,59 @@ public class DataInitializationBean {
     }
 
     private void initJobListings() {
-        List<Tutor> tutors = tutorSession.retrieveAllTutors();
-        List<Subject> subjects = subjectSession.retrieveAllSubjects();
+
         try {
-            for (int i = 0; i < 10; i++) {
-                int randomTutorIndex = randomNumberGenerator(0, tutors.size());
-                Tutor tutor;
-                tutor = tutors.get(randomTutorIndex);
-
-                List<Long> jlSubjectIds = new ArrayList();
-                int randomSubjectIndex1 = randomNumberGenerator(0, subjects.size());
-                Subject firstSubject = subjects.get(randomSubjectIndex1);
-                List<Subject> sameNameSubjects = subjectSession.retrieveSubjectsByName(firstSubject.getSubjectName());
-                int numSameNameSubjects = randomNumberGenerator(1, sameNameSubjects.size());
-                for (int j = 0; j < numSameNameSubjects; j++) {
-                    int randomSubjectIndex2 = randomNumberGenerator(0, sameNameSubjects.size());
-                    Subject temp = sameNameSubjects.get(randomSubjectIndex2);
-                    if (!jlSubjectIds.contains(temp.getSubjectId())) {
-                        jlSubjectIds.add(temp.getSubjectId());
-                    }
-
-                }
-
-                double rates = (double) randomNumberGenerator(20, 100);
-
-                JobListing jobListing = jobListingSession.createJobListing(tutor.getPersonId(), jlSubjectIds, rates, "i like these timings", "i prefer these areas", "i love to teach");
-                em.flush(); 
-                tutorSession.retrieveAllTutors();
-            }
+            Tutor tutor1 = tutorSession.retrieveTutorByEmail("test_tutor1@email.com");
+            Subject subject1 = subjectSession.retrieveSubjectById(1L);
+            List<Long> subject1AsLongList = new ArrayList<>();
+            subject1AsLongList.add(subject1.getSubjectId());
+            JobListing jobListing = jobListingSession.createJobListing(tutor1.getPersonId(), subject1AsLongList, 1.23, "preferred timeslots", "preferred areas", "job description");
+            em.flush();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     private void initOffers() {
-        List<JobListing> jobListings = jobListingSession.retrieveAllJobListings();
-        List<Tutee> tutees = tuteeSession.retrieveAllTutees();
-        for (int i = 0; i < 20; i++) {
-            int randomJobListingIndex = randomNumberGenerator(0, jobListings.size());
-            JobListing jobListing = jobListings.get(randomJobListingIndex);
-            int randomTuteeIndex = randomNumberGenerator(0, tutees.size());
-            Tutee tutee = tutees.get(randomTuteeIndex);
+        try {
+            Tutee tutee1 = tuteeSession.retrieveTuteeByEmail("test_tutee1@email.com");
+            JobListing joblisting1 = jobListingSession.retrieveJobListingById(1L);
+            Subject subject = joblisting1.getSubjects().get(0);
 
-            double minRate = jobListing.getHourlyRates() - 10;
-            double maxRate = jobListing.getHourlyRates() + 10;
-            double rates = (double) randomNumberGenerator((int) minRate, (int) maxRate);
+            Offer offer = offerSession.createOffer(2.0, new Date(), tutee1.getPersonId(), subject.getSubjectId(), joblisting1.getJobListingId(), 1, 2, "I love learning");
+            em.flush();
 
-            List<Subject> subjects = jobListing.getSubjects();
-            int randomSubjectIndex = randomNumberGenerator(0, subjects.size());
-            Subject chosenSubject = subjects.get(randomSubjectIndex);
-
-            int randomNumSessions = randomNumberGenerator(2, 8); 
-
-            Date startDate = new Date();
-            try {
-                Offer offer = offerSession.createOffer(rates, startDate, tutee.getPersonId(), chosenSubject.getSubjectId(), jobListing.getJobListingId(), randomNumSessions, 2, "I love learning");
-            } catch (InvalidSubjectChoiceException | InvalidParamsException ex) {
-                ex.printStackTrace();
-            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
     private void initRatings() {
-        List<Offer> offers = offerSession.retrieveAllOffers();
-        List<Integer> used = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            int randomOfferIndex = randomNumberGenerator(1, offers.size());
-            if (!used.contains(randomOfferIndex)) {
-                try {
-                    used.add(randomOfferIndex);
-                    Offer offer = offers.get(randomOfferIndex);
-                    double value = (double) randomNumberGenerator(1, 5);
-                    Rating rating = ratingSession.createRating(value, "the tutor was great/bad", offer.getOfferId());
-                } catch (OfferNotFoundException ex) {
-                    System.out.println("initRatings failure");
-                }
-            }
+        try {
+            Offer offer = offerSession.retrieveOfferById(1L);
+            Rating rating = ratingSession.createRating(5.0, "the tutor was great/bad", offer.getOfferId());
+        } catch (OfferNotFoundException ex) {
+            Logger.getLogger(DataInitializationBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void initMessages() {
-        List<Person> persons = persionSession.retrieveAllPersons();
-        for (int i = 0; i < 20; i++) {
-            try {
-                int p1Index = randomNumberGenerator(0, persons.size());
-                int p2Index = randomNumberGenerator(0, persons.size());
-                if (p1Index == p2Index) {
-                    p2Index = randomNumberGenerator(0, persons.size());
-                }
-                Person p1 = persons.get(p1Index);
-                Person p2 = persons.get(p2Index);
-                Message m1 = messageSession.createMessage(p1.getPersonId(), p2.getPersonId(), "test message from Person_" + p1.getPersonId() + " to Person_" + p2.getPersonId());
-                Message m2 = messageSession.createMessage(p2.getPersonId(), p1.getPersonId(), "test message from Person_" + p2.getPersonId() + " to Person_" + p1.getPersonId());
-
-            } catch (PersonNotFoundException ex) {
-                Logger.getLogger(DataInitializationBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        try {
+            Tutor tutor1 = tutorSession.retrieveTutorByEmail("test_tutor1@email.com");
+            Tutee tutee1 = tuteeSession.retrieveTuteeByEmail("test_tutee1@email.com");
+            Staff staff1 = staffSession.retrieveStaffByEmail("test_staff1@email.com");
+            //Tutor-Tutee
+            Message m1 = messageSession.createMessage(tutor1.getPersonId(), tutee1.getPersonId(), "test message from Person_" + tutor1.getPersonId() + " to Person_" + tutee1.getPersonId());
+            Message m2 = messageSession.createMessage(tutee1.getPersonId(), tutor1.getPersonId(), "test message from Person_" + tutee1.getPersonId() + " to Person_" + tutor1.getPersonId());
+            //Tutor-Staff
+            Message m3 = messageSession.createMessage(tutor1.getPersonId(), staff1.getPersonId(), "test message from Person_" + tutor1.getPersonId() + " to Person_" + staff1.getPersonId());
+            Message m4 = messageSession.createMessage(staff1.getPersonId(), tutor1.getPersonId(), "test message from Person_" + staff1.getPersonId() + " to Person_" + tutor1.getPersonId());
+            //Tutee-Staff
+            Message m5 = messageSession.createMessage(tutee1.getPersonId(), staff1.getPersonId(), "test message from Person_" + tutee1.getPersonId() + " to Person_" + staff1.getPersonId());
+            Message m6 = messageSession.createMessage(staff1.getPersonId(), tutee1.getPersonId(), "test message from Person_" + staff1.getPersonId() + " to Person_" + tutee1.getPersonId());
+            
+        } catch (PersonNotFoundException | TutorNotFoundException | TuteeNotFoundException | StaffNotFoundException ex) {
+            System.out.println("Error from data initialization initMessages()");
         }
     }
 

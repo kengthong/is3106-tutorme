@@ -6,6 +6,9 @@
 package webservices.restful;
 
 import entity.JobListing;
+import entity.Offer;
+import entity.Rating;
+import entity.Tutee;
 import entity.Tutor;
 import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;
@@ -22,7 +25,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
@@ -35,7 +38,7 @@ import session.TutorSessionLocal;
  *
  * @author Owen Tay
  */
-@Path("tutor")
+@Path("/tutor")
 public class TutorResource {
 
     @EJB
@@ -60,7 +63,20 @@ public class TutorResource {
                 t.setReceivedMessages(null);
                 for (JobListing jl : t.getJobListings()) {
                     jl.setTutor(null);
-                    jl.setOffers(null);
+
+                    for (Offer o : jl.getOffers()) {
+                        Tutee tutee = o.getTutee();
+                        tutee.setReceivedMessages(null);
+                        tutee.setSentMessages(null);
+                        tutee.setPassword(null);
+                        tutee.setSalt(null);
+                        tutee.setOffers(null);
+                        Rating rating = o.getRating();
+                        if (rating != null) {
+                            rating.setOffer(null);
+                        }
+                        o.setJobListing(null);
+                    }
                 }
             }
             GenericEntity<List<Tutor>> payload = new GenericEntity<List<Tutor>>(tutors) {
@@ -85,8 +101,23 @@ public class TutorResource {
             t.setSentMessages(null);
             t.setReceivedMessages(null);
             for (JobListing jl : t.getJobListings()) {
+                jl.setReviewCount(jl.getReviewCount());
+                jl.setReviewScore(jl.getReviewScore());
                 jl.setTutor(null);
-                jl.setOffers(null);
+
+                for (Offer o : jl.getOffers()) {
+                    Tutee tutee = o.getTutee();
+                    tutee.setReceivedMessages(null);
+                    tutee.setSentMessages(null);
+                    tutee.setPassword(null);
+                    tutee.setSalt(null);
+                    tutee.setOffers(null);
+                    Rating rating = o.getRating();
+                    if (rating != null) {
+                        rating.setOffer(null);
+                    }
+                    o.setJobListing(null);
+                }
             }
             GenericEntity<Tutor> payload = new GenericEntity<Tutor>(t) {
             };
@@ -97,7 +128,7 @@ public class TutorResource {
         }
     }
 
-    @POST
+    @PUT
     @Path("/{tutorId}")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
@@ -143,15 +174,15 @@ public class TutorResource {
             return Response.status(200).entity(payload).build();
         } catch (TutorNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
-            return Response.status(400).entity(exception).build();
+            return Response.status(404).entity(exception).build();
         }
     }
 
-    @POST
+    @PUT
     @Path("/ban/{tutorId}")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response banTutor(@PathParam("tutorId") Long tutorId, JsonObject json) {
+    public Response banTutor(@PathParam("tutorId") Long tutorId) {
         try {
             System.out.println("Banning Tutor Id ... " + tutorId);
             Tutor tutor = tutorSession.deactivateTutor(tutorId);
@@ -168,11 +199,11 @@ public class TutorResource {
             return Response.status(200).entity(payload).build();
         } catch (TutorNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
-            return Response.status(400).entity(exception).build();
+            return Response.status(404).entity(exception).build();
         }
     }
-    
-    @POST
+
+    @PUT
     @Path("/unban/{tutorId}")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
@@ -193,7 +224,7 @@ public class TutorResource {
             return Response.status(200).entity(payload).build();
         } catch (TutorNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
-            return Response.status(400).entity(exception).build();
+            return Response.status(404).entity(exception).build();
         }
     }
 }
