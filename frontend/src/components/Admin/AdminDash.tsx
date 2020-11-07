@@ -16,6 +16,13 @@ export const AdminDash = () => {
 
                     <TabPane tab="Overview" key="1">
                         <div style={{ padding: "5px" }} className={"col-lg-12"}>
+                            <h3>
+                                Overview
+                            </h3>
+                            <br />
+                        </div>
+
+                        <div style={{ padding: "5px" }} className={"col-lg-12"}>
                             <div className={"col-lg-3"}>
                                 <Card title="Tutor growth">
                                     <Statistic
@@ -148,15 +155,21 @@ export const AdminDash = () => {
                     </TabPane>
 
                     <TabPane tab="Tutee" key="2">
-                        Content of Tab Pane 2
+                        <h3>
+                            Tutee
+                        </h3>
                     </TabPane>
 
                     <TabPane tab="Tutor" key="3">
-                        Content of Tab Pane 3
+                        <h3>
+                            Tutor
+                        </h3>
                     </TabPane>
 
                     <TabPane tab="Staff" key="4">
-                        Content of Tab Pane 4
+                        <h3>
+                            Staff
+                        </h3>
                     </TabPane>
                 </Tabs>
             </div>
