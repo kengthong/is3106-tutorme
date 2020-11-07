@@ -5,6 +5,30 @@ import { Rate, Avatar, Card, Button } from 'antd';
 
 
 const JobListingDetail = () => {
+
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        rate: 0,
+        subject: {
+            id: 0,
+            subjectName: "",
+            subjectLevel: ""
+        },
+        title: "",
+        rating: 0,
+
+    })
+
+    useEffect(() => {
+        const getListing = (async () => {
+            const response = await fetch("");
+            const data = await response.json();
+            const [joblisting] = data.results;
+            setFormData(joblisting);
+        });
+    })
+
     //fetch json, hardcoded to test 
     const firstName = "George";
     const lastName = " Tan";
@@ -12,10 +36,8 @@ const JobListingDetail = () => {
     const title = "Math tuition for Secondary and JC levels"
     const rates = "$90 per hour";
     const rating = 5;
-    const numRating = 100;
 
     let teachingSubjects = ["A-Level Mathematics", "O-Level Mathematics"];
-    let qualifications = ["Ph.D in Mathematics", "Bachelor Degree in Mathematics"];
 
     return (
         <div style={{ display: "flex", justifyContent: "flex-start", marginTop: "40px" }}>
@@ -43,7 +65,6 @@ const JobListingDetail = () => {
                     <Rate
                         value={rating}
                         disabled />
-                        &nbsp;&nbsp;({numRating})
                 </span>
 
                 <span>

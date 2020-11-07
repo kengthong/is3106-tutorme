@@ -1,16 +1,51 @@
-import { AutoComplete, Checkbox, Form, Input, InputNumber, Select, Slider, Tooltip } from 'antd';
+import { AutoComplete, Checkbox, Form, Input, InputNumber, Menu, Select, Slider, Tooltip } from 'antd';
 import React, { useState } from 'react'
 import DaysSelectButton from '../Common/DaysSelectButton';
 
 const CreateJobListing = () => {
     const [formData, setFormData] = useState({
+        tutor: "",
         listingTitle: "",
-        subject: "",
-        levels: [""],
-        rate: "",
+        subject: {
+            id: 0,
+            subjectName: "",
+            subjectLevel: ""
+        },
+        rate: 0, // default rate should be whatever is on the listing
         availableDay: [],
         listingDesc: ""
     });
+
+
+    const verifyForm = () => {
+        let a = formData.tutor != "";
+        let b = formData.listingTitle != "";
+        let c = formData.subject.subjectName.length != 0;
+        let d = formData.subject.subjectLevel.length != 0;
+        let e = formData.rate > 0;
+        let f = formData.availableDay.length != 0;
+        let g = formData.listingDesc != "";
+        return a && b && c && d && e && f && g;
+    };
+
+    const handleChange = (e: any) => {
+
+        const name = e && e.target && e.target.name ? e.target.name : "";
+        const value = e && e.target && e.target.value ? e.target.value : "";
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+        console.log(e);
+    }
+
+
+
+    const handleSubmit = (e: any) => {
+        // Method: POST
+        // Create the job listing
+        // redirect to listing page or offer page
+    }
 
     // Probably will have a list of subjects here from {data}
     const subjectName = ["Additional Mathematics", "Elementary Mathematics", "Biology", "Chemistry", "Physics"];
@@ -32,22 +67,6 @@ const CreateJobListing = () => {
         wrapperCol: { offset: 8, span: 16 },
     };
 
-    // const handleSubmit = (e: any) => {
-
-
-
-    // }
-
-    const handleChange = (e: any) => {
-        console.log(e);
-        const name = e && e.target && e.target.name ? e.target.name : "";
-        const value = e && e.target && e.target.value ? e.target.value : "";
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-
-    }
 
     return (
         <div>
@@ -57,46 +76,63 @@ const CreateJobListing = () => {
                     name="createJobListing"
                     style={{ display: "flex", flexDirection: "column", margin: "20px" }}
                 >
-
+                    {/* Listing Title */}
                     <Form.Item
                         label="Listing Title"
-                        name="listingTitle"
                         rules={[{ required: true, message: 'Please input a listing title' }]}
                     >
                         <Input
+                            name="listingTitle"
                             onChange={(e) => handleChange(e)}
                         />
                     </Form.Item>
 
+
+                    <Menu>
+
+                        {/* 
+                        {formData.subject.map((subject) =>
+                            <Menu.Item key={subject.id} />
+
+
+                        )} */}
+
+
+                    </Menu>
+
+
+
+                    {/* <Form.Item
+                   label="Subject Level"
+                   name="levels"
+                   rules = {[{required:true, message: "Please select a subject level"}]}
+                   >
+
+                   </Form.Item> */}
+
+
+                    {/* Subject */}
                     <Form.Item
                         label="Subject"
                         name="subject"
                         rules={[{ required: true, message: 'Please select a subject' }]}
                     >
-                        {/* <AutoComplete
-                            style={{ width: 200 }}
-                            options={subjectName}
-                            placeholder="Type in and select the subject"
-                            filterOption={(inputValue, subjectName) =>
-                                subjectName.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-                            }
-                        /> */}
                     </Form.Item>
 
+                    {/* Hourly Rate */}
                     <Tooltip title="">
                         <Form.Item
                             label="Hourly Rates (Insert number)"
-                            name="hourlyRate"
+                            name="rate"
                             rules={[{ required: true, message: 'Please enter your hourly rate!' }]}
                         >
                             <InputNumber
                                 onChange={(e) => handleChange(e)}
                             />  &nbsp;/Hour
                     </Form.Item>
-                    </Tooltip>,
+                    </Tooltip>
 
-
-
+                    {/* Available Days */}
                     <Form.Item
                         label="Available days"
                         name="availableDays"
@@ -111,15 +147,20 @@ const CreateJobListing = () => {
                         </Checkbox.Group>
                     </Form.Item>
 
+                    {/* Listing description */}
                     <Form.Item
                         label="Tuition Description"
-                        name="listDesc"
+                        name="listingDesc"
                         rules={[{
-                            required: true, message: 'Please input some details about the tuition service you are providing so potential students can know more! For example: Topic related information, spoken language, etc'
+                            required: true,
+                            message: 'Please input some details about the tuition service you are providing so potential students can know more! For example: Topic related information, spoken language, etc'
 
                         }]}
+
                     >
-                        <Input />
+                        <Input
+                            onChange={(e: any) => handleChange(e)}
+                        />
                     </Form.Item>
 
 
