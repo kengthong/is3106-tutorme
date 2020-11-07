@@ -10,10 +10,9 @@ export const Footer = () => {
                         <div className="footer_bx links_txt">
                             <ul className="footer_list">
                                 <li><a href="/company-information">Company information</a></li>
-                                <li><a href="/about-us">About us</a></li>
+                                <li><a href="/AboutUs">About us</a></li>
                                 <li><a href="/FAQ">FAQs</a></li>
-                                <li><a href="#">Contact Support</a></li>
-                                <li><a href="#">Report Abuse</a></li>
+                                <li><a href="/Feedback">Feedback</a></li>
                             </ul>
                         </div>
                         <div className="flex-col align-center">
@@ -25,7 +24,7 @@ export const Footer = () => {
                                 support@tutorme.com
                             </span>
                             <br />
-                            <Button>
+                            <Button href="/ContactUs" >
                                 Contact Us
                             </Button>
                         </div>
