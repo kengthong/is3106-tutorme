@@ -35,6 +35,7 @@ const App = () => {
     <ErrorBoundary>
       <BrowserRouter>
         <Switch>
+          <Route path="/tutor/CreateNewListing" component={CreateJobListing} />
           <Route path="/tutee/listings" component={TuteeListingPage} />
           <Route path="/tutor/listings" component={TutorListingPage} />
           <Route path="/login" component={Login} />

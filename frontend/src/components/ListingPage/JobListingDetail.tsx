@@ -39,6 +39,10 @@ const JobListingDetail = () => {
 
     let teachingSubjects = ["A-Level Mathematics", "O-Level Mathematics"];
 
+    const offerData = {
+
+    }
+
     return (
         <div style={{ display: "flex", justifyContent: "flex-start", marginTop: "40px" }}>
 

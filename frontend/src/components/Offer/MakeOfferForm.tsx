@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Modal, Alert, Menu, Dropdown, Select, InputNumber } from 'antd';
+import { Form, Input, Button, Modal, Alert, Menu, Dropdown, Select, InputNumber, Radio } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 
 
 const MakeOfferForm = () => {
     const [formData, setFormData] = useState({
-        tutee: "",
-        tutor: "",
+        tuteeId: -1,
+        jobListingId: -1,
         price: 0,
         subject: "",
-        daysPerWeek: 0,
-        duration: 0
+        duration: "",
+        remarks: ""
     })
 
     const [showOffer, setShowOffer] = useState(false);
@@ -19,24 +19,26 @@ const MakeOfferForm = () => {
     const { Option } = Select;
 
     useEffect(() => {
-        const getListingSubj = async () => {
-
-
-        }
-
+        const getListing = (async () => {
+            const response = await fetch("");
+            const data = await response.json();
+            const [joblisting] = data.results;
+            setFormData(joblisting);
+        });
     })
+
 
     const tailLayout = {
         wrapperCol: { offset: 8, span: 16 },
     };
 
     const verifyForm = () => {
-        let a = formData.tutee != "";
-        let b = formData.tutor != "";
+        let a = formData.tuteeId != -1;
+        let b = formData.jobListingId != -1;
         let c = formData.price > 0;
-        let d = formData.subject != "";
-        let e = formData.daysPerWeek > 0 && formData.daysPerWeek < 8;
-        let f = formData.duration > 0;
+        let d = formData.subject !== "";
+        let e = formData.duration != "";
+        let f = formData.remarks != "";
         return a && b && c && d && e && f;
     };
 
@@ -49,12 +51,12 @@ const MakeOfferForm = () => {
     const handleChange = (e: any) => {
         const name = e && e.target && e.target.name ? e.target.name : "";
         const value = e && e.target && e.target.value ? e.target.value : "";
-        console.log(name + " and " + value);
         setFormData((prevState) => ({
             ...prevState,
             [name]: value,
         }));
-        console.log(formData);
+        // console.log("form name: " + name + " and value:" + value);
+        console.log(formData)
     };
 
 
@@ -83,34 +85,39 @@ const MakeOfferForm = () => {
                     style={{ display: "flex", justifyContent: "space-evenly" }}
                     name="Submit offer form"
                     scrollToFirstError={true}
+                    onValuesChange={(e) => handleChange(e)}
                 >
 
-                    <Form.Item
-                        label="Price"
-                        rules={[{
-                            required: true,
-                            message: "Please input your offer! (Per hour)"
-                        }]}
-                    >
-                        <InputNumber
-                            name="price"
-                            min={1}
-                            required={true}
-                            onChange={(e) => handleChange(e)}
-                        />
-                    </Form.Item>
+                    <span>
+                        <Form.Item
+                            label="Price"
+                            rules={[{
+                                required: true,
+                                message: "Please input your offer! (Per hour)"
+                            }]}
+                        >
+                            <Input
+                                name="price"
+                                min={1}
+                                required={true}
+                                onChange={(e) => handleChange(e)}
+                            />
+                        </Form.Item>
 
 
-                    <Form.Item
-                        label="Subjects"
-                        rules={[{
-                            required: true,
-                            message: "Please select a subject!"
-                        }]}
-                    >
-                        <Select></Select>
+                        <Form.Item
+                            label="Subjects"
+                            rules={[{
+                                required: true,
+                                message: "Please select a subject!"
+                            }]}
+                        >
+                            <Select></Select>
 
-                    </Form.Item>
+                        </Form.Item>
+
+                    </span>
+
 
                     <span>
                         <Form.Item
@@ -128,20 +135,13 @@ const MakeOfferForm = () => {
 
 
                         <Form.Item
-                            label="Duration per session"
                             name="duration"
+                            label="Duration per session"
                             rules={[{
                                 required: true,
                                 message: "Time"
                             }]}
                         >
-                            <Select
-                                defaultValue="1"
-                                onChange={(e) => handleChange(e)}>
-                                <Option value={1}>1 hour</Option>
-                                <Option value={1.5}>1.5 hour </Option>
-                                <Option value={2}> 2 hours </Option>
-                            </Select>
                         </Form.Item>
                     </span>
                 </Form>
@@ -158,7 +158,7 @@ const MakeOfferForm = () => {
                     </Form.Item>
                 </span>
             </Modal>
-        </div>
+        </div >
     )
 }
 
