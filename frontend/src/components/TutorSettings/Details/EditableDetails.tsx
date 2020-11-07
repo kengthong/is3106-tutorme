@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
   Button,
   Card,
@@ -9,9 +9,11 @@ import {
   Radio,
   Row,
   Select,
+  message,
 } from "antd";
 import { qualifications, races } from "../../../config/constants";
-
+import moment from 'moment';
+import {TutorService} from "../../../services/Tutor";
 const countryJson = require("../../../config/countries.json");
 
 const { Option } = Select;
@@ -31,14 +33,35 @@ type editableDetailsProps = {
 const EditableDetails = (props: editableDetailsProps) => {
   const [form] = Form.useForm();
   const { user } = props;
-  console.log('user =', user)
+
+  useEffect(() => {
+    form.setFieldsValue({
+        ...user,
+      dob: moment(user.dob.split("[")[0])
+
+    });
+  },[user]);
+
+  const updateUserDetails = async (userId: number, data: tutorDataType): Promise<void> => {
+    const response = await TutorService.updateTutorDetails(userId, data);
+    if(response) {
+      message.success("Successfully updated your details")
+    } else {
+      message.error("Unable to save user details");
+    }
+  }
   const onFinish = (fieldsValue: any) => {
     const values = {
       ...fieldsValue,
       dob: fieldsValue["dob"].format("DD-MM-YYYY"),
     };
-    console.log("form values=", values)
-    console.log('user =', user)
+
+    const newVal = {
+        ...user,
+        ...values
+    }
+    updateUserDetails(user.personId, newVal);
+
   };
 
   const radioStyle = {
@@ -70,10 +93,6 @@ const EditableDetails = (props: editableDetailsProps) => {
               <Input />
             </Form.Item>
 
-            <Form.Item name="email" label="Email" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-
             <Form.Item name="race" label="Race" rules={[{ required: true }]}>
               <Select placeholder="Select your race" allowClear>
                 {races.map((r: string, i: number) => (
@@ -91,6 +110,23 @@ const EditableDetails = (props: editableDetailsProps) => {
               rules={[{ required: true }]}
             >
               <Input />
+            </Form.Item>
+
+            <Form.Item
+                name="citizenship"
+                label="Citizenship"
+                rules={[{ required: true }]}
+            >
+              <Select showSearch placeholder="Select a country" allowClear>
+                {countryJson.map(
+                    (c: { name: string; code: string }, i: number) => (
+                        <Option value={c.name.replace(/ /g,"_") } key={i}>
+                          {" "}
+                          {c.name}
+                        </Option>
+                    )
+                )}
+              </Select>
             </Form.Item>
           </Col>
 
@@ -115,14 +151,14 @@ const EditableDetails = (props: editableDetailsProps) => {
               rules={[{ required: true }]}
             >
               <Radio.Group>
-                <Radio style={radioStyle} value="male">
-                  male
+                <Radio style={radioStyle} value="MALE">
+                  Male
                 </Radio>
-                <Radio style={radioStyle} value="female">
-                  female
+                <Radio style={radioStyle} value="FEMALE">
+                  Female
                 </Radio>
-                <Radio style={radioStyle} value="other">
-                  other
+                <Radio style={radioStyle} value="OTHER">
+                  Other
                 </Radio>
               </Radio.Group>
             </Form.Item>
@@ -139,23 +175,6 @@ const EditableDetails = (props: editableDetailsProps) => {
                     {q}
                   </Option>
                 ))}
-              </Select>
-            </Form.Item>
-
-            <Form.Item
-              name="citizenship"
-              label="Citizenship"
-              rules={[{ required: true }]}
-            >
-              <Select showSearch placeholder="Select a country" allowClear>
-                {countryJson.map(
-                  (c: { name: string; code: string }, i: number) => (
-                    <Option value={c.name} key={i}>
-                      {" "}
-                      {c.name}
-                    </Option>
-                  )
-                )}
               </Select>
             </Form.Item>
           </Col>

@@ -3,7 +3,7 @@ export const LOGIN_URL = "/login";
 export const REGISTRATION_URL = "/registration";
   export const BACKEND_BASE_URL = 'http://localhost:8080/tutorme-war/webresources';
 
-export const qualifications = [
+export const levels = [
   "Primary 1",
   "Primary 2",
   "Primary 3",
@@ -18,6 +18,18 @@ export const qualifications = [
   "H2",
   "H3"
 ];
+
+export const qualifications = [
+  "PSLE",
+  "OLEVELS",
+  "NLEVELS",
+  "ALEVELS",
+  "ITE",
+  "DIPLOMA",
+  "BACHELOR",
+  "MASTER",
+  "DOCTORATE"
+]
 export const races = ["Chinese", "Malay", "Indian", "Other"];
 
 // User reducer

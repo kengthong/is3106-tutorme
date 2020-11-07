@@ -8,7 +8,6 @@ type reviewProps = {
 }
 const ReviewsComponent = (props: reviewProps) => {
   const value = 5;
-  console.log(props.ratings)
   const ratingData = props.ratings && props.ratings.map(r => {
     return {
         rating: r.rating.ratingValue,

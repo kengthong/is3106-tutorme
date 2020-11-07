@@ -6,7 +6,6 @@ type basicDetailsProp = {
   user?: tutorDataType,
 }
 const BasicDetails = (props: basicDetailsProp) => {
-  console.log('props =', props);
   const {user} = props;
   const value = 5;
   if(!user) {

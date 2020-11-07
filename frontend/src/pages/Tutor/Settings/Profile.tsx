@@ -50,7 +50,7 @@ const TutorProfilePage = () => {
             <TutorSettingsMenu />
           </Col>
           <Col span={20}>
-            <TutorProfileComponent {...userData} />
+            <TutorProfileComponent {...userData} settingsPage={true}/>
           </Col>
         </Row>
       </BodyContainer>
