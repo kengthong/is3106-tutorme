@@ -1,35 +1,48 @@
-import { AutoComplete, Checkbox, Form, Input, InputNumber, Menu, Select, Slider, Tooltip } from 'antd';
-import React, { useState } from 'react'
+import { AutoComplete, Checkbox, Form, Input, InputNumber, Menu, Popover, Select, Slider, Tooltip } from 'antd';
+import React, { useEffect, useState } from 'react'
 import DaysSelectButton from '../Common/DaysSelectButton';
 
 const CreateJobListing = () => {
     const [formData, setFormData] = useState({
-        tutor: "",
+        tutorId: -1,
         listingTitle: "",
-        subject: {
-            id: 0,
+        subject: { //subject -> level 
             subjectName: "",
             subjectLevel: ""
         },
-        rate: 0, // default rate should be whatever is on the listing
-        availableDay: [],
-        listingDesc: ""
+        rate: 0,
+        timeslot: "",
+        listingDesc: "",
+        area: ""
     });
 
+    const [subjectList, setSubjectList] = useState("");
+    const [subjectLevel, setSubjectLevel] = useState("");
+
+
+    // // get subject list
+    // useEffect(() => {
+    //     const getListing = (async () => {
+    //         const response = await fetch("http://localhost:8080/tutorme-war/SubjectResource/subjectList");
+    //         const data = await response.json();
+    //         const [item] = data.results;
+    //         setSubjectList(item);
+    //         console.log(item);
+    //     });
+    // })
 
     const verifyForm = () => {
-        let a = formData.tutor != "";
+        let a = formData.tutorId != -1;
         let b = formData.listingTitle != "";
         let c = formData.subject.subjectName.length != 0;
         let d = formData.subject.subjectLevel.length != 0;
         let e = formData.rate > 0;
-        let f = formData.availableDay.length != 0;
+        let f = formData.timeslot != "";
         let g = formData.listingDesc != "";
         return a && b && c && d && e && f && g;
     };
 
     const handleChange = (e: any) => {
-
         const name = e && e.target && e.target.name ? e.target.name : "";
         const value = e && e.target && e.target.value ? e.target.value : "";
         setFormData((prevState) => ({
@@ -37,15 +50,17 @@ const CreateJobListing = () => {
             [name]: value,
         }));
         console.log(e);
+        console.log(formData);
     }
-
-
 
     const handleSubmit = (e: any) => {
-        // Method: POST
-        // Create the job listing
-        // redirect to listing page or offer page
+        if (verifyForm()) {
+            // create the listing and send to backend
+        }
+        alert("Form submitted");
     }
+
+
 
     // Probably will have a list of subjects here from {data}
     const subjectName = ["Additional Mathematics", "Elementary Mathematics", "Biology", "Chemistry", "Physics"];
@@ -70,6 +85,8 @@ const CreateJobListing = () => {
 
     return (
         <div>
+            <h2 style={{ margin: "20px" }}>New Tuition Listing</h2>
+
             <div>
                 <Form
                     {...layout}
@@ -88,41 +105,23 @@ const CreateJobListing = () => {
                     </Form.Item>
 
 
-                    <Menu>
-
-                        {/* 
-                        {formData.subject.map((subject) =>
-                            <Menu.Item key={subject.id} />
-
-
-                        )} */}
-
-
-                    </Menu>
-
-
-
-                    {/* <Form.Item
-                   label="Subject Level"
-                   name="levels"
-                   rules = {[{required:true, message: "Please select a subject level"}]}
-                   >
-
-                   </Form.Item> */}
-
-
                     {/* Subject */}
                     <Form.Item
                         label="Subject"
                         name="subject"
                         rules={[{ required: true, message: 'Please select a subject' }]}
                     >
+
+                        <Select>
+
+                        </Select>
+
                     </Form.Item>
 
                     {/* Hourly Rate */}
                     <Tooltip title="">
                         <Form.Item
-                            label="Hourly Rates (Insert number)"
+                            label="Rates"
                             name="rate"
                             rules={[{ required: true, message: 'Please enter your hourly rate!' }]}
                         >
@@ -132,34 +131,39 @@ const CreateJobListing = () => {
                     </Form.Item>
                     </Tooltip>
 
-                    {/* Available Days */}
                     <Form.Item
-                        label="Available days"
-                        name="availableDays"
+                        label="Timeslot"
+                        name="timeslot"
                         rules={[{ required: true, message: 'Please select the days of availability!' }]}
                     >
-                        Available Days
-                        <Checkbox.Group
-                            name="daysGroup"
-                            options={days}
-                            onChange={(e) => handleChange(e)}
-                        >
-                        </Checkbox.Group>
+                        <Tooltip
+                            trigger="click"
+                            title="Eg. Mon 10am - 2pm and weekends after 1pm">
+                            <Input
+                                name="timeslot"
+                                placeholder="Enter your preferred timeslots"
+                                onChange={(e) => handleChange(e)}
+                            >
+
+                            </Input>
+                        </Tooltip>
+
                     </Form.Item>
 
                     {/* Listing description */}
                     <Form.Item
-                        label="Tuition Description"
+                        label="Description"
                         name="listingDesc"
                         rules={[{
                             required: true,
-                            message: 'Please input some details about the tuition service you are providing so potential students can know more! For example: Topic related information, spoken language, etc'
-
+                            message: 'Please input a listing description!'
                         }]}
-
                     >
-                        <Input
-                            onChange={(e: any) => handleChange(e)}
+                        <Input.TextArea
+                            name="listingDesc"
+                            maxLength={500}
+                            onChange={(e) => handleChange(e)}
+
                         />
                     </Form.Item>
 
@@ -172,3 +176,22 @@ const CreateJobListing = () => {
 }
 
 export default CreateJobListing
+
+
+
+
+
+{/* Available Days
+                    <Form.Item
+                        label="Available days"
+                        name="availableDays"
+                        rules={[{ required: true, message: 'Please select the days of availability!' }]}
+                    >
+                        Available Days
+                        <Checkbox.Group
+                            name="daysGroup"
+                            options={days}
+                            onChange={(e) => handleChange(e)}
+                        >
+                        </Checkbox.Group>
+                    </Form.Item> */}
