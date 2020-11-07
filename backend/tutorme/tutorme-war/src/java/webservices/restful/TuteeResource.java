@@ -107,9 +107,10 @@ public class TuteeResource {
             ex.printStackTrace();
         }
         String profileDesc = json.getJsonString("profileDesc").getString();
+        String profileImage = json.getJsonString("profileImage").getString();
 
         try {
-            Tutee tutee = tuteeSession.updateTuteeProfile(tuteeId, firstName, lastName, mobileNum, genderEnum, parsedDob, profileDesc);
+            Tutee tutee = tuteeSession.updateTuteeProfile(tuteeId, firstName, lastName, mobileNum, genderEnum, parsedDob, profileDesc, profileImage);
             tutee.setPassword(null);
             tutee.setSalt(null);
             tutee.setReceivedMessages(null);

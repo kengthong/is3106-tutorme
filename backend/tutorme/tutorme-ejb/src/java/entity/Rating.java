@@ -40,7 +40,7 @@ public class Rating implements Serializable {
     @NotNull
     @Min(value = 1)
     @Max(value = 5)
-    private Double ratingValue;
+    private Integer ratingValue;
 
     private String comments;
 
@@ -52,7 +52,7 @@ public class Rating implements Serializable {
         this.createdDate = Date.from(Instant.now());
     }
 
-    public Rating(Double ratingValue, String comments, Offer offer) {
+    public Rating(Integer ratingValue, String comments, Offer offer) {
         this();
         this.ratingValue = ratingValue;
         this.comments = comments;
@@ -67,11 +67,11 @@ public class Rating implements Serializable {
         this.ratingId = ratingId;
     }
 
-    public Double getRatingValue() {
+    public Integer getRatingValue() {
         return ratingValue;
     }
 
-    public void setRatingValue(Double starValue) {
+    public void setRatingValue(Integer starValue) {
         this.ratingValue = starValue;
     }
 

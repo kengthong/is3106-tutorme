@@ -13,8 +13,11 @@ import entity.Staff;
 import entity.Subject;
 import entity.Tutee;
 import entity.Tutor;
+import enumeration.CitizenshipEnum;
 import enumeration.StaffPositionEnum;
 import enumeration.GenderEnum;
+import enumeration.QualificationEnum;
+import enumeration.RaceEnum;
 import exception.OfferNotFoundException;
 import exception.PersonNotFoundException;
 import exception.StaffNotFoundException;
@@ -71,33 +74,15 @@ public class DataInitializationBean {
 
     @PostConstruct
     public void postContruct() {
-        initStaff();
         initTutors();
         initTutees();
+        initStaff();
         initSubjects();
         initJobListings();
         initOffers();
         initRatings();
         initMessages();
         System.out.println("I HAVE DEPLOYED EVERYTHING");
-    }
-
-    private void initStaff() {
-        Calendar c = Calendar.getInstance();
-        c.set(1990, 0, 0);
-        Date randomStartDate = c.getTime();
-
-        c.set(2015, 12, 31);
-        Date randomEndDate = c.getTime();
-
-        for (int i = 1; i <= 3; i++) {
-            String email = "test_staff".concat(String.valueOf(i)).concat("@email.com");
-            int mobileNum = randomNumberGenerator(80000001, 99999998);
-            GenderEnum gender = mobileNum % 2 == 0 ? GenderEnum.MALE : GenderEnum.FEMALE;
-            StaffPositionEnum adminPosition = mobileNum % 2 == 0 ? StaffPositionEnum.MANAGER : StaffPositionEnum.OPERATOR;
-            Date dob = randomDateBetween(randomStartDate, randomEndDate);
-            staffSession.createStaff("test", "staff", email, "password", String.valueOf(mobileNum), gender, dob, adminPosition);
-        }
     }
 
     private void initTutors() {
@@ -113,7 +98,9 @@ public class DataInitializationBean {
             int mobileNum = randomNumberGenerator(80000001, 99999998);
             GenderEnum gender = mobileNum % 2 == 0 ? GenderEnum.MALE : GenderEnum.FEMALE;
             Date dob = randomDateBetween(randomStartDate, randomEndDate);
-            tutorSession.createTutor("test", "tutor", email, "password", String.valueOf(mobileNum), gender, dob);
+            Tutor tutor = tutorSession.createTutorInit("test", "tutor", email, "password", String.valueOf(mobileNum), gender, dob, QualificationEnum.BACHELOR, CitizenshipEnum.SINGAPORE, RaceEnum.CHINESE, "I LOVE TEACHING", "");
+            em.flush();
+ 
         }
     }
 
@@ -129,8 +116,23 @@ public class DataInitializationBean {
             int mobileNum = randomNumberGenerator(80000001, 99999998);
             GenderEnum gender = mobileNum % 2 == 0 ? GenderEnum.MALE : GenderEnum.FEMALE;
             Date dob = randomDateBetween(randomStartDate, randomEndDate);
-            tuteeSession.createTutee("test", "tutee", email, "password", String.valueOf(mobileNum), gender, dob);
+            Tutee tutee = tuteeSession.createTuteeInit("test", "tutee", email, "password", String.valueOf(mobileNum), gender, dob, "I love to learn", "");
+            em.flush();
         }
+    }
+
+    private void initStaff() {
+        Calendar c = Calendar.getInstance();
+        c.set(1990, 0, 0);
+        Date randomStartDate = c.getTime();
+
+        c.set(2015, 12, 31);
+        Date randomEndDate = c.getTime();
+
+        staffSession.createStaff("test", "staff", "is3106dummy@gmail.com", "password", "99990001", GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), StaffPositionEnum.MANAGER);
+        em.flush();
+        staffSession.createStaff("test", "staff", "tutormecare3106@gmail.com", "password", "99990002", GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), StaffPositionEnum.OPERATOR);
+        em.flush();
     }
 
     private void initSubjects() {
@@ -361,7 +363,7 @@ public class DataInitializationBean {
     private void initRatings() {
         try {
             Offer offer = offerSession.retrieveOfferById(1L);
-            Rating rating = ratingSession.createRating(5.0, "the tutor was great/bad", offer.getOfferId());
+            Rating rating = ratingSession.createRating(5, "the tutor was great/bad", offer.getOfferId());
         } catch (OfferNotFoundException ex) {
             Logger.getLogger(DataInitializationBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -371,7 +373,7 @@ public class DataInitializationBean {
         try {
             Tutor tutor1 = tutorSession.retrieveTutorByEmail("test_tutor1@email.com");
             Tutee tutee1 = tuteeSession.retrieveTuteeByEmail("test_tutee1@email.com");
-            Staff staff1 = staffSession.retrieveStaffByEmail("test_staff1@email.com");
+            Staff staff1 = staffSession.retrieveStaffByEmail("tutormecare3106@gmail.com");
             //Tutor-Tutee
             Message m1 = messageSession.createMessage(tutor1.getPersonId(), tutee1.getPersonId(), "test message from Person_" + tutor1.getPersonId() + " to Person_" + tutee1.getPersonId());
             Message m2 = messageSession.createMessage(tutee1.getPersonId(), tutor1.getPersonId(), "test message from Person_" + tutee1.getPersonId() + " to Person_" + tutor1.getPersonId());
@@ -381,7 +383,7 @@ public class DataInitializationBean {
             //Tutee-Staff
             Message m5 = messageSession.createMessage(tutee1.getPersonId(), staff1.getPersonId(), "test message from Person_" + tutee1.getPersonId() + " to Person_" + staff1.getPersonId());
             Message m6 = messageSession.createMessage(staff1.getPersonId(), tutee1.getPersonId(), "test message from Person_" + staff1.getPersonId() + " to Person_" + tutee1.getPersonId());
-            
+
         } catch (PersonNotFoundException | TutorNotFoundException | TuteeNotFoundException | StaffNotFoundException ex) {
             System.out.println("Error from data initialization initMessages()");
         }

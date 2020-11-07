@@ -102,6 +102,7 @@ public abstract class Person implements Serializable {
         this.mobileNum = mobileNum;
         this.gender = gender;
         this.dob = dob;
+        this.profileImage = "";
     }
 
     public Long getPersonId() {

@@ -19,7 +19,7 @@ import javax.ejb.Local;
 @Local
 public interface RatingSessionLocal {
 
-    public Rating createRating(Double ratingValue, String comments, Long offerId) throws OfferNotFoundException;
+    public Rating createRating(Integer ratingValue, String comments, Long offerId) throws OfferNotFoundException;
 
     public List<Rating> retrieveAllRatings();
 

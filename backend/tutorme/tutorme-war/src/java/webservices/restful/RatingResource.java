@@ -16,7 +16,6 @@ import javax.ws.rs.Path;
 import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.persistence.PersistenceException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
@@ -48,7 +47,7 @@ public class RatingResource {
         String ratingValueStr = json.getString("ratingValue");
         String comments = json.getString("comments");
         String offerIdStr = json.getString("offerId");
-        Double ratingValue = Double.valueOf(ratingValueStr);
+        Integer ratingValue = Integer.valueOf(ratingValueStr);
         Long offerId = Long.valueOf(offerIdStr);
         System.out.println("Making new rating on offerId..." + offerIdStr);
 

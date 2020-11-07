@@ -19,6 +19,8 @@ import javax.ejb.Local;
 @Local
 public interface TuteeSessionLocal {
 
+    public Tutee createTuteeInit(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, String profileDesc, String profileImage);
+    
     public Tutee createTutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob);
 
     public List<Tutee> retrieveAllTutees();
@@ -29,7 +31,7 @@ public interface TuteeSessionLocal {
 
     public List<Tutee> retrieveTuteeByName(String inputName);
 
-    public Tutee updateTuteeProfile(Long tuteeId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc) throws TuteeNotFoundException;
+    public Tutee updateTuteeProfile(Long tuteeId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc, String profileImage) throws TuteeNotFoundException;
 
     public Tutee activateTuteeStatus(Long tuteeId) throws TuteeNotFoundException;
 
