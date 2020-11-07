@@ -24,6 +24,9 @@ import TutorListingPage from "../pages/Tutor/TutorListingPage";
 import CreateJobListing from "../pages/Tutor/CreateListingPage";
 import Chat from "../pages/Common/Chat/Chat"
 import FAQ from "../pages/Common/FAQs"
+import AboutUs from "../pages/Common/AboutUs"
+import Feedback from "../pages/Common/Feedback"
+import ContactUs from "../pages/Common/ContactUs"
 // services
 
 const App = () => {
@@ -34,10 +37,13 @@ const App = () => {
           <Route path="/tutee/listings" component={TuteeListingPage} />
           <Route path="/tutor/listings" component={TutorListingPage} />
           <Route path="/login" component={Login} />
-          <Route path="/" exact component={LandingPage} isAuthenticated={true}/>
+          <Route path="/" exact component={LandingPage} isAuthenticated={true} />
           <Route path='/search:params?' component={SearchPage} />
           <Route path="/tutor/createListing" component={CreateJobListing} />
           <Route path="/FAQ" component={FAQ} />
+          <Route path="/AboutUs" component={AboutUs} />
+          <Route path="/ContactUs" component={ContactUs} />
+          <Route path="/Feedback" component={Feedback} />
           <ProtectedRoute path="/chat" component={Chat} isAuthenticated={true} />
           <ProtectedRoute path="/login" component={Login} />
           <ProtectedRoute path="/tutor/settings/profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
@@ -63,11 +69,11 @@ const ProtectedRoute = ({ component, isAuthenticated, allowedUser, ...rest }: an
   const isAppropriateUser = (!allowedUser) || (allowedUser && userType === allowedUser);
 
   const routeComponent = (props: any) =>
-    isAuthenticated?
-        isAppropriateUser ?
-            ( React.createElement(component, props))
-        : ( <Redirect to={{ pathname: "/" }} /> )
-    : (<Redirect to={{ pathname: "/login" }} /> );
+    isAuthenticated ?
+      isAppropriateUser ?
+        (React.createElement(component, props))
+        : (<Redirect to={{ pathname: "/" }} />)
+      : (<Redirect to={{ pathname: "/login" }} />);
   return <Route {...rest} render={routeComponent} />;
 };
 
