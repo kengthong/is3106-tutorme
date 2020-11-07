@@ -5,6 +5,8 @@
  */
 package webservices.restful;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.JobListing;
 import entity.Offer;
 import entity.Rating;
@@ -25,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
