@@ -42,6 +42,7 @@ public class Tutor extends Person implements Serializable {
     private List<JobListing> jobListings;
 
     private Double avgRating;
+    private Integer ratingCount;
 
     public Tutor() {
         super();
@@ -124,6 +125,21 @@ public class Tutor extends Person implements Serializable {
         } else {
             return 0.0;
         }
+    }
+    
+    public void setRatingCount(Integer dummy) {
+        this.ratingCount = dummy;
+    }
+
+    public Integer getRatingCount() {
+        Integer count = 0;
+        if (this.jobListings != null) {
+            for (JobListing jl : this.jobListings) {
+                count++;
+            }
+        }
+        return count;
+
     }
 
     @Override

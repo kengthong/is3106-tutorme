@@ -33,6 +33,33 @@ public class TutorSession implements TutorSessionLocal {
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
     @Override
+    public Tutor createTutorInit(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc, String profileImage) {
+        Tutor newTutor = new Tutor();
+        try {
+            String salt = ch.generateRandomString(64);
+            newTutor.setSalt(salt);
+            String hashedPassword = ch.byteArrayToHexString(ch.doHashPassword(password.concat(salt)));
+            newTutor.setPassword(hashedPassword);
+
+            newTutor.setFirstName(firstName);
+            newTutor.setLastName(lastName);
+            newTutor.setEmail(email);
+            newTutor.setMobileNum(mobileNum);
+            newTutor.setGender(gender);
+            newTutor.setDob(dob);
+            newTutor.setHighestQualification(highestQualification);
+            newTutor.setCitizenship(citizenship);
+            newTutor.setRace(race);
+            newTutor.setProfileDesc(profileDesc);
+            newTutor.setProfileImage(profileImage);
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println("Hashing error when creating tutor.");
+        }
+        em.persist(newTutor);
+        return newTutor;
+    }
+
+    @Override
     public Tutor createTutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) {
         Tutor newTutor = new Tutor();
         try {
@@ -52,7 +79,6 @@ public class TutorSession implements TutorSessionLocal {
         }
         em.persist(newTutor);
         return newTutor;
-
     }
 
     @Override
@@ -146,4 +172,5 @@ public class TutorSession implements TutorSessionLocal {
             return tutor;
         }
     }
+
 }

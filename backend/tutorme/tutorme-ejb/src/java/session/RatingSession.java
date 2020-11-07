@@ -26,7 +26,7 @@ public class RatingSession implements RatingSessionLocal {
     EntityManager em;
 
     @Override
-    public Rating createRating(Double ratingValue, String comments, Long offerId) throws OfferNotFoundException {
+    public Rating createRating(Integer ratingValue, String comments, Long offerId) throws OfferNotFoundException {
         Offer offer = em.find(Offer.class, offerId);
         if (offer == null) {
             throw new OfferNotFoundException("offerId does not exist");

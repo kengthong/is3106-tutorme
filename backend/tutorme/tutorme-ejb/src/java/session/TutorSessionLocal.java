@@ -22,6 +22,8 @@ import javax.ejb.Local;
 @Local
 public interface TutorSessionLocal {
     
+    public Tutor createTutorInit(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob,QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc, String profileImage);
+    
     public Tutor createTutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob);
 
     public List<Tutor> retrieveAllTutors();

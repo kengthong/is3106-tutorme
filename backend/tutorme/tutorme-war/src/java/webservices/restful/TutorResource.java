@@ -16,6 +16,7 @@ import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import exception.TutorNotFoundException;
 import filter.JWTTokenNeeded;
+import filter.StaffJWTTokenNeeded;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -180,7 +181,7 @@ public class TutorResource {
 
     @PUT
     @Path("/ban/{tutorId}")
-    @JWTTokenNeeded
+    @StaffJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response banTutor(@PathParam("tutorId") Long tutorId) {
         try {
@@ -205,7 +206,7 @@ public class TutorResource {
 
     @PUT
     @Path("/unban/{tutorId}")
-    @JWTTokenNeeded
+    @StaffJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response unbanTutor(@PathParam("tutorId") Long tutorId, JsonObject json) {
         try {

@@ -29,6 +29,30 @@ public class TuteeSession implements TuteeSessionLocal {
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
     @Override
+    public Tutee createTuteeInit(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, String profileDesc, String profileImage) {
+        Tutee newTutee = new Tutee();
+        try {
+            String salt = ch.generateRandomString(64);
+            newTutee.setSalt(salt);
+            String hashedPassword = ch.byteArrayToHexString(ch.doHashPassword(password.concat(salt)));
+            newTutee.setPassword(hashedPassword);
+
+            newTutee.setFirstName(firstName);
+            newTutee.setLastName(lastName);
+            newTutee.setEmail(email);
+            newTutee.setMobileNum(mobileNum);
+            newTutee.setGender(gender);
+            newTutee.setDob(dob);
+            newTutee.setProfileDesc(profileDesc);
+            newTutee.setProfileImage(profileImage);
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println("Hashing error when creating tutee.");
+        }
+        em.persist(newTutee);
+        return newTutee;
+    }
+
+    @Override
     public Tutee createTutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) {
         Tutee newTutee = new Tutee();
         try {
@@ -43,6 +67,7 @@ public class TuteeSession implements TuteeSessionLocal {
             newTutee.setMobileNum(mobileNum);
             newTutee.setGender(gender);
             newTutee.setDob(dob);
+            
         } catch (NoSuchAlgorithmException ex) {
             System.out.println("Hashing error when creating tutee.");
         }
@@ -87,7 +112,7 @@ public class TuteeSession implements TuteeSessionLocal {
     }
 
     @Override
-    public Tutee updateTuteeProfile(Long tuteeId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc) throws TuteeNotFoundException {
+    public Tutee updateTuteeProfile(Long tuteeId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc, String profileImage) throws TuteeNotFoundException {
         Tutee tutee = em.find(Tutee.class, tuteeId);
         if (tutee != null) {
             tutee.setFirstName(firstName);
@@ -96,6 +121,7 @@ public class TuteeSession implements TuteeSessionLocal {
             tutee.setGender(gender);
             tutee.setDob(dob);
             tutee.setProfileDesc(profileDesc);
+            tutee.setProfileImage(profileImage);
             return tutee;
         } else {
             throw new TuteeNotFoundException("TuteeID " + tuteeId + " does not exists.");

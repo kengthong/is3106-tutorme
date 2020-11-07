@@ -5,11 +5,8 @@
  */
 package filter;
 
-
-
 import io.fusionauth.jwt.Verifier;
 import io.fusionauth.jwt.domain.JWT;
-import io.fusionauth.jwt.hmac.HMACSigner;
 import io.fusionauth.jwt.hmac.HMACVerifier;
 import javax.annotation.Priority;
 import javax.ws.rs.NotAuthorizedException;
@@ -20,6 +17,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author Antonio Goncalves
@@ -53,6 +51,10 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
         try {
             // Validate the token
             JWT jwt = JWT.getDecoder().decode(token, verifier);
+            Map<String, Object> claims = jwt.getAllClaims();
+            System.out.println(claims);
+            Object personId = claims.get("personId");
+            System.out.println(personId);
             System.out.println("#### valid token : " + token);
         } catch (Exception e) {
             System.out.println("#### invalid token : " + token);

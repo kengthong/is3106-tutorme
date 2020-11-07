@@ -7,9 +7,11 @@ package webservices.restful;
 
 import entity.Message;
 import entity.Person;
+import entity.Staff;
 import entity.Tutee;
 import entity.Tutor;
 import exception.PersonNotFoundException;
+import exception.StaffNotFoundException;
 import filter.JWTTokenNeeded;
 import java.util.List;
 import javax.ejb.EJB;
@@ -25,6 +27,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import session.MessageSessionLocal;
+import session.StaffSessionLocal;
 
 /**
  * REST Web Service
@@ -37,6 +40,8 @@ public class MessageResource {
 
     @EJB
     MessageSessionLocal messageSession;
+    @EJB
+    StaffSessionLocal staffSession;
 
     public MessageResource() {
     }
@@ -188,6 +193,68 @@ public class MessageResource {
             };
             return Response.status(201).entity(payload).build();
         } catch (PersonNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("Bad Request", ex.getMessage()).build();
+            return Response.status(400).entity(exception).build();
+        }
+    }
+
+    @POST
+    @Path("/sendFeedback")
+    @JWTTokenNeeded
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response sendFeedback(JsonObject json) {
+        String senderIdStr = json.getString("senderId");
+
+        try {
+            Staff staff = staffSession.retrieveStaffByEmail("tutormecare3106@gmail.com");
+            Long receiverId = staff.getPersonId();
+            Long senderId = Long.valueOf(senderIdStr);
+            System.out.println("Sending new message from...senderId: " + senderId + " to receiverId: " + receiverId);
+            String messageBody = json.getString("body");
+
+            Message message = messageSession.createMessage(senderId, receiverId, messageBody);
+            List<Message> conversation = messageSession.retrieveConversation(senderId, receiverId);
+            for (Message m : conversation) {
+                Person sender = m.getSender();
+                sender.setReceivedMessages(null);
+                sender.setSentMessages(null);
+                sender.setSalt(null);
+                sender.setPassword(null);
+
+                Person receiver = m.getReceiver();
+                receiver.setReceivedMessages(null);
+                receiver.setSentMessages(null);
+                receiver.setSalt(null);
+                receiver.setPassword(null);
+
+                switch (sender.getPersonEnum()) {
+                    case TUTEE:
+                        Tutee tempTutee = (Tutee) sender;
+                        tempTutee.setOffers(null);
+                        break;
+                    case TUTOR:
+                        Tutor tempTutor = (Tutor) sender;
+                        tempTutor.setJobListings(null);
+                        break;
+                }
+                switch (receiver.getPersonEnum()) {
+                    case TUTEE:
+                        Tutee tempTutee = (Tutee) receiver;
+                        tempTutee.setOffers(null);
+                        break;
+                    case TUTOR:
+                        Tutor tempTutor = (Tutor) receiver;
+                        tempTutor.setJobListings(null);
+                        break;
+                }
+            }
+            GenericEntity<List<Message>> payload = new GenericEntity<List<Message>>(conversation) {
+            };
+            return Response.status(201).entity(payload).build();
+        } catch (PersonNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("Bad Request", ex.getMessage()).build();
+            return Response.status(400).entity(exception).build();
+        } catch (StaffNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("Bad Request", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
         }
