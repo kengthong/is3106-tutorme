@@ -24,14 +24,21 @@ const tailLayout = {
   wrapperCol: { offset: 20, span: 4 },
 };
 
-const EditableDetails = () => {
+type editableDetailsProps = {
+  user: tutorDataType;
+}
+
+const EditableDetails = (props: editableDetailsProps) => {
   const [form] = Form.useForm();
+  const { user } = props;
+  console.log('user =', user)
   const onFinish = (fieldsValue: any) => {
     const values = {
       ...fieldsValue,
       dob: fieldsValue["dob"].format("DD-MM-YYYY"),
     };
-    console.log(values)
+    console.log("form values=", values)
+    console.log('user =', user)
   };
 
   const radioStyle = {

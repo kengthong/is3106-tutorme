@@ -139,12 +139,12 @@ const ProfileContent = (personEnum: string, handleLogout: () => void) => {
   return (
     <div style={{height: '150px', width: '150px'}}>
       <div className='clickable highlightable'>
-        <a className='selection w-100' href={`${personEnum === 'TUTEE'? '/tutee-profile' : '/tutor-profile'}`}>
+        <a className='selection w-100' href={`${personEnum === 'TUTEE'? '/tutee-profile' : '/tutor/settings/profile'}`}>
           My Profile
         </a>
       </div>
       <div className='clickable highlightable'>
-        <a className='selection w-100' href={`/${personEnum === 'TUTEE'? 'tutee' : 'tutor'}/settings/profile`}>
+        <a className='selection w-100' href={`/${personEnum === 'TUTEE'? 'tutee' : 'tutor'}/settings/personal-details`}>
           Settings
         </a>
       </div>
