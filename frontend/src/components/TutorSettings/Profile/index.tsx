@@ -12,10 +12,11 @@ import {UserState} from "../../../reducer/user-reducer";
 
 type tutorProfileProps = {
     user: tutorDataType,
-    offerRatings: offerType[]
+    offerRatings: offerType[],
+    settingsPage?: boolean
 }
 const TutorProfileComponent = (props: tutorProfileProps) => {
-    const { user, offerRatings } = props;
+    const { user, offerRatings, settingsPage } = props;
   return (
     <div
       style={{
@@ -25,19 +26,23 @@ const TutorProfileComponent = (props: tutorProfileProps) => {
         justifyContent: "center",
       }}
     >
-      <div style={{ width: "65%", marginRight: "20px" }}>
+      <div style={{ width: `${settingsPage? "100%": "65%"}`, marginRight: "20px" }}>
         <Card>
           <BasicDetails user={user} />
           <ReviewsComponent ratings={offerRatings} avgRating={user.avgRating} ratingCount={user.ratingCount}/>
         </Card>
       </div>
-      <div style={{ width: "35%" }}>
-        <Card>
-          {/*{user.type === "tutee" ? (*/}
-          {/*  <MakeOfferComponent />*/}
-          {/*) : null}*/}
-        </Card>
-      </div>
+        {settingsPage?
+            null:
+            <div style={{ width: "35%" }}>
+                <Card>
+                    {/*{user.type === "tutee" ? (*/}
+                    {/*  <MakeOfferComponent />*/}
+                    {/*) : null}*/}
+                </Card>
+            </div>
+        }
+
     </div>
   );
 };

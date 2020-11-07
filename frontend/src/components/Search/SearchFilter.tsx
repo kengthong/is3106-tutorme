@@ -4,7 +4,7 @@ import {useHistory, useLocation} from "react-router-dom";
 
 import Filter from "./Filter";
 import qs from "qs";
-import {qualifications} from "../../config/constants";
+import {levels} from "../../config/constants";
 import NameFilter from "./NameFilter";
 import {useSelector} from "react-redux";
 import {SubjectState} from "../../reducer/subject-reducer";
@@ -47,7 +47,7 @@ const SearchFilter = () => {
                 <div className={'flex-row justify-space-around w-100'}>
                     <NameFilter label={'Name'} _key={'name'} {...filterProps} />
                     <Filter label={'Subject'} _key={'subject'} {...filterProps} data={subjectState.uniqueSubjects} labels={subjectState.uniqueSubjects}/>
-                    <Filter label={'Level'} _key={'level'} {...filterProps} data={qualifications} labels={qualifications} />
+                    <Filter label={'Level'} _key={'level'} {...filterProps} data={levels} labels={levels} />
                     <Filter label={'Price'} _key={'price'} {...filterProps} data={['s', 'm', 'l']} labels={['<$30', '$30/hr - $60/hr', '>$60/hr']} />
                     {/*<Filter label={'Gender'} _key={'gender'} {...filterProps} data={['M','F']} labels={['M','F']} />*/}
                 </div>
