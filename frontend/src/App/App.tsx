@@ -27,6 +27,7 @@ import FAQ from "../pages/Common/FAQs"
 import AboutUs from "../pages/Common/AboutUs"
 import Feedback from "../pages/Common/Feedback"
 import ContactUs from "../pages/Common/ContactUs"
+import AdminPage from "../pages/Admin/Admin"
 // services
 
 const App = () => {
