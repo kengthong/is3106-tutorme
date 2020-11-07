@@ -1,26 +1,64 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Modal, Alert } from 'antd';
+import { Form, Input, Button, Modal, Alert, Menu, Dropdown, Select, InputNumber } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 
 
 const MakeOfferForm = () => {
-    const [offerRate, setOfferRate] = useState(10);
-    const [submitOffer, setSubmitOffer] = useState(false);
+    const [formData, setFormData] = useState({
+        tutee: "",
+        tutor: "",
+        price: 0,
+        subject: "",
+        daysPerWeek: 0,
+        duration: 0
+    })
+
     const [showOffer, setShowOffer] = useState(false);
+    const [currTutee, setCurrTutee] = useState(-1);
+    const [currTutor, setCurrTutor] = useState(-1);
+    const { Option } = Select;
+
+    useEffect(() => {
+        const getListingSubj = async () => {
+
+
+        }
+
+    })
 
     const tailLayout = {
         wrapperCol: { offset: 8, span: 16 },
     };
 
-    function submitSuccess() {
-        setShowOffer(false);
-        console.log("success!")
+    const verifyForm = () => {
+        let a = formData.tutee != "";
+        let b = formData.tutor != "";
+        let c = formData.price > 0;
+        let d = formData.subject != "";
+        let e = formData.daysPerWeek > 0 && formData.daysPerWeek < 8;
+        let f = formData.duration > 0;
+        return a && b && c && d && e && f;
+    };
+
+    const handleSubmit = (e: any) => {
+        // send to backend
+        console.log(formData);
+        alert("submitted!");
     }
 
-    function submitError() {
-        console.log("fail!")
+    const handleChange = (e: any) => {
+        const name = e && e.target && e.target.name ? e.target.name : "";
+        const value = e && e.target && e.target.value ? e.target.value : "";
+        console.log(name + " and " + value);
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+        console.log(formData);
+    };
 
-    }
+
+    const testSubj = ["A-maths", "E-Maths", "H2 Maths"];
 
     return (
         <div style={{ display: "flex", flexDirection: "column", margin: "10px" }}>
@@ -44,36 +82,66 @@ const MakeOfferForm = () => {
                 <Form
                     style={{ display: "flex", justifyContent: "space-evenly" }}
                     name="Submit offer form"
-                    initialValues={{ price: offerRate, days: 2, duration: "2h" }}
-                    onFinish={submitSuccess}
-                    onFinishFailed={submitError}
                     scrollToFirstError={true}
-
                 >
+
                     <Form.Item
                         label="Price"
-                        name="price"
-                        rules={[{ required: true, message: "Please input your offer! (Per hour)" }]}
+                        rules={[{
+                            required: true,
+                            message: "Please input your offer! (Per hour)"
+                        }]}
                     >
-                        <Input />
+                        <InputNumber
+                            name="price"
+                            min={1}
+                            required={true}
+                            onChange={(e) => handleChange(e)}
+                        />
+                    </Form.Item>
+
+
+                    <Form.Item
+                        label="Subjects"
+                        rules={[{
+                            required: true,
+                            message: "Please select a subject!"
+                        }]}
+                    >
+                        <Select></Select>
+
                     </Form.Item>
 
                     <span>
                         <Form.Item
                             label="Days per week"
-                            name="days"
-                            rules={[{ required: true, message: "Number" }]}
+                            rules={[{
+                                required: true,
+                                message: "Number"
+                            }]}
                         >
-                            <Input />
+                            <Input
+                                name="daysPerWeek"
+                                onChange={(e) => handleChange(e)}
+                            />
                         </Form.Item>
 
 
                         <Form.Item
                             label="Duration per session"
                             name="duration"
-                            rules={[{ required: true, message: "Time" }]}
+                            rules={[{
+                                required: true,
+                                message: "Time"
+                            }]}
                         >
-                            <Input />
+                            <Select
+                                defaultValue="1"
+                                onChange={(e) => handleChange(e)}>
+                                <Option value={1}>1 hour</Option>
+                                <Option value={1.5}>1.5 hour </Option>
+                                <Option value={2}> 2 hours </Option>
+                            </Select>
                         </Form.Item>
                     </span>
                 </Form>
@@ -83,18 +151,13 @@ const MakeOfferForm = () => {
                         <Button
                             type="primary"
                             htmlType="submit"
-                            onClick={submitSuccess}
+                            onClick={handleSubmit}
                         >
-
                             Submit
                     </Button>
                     </Form.Item>
                 </span>
-
-
             </Modal>
-
-
         </div>
     )
 }
