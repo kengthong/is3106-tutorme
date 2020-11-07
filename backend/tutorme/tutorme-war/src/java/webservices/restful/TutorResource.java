@@ -8,6 +8,7 @@ package webservices.restful;
 import entity.JobListing;
 import entity.Offer;
 import entity.Rating;
+import entity.Staff;
 import entity.Tutee;
 import entity.Tutor;
 import enumeration.CitizenshipEnum;
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -29,9 +31,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import session.TutorSessionLocal;
 
 /**
@@ -183,7 +187,9 @@ public class TutorResource {
     @Path("/ban/{tutorId}")
     @StaffJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response banTutor(@PathParam("tutorId") Long tutorId) {
+    public Response banTutor(@Context SecurityContext securityContext, @PathParam("tutorId") Long tutorId) {
+//        Staff staff = (Staff) securityContext.getUserPrincipal();
+//        System.out.println(staff.getEmail());
         try {
             System.out.println("Banning Tutor Id ... " + tutorId);
             Tutor tutor = tutorSession.deactivateTutor(tutorId);
