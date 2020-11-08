@@ -20,6 +20,7 @@ import filter.TutorJWTTokenNeeded;
 import filter.UserPrincipal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -148,7 +149,8 @@ public class TutorResource {
         String citizenship = json.getString("citizenship");
         String race = json.getString("race");
         String profileDesc = json.getString("profileDesc");
-        String profileImage = json.getString("profileImage");
+        String encodedProfileImage = json.getString("profileImage");
+        byte[] profileImage = Base64.getDecoder().decode(encodedProfileImage);
 
         GenderEnum genderEnum = gender.equals("Male") ? GenderEnum.MALE : GenderEnum.FEMALE;
         QualificationEnum qualiEnum = QualificationEnum.valueOf(QualificationEnum.class, qualification.toUpperCase());

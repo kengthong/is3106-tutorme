@@ -33,7 +33,7 @@ public class TutorSession implements TutorSessionLocal {
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
     @Override
-    public Tutor createTutorInit(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc, String profileImage) {
+    public Tutor createTutorInit(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc) {
         Tutor newTutor = new Tutor();
         try {
             String salt = ch.generateRandomString(64);
@@ -51,7 +51,6 @@ public class TutorSession implements TutorSessionLocal {
             newTutor.setCitizenship(citizenship);
             newTutor.setRace(race);
             newTutor.setProfileDesc(profileDesc);
-            newTutor.setProfileImage(profileImage);
         } catch (NoSuchAlgorithmException ex) {
             System.out.println("Hashing error when creating tutor.");
         }
@@ -86,14 +85,6 @@ public class TutorSession implements TutorSessionLocal {
         System.out.println("Retrieving all tutors from tutorSession...");
         Query query = em.createQuery("SELECT t FROM Tutor t");
         List<Tutor> tutors = query.getResultList();
-//        for (Tutor t : tutors) {
-//            if (t.getJobListings().isEmpty()) {
-//                System.out.println("### empty jobListings");
-//            }
-//            for (JobListing jl : t.getJobListings()) {
-//                System.out.println("### JobListingId:" + jl.getJobListingId());
-//            }
-//        }
         return tutors;
     }
 
@@ -128,7 +119,7 @@ public class TutorSession implements TutorSessionLocal {
     }
 
     @Override
-    public Tutor updateTutorProfile(Long tutorId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc, String profileImage) throws TutorNotFoundException {
+    public Tutor updateTutorProfile(Long tutorId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc, byte[] profileImage) throws TutorNotFoundException {
         Tutor tutor = em.find(Tutor.class, tutorId);
         if (tutor == null) {
             throw new TutorNotFoundException("TutorID " + tutorId + " does not exists.");

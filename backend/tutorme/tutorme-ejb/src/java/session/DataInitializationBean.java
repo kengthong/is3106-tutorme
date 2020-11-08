@@ -499,15 +499,15 @@ public class DataInitializationBean {
         c.set(2015, 12, 31);
         Date randomEndDate = c.getTime();
 
-        Tutor tutor1 = tutorSession.createTutorInit("Hsiang", "Hui", "HsiangHui@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), QualificationEnum.BACHELOR, CitizenshipEnum.SINGAPORE, RaceEnum.CHINESE, "I have 6 years of tutoring kids and very experienced. Please pm me for more info or to negotiate my rates", "");
+        Tutor tutor1 = tutorSession.createTutorInit("Hsiang", "Hui", "HsiangHui@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), QualificationEnum.BACHELOR, CitizenshipEnum.SINGAPORE, RaceEnum.CHINESE, "I have 6 years of tutoring kids and very experienced. Please pm me for more info or to negotiate my rates");
         em.flush();
-        Tutor tutor2 = tutorSession.createTutorInit("Enelton", "Satria", "EneltonSatria@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.FEMALE, randomDateBetween(randomStartDate, randomEndDate), QualificationEnum.DIPLOMA, CitizenshipEnum.SINGAPORE, RaceEnum.INDIAN, "Please chat with me!", "");
+        Tutor tutor2 = tutorSession.createTutorInit("Enelton", "Satria", "EneltonSatria@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.FEMALE, randomDateBetween(randomStartDate, randomEndDate), QualificationEnum.DIPLOMA, CitizenshipEnum.SINGAPORE, RaceEnum.INDIAN, "Please chat with me!");
         em.flush();
-        Tutor tutor3 = tutorSession.createTutorInit("Keng", "Thong", "KengThong@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), QualificationEnum.DOCTORATE, CitizenshipEnum.SINGAPORE, RaceEnum.CHINESE, "I am super experienced with over 100 students", "");
+        Tutor tutor3 = tutorSession.createTutorInit("Keng", "Thong", "KengThong@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), QualificationEnum.DOCTORATE, CitizenshipEnum.SINGAPORE, RaceEnum.CHINESE, "I am super experienced with over 100 students");
         em.flush();
-        Tutor tutor4 = tutorSession.createTutorInit("Brandon", "Ng", "BrandonNg@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.FEMALE, randomDateBetween(randomStartDate, randomEndDate), QualificationEnum.NLEVELS, CitizenshipEnum.SINGAPORE, RaceEnum.INDIAN, "Get cheaper quotes when you chat with me", "");
+        Tutor tutor4 = tutorSession.createTutorInit("Brandon", "Ng", "BrandonNg@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.FEMALE, randomDateBetween(randomStartDate, randomEndDate), QualificationEnum.NLEVELS, CitizenshipEnum.SINGAPORE, RaceEnum.INDIAN, "Get cheaper quotes when you chat with me");
         em.flush();
-        Tutor tutor5 = tutorSession.createTutorInit("Soh", "Yibin", "SohYibin@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), QualificationEnum.PSLE, CitizenshipEnum.SINGAPORE, RaceEnum.CHINESE, "You have to pay for my grab expenses", "");
+        Tutor tutor5 = tutorSession.createTutorInit("Soh", "Yibin", "SohYibin@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), QualificationEnum.PSLE, CitizenshipEnum.SINGAPORE, RaceEnum.CHINESE, "You have to pay for my grab expenses");
         em.flush();
     }
 
@@ -518,15 +518,15 @@ public class DataInitializationBean {
         c.set(2015, 12, 31);
         Date randomEndDate = c.getTime();
 
-        Tutee tutee1 = tuteeSession.createTuteeInit("Chen", "Peizhi", "chen@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.FEMALE, randomDateBetween(randomStartDate, randomEndDate), "Need to learn maths v badly!!", "");
+        Tutee tutee1 = tuteeSession.createTuteeInit("Chen", "Peizhi", "chen@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.FEMALE, randomDateBetween(randomStartDate, randomEndDate), "Need to learn maths v badly!!");
         em.flush();
-        Tutee tutee2 = tuteeSession.createTuteeInit("Wei", "Shaoqing", "wei@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), "Failed my maths", "");
+        Tutee tutee2 = tuteeSession.createTuteeInit("Wei", "Shaoqing", "wei@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), "Failed my maths");
         em.flush();
-        Tutee tutee3 = tuteeSession.createTuteeInit("Liang", "Bolu", "liang@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.FEMALE, randomDateBetween(randomStartDate, randomEndDate), "Need a good tutor", "");
+        Tutee tutee3 = tuteeSession.createTuteeInit("Liang", "Bolu", "liang@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.FEMALE, randomDateBetween(randomStartDate, randomEndDate), "Need a good tutor");
         em.flush();
-        Tutee tutee4 = tuteeSession.createTuteeInit("Tan", "Lulu", "tan@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), "Location and availability is important", "");
+        Tutee tutee4 = tuteeSession.createTuteeInit("Tan", "Lulu", "tan@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), "Location and availability is important");
         em.flush();
-        Tutee tutee5 = tuteeSession.createTuteeInit("Lan", "Meili", "lan@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.FEMALE, randomDateBetween(randomStartDate, randomEndDate), "Help me with my studies", "");
+        Tutee tutee5 = tuteeSession.createTuteeInit("Lan", "Meili", "lan@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.FEMALE, randomDateBetween(randomStartDate, randomEndDate), "Help me with my studies");
         em.flush();
 
     }
