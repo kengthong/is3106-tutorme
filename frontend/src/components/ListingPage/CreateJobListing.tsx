@@ -1,11 +1,11 @@
-import {AutoComplete, Button, Checkbox, Form, Input, InputNumber, Menu, Popover, Select, Slider, Tooltip} from 'antd';
-import React, {useEffect, useState} from 'react'
-import {SubjectsService} from "../../services/Subjects";
-import {useSelector} from "react-redux";
-import {IRootState} from "../../store";
-import {SubjectState} from "../../reducer/subject-reducer";
+import { AutoComplete, Button, Checkbox, Form, Input, InputNumber, Menu, Popover, Select, Slider, Tooltip } from 'antd';
+import React, { useEffect, useState } from 'react'
+import { SubjectsService } from "../../services/Subjects";
+import { useSelector } from "react-redux";
+import { IRootState } from "../../store";
+import { SubjectState } from "../../reducer/subject-reducer";
 
-const {Option} = Select;
+const { Option } = Select;
 
 const CreateJobListing = () => {
     const [form] = Form.useForm();
@@ -37,21 +37,21 @@ const CreateJobListing = () => {
     }, []);
 
     const layout = {
-        labelCol: {span: 8},
-        wrapperCol: {span: 16},
+        labelCol: { span: 8 },
+        wrapperCol: { span: 16 },
     };
     const tailLayout = {
-        wrapperCol: {offset: 8, span: 16},
+        wrapperCol: { offset: 8, span: 16 },
     };
 
     const onSelectSubject = (sub: any) => {
         console.log('subject choisen =', sub);
-        const availableLevels:string[] = [];
-        subjectState.subjects.forEach( s => {
-            if(s.subjectName == sub && s.subjectLevel != undefined){
+        const availableLevels: string[] = [];
+        subjectState.subjects.forEach(s => {
+            if (s.subjectName == sub && s.subjectLevel != undefined) {
                 availableLevels.push(s.subjectLevel);
             }
-        }) ;
+        });
         console.log('availableLevels=', availableLevels);
         availableLevels.sort();
 
@@ -66,7 +66,7 @@ const CreateJobListing = () => {
 
     return (
         <div>
-            <h2 style={{margin: "20px"}}>New Tuition Listing</h2>
+            <h2 style={{ margin: "20px" }}>New Tuition Listing</h2>
 
             <div className="p-fluid">
                 <Form
@@ -79,7 +79,7 @@ const CreateJobListing = () => {
                     <Form.Item
                         label="Listing Title"
                         name="listingTitle"
-                        rules={[{required: true, message: 'Please input a listing title'}]}
+                        rules={[{ required: true, message: 'Please input a listing title' }]}
                     >
                         <Input />
                     </Form.Item>
@@ -89,12 +89,12 @@ const CreateJobListing = () => {
                     <Form.Item
                         label="Subject"
                         name="subject"
-                        rules={[{required: true, message: 'Please select a subject'}]}
+                        rules={[{ required: true, message: 'Please select a subject' }]}
                     >
 
                         <Select
                             showSearch
-                            style={{width: 200}}
+                            style={{ width: 200 }}
                             placeholder="Search a subject"
                             optionFilterProp="children"
                             onChange={onSelectSubject}
@@ -119,7 +119,7 @@ const CreateJobListing = () => {
                             showSearch
                             mode="multiple"
                             allowClear
-                            style={{width: 200}}
+                            style={{ width: 200 }}
                             placeholder="Select a level"
                             optionFilterProp="children"
                             filterOption={(input: string, option: any) =>
@@ -134,13 +134,13 @@ const CreateJobListing = () => {
 
                     {/* Hourly Rate */}
                     <Tooltip title="">
-                    <Form.Item
-                        label="Rates ($/hr)"
-                        name="rate"
-                        rules={[{ required: true, message: 'Please enter your hourly rate!' }]}
-                    >
-                        <InputNumber />
-                    </Form.Item>
+                        <Form.Item
+                            label="Rates ($/hr)"
+                            name="rate"
+                            rules={[{ required: true, message: 'Please enter your hourly rate!' }]}
+                        >
+                            <InputNumber />
+                        </Form.Item>
                     </Tooltip>
 
                     <Tooltip
