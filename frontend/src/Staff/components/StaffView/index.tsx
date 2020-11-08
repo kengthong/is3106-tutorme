@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Input, Button, Card, Tabs, Statistic, Timeline, Calendar } from 'antd'
-import Dashboard from "../../Staff/components/StaffView/Dashboard";
+import Dashboard from "./Dashboard";
 
 export const AdminDash = () => {
 
@@ -22,18 +22,43 @@ export const AdminDash = () => {
                     <TabPane tab="Tutee" key="2">
                         <h3>
                             Tutee
+                            Read and Update (Ban)
                         </h3>
                     </TabPane>
 
                     <TabPane tab="Tutor" key="3">
                         <h3>
                             Tutor
+                            Read and Update (Ban)
                         </h3>
                     </TabPane>
 
                     <TabPane tab="Staff" key="4">
                         <h3>
                             Staff
+
+                            CRUD staff account
+
+                        </h3>
+                    </TabPane>
+
+                    <TabPane tab="Job Listing" key="5">
+                        <h3>
+                            Job Listing
+                            Read only
+                        </h3>
+                    </TabPane>
+
+                    <TabPane tab="Offer" key="6">
+                        <h3>
+                            Offer
+                            Read only
+                        </h3>
+                    </TabPane>
+
+                    <TabPane tab="Chat" key="7">
+                        <h3>
+                            Chat
                         </h3>
                     </TabPane>
                 </Tabs>
