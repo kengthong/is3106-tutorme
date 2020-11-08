@@ -31,7 +31,7 @@ export class JobListingService {
         }
     }
 
-    public static async createJobListing(): Promise<boolean> {
+    public static async createJobListing(body: createJobListingParams): Promise<boolean> {
         const url = "http://localhost:8080/tutorme-war/JobListingResource/CreateNewJobListing";
         const token = localStorage.getItem("token");
         const jsonHeader = Utility.getJsonHeader();
@@ -40,7 +40,7 @@ export class JobListingService {
             "Authorization": "Bearer" + token
         };
 
-        const response = await Utility.fetchBuilder(url, 'POST', header, null);
+        const response = await Utility.fetchBuilder(url, 'POST', header, body);
         console.log("response: " + response)
         if (response.ok) {
             return true;

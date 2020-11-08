@@ -1,10 +1,25 @@
 import React, { useEffect, useState } from "react";
 import ProfileIcon from '../../assets/profilepic.jpg';
 import { Rate, Avatar, Card, Button } from 'antd';
+import {useLocation} from "react-router-dom";
+import qs from "qs";
+import {JobListingService} from "../../services/JobListing";
 
 
 
 const JobListingDetail = () => {
+    const location = useLocation();
+    const getJobListing = async() => {
+        const params: {[key: string]:any} = qs.parse(location.search.substring(1), { ignoreQueryPrefix: true });
+        console.log('params =', params)
+        // const result: getJobListingListWithParamResposeProps = await JobListingService.getJobListingListWithParams(params);
+        // setJobListingList(result);
+        // setLoading(false);
+    }
+
+    useEffect(() => {
+        getJobListing();
+    },[location]);
 
     const [formData, setFormData] = useState({
         firstName: "",
