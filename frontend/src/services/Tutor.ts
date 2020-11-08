@@ -1,5 +1,5 @@
-import { BACKEND_BASE_URL } from "../config/constants";
-import { Utility } from "../config/Utility";
+import {BACKEND_BASE_URL} from "../config/constants";
+import {Utility} from "../config/Utility";
 
 export class TutorService {
     static async getTutorDetails(userId: number): Promise<tutorDataType | null> {
@@ -13,7 +13,7 @@ export class TutorService {
         };
 
         const response = await Utility.fetchBuilder(url, 'GET', header, null);
-        if (response.ok) {
+        if(response.ok) {
             const data = await response.json();
             return data;
             // return await response.json();
@@ -32,7 +32,7 @@ export class TutorService {
         };
 
         const response = await Utility.fetchBuilder(url, 'PUT', header, user);
-        if (response.ok) {
+        if(response.ok) {
             const data = await response.json();
             return true;
         } else {

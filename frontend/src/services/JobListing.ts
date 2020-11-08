@@ -1,7 +1,7 @@
-import { Utility } from "../config/Utility";
-import { BACKEND_BASE_URL } from "../config/constants";
+import {Utility} from "../config/Utility";
+import {BACKEND_BASE_URL} from "../config/constants";
 
-const jsonHeader = {
+const jsonHeader= {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
 };
@@ -11,9 +11,9 @@ export class JobListingService {
         const { subject, level, name, price } = params;
         const priceRange = this.getPriceRange(price);
         const url = BACKEND_BASE_URL + '/jobListing/jobListingList?' + new URLSearchParams({
-            subject: subject ? subject : "",
-            level: level ? level : "",
-            name: name ? name : "",
+            subject: subject? subject : "",
+            level: level? level : "",
+            name: name? name : "",
             minPrice: priceRange.minPrice.toString(),
             maxPrice: priceRange.maxPrice.toString()
         });
@@ -23,7 +23,7 @@ export class JobListingService {
             // "Authorization": "Bearer " + token
         }
         const response = await Utility.fetchBuilder(url, 'GET', header, null);
-        if (response.ok) {
+        if(response.ok) {
             return await response.json();
             // console.log('data = ', data)
         } else {
@@ -31,29 +31,10 @@ export class JobListingService {
         }
     }
 
-    public static async createJobListing(): Promise<boolean> {
-        const url = "http://localhost:8080/tutorme-war/JobListingResource/CreateNewJobListing";
-        const token = localStorage.getItem("token");
-        const jsonHeader = Utility.getJsonHeader();
-        const header = {
-            ...jsonHeader,
-            "Authorization": "Bearer" + token
-        };
-
-        const response = await Utility.fetchBuilder(url, 'POST', header, null);
-        console.log("response: " + response)
-        if (response.ok) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
     private static getPriceRange(price?: string) {
         let minPrice = 0, maxPrice = 999;
-        if (price !== undefined) {
-            switch (price) {
+        if(price !== undefined) {
+            switch(price) {
                 case "s":
                     maxPrice = 30;
                     break;
@@ -77,8 +58,4 @@ export class JobListingService {
             maxPrice
         }
     }
-
-
-
-
 }

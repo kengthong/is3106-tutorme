@@ -1,6 +1,6 @@
 import { AutoComplete, Checkbox, Form, Input, InputNumber, Menu, Popover, Select, Slider, Tooltip } from 'antd';
 import React, { useEffect, useState } from 'react'
-import { SubjectsService } from "../../services/Subjects";
+import DaysSelectButton from '../Common/DaysSelectButton';
 
 const CreateJobListing = () => {
     const [formData, setFormData] = useState({
@@ -16,9 +16,20 @@ const CreateJobListing = () => {
         area: ""
     });
 
-    const [subjectList, setSubjectList] = useState<subjectResponseType>([]);
+    const [subjectList, setSubjectList] = useState("");
     const [subjectLevel, setSubjectLevel] = useState("");
 
+
+    // // get subject list
+    // useEffect(() => {
+    //     const getListing = (async () => {
+    //         const response = await fetch("http://localhost:8080/tutorme-war/SubjectResource/subjectList");
+    //         const data = await response.json();
+    //         const [item] = data.results;
+    //         setSubjectList(item);
+    //         console.log(item);
+    //     });
+    // })
 
     const verifyForm = () => {
         let a = formData.tutorId != -1;
@@ -30,15 +41,6 @@ const CreateJobListing = () => {
         let g = formData.listingDesc != "";
         return a && b && c && d && e && f && g;
     };
-
-
-    useEffect(() => {
-        const getListing = (async () => {
-            const subjectList: subjectResponseType = await SubjectsService.getAllSubjects();
-
-        });
-    })
-
 
     const handleChange = (e: any) => {
         const name = e && e.target && e.target.name ? e.target.name : "";
@@ -60,6 +62,18 @@ const CreateJobListing = () => {
 
 
 
+    // Probably will have a list of subjects here from {data}
+    const subjectName = ["Additional Mathematics", "Elementary Mathematics", "Biology", "Chemistry", "Physics"];
+    const days = [
+        { label: 'Mon', value: 'Mon' },
+        { label: 'Tue', value: 'Tue' },
+        { label: 'Wed', value: 'Wed' },
+        { label: 'Thu', value: 'Thu' },
+        { label: 'Fri', value: 'Fri' },
+        { label: 'Sat', value: 'Sat' },
+        { label: 'Sun', value: 'Sun' }
+    ];
+
     const layout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
@@ -73,11 +87,11 @@ const CreateJobListing = () => {
         <div>
             <h2 style={{ margin: "20px" }}>New Tuition Listing</h2>
 
-            <div className="p-fluid">
+            <div>
                 <Form
                     {...layout}
                     name="createJobListing"
-                // style={{ display: "flex", flexDirection: "column", margin: "20px" }}
+                    style={{ display: "flex", flexDirection: "column", margin: "20px" }}
                 >
                     {/* Listing Title */}
                     <Form.Item
