@@ -44,6 +44,13 @@ type chatMessagesType = {
     }
 }[];
 
+type createJobListingParams = {
+    listingDesc: string;
+    rate: number;
+    subject: string;
+    timeslot: string;
+}
+
 type getJobListingListWithParamsProps = {
     subject?: string;
     level?: string;
@@ -83,19 +90,7 @@ type jobListingType = {
     },
     offers?: offerType[]
 }
-// type jobListingType = {
-//     id?: number;
-//     name?: string;
-//     img?: string;
-//     education?: string;
-//     description?: string;
-//     subjects?: {
-//         name?: string;
-//     }[];
-//     price?: string;
-//     reviewScore?: number;
-//     reviewCount?: number;
-// };
+
 
 type jobListingCardProps = jobListingType & {
     loading?: boolean;

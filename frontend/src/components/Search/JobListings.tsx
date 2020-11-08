@@ -16,14 +16,14 @@ const JobListings = () => {
             history.push(newPath)
         }
     }
-    const getJobListing = async() => {
+    const getJobListings = async() => {
         const params: {[key: string]:any} = qs.parse(location.search.substring(1), { ignoreQueryPrefix: true });
         const result: getJobListingListWithParamResposeProps = await JobListingService.getJobListingListWithParams(params);
         setJobListingList(result);
         setLoading(false);
     }
     useEffect(() => {
-        getJobListing();
+        getJobListings();
     },[location]);
     return (
         <div className={'flex-row justify-center job-listing-list-body'}>
