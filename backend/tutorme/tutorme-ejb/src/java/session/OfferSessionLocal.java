@@ -38,5 +38,14 @@ public interface OfferSessionLocal {
     public Offer withdrawOffer(Long offerId) throws OfferNotFoundException, OfferStatusException;
 
     public void deleteOffer(Long offerId) throws OfferNotFoundException;
+    
+    // Reporting use
+    public Integer getActiveOffers();
+    
+    public Integer getOfferGrowth();    
+    
+    public Double getOfferAcceptanceRate();
+    
+    public Double getOfferRejectionRate();
 
 }

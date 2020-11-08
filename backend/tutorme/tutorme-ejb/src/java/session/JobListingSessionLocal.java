@@ -7,7 +7,6 @@ package session;
 
 import entity.JobListing;
 import entity.Subject;
-import entity.Tutor;
 import exception.JobListingNotFoundException;
 import exception.NewJobListingException;
 import java.util.List;
@@ -37,4 +36,9 @@ public interface JobListingSessionLocal {
     public void changeJobListingActiveStatus(Long jobListingId) throws JobListingNotFoundException;
 
     public void deleteJobListing(Long jobListingId) throws JobListingNotFoundException;
+    
+    // Reporting use
+    public Integer getActiveJobListings();
+    
+    public Integer getJobListingGrowth();
 }

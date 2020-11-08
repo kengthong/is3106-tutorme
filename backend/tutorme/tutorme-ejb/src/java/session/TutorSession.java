@@ -191,8 +191,7 @@ public class TutorSession implements TutorSessionLocal {
 
         Integer t1 = tutors1.size();
         Integer t2 = tutors2.size();
-        Integer newTutors = t2 - t1;
-        return newTutors;
+        return t2 - t1;
     }
 
 }

@@ -13,6 +13,7 @@ import entity.Tutor;
 import exception.JobListingNotFoundException;
 import exception.NewJobListingException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -192,6 +193,31 @@ public class JobListingSession implements JobListingSessionLocal {
     public void deleteJobListing(Long jobListingId) throws JobListingNotFoundException {
         JobListing jobListing = retrieveJobListingById(jobListingId);
         em.remove(jobListing);
+    }
+
+    @Override
+    public Integer getActiveJobListings() {
+        Query query = em.createQuery("SELECT jl from JobListing jl WHERE jl.activeStatus=true");
+        List<JobListing> jobListings = query.getResultList();
+        return jobListings.size();
+    }
+
+    @Override
+    public Integer getJobListingGrowth() {
+        Query query1 = em.createQuery("SELECT jl from JobListing jl WHERE jl.createdDate < :inputDate");
+        Query query2 = em.createQuery("SELECT jl from JobListing jl WHERE jl.createdDate >= :inputDate");
+
+        Calendar c = Calendar.getInstance();   // this takes current date
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        query1.setParameter("inputDate", c.getTime());
+        List<JobListing> jobListings1 = query1.getResultList();
+
+        query2.setParameter("inputDate", c.getTime());
+        List<JobListing> jobListings2 = query2.getResultList();
+
+        Integer jl1 = jobListings1.size();
+        Integer jl2 = jobListings2.size();
+        return jl2 - jl1;
     }
 
 }

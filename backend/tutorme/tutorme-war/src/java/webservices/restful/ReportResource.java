@@ -134,21 +134,32 @@ public class ReportResource {
     @StaffJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getDashboard() {
-        Integer totalTutors = tutorSession.getActiveTutors();
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+        Integer numActiveTutors = tutorSession.getActiveTutors();
         Integer tutorGrowth = tutorSession.getTutorGrowth();
+        builder.add("numActiveTutors", numActiveTutors);
+        builder.add("tutorGrowth", tutorGrowth);
         
-        Integer totalTutees = tuteeSession.getActiveTutees();
+        Integer numActiveTutees = tuteeSession.getActiveTutees();
         Integer tuteeGrowth = tuteeSession.getTuteeGrowth();
-        
-        System.out.println("tutorGrowth: " + tuteeGrowth);
-        return Response.status(400).build();
-    }
+        builder.add("numActiveTutees", numActiveTutees);
+        builder.add("tuteeGrowth", tuteeGrowth);
 
-//    total jobListings
-//new joblistings
-//
-//total offers
-//new offers
-//offer acceptance rate
-//offer rejection rate
+        Integer numActiveJobListings = jobListingSession.getActiveJobListings();
+        Integer jobListingGrowth = jobListingSession.getJobListingGrowth();
+        builder.add("numActiveJobListings", numActiveJobListings);
+        builder.add("jobListingGrowth", jobListingGrowth);
+
+        Integer numActiveOffers = offerSession.getActiveOffers();
+        Integer offerGrowth = offerSession.getOfferGrowth();
+        builder.add("numActiveOffers", numActiveOffers);
+        builder.add("offerGrowth", offerGrowth);
+        
+        Double offerAcceptanceRate = offerSession.getOfferAcceptanceRate();
+        Double offerRejectionRate = offerSession.getOfferRejectionRate();
+        builder.add("offerAcceptanceRate", offerAcceptanceRate);
+        builder.add("offerRejectionRate", offerRejectionRate);
+
+        return Response.status(200).entity(builder.build()).build();
+    }
 }

@@ -5,27 +5,20 @@
  */
 package webservices.restful;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.JobListing;
 import entity.Offer;
 import entity.Rating;
 import entity.Tutee;
 import entity.Tutor;
 import exception.JobListingNotFoundException;
-import filter.StaffJWTTokenNeeded;
 import filter.TutorJWTTokenNeeded;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
 import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
 import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;

@@ -69,7 +69,7 @@ public class SubjectSession implements SubjectSessionLocal {
         query.setParameter("inputSubjectLevel", subjectLevel);
         query.setParameter("inputSubjectName", subjectName);
         Subject result = (Subject) query.getSingleResult();
-        if (result != null) { // if empty then return message in REST
+        if (result != null) { 
             return result;
         } else {
             throw new SubjectNotFoundException("No Subjects by the level " + subjectLevel + " was found.");

@@ -174,8 +174,6 @@ public class TuteeSession implements TuteeSessionLocal {
 
         Integer t1 = tutees1.size();
         Integer t2 = tutees2.size();
-        System.out.println("T1: " + t1);
-        System.out.println("T2: " + t2);
         return t2-t1;
     }
 
