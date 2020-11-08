@@ -38,7 +38,7 @@ public class Rating implements Serializable {
     private Date createdDate;
 
     @NotNull
-    @Min(value = 1)
+    @Min(value = 0)
     @Max(value = 5)
     private Integer ratingValue;
 

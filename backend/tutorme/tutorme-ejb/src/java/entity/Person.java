@@ -72,7 +72,7 @@ public abstract class Person implements Serializable {
     @NotNull
     @Enumerated
     private PersonEnum personEnum;
-    
+
     private String profileImage;
 
     @NotNull
@@ -215,7 +215,7 @@ public abstract class Person implements Serializable {
 
     public void setPersonEnum(PersonEnum personEnum) {
         this.personEnum = personEnum;
-    }    
+    }
 
     public String getProfileImage() {
         return profileImage;
@@ -224,5 +224,4 @@ public abstract class Person implements Serializable {
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
-
 }

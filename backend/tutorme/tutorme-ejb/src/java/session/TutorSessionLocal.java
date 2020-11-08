@@ -40,5 +40,10 @@ public interface TutorSessionLocal {
     public Tutor activateTutor(Long tutorId) throws TutorNotFoundException;
     
     public Tutor deactivateTutor(Long tutorId) throws TutorNotFoundException;
+    
+    // Reporting use
+    public Integer getActiveTutors();
+    
+    public Integer getTutorGrowth();
 
 }

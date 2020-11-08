@@ -10,7 +10,7 @@ import entity.Offer;
 import entity.Rating;
 import entity.Tutee;
 import exception.OfferNotFoundException;
-import filter.JWTTokenNeeded;
+import filter.TuteeJWTTokenNeeded;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
 import javax.enterprise.context.RequestScoped;
@@ -39,8 +39,8 @@ public class RatingResource {
     }
 
     @POST
-    @Path("/makeRating")
-    @JWTTokenNeeded
+    @Path("/rate")
+    @TuteeJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response makeRating(JsonObject json) {
 

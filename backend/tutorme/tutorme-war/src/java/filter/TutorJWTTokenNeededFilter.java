@@ -5,38 +5,35 @@
  */
 package filter;
 
-import entity.Person;
-import exception.PersonNotFoundException;
+import entity.Tutor;
+import exception.TutorNotFoundException;
 import io.fusionauth.jwt.Verifier;
 import io.fusionauth.jwt.domain.JWT;
 import io.fusionauth.jwt.hmac.HMACVerifier;
+import java.io.IOException;
+import java.util.Map;
 import javax.annotation.Priority;
+import javax.ejb.EJB;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
-import java.io.IOException;
-import java.util.Map;
-import javax.ejb.EJB;
 import javax.ws.rs.core.SecurityContext;
-import session.PersonSessionLocal;
+import javax.ws.rs.ext.Provider;
+import session.TutorSessionLocal;
 
 /**
- * @author Antonio Goncalves
- *         http://www.antoniogoncalves.org
- *         --
+ *
+ * @author Owen Tay
  */
 @Provider
-@JWTTokenNeeded
+@TutorJWTTokenNeeded
 @Priority(Priorities.AUTHENTICATION)
-public class JWTTokenNeededFilter implements ContainerRequestFilter {
-    
+public class TutorJWTTokenNeededFilter implements ContainerRequestFilter {
     @EJB
-    PersonSessionLocal personSession;
-
+    TutorSessionLocal tutorSession;
     private static final String key = "hsianghui";
     private static final Verifier verifier = HMACVerifier.newVerifier(key);
 
@@ -62,16 +59,16 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
             Map<String, Object> claims = jwt.getAllClaims();
             System.out.println(claims);
             String personId = String.valueOf(claims.get("personId"));
-            System.out.println(personId);
+            System.out.println("#### JWTToken's personId : " + personId);
             System.out.println("#### valid token : " + token);
-            
-            Person person = personSession.retrievePersonById(Long.valueOf(personId));
+
+            Tutor tutor = tutorSession.retrieveTutorById(Long.valueOf(personId));
             
             System.out.println("#### Running secuityContext : ");
             SecurityContext originalContext = requestContext.getSecurityContext();
-            Authorizer authorizer = new Authorizer("person", Long.valueOf(personId), true);
+            Authorizer authorizer = new Authorizer("tutor", Long.valueOf(personId), true);
             requestContext.setSecurityContext(authorizer);
-        } catch (PersonNotFoundException e) {
+        } catch (TutorNotFoundException e) {
             System.out.println("#### invalid token : " + token);
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }

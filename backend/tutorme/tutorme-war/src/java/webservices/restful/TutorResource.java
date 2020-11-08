@@ -8,7 +8,6 @@ package webservices.restful;
 import entity.JobListing;
 import entity.Offer;
 import entity.Rating;
-import entity.Staff;
 import entity.Tutee;
 import entity.Tutor;
 import enumeration.CitizenshipEnum;
@@ -16,13 +15,13 @@ import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import exception.TutorNotFoundException;
-import filter.JWTTokenNeeded;
 import filter.StaffJWTTokenNeeded;
+import filter.TutorJWTTokenNeeded;
+import filter.UserPrincipal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -53,8 +52,7 @@ public class TutorResource {
     }
 
     @GET
-    @Path("/tutors")
-    @JWTTokenNeeded
+    @Path("/getAll")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTutors() {
         System.out.println("Getting tutors... ");
@@ -94,8 +92,7 @@ public class TutorResource {
     }
 
     @GET
-    @Path("/{tutorId}")
-    @JWTTokenNeeded
+    @Path("/get/{tutorId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTutorById(@PathParam("tutorId") Long tutorId) {
         System.out.println("Tutor Id is... " + tutorId);
@@ -134,10 +131,12 @@ public class TutorResource {
     }
 
     @PUT
-    @Path("/{tutorId}")
-    @JWTTokenNeeded
+    @Path("/update")
+    @TutorJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateTutorById(@PathParam("tutorId") Long tutorId, JsonObject json) {
+    public Response updateTutorById(@Context SecurityContext securityContext, JsonObject json) {
+        UserPrincipal person = (UserPrincipal) securityContext.getUserPrincipal();
+        Long tutorId = person.getPersonId();
         System.out.println("Updating Tutor Id is ... " + tutorId);
 
         String firstName = json.getString("firstName");
@@ -187,9 +186,8 @@ public class TutorResource {
     @Path("/ban/{tutorId}")
     @StaffJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response banTutor(@Context SecurityContext securityContext, @PathParam("tutorId") Long tutorId) {
-//        Staff staff = (Staff) securityContext.getUserPrincipal();
-//        System.out.println(staff.getEmail());
+    public Response banTutor(@PathParam("tutorId") Long tutorId) {
+        System.out.println("In ban tutor webResource...");
         try {
             System.out.println("Banning Tutor Id ... " + tutorId);
             Tutor tutor = tutorSession.deactivateTutor(tutorId);
@@ -214,7 +212,7 @@ public class TutorResource {
     @Path("/unban/{tutorId}")
     @StaffJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response unbanTutor(@PathParam("tutorId") Long tutorId, JsonObject json) {
+    public Response unbanTutor(@PathParam("tutorId") Long tutorId) {
         try {
             System.out.println("Unbanning Tutor Id ... " + tutorId);
             Tutor tutor = tutorSession.activateTutor(tutorId);

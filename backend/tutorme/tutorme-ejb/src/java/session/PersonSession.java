@@ -73,7 +73,6 @@ public class PersonSession implements PersonSessionLocal {
         }
     }
 
-    
     // TODO
     @Override
     public Person changePassword(Long userId, String oldPassword, String newPassword) {

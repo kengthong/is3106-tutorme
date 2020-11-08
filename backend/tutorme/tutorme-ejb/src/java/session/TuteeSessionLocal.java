@@ -36,5 +36,10 @@ public interface TuteeSessionLocal {
     public Tutee activateTuteeStatus(Long tuteeId) throws TuteeNotFoundException;
 
     public Tutee deactivateTuteeStatus(Long tuteeId) throws TuteeNotFoundException;
+    
+    // Reporting use
+    public Integer getActiveTutees();
+    
+    public Integer getTuteeGrowth();
 
 }

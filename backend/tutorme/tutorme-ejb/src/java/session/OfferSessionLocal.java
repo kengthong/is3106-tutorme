@@ -26,17 +26,26 @@ public interface OfferSessionLocal {
     public Offer retrieveOfferById(Long offerId) throws OfferNotFoundException;
 
     public List<Offer> retrieveAllOffers();
-    
-    public List<Offer> retrieveOffersByPeriod(Date startDate, Date endDate);
 
     public List<Offer> retrieveOffersByTuteeId(Long userId);
 
     public List<Offer> retrieveOffersByJobListingId(Long jobListingId);
-    
+
     public Offer acceptOffer(Long offerId) throws OfferNotFoundException, OfferStatusException;
+
+    public Offer rejectOffer(Long offerId) throws OfferNotFoundException, OfferStatusException;
 
     public Offer withdrawOffer(Long offerId) throws OfferNotFoundException, OfferStatusException;
 
     public void deleteOffer(Long offerId) throws OfferNotFoundException;
+    
+    // Reporting use
+    public Integer getActiveOffers();
+    
+    public Integer getOfferGrowth();    
+    
+    public Double getOfferAcceptanceRate();
+    
+    public Double getOfferRejectionRate();
 
 }
