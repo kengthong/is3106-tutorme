@@ -1,35 +1,22 @@
-import {AutoComplete, Button, Checkbox, Form, Input, InputNumber, Menu, Popover, Select, Slider, Tooltip} from 'antd';
-import React, {useEffect, useState} from 'react'
-import {SubjectsService} from "../../services/Subjects";
-import {useSelector} from "react-redux";
-import {IRootState} from "../../store";
-import {SubjectState} from "../../reducer/subject-reducer";
+import { AutoComplete, Button, Checkbox, Form, Input, InputNumber, Menu, message, Popover, Select, Slider, Tooltip } from 'antd';
+import React, { useEffect, useState } from 'react'
+import { SubjectsService } from "../../services/Subjects";
+import { useSelector } from "react-redux";
+import { IRootState } from "../../store";
+import { SubjectState } from "../../reducer/subject-reducer";
+import { JobListingService } from '../../services/JobListing';
 
-const {Option} = Select;
+const { Option } = Select;
 
 const CreateJobListing = () => {
     const [form] = Form.useForm();
-    const [formData, setFormData] = useState({
-        tutorId: -1,
-        listingTitle: "",
-        subject: { //subject -> level 
-            subjectName: "",
-            subjectLevel: ""
-        },
-        rate: 0,
-        timeslot: "",
-        listingDesc: "",
-        area: ""
-    });
-
     const subjectState = useSelector<IRootState, SubjectState>((state) => state.subjectReducer);
     const [levels, setLevels] = useState<string[]>([]);
+    const [levelSelected, setLevelSelected] = useState(null);
 
     const loadSubjects = async () => {
         await SubjectsService.getAllSubjects();
     }
-
-
     useEffect(() => {
         if (!subjectState || !subjectState.uniqueSubjects || subjectState.uniqueSubjects.length === 0) {
             loadSubjects();
@@ -37,36 +24,44 @@ const CreateJobListing = () => {
     }, []);
 
     const layout = {
-        labelCol: {span: 8},
-        wrapperCol: {span: 16},
+        labelCol: { span: 8 },
+        wrapperCol: { span: 16 },
     };
     const tailLayout = {
-        wrapperCol: {offset: 8, span: 16},
+        wrapperCol: { offset: 8, span: 16 },
     };
 
     const onSelectSubject = (sub: any) => {
-        console.log('subject choisen =', sub);
-        const availableLevels:string[] = [];
-        subjectState.subjects.forEach( s => {
-            if(s.subjectName == sub && s.subjectLevel != undefined){
+        console.log('subject chosen =', sub);
+        const availableLevels: string[] = [];
+        subjectState.subjects.forEach(s => {
+            if (s.subjectName == sub && s.subjectLevel != undefined) {
                 availableLevels.push(s.subjectLevel);
             }
-        }) ;
+        });
         console.log('availableLevels=', availableLevels);
         availableLevels.sort();
 
         setLevels(availableLevels);
     }
 
-
     const onFinish = (fieldsValue: any) => {
         console.log("fieldsValue =", fieldsValue)
+        createJobListing(fieldsValue);
     }
 
+    const createJobListing = async (createJobListingParams: any): Promise<void> => {
+        const response = await JobListingService.createJobListing(createJobListingParams);
+        if (response) {
+            return message.success("New listing has been created!")
+        } else {
+            return message.error("Error creating new job listing")
+        }
+    }
 
     return (
         <div>
-            <h2 style={{margin: "20px"}}>New Tuition Listing</h2>
+            <h2 style={{ margin: "20px" }}>New Tuition Listing</h2>
 
             <div className="p-fluid">
                 <Form
@@ -79,7 +74,7 @@ const CreateJobListing = () => {
                     <Form.Item
                         label="Listing Title"
                         name="listingTitle"
-                        rules={[{required: true, message: 'Please input a listing title'}]}
+                        rules={[{ required: true, message: 'Please input a listing title' }]}
                     >
                         <Input />
                     </Form.Item>
@@ -89,12 +84,12 @@ const CreateJobListing = () => {
                     <Form.Item
                         label="Subject"
                         name="subject"
-                        rules={[{required: true, message: 'Please select a subject'}]}
+                        rules={[{ required: true, message: 'Please select a subject' }]}
                     >
 
                         <Select
                             showSearch
-                            style={{width: 200}}
+                            style={{ width: 200 }}
                             placeholder="Search a subject"
                             optionFilterProp="children"
                             onChange={onSelectSubject}
@@ -119,9 +114,10 @@ const CreateJobListing = () => {
                             showSearch
                             mode="multiple"
                             allowClear
-                            style={{width: 200}}
+                            style={{ width: 200 }}
                             placeholder="Select a level"
                             optionFilterProp="children"
+
                             filterOption={(input: string, option: any) =>
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
@@ -134,13 +130,15 @@ const CreateJobListing = () => {
 
                     {/* Hourly Rate */}
                     <Tooltip title="">
-                    <Form.Item
-                        label="Rates ($/hr)"
-                        name="rate"
-                        rules={[{ required: true, message: 'Please enter your hourly rate!' }]}
-                    >
-                        <InputNumber />
-                    </Form.Item>
+                        <Form.Item
+                            label="Rates ($/hr)"
+                            name="rate"
+                            rules={[{ required: true, message: 'Please enter your hourly rate!' }]}
+                        >
+                            <InputNumber
+                                min={1}
+                            />
+                        </Form.Item>
                     </Tooltip>
 
                     <Tooltip
@@ -161,6 +159,20 @@ const CreateJobListing = () => {
 
                         </Form.Item>
                     </Tooltip>
+
+                    <Form.Item
+                        label="Area"
+                        name="area"
+                        rules={[{
+                            required: true,
+                            message: 'Please input your location!'
+                        }]}
+                    >
+                        <Input
+                            name="location"
+                            placeholder="Enter your preferred locations"
+                        />
+                    </Form.Item>
 
                     {/* Listing description */}
                     <Form.Item
@@ -191,19 +203,3 @@ const CreateJobListing = () => {
 
 export default CreateJobListing
 
-
-{/* Available Days
-                    <Form.Item
-                        label="Available days"
-                        name="availableDays"
-                        rules={[{ required: true, message: 'Please select the days of availability!' }]}
-                    >
-                        Available Days
-                        <Checkbox.Group
-                            name="daysGroup"
-                            options={days}
-                            onChange={(e) => handleChange(e)}
-                        >
-                        </Checkbox.Group>
-                    </Form.Item> */
-}

@@ -1,66 +1,69 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Modal, Alert, Menu, Dropdown, Select, InputNumber, Radio } from 'antd';
+import { Form, Input, Button, Modal, Alert, Menu, Dropdown, Select, InputNumber, Radio, message } from 'antd';
+import { JobListingService } from '../../services/JobListing';
+import { OfferService } from '../../services/Offer';
 import { useForm } from 'antd/lib/form/Form';
+import { useSelector } from "react-redux";
+import { IRootState } from "../../store";
+import { SubjectState } from "../../reducer/subject-reducer";
+import qs from 'qs';
+import { useHistory, useLocation } from 'react-router-dom';
+import { SubjectsService } from '../../services/Subjects';
+
+type jobListingDetailProps = {
+    listing: jobListingType
+}
+
+const MakeOfferForm = (props: any) => {
+    const jobListing = props.listing;
+    const location = useLocation();
+    const history = useHistory();
+    const { Option } = Select;
+    const [form] = Form.useForm();
+
+    const getJobListing = async () => {
+        const params: { [key: string]: any } = qs.parse(location.search.substring(1), { ignoreQueryPrefix: true });
+        console.log('params =', params)
+        const result: getJobListingListWithParamResposeProps = await JobListingService.getJobListingListWithParams(params);
+        // setJobListingList(result);
+        setLoading(false);
+    }
 
 
-const MakeOfferForm = () => {
-    const [formData, setFormData] = useState({
-        tuteeId: -1,
-        jobListingId: -1,
-        price: 0,
-        subject: "",
-        duration: "",
-        remarks: ""
-    })
+    const subjectState = useSelector<IRootState, SubjectState>((state) => state.subjectReducer);
+
+    const loadSubjects = async () => {
+        await SubjectsService.getAllSubjects();
+    }
+    useEffect(() => {
+        if (!subjectState || !subjectState.uniqueSubjects || subjectState.uniqueSubjects.length === 0) {
+            loadSubjects();
+        }
+    }, []);
+
 
     const [showOffer, setShowOffer] = useState(false);
-    const [currTutee, setCurrTutee] = useState(-1);
-    const [currTutor, setCurrTutor] = useState(-1);
-    const { Option } = Select;
+    const [jobListingList, setJobListingList] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const getListing = (async () => {
-            const response = await fetch("");
-            const data = await response.json();
-            const [joblisting] = data.results;
-            setFormData(joblisting);
-        });
-    })
 
+    const onFinish = (fieldsValue: any) => {
+        console.log("fieldsValue =", fieldsValue);
+        createOffer(fieldsValue);
+    }
+
+    const createOffer = async (createOfferParams: any): Promise<void> => {
+        const response = await OfferService.createOffer(createOfferParams);
+        if (response) {
+            return message.success("Offer made!")
+        } else {
+            return message.error("Error sending offer. Please try again.")
+        }
+    }
 
     const tailLayout = {
         wrapperCol: { offset: 8, span: 16 },
     };
-
-    const verifyForm = () => {
-        let a = formData.tuteeId != -1;
-        let b = formData.jobListingId != -1;
-        let c = formData.price > 0;
-        let d = formData.subject !== "";
-        let e = formData.duration != "";
-        let f = formData.remarks != "";
-        return a && b && c && d && e && f;
-    };
-
-    const handleSubmit = (e: any) => {
-        // send to backend
-        console.log(formData);
-        alert("submitted!");
-    }
-
-    const handleChange = (e: any) => {
-        const name = e && e.target && e.target.name ? e.target.name : "";
-        const value = e && e.target && e.target.value ? e.target.value : "";
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-        // console.log("form name: " + name + " and value:" + value);
-        console.log(formData)
-    };
-
-
-    const testSubj = ["A-maths", "E-Maths", "H2 Maths"];
 
     return (
         <div style={{ display: "flex", flexDirection: "column", margin: "10px" }}>
@@ -83,83 +86,149 @@ const MakeOfferForm = () => {
 
                 <Form
                     style={{ display: "flex", justifyContent: "space-evenly" }}
-                    name="Submit offer form"
-                    scrollToFirstError={true}
-                    onValuesChange={(e) => handleChange(e)}
+                    form={form}
+                    name="submitOfferForm"
+                    onFinish={onFinish}
                 >
-
-                    <span>
+                    <div>
                         <Form.Item
+                            name="price"
                             label="Price"
+                            initialValue={props.listing.hourlyRates}
                             rules={[{
                                 required: true,
                                 message: "Please input your offer! (Per hour)"
                             }]}
                         >
-                            <Input
-                                name="price"
+                            <InputNumber
                                 min={1}
                                 required={true}
-                                onChange={(e) => handleChange(e)}
                             />
                         </Form.Item>
 
-
                         <Form.Item
+                            name="subject"
                             label="Subjects"
+                            initialValue={props.listing.subjects[0].subjectName}
                             rules={[{
                                 required: true,
                                 message: "Please select a subject!"
                             }]}
                         >
-                            <Select></Select>
+                            <Input
+                                disabled
+                            />
 
                         </Form.Item>
 
-                    </span>
-
-
-                    <span>
                         <Form.Item
-                            label="Days per week"
+                            name="level"
+                            label="Subject Level"
+                            rules={[{
+                                required: true,
+                                message: "Please select a subject level!"
+                            }]}
+                        >
+
+                            <Select
+                                showSearch
+                                allowClear
+                                mode="multiple"
+                                placeholder="Select your levels"
+                            >
+                                {props.listing.subjects.map((sub: any, i: any) => (
+                                    <Option
+                                        key={i}
+                                        value={sub.subjectLevel}
+                                    >
+                                        {sub.subjectLevel}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+
+                        <Form.Item
+                            name="numSession"
+                            label="No. of Sessions per week"
                             rules={[{
                                 required: true,
                                 message: "Number"
                             }]}
                         >
-                            <Input
-                                name="daysPerWeek"
-                                onChange={(e) => handleChange(e)}
+                            <InputNumber
+                                min={1}
                             />
                         </Form.Item>
 
-
                         <Form.Item
                             name="duration"
-                            label="Duration per session"
+                            label="Duration per session (hour)"
                             rules={[{
                                 required: true,
                                 message: "Time"
                             }]}
                         >
+                            <Input />
                         </Form.Item>
-                    </span>
-                </Form>
 
-                <span style={{ marginTop: "20px", marginRight: "55px", alignItems: "flex-end" }}>
-                    <Form.Item {...tailLayout}>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            onClick={handleSubmit}
+                        <Form.Item
+                            name="addNote"
+                            label="Additional notes to Tutor"
+                            rules={[{
+                                required: true,
+                                message: "Additional Note"
+                            }]}
                         >
-                            Submit
+                            <Input.TextArea />
+                        </Form.Item>
+
+                    </div>
+                    <div style={{ marginTop: "330px", marginRight: "30px" }}>
+                        <Form.Item {...tailLayout}>
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                            >
+                                Submit
                     </Button>
-                    </Form.Item>
-                </span>
+                        </Form.Item>
+                    </div>
+                </Form>
             </Modal>
         </div >
     )
 }
 
 export default MakeOfferForm
+
+
+
+ // const [formData, setFormData] = useState({
+    //     price: 0,
+    //     subject: "",
+    //     duration: "",
+    //     remarks: ""
+    // })
+
+
+
+    // const verifyForm = () => {
+    //     let a = formData.tuteeId != -1;
+    //     let b = formData.jobListingId != -1;
+    //     let c = formData.price > 0;
+    //     let d = formData.subject !== "";
+    //     let e = formData.duration != "";
+    //     let f = formData.remarks != "";
+    //     return a && b && c && d && e && f;
+    // };
+
+    // const handleChange = (e: any) => {
+    //     const name = e && e.target && e.target.name ? e.target.name : "";
+    //     const value = e && e.target && e.target.value ? e.target.value : "";
+    //     setFormData((prevState) => ({
+    //         ...prevState,
+    //         [name]: value,
+    //     }));
+    //     // console.log("form name: " + name + " and value:" + value);
+    //     console.log(formData)
+    // };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from '../../components/Header/Header';
 import BodyContainer from '../../components/Layout/BodyContainer';
 import JobListingDetail from '../../components/ListingPage/JobListingDetail';
@@ -6,9 +6,30 @@ import ListingDescription from "../../components/ListingPage/ListingDescription"
 import MakeOfferForm from "../../components/Offer/MakeOfferForm";
 import { Button, Collapse } from 'antd';
 import Review from "../../components/Review/Review";
+import { useSelector } from "react-redux";
+import { UserState } from "../../reducer/user-reducer";
+import { IRootState } from "../../store";
+import { TutorService } from "../../services/Tutor";
+import { JobListingService } from "../../services/JobListing";
+import qs from "qs";
+import { useLocation, useHistory } from "react-router-dom";
 
 const TuteeListingPage = () => {
-    const { Panel } = Collapse;
+    const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
+    const [listingData, setListingData] = useState<jobListingType>();
+    useEffect(() => {
+        const getListingDetails = async () => {
+            const params: { [key: string]: any } = qs.parse(location.search.substring(1), { ignoreQueryPrefix: true });
+            const data: jobListingType | null = await JobListingService.getJobListing(params.id);
+            if (data) {
+                setListingData(data);
+            }
+        }
+        getListingDetails();
+    }, []
+    )
+    const location = useLocation();
+    const history = useHistory();
 
     return (
         <div>
@@ -16,38 +37,10 @@ const TuteeListingPage = () => {
             <BodyContainer>
                 <div style={{ display: "flex", flexDirection: "column" }}>
                     <div style={{ marginBottom: "20px" }}>
-                        <JobListingDetail />
+                        {listingData ? <JobListingDetail listing={listingData} /> : null}
                     </div>
-
-                    <div style={{ display: "flex", marginLeft: "50px" }}>
-                        <MakeOfferForm />
-                        <Button style={{ margin: "10px" }}>
-                            Chat
-                        </Button>
-                    </div>
-
-
-
-                    <div>
-                        <Collapse defaultActiveKey={['1']} style={{ marginTop: "50px" }}>
-                            <Panel header="Description" key="1">
-                                <ListingDescription />
-                            </Panel>
-
-                            <Panel header="Testimonials" key="2">
-                                <Review />
-                            </Panel>
-                        </Collapse>
-
-
-                    </div>
-
                 </div>
-
-
             </BodyContainer>
-
-
         </div>
     );
 };

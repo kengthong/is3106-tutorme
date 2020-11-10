@@ -1,4 +1,4 @@
-type Action = {type: string, payload: any }
+type Action = { type: string, payload: any }
 
 type chatListType = {
     userId: number;
@@ -45,10 +45,13 @@ type chatMessagesType = {
 }[];
 
 type createJobListingParams = {
+    listingTitle: string;
     listingDesc: string;
     rate: number;
-    subject: string;
+    subjectName: string;
+    subjectLevels: [];
     timeslot: string;
+    area: string;
 }
 
 type getJobListingListWithParamsProps = {
@@ -99,6 +102,8 @@ type jobListingCardProps = jobListingType & {
 
 type getJobListingListWithParamResposeProps = jobListingType[]
 
+
+
 type offerType = {
     additionalNote: string;
     chosenSubject: {
@@ -131,8 +136,22 @@ type offerType = {
         personEnum: string;
         personId: number;
     }
+}
+
+type createOfferParams = {
+    price: number;
+    subject: string;
+    numSession: number;
+    duration: number;
+    jobListingId: string;
+
+    levels: string[];
+
+
+    addNote: string;
 
 }
+
 type tutorDataType = {
     activeStatus: boolean;
     avgRating: number;
@@ -151,7 +170,7 @@ type tutorDataType = {
     personEnum: string;
     personId: number;
     profileImage?: string;
-    profileDesc: string ;
+    profileDesc: string;
     race?: null;
     receivedMessages?: null;
     salt?: null;
