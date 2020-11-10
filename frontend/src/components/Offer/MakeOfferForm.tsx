@@ -133,7 +133,6 @@ const MakeOfferForm = (props: any) => {
                             <Select
                                 showSearch
                                 allowClear
-                                mode="multiple"
                                 placeholder="Select your levels"
                             >
                                 {props.listing.subjects.map((sub: any, i: any) => (
@@ -148,7 +147,7 @@ const MakeOfferForm = (props: any) => {
                         </Form.Item>
 
                         <Form.Item
-                            name="numSession"
+                            name="numSessions"
                             label="No. of Sessions per week"
                             rules={[{
                                 required: true,
@@ -161,7 +160,7 @@ const MakeOfferForm = (props: any) => {
                         </Form.Item>
 
                         <Form.Item
-                            name="duration"
+                            name="hoursPerSession"
                             label="Duration per session (hour)"
                             rules={[{
                                 required: true,
@@ -172,7 +171,7 @@ const MakeOfferForm = (props: any) => {
                         </Form.Item>
 
                         <Form.Item
-                            name="addNote"
+                            name="notes"
                             label="Additional notes to Tutor"
                             rules={[{
                                 required: true,
