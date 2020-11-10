@@ -15,7 +15,7 @@ const RegisterComponent = () => {
     lastName: "",
     password: "",
     phoneNumber: "",
-    accountType: "Tutee",
+    accountType: "tutee",
   });
 
   const history = useHistory();
@@ -170,19 +170,19 @@ const RegisterComponent = () => {
           </div>
           <div className="p-field-radiobutton">
             <Radio
-              value="Tutee"
+              value="tutee"
               name="accountType"
               onChange={(e) => handleChange(e)}
-              checked={formData.accountType === "Tutee"}
+              checked={formData.accountType === "tutee"}
             />
             <label htmlFor="acc1">Tutee</label>
           </div>
           <div className="p-field-radiobutton">
             <Radio
-              value="Tutor"
+              value="tutor"
               name="accountType"
               onChange={(e) => handleChange(e)}
-              checked={formData.accountType === "Tutor"}
+              checked={formData.accountType === "tutor"}
             />
             <label htmlFor="acc2">Tutor</label>
           </div>
