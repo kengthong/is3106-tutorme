@@ -35,8 +35,17 @@ export class UserService {
             })
     }
 
-    static register() {
+    static async register(firstName: string, lastName: string, email:string, password: string, phoneNumber: string, gender: string, date: string, accountType: string) {
+        const url = BACKEND_BASE_URL + '/person/register';
+        const body = {firstName, lastName, email, password, phoneNumber, gender, date, accountType}
 
+        const response = await Utility.fetchBuilder(url, 'POST', jsonHeader, body);
+        console.log("response: " + response)
+        if (response.ok) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     static logout() {

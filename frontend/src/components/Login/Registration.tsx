@@ -3,7 +3,7 @@ import { LOGIN_URL } from "../../config/constants";
 import { useHistory } from "react-router-dom";
 import logo from "../../assets/logo.jpg";
 import { Input, Button, Radio, DatePicker, Modal } from "antd";
-import {UserService} from "../../services/User";
+import { UserService } from "../../services/User";
 
 const RegisterComponent = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +15,7 @@ const RegisterComponent = () => {
     lastName: "",
     password: "",
     phoneNumber: "",
+    accountType: "Tutee",
   });
 
   const history = useHistory();
@@ -36,7 +37,9 @@ const RegisterComponent = () => {
     //Should call on API
     //Skeleton
     if (verifyForm()) {
-      UserService.register();
+
+      UserService.register(formData.firstName, formData.lastName, formData.email, formData.password, formData.phoneNumber, formData.gender, formData.date, formData.accountType);
+
     } else if (formData.password !== formData.confirmPassword) {
       Modal.error({
         title: "Error",
@@ -72,7 +75,7 @@ const RegisterComponent = () => {
 
   return (
     <div>
-      <img src={logo} style={{ padding: 100 }} alt='logo'/>
+      <img src={logo} style={{ padding: 100 }} alt='logo' />
       <h1
         style={{
           fontSize: "3rem",
@@ -161,6 +164,29 @@ const RegisterComponent = () => {
             />
             <label htmlFor="gen2">Female</label>
           </div>
+
+          <div className="p-field ">
+            <label htmlFor="accountType">Account Type</label>
+          </div>
+          <div className="p-field-radiobutton">
+            <Radio
+              value="Tutee"
+              name="accountType"
+              onChange={(e) => handleChange(e)}
+              checked={formData.accountType === "Tutee"}
+            />
+            <label htmlFor="acc1">Tutee</label>
+          </div>
+          <div className="p-field-radiobutton">
+            <Radio
+              value="Tutor"
+              name="accountType"
+              onChange={(e) => handleChange(e)}
+              checked={formData.accountType === "Tutor"}
+            />
+            <label htmlFor="acc2">Tutor</label>
+          </div>
+
           <div className="p-field ">
             <label htmlFor="dob">Date of Birth</label>
             <DatePicker
