@@ -40,7 +40,7 @@ public class TuteeSession implements TuteeSessionLocal {
 
             newTutee.setFirstName(firstName);
             newTutee.setLastName(lastName);
-            newTutee.setEmail(email);
+            newTutee.setEmail(email.toLowerCase());
             newTutee.setMobileNum(mobileNum);
             newTutee.setGender(gender);
             newTutee.setDob(dob);
@@ -63,7 +63,7 @@ public class TuteeSession implements TuteeSessionLocal {
 
             newTutee.setFirstName(firstName);
             newTutee.setLastName(lastName);
-            newTutee.setEmail(email);
+            newTutee.setEmail(email.toLowerCase());
             newTutee.setMobileNum(mobileNum);
             newTutee.setGender(gender);
             newTutee.setDob(dob);
@@ -94,7 +94,7 @@ public class TuteeSession implements TuteeSessionLocal {
     @Override
     public Tutee retrieveTuteeByEmail(String email) throws TuteeNotFoundException {
         Query query = em.createQuery("SELECT t FROM Tutee t WHERE t.email = :inputEmail");
-        query.setParameter("inputEmail", email);
+        query.setParameter("inputEmail", email.toLowerCase());
         Tutee tutee = (Tutee) query.getSingleResult();
         if (tutee != null) {
             return tutee;

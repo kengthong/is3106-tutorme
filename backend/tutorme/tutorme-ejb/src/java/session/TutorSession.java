@@ -43,7 +43,7 @@ public class TutorSession implements TutorSessionLocal {
 
             newTutor.setFirstName(firstName);
             newTutor.setLastName(lastName);
-            newTutor.setEmail(email);
+            newTutor.setEmail(email.toLowerCase());
             newTutor.setMobileNum(mobileNum);
             newTutor.setGender(gender);
             newTutor.setDob(dob);
@@ -69,7 +69,7 @@ public class TutorSession implements TutorSessionLocal {
 
             newTutor.setFirstName(firstName);
             newTutor.setLastName(lastName);
-            newTutor.setEmail(email);
+            newTutor.setEmail(email.toLowerCase());
             newTutor.setMobileNum(mobileNum);
             newTutor.setGender(gender);
             newTutor.setDob(dob);
@@ -101,7 +101,7 @@ public class TutorSession implements TutorSessionLocal {
     @Override
     public Tutor retrieveTutorByEmail(String email) throws TutorNotFoundException {
         Query query = em.createQuery("SELECT t FROM Tutor t WHERE t.email = :inputEmail");
-        query.setParameter("inputEmail", email);
+        query.setParameter("inputEmail", email.toLowerCase());
         Tutor tutor = (Tutor) query.getSingleResult();
         if (tutor != null) {
             return tutor;

@@ -16,9 +16,6 @@ import exception.PersonLoginFailException;
 import exception.StaffNotFoundException;
 import exception.TuteeNotFoundException;
 import exception.TutorNotFoundException;
-import io.fusionauth.jwt.Verifier;
-import io.fusionauth.jwt.hmac.HMACSigner;
-import io.fusionauth.jwt.hmac.HMACVerifier;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,10 +57,6 @@ public class PersonResource implements Serializable {
     @EJB
     EmailSessionLocal emailSession;
 
-    private final String key = "hsianghui";
-    private final HMACSigner signer = HMACSigner.newSHA256Signer(key);
-    Verifier verifier = HMACVerifier.newVerifier(key);
-
     public PersonResource() {
     }
 
@@ -74,12 +67,14 @@ public class PersonResource implements Serializable {
         System.out.println("Logging user in...");
         String email = json.getString("email").toLowerCase();
         String password = json.getString("password");
+        
         JsonObjectBuilder payload = Json.createObjectBuilder();
         JsonObjectBuilder exception = Json.createObjectBuilder();
         try {
             Person person = personSession.login(email, password);
             String encodedJWT = AuthenticateUser.issueJwt(person.getPersonId());
             payload.add("jwtToken", encodedJWT);
+            System.out.println(encodedJWT);
             ObjectMapper mapper = new ObjectMapper();
             switch (person.getPersonEnum()) {
                 case TUTOR:
@@ -149,16 +144,16 @@ public class PersonResource implements Serializable {
             String lastName = json.getString("lastName");
             String email = json.getString("email").toLowerCase();
             String password = json.getString("password");
-            String mobileNum = json.getString("mobileNum");
+            String mobileNum = json.getString("phoneNumber");
             String gender = json.getString("gender");
             GenderEnum genderEnum = gender.equals("Male") ? GenderEnum.MALE : GenderEnum.FEMALE;
-            String dobStr = json.getString("dob");
+            String dobStr = json.getString("date");
             String pattern = "dd-MM-YYYY";
             SimpleDateFormat dateFormatter = new SimpleDateFormat(pattern);
             Date dob;
             dob = dateFormatter.parse(dobStr);
 
-            String userType = json.getString("userType");
+            String userType = json.getString("accountType");
             String encodedJWT = null;
 
             ObjectMapper mapper = new ObjectMapper();

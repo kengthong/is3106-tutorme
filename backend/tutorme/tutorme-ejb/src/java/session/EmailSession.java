@@ -46,7 +46,7 @@ public class EmailSession implements EmailSessionLocal {
             session.setDebug(true);            
             Message msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress(fromEmail));
-            msg.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            msg.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail.toLowerCase()));
             msg.setSubject("TutorMe Registration Complete!");
             msg.setText("Hi " + firstName+ "! \n\nYour account has been successfully registered with us!\n\n Regards, \n TutorMe Team");
 

@@ -40,7 +40,7 @@ public class StaffSession implements StaffSessionLocal {
 
             newStaff.setFirstName(firstName);
             newStaff.setLastName(lastName);
-            newStaff.setEmail(email);
+            newStaff.setEmail(email.toLowerCase());
             newStaff.setMobileNum(mobileNum);
             newStaff.setGender(gender);
             newStaff.setDob(dob);
@@ -72,7 +72,7 @@ public class StaffSession implements StaffSessionLocal {
     @Override
     public Staff retrieveStaffByEmail(String email) throws StaffNotFoundException {
         Query query = em.createQuery("SELECT a FROM Staff a WHERE a.email = :inputEmail");
-        query.setParameter("inputEmail", email);
+        query.setParameter("inputEmail", email.toLowerCase());
         Staff staff = (Staff) query.getSingleResult();
         if (staff != null) {
             return staff;
