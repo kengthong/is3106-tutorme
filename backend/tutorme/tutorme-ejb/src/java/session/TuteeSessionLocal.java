@@ -32,10 +32,6 @@ public interface TuteeSessionLocal {
     public List<Tutee> retrieveTuteeByName(String inputName);
 
     public Tutee updateTuteeProfile(Long tuteeId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc, byte[] profileImage) throws TuteeNotFoundException;
-
-    public Tutee activateTuteeStatus(Long tuteeId) throws TuteeNotFoundException;
-
-    public Tutee deactivateTuteeStatus(Long tuteeId) throws TuteeNotFoundException;
     
     // Reporting use
     public Integer getActiveTutees();

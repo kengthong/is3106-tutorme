@@ -7,7 +7,9 @@ package session;
 
 import entity.Offer;
 import entity.Rating;
+import enumeration.OfferStatusEnum;
 import exception.OfferNotFoundException;
+import exception.OfferStatusException;
 import exception.RatingNotFoundException;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -26,15 +28,34 @@ public class RatingSession implements RatingSessionLocal {
     EntityManager em;
 
     @Override
-    public Rating createRating(Integer ratingValue, String comments, Long offerId) throws OfferNotFoundException {
+    public Rating createRatingInit(Integer ratingValue, String comments, Long offerId) throws OfferNotFoundException, OfferStatusException {
         Offer offer = em.find(Offer.class, offerId);
         if (offer == null) {
             throw new OfferNotFoundException("offerId does not exist");
         } else {
+            offer.setOfferStatus(OfferStatusEnum.ACCEPTED);
             Rating newRating = new Rating(ratingValue, comments, offer);
             em.persist(newRating);
             offer.setRating(newRating);
             return newRating;
+        }
+    }
+
+    @Override
+    public Rating createRating(Integer ratingValue, String comments, Long offerId) throws OfferNotFoundException, OfferStatusException {
+        Offer offer = em.find(Offer.class,
+                offerId);
+        if (offer == null) {
+            throw new OfferNotFoundException("offerId does not exist");
+        } else {
+            if (offer.getOfferStatus() == OfferStatusEnum.ACCEPTED) {
+                Rating newRating = new Rating(ratingValue, comments, offer);
+                em.persist(newRating);
+                offer.setRating(newRating);
+                return newRating;
+            } else {
+                throw new OfferStatusException("Offer was not accepted.");
+            }
         }
     }
 
@@ -47,7 +68,8 @@ public class RatingSession implements RatingSessionLocal {
 
     @Override
     public Rating retrieveRatingById(Long ratingId) throws RatingNotFoundException {
-        Rating rating = em.find(Rating.class, ratingId);
+        Rating rating = em.find(Rating.class,
+                ratingId);
         if (rating != null) {
             return rating;
         } else {

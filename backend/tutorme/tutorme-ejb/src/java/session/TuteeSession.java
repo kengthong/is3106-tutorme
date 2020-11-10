@@ -129,28 +129,6 @@ public class TuteeSession implements TuteeSessionLocal {
     }
 
     @Override
-    public Tutee activateTuteeStatus(Long tuteeId) throws TuteeNotFoundException {
-        Tutee tutee = em.find(Tutee.class, tuteeId);
-        if (tutee != null && !tutee.getActiveStatus()) {
-            tutee.setActiveStatus(true);
-            return tutee;
-        } else {
-            throw new TuteeNotFoundException("TuteeID " + tuteeId + " does not exists.");
-        }
-    }
-
-    @Override
-    public Tutee deactivateTuteeStatus(Long tuteeId) throws TuteeNotFoundException {
-        Tutee tutee = em.find(Tutee.class, tuteeId);
-        if (tutee != null && tutee.getActiveStatus()) {
-            tutee.setActiveStatus(false);
-            return tutee;
-        } else {
-            throw new TuteeNotFoundException("TuteeID " + tuteeId + " does not exists.");
-        }
-    }
-
-    @Override
     public Integer getActiveTutees() {
         Query query = em.createQuery("SELECT t from Tutee t WHERE t.activeStatus=true");
         List<Tutee> tutees = query.getResultList();

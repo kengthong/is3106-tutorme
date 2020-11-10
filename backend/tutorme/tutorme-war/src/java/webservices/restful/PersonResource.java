@@ -84,16 +84,7 @@ public class PersonResource implements Serializable {
                     tutor.setSentMessages(null);
                     tutor.setReceivedMessages(null);
                     tutor.setJobListings(null);
-//                    List<JobListing> jobListings = tutor.getJobListings();
-//                    jobListings.forEach(jl -> jl.setTutor(null));
-//                    for (JobListing jl : jobListings) {
-//                        jl.setTutor(null);
-//                        List<Offer> offers = jl.getOffers();
-//                        for (Offer o : offers) {
-//                            o.setJobListing(null);
-//                            o.setTutee(null);
-//                        }
-//                    }
+
                     String jsonTutor = mapper.writeValueAsString(tutor);
                     payload.add("user", jsonTutor);
                     return Response.status(200).entity(payload.build()).build();
@@ -104,13 +95,7 @@ public class PersonResource implements Serializable {
                     tutee.setSentMessages(null);
                     tutee.setReceivedMessages(null);
                     tutee.setOffers(null);
-//                    List<Offer> offers = tutee.getOffers();
-//                    for (Offer o : offers) {
-//                        o.setTutee(null);
-//                        JobListing jobListing = o.getJobListing();
-//                        jobListing.setOffers(null);
-//                        jobListing.setTutor(null);
-//                    }
+                    
                     String jsonTutee = mapper.writeValueAsString(tutee);
                     payload.add("user", jsonTutee);
                     return Response.status(200).entity(payload.build()).build();
@@ -120,6 +105,7 @@ public class PersonResource implements Serializable {
                     staff.setPassword(null);
                     staff.setSentMessages(null);
                     staff.setReceivedMessages(null);
+                    
                     String jsonStaff = mapper.writeValueAsString(staff);
                     payload.add("user", jsonStaff);
                     return Response.status(200).entity(payload.build()).build();

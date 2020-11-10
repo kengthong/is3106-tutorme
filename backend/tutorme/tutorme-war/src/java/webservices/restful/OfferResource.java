@@ -16,7 +16,6 @@ import exception.OfferNotFoundException;
 import exception.OfferStatusException;
 import exception.PersonNotFoundException;
 import filter.JWTTokenNeeded;
-import filter.StaffJWTTokenNeeded;
 import filter.TuteeJWTTokenNeeded;
 import filter.TutorJWTTokenNeeded;
 import java.text.ParseException;
@@ -132,10 +131,6 @@ public class OfferResource {
             tutee.setPassword(null);
             tutee.setSalt(null);
             tutee.setOffers(null);
-//            Rating rating = o.getRating();
-//            if (rating == null) {
-//                rating.setOffer(null);
-//            }
 
             JobListing jobListing = o.getJobListing();
             jobListing.setOffers(null);
@@ -147,7 +142,7 @@ public class OfferResource {
     }
 
     @POST
-    @Path("/makeOffer")
+    @Path("/create")
     @TuteeJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response makeOffer(JsonObject json) {

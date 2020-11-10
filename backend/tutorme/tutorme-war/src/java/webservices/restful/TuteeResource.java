@@ -9,7 +9,6 @@ import entity.Tutee;
 import enumeration.GenderEnum;
 import exception.TuteeNotFoundException;
 import filter.JWTTokenNeeded;
-import filter.StaffJWTTokenNeeded;
 import filter.TuteeJWTTokenNeeded;
 import filter.UserPrincipal;
 import java.text.SimpleDateFormat;
@@ -133,49 +132,4 @@ public class TuteeResource {
             return Response.status(400).entity(exception).build();
         }
     }
-
-    @PUT
-    @Path("/ban/{tuteeId}")
-    @StaffJWTTokenNeeded
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response banTuteeById(@PathParam("tuteeId") Long tuteeId) {
-        System.out.println("Banning Tutee Id is ... " + tuteeId);
-        try {
-            Tutee tutee = tuteeSession.deactivateTuteeStatus(tuteeId);
-            tutee.setPassword(null);
-            tutee.setSalt(null);
-            tutee.setReceivedMessages(null);
-            tutee.setSentMessages(null);
-            tutee.setOffers(null); // to confirm not needed
-            GenericEntity<Tutee> packet = new GenericEntity<Tutee>(tutee) {
-            };
-            return Response.status(200).entity(packet).build();
-        } catch (TuteeNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "tuteeId does not exists").build();
-            return Response.status(400).entity(exception).build();
-        }
-    }
-    
-    @PUT
-    @Path("/unban/{tuteeId}")
-    @StaffJWTTokenNeeded
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response unbanTuteeById(@PathParam("tuteeId") Long tuteeId) {
-        System.out.println("Banning Tutee Id is ... " + tuteeId);
-        try {
-            Tutee tutee = tuteeSession.activateTuteeStatus(tuteeId);
-            tutee.setPassword(null);
-            tutee.setSalt(null);
-            tutee.setReceivedMessages(null);
-            tutee.setSentMessages(null);
-            tutee.setOffers(null); // to confirm not needed
-            GenericEntity<Tutee> packet = new GenericEntity<Tutee>(tutee) {
-            };
-            return Response.status(200).entity(packet).build();
-        } catch (TuteeNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "tuteeId does not exists").build();
-            return Response.status(400).entity(exception).build();
-        }
-    }
-
 }

@@ -14,6 +14,7 @@ import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import exception.OfferNotFoundException;
+import exception.OfferStatusException;
 import exception.PersonNotFoundException;
 import exception.StaffNotFoundException;
 import exception.TuteeNotFoundException;
@@ -226,29 +227,29 @@ public class DataInitializationBean {
         Rating rating;
         try {
             //createRating(Double ratingValue, String comments, Long offerId) throws OfferNotFoundException {
-            rating = ratingSession.createRating(0, "the tutor was super bad, did not turn up!! DONT EVER TAKE THIS TUTOR", 1L);
-            rating = ratingSession.createRating(0, "cannot teach", 2L);
-            rating = ratingSession.createRating(1, "super bad", 3L);
-            rating = ratingSession.createRating(1, "too expensive not worth it", 4L);
-            rating = ratingSession.createRating(2, "ok la", 5L);
-            rating = ratingSession.createRating(2, "below average, i sacked him", 6L);
-            rating = ratingSession.createRating(3, "hmmm.. idk leh good or not", 7L); 
-            rating = ratingSession.createRating(3, "not very honest but can teach", 8L);
-            rating = ratingSession.createRating(4, "the tutor was great", 9L);
-            rating = ratingSession.createRating(4, "highly recommend", 10L);
-            rating = ratingSession.createRating(5, "quite good tbh", 11L);
-            rating = ratingSession.createRating(5, "my grades improved!!", 12L);
-            rating = ratingSession.createRating(4, "one of the better teacher i have", 13L);
-            rating = ratingSession.createRating(4, "good tutor", 14L);
-            rating = ratingSession.createRating(3, "average la", 15L);
-            rating = ratingSession.createRating(3, "not bad la", 16L);
-            rating = ratingSession.createRating(4, "the tutor was great", 17L);
-            rating = ratingSession.createRating(4, "the tutor was great i recommend", 18L);
-            rating = ratingSession.createRating(5, "excellent", 19L);
-            rating = ratingSession.createRating(5, "super friendly", 20L);
+            rating = ratingSession.createRatingInit(0, "the tutor was super bad, did not turn up!! DONT EVER TAKE THIS TUTOR", 1L);
+            rating = ratingSession.createRatingInit(0, "cannot teach", 2L);
+            rating = ratingSession.createRatingInit(1, "super bad", 3L);
+            rating = ratingSession.createRatingInit(1, "too expensive not worth it", 4L);
+            rating = ratingSession.createRatingInit(2, "ok la", 5L);
+            rating = ratingSession.createRatingInit(2, "below average, i sacked him", 6L);
+            rating = ratingSession.createRatingInit(3, "hmmm.. idk leh good or not", 7L); 
+            rating = ratingSession.createRatingInit(3, "not very honest but can teach", 8L);
+            rating = ratingSession.createRatingInit(4, "the tutor was great", 9L);
+            rating = ratingSession.createRatingInit(4, "highly recommend", 10L);
+            rating = ratingSession.createRatingInit(5, "quite good tbh", 11L);
+            rating = ratingSession.createRatingInit(5, "my grades improved!!", 12L);
+            rating = ratingSession.createRatingInit(4, "one of the better teacher i have", 13L);
+            rating = ratingSession.createRatingInit(4, "good tutor", 14L);
+            rating = ratingSession.createRatingInit(3, "average la", 15L);
+            rating = ratingSession.createRatingInit(3, "not bad la", 16L);
+            rating = ratingSession.createRatingInit(4, "the tutor was great", 17L);
+            rating = ratingSession.createRatingInit(4, "the tutor was great i recommend", 18L);
+            rating = ratingSession.createRatingInit(5, "excellent", 19L);
+            rating = ratingSession.createRatingInit(5, "super friendly", 20L);
             em.flush();
 
-        } catch (OfferNotFoundException ex) {
+        } catch (OfferNotFoundException | OfferStatusException ex) {
             Logger.getLogger(DataInitializationBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 

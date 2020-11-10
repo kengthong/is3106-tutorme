@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package webservices.restful;
 
 import entity.Message;
@@ -35,7 +30,6 @@ import javax.ws.rs.core.SecurityContext;
 import session.MessageSessionLocal;
 import session.PersonSessionLocal;
 import session.StaffSessionLocal;
-
 /**
  * REST Web Service
  *

@@ -1,17 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package webservices.restful;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.JobListing;
 import entity.Offer;
+import entity.Person;
 import entity.Rating;
 import entity.Tutee;
 import entity.Tutor;
+import exception.PersonNotFoundException;
 import filter.StaffJWTTokenNeeded;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,14 +18,19 @@ import javax.ws.rs.Path;
 import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import session.EmailSessionLocal;
 import session.JobListingSessionLocal;
 import session.OfferSessionLocal;
+import session.PersonSessionLocal;
 import session.TuteeSessionLocal;
 import session.TutorSessionLocal;
 
@@ -37,20 +39,24 @@ import session.TutorSessionLocal;
  *
  * @author Owen Tay
  */
-@Path("report")
+@Path("staff")
 @RequestScoped
-public class ReportResource {
+public class StaffResource {
 
     @EJB
     JobListingSessionLocal jobListingSession;
     @EJB
     OfferSessionLocal offerSession;
     @EJB
+    PersonSessionLocal personSession;
+    @EJB
     TutorSessionLocal tutorSession;
     @EJB
     TuteeSessionLocal tuteeSession;
+    @EJB
+    EmailSessionLocal emailSession;
 
-    public ReportResource() {
+    public StaffResource() {
     }
 
     @GET
@@ -139,7 +145,7 @@ public class ReportResource {
         Integer tutorGrowth = tutorSession.getTutorGrowth();
         builder.add("numActiveTutors", numActiveTutors);
         builder.add("tutorGrowth", tutorGrowth);
-        
+
         Integer numActiveTutees = tuteeSession.getActiveTutees();
         Integer tuteeGrowth = tuteeSession.getTuteeGrowth();
         builder.add("numActiveTutees", numActiveTutees);
@@ -154,12 +160,44 @@ public class ReportResource {
         Integer offerGrowth = offerSession.getOfferGrowth();
         builder.add("numActiveOffers", numActiveOffers);
         builder.add("offerGrowth", offerGrowth);
-        
+
         Double offerAcceptanceRate = offerSession.getOfferAcceptanceRate();
         Double offerRejectionRate = offerSession.getOfferRejectionRate();
         builder.add("offerAcceptanceRate", offerAcceptanceRate);
         builder.add("offerRejectionRate", offerRejectionRate);
 
         return Response.status(200).entity(builder.build()).build();
+    }
+
+    @PUT
+    @Path("/ban/{personId}")
+    @StaffJWTTokenNeeded
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response banPerson(@PathParam("personId") Long personId) {
+        System.out.println("Banning Person Id is ... " + personId);
+        try {
+            Person person = personSession.deactivatePerson(personId);
+            emailSession.ban(person.getFirstName(), person.getEmail());
+            return Response.status(204).build();
+        } catch (PersonNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", "tuteeId does not exists").build();
+            return Response.status(400).entity(exception).build();
+        }
+    }
+
+    @PUT
+    @Path("/unban/{personId}")
+    @StaffJWTTokenNeeded
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response unbanPerson(@PathParam("personId") Long personId) {
+        System.out.println("Unban Person Id is ... " + personId);
+        try {
+            Person person = personSession.activatePerson(personId);
+            emailSession.ban(person.getFirstName(), person.getEmail());
+            return Response.status(204).build();
+        } catch (PersonNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", "tuteeId does not exists").build();
+            return Response.status(400).entity(exception).build();
+        }
     }
 }

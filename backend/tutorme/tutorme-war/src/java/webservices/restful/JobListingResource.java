@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package webservices.restful;
 
 import entity.JobListing;
@@ -17,8 +12,6 @@ import filter.TutorJWTTokenNeeded;
 import filter.UserPrincipal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
 import javax.enterprise.context.RequestScoped;
@@ -37,11 +30,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import session.JobListingSessionLocal;
-
-///////////////////////////////////////////////////
-/// To-do
-/// - create new joblisting
-///////////////////////////////////////////////////
 /**
  * REST Web Service
  *
@@ -205,7 +193,7 @@ public class JobListingResource {
             }
             GenericEntity<List<JobListing>> packet = new GenericEntity<List<JobListing>>(jobListings) {
             };
-            return Response.status(200).entity(packet).build();
+            return Response.status(201).entity(packet).build();
         } catch (SubjectNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();

@@ -15,7 +15,6 @@ import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
 import exception.TutorNotFoundException;
-import filter.StaffJWTTokenNeeded;
 import filter.TutorJWTTokenNeeded;
 import filter.UserPrincipal;
 import java.text.SimpleDateFormat;
@@ -167,57 +166,6 @@ public class TutorResource {
         }
         try {
             Tutor tutor = tutorSession.updateTutorProfile(tutorId, firstName, lastName, mobileNum, genderEnum, parsedDob, qualiEnum, citiEnum, raceEnum, profileDesc, profileImage);
-            tutor.setPassword(null);
-            tutor.setSalt(null);
-            tutor.setSentMessages(null);
-            tutor.setReceivedMessages(null);
-            for (JobListing jl : tutor.getJobListings()) {
-                jl.setTutor(null);
-                jl.setOffers(null);
-            }
-            GenericEntity<Tutor> payload = new GenericEntity<Tutor>(tutor) {
-            };
-            return Response.status(200).entity(payload).build();
-        } catch (TutorNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
-            return Response.status(404).entity(exception).build();
-        }
-    }
-
-    @PUT
-    @Path("/ban/{tutorId}")
-    @StaffJWTTokenNeeded
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response banTutor(@PathParam("tutorId") Long tutorId) {
-        System.out.println("In ban tutor webResource...");
-        try {
-            System.out.println("Banning Tutor Id ... " + tutorId);
-            Tutor tutor = tutorSession.deactivateTutor(tutorId);
-            tutor.setPassword(null);
-            tutor.setSalt(null);
-            tutor.setSentMessages(null);
-            tutor.setReceivedMessages(null);
-            for (JobListing jl : tutor.getJobListings()) {
-                jl.setTutor(null);
-                jl.setOffers(null);
-            }
-            GenericEntity<Tutor> payload = new GenericEntity<Tutor>(tutor) {
-            };
-            return Response.status(200).entity(payload).build();
-        } catch (TutorNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
-            return Response.status(404).entity(exception).build();
-        }
-    }
-
-    @PUT
-    @Path("/unban/{tutorId}")
-    @StaffJWTTokenNeeded
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response unbanTutor(@PathParam("tutorId") Long tutorId) {
-        try {
-            System.out.println("Unbanning Tutor Id ... " + tutorId);
-            Tutor tutor = tutorSession.activateTutor(tutorId);
             tutor.setPassword(null);
             tutor.setSalt(null);
             tutor.setSentMessages(null);

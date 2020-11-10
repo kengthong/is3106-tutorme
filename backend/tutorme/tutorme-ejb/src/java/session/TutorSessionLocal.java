@@ -36,10 +36,6 @@ public interface TutorSessionLocal {
 
     public Tutor updateTutorProfile(Long tutorId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob,
             QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc, byte[] profileImage) throws TutorNotFoundException;
-
-    public Tutor activateTutor(Long tutorId) throws TutorNotFoundException;
-    
-    public Tutor deactivateTutor(Long tutorId) throws TutorNotFoundException;
     
     // Reporting use
     public Integer getActiveTutors();

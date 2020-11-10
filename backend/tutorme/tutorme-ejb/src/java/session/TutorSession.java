@@ -139,28 +139,6 @@ public class TutorSession implements TutorSessionLocal {
     }
 
     @Override
-    public Tutor activateTutor(Long tutorId) throws TutorNotFoundException {
-        Tutor tutor = em.find(Tutor.class, tutorId);
-        if (tutor == null) {
-            throw new TutorNotFoundException("TutorID " + tutorId + " does not exists.");
-        } else {
-            tutor.setActiveStatus(true);
-            return tutor;
-        }
-    }
-
-    @Override
-    public Tutor deactivateTutor(Long tutorId) throws TutorNotFoundException {
-        Tutor tutor = em.find(Tutor.class, tutorId);
-        if (tutor == null) {
-            throw new TutorNotFoundException("TutorID " + tutorId + " does not exists.");
-        } else {
-            tutor.setActiveStatus(false);
-            return tutor;
-        }
-    }
-
-    @Override
     public Integer getActiveTutors() {
         Query query = em.createQuery("SELECT t from Tutor t WHERE t.activeStatus=true");
         List<Tutor> tutors = query.getResultList();
