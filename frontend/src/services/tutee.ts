@@ -2,6 +2,7 @@
 //     getJobListingListWithParams(params: getJobListingListWithParamsProps): getJobListingListWithParamResposeProps;
 
 import { BACKEND_BASE_URL } from "../config/constants";
+import { Utility } from "../config/Utility";
 
 // }
 export default class TuteeService {
@@ -13,7 +14,25 @@ export default class TuteeService {
 
     }
 
-    //end point is /tutee/get
-    
+    static async getTuteeDetails(userId: number): Promise<tuteeDataType | null> {
+
+        //Just need to call this backend API with token to get.
+        const url = BACKEND_BASE_URL + '/tutee/get';
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+
+        const response = await Utility.fetchBuilder(url, 'GET', header, null);
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+            // return await response.json();
+        } else {
+            return null;
+        }
+    }
 
 };

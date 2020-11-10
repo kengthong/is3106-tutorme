@@ -15,7 +15,7 @@ import Login from "../pages/Common/Login/Login";
 import Registration from "../pages/Common/Login/Registration";
 import LandingPage from "../pages/Common/LandingPage/LandingPage";
 import NotFoundPage from "../pages/Common/NotFoundPage/NotFoundPage";
-import tuteeProfile from "../pages/Common/Tutee/TuteeProfile";
+import tuteeProfile from "../pages/Tutee/Settings/TuteeProfile";
 import TutorProfilePage from "../pages/Tutor/Settings/Profile";
 import TutorDetailsPage from "../pages/Tutor/Settings/PersonalDetails";
 import SearchPage from "../pages/Search/SearchPage";
