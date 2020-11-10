@@ -20,8 +20,8 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
@@ -30,6 +30,7 @@ import javax.ws.rs.core.SecurityContext;
 import session.MessageSessionLocal;
 import session.PersonSessionLocal;
 import session.StaffSessionLocal;
+
 /**
  * REST Web Service
  *
@@ -50,14 +51,17 @@ public class MessageResource {
     }
 
     @GET
-    @Path("/get/{p2Id}")
+//    @Path("/conversation/{p2Id}")
+    @Path("/conversation")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getConversation(@Context SecurityContext securityContext, @PathParam("p2Id") Long p2Id) {
+//    public Response getConversation(@Context SecurityContext securityContext, @PathParam("p2Id") Long p2Id) {
+    public Response getConversation(@Context SecurityContext securityContext, @QueryParam("p1Id") Long p1Id, @QueryParam("p2Id") Long p2Id) {
+
         UserPrincipal person = (UserPrincipal) securityContext.getUserPrincipal();
-        Long p1Id = person.getPersonId();
-        System.out.println("Getting conversation between... p1Id: " + p1Id + " and p2Id: " + p2Id);
-        List<Message> conversation = messageSession.retrieveConversation(p1Id, p2Id);
+        Long p11Id = person.getPersonId();
+        System.out.println("Getting conversation between... p1Id: " + p11Id + " and p2Id: " + p2Id);
+        List<Message> conversation = messageSession.retrieveConversation(p11Id, p2Id);
 
         for (Message m : conversation) {
             Person sender = m.getSender();
@@ -99,7 +103,7 @@ public class MessageResource {
     }
 
     @GET
-    @Path("/get")
+    @Path("/conversations")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getConversations(@Context SecurityContext securityContext) {

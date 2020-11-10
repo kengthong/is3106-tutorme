@@ -142,7 +142,7 @@ public class OfferResource {
     }
 
     @POST
-    @Path("/create")
+    @Path("/makeOffer")
     @TuteeJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response makeOffer(JsonObject json) {

@@ -45,7 +45,7 @@ public class TuteeResource {
     }
 
     @GET
-    @Path("/get")
+    @Path("/getAll")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTutees() {
@@ -70,10 +70,12 @@ public class TuteeResource {
     }
 
     @GET
-    @Path("/get/{tuteeId}")
-    @JWTTokenNeeded
+    @Path("/get")
+    @TuteeJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTuteeById(@PathParam("tuteeId") Long tuteeId) {
+    public Response getTuteeById(@Context SecurityContext securityContext) {
+        UserPrincipal person = (UserPrincipal) securityContext.getUserPrincipal();
+        Long tuteeId = person.getPersonId();
         System.out.println("Tutee Id is... " + tuteeId);
         try {
             Tutee tutee = tuteeSession.retrieveTuteeById(tuteeId);

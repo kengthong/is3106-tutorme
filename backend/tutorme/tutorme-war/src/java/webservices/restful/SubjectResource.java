@@ -41,7 +41,7 @@ public class SubjectResource {
     }
 
     @GET
-    @Path("/getAll")
+    @Path("/subjectList")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSubjectList() {
         System.out.println("Getting all subjects...");

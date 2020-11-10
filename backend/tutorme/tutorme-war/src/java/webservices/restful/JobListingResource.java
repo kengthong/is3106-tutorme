@@ -46,7 +46,7 @@ public class JobListingResource {
     }
 
     @GET
-    @Path("/get")
+    @Path("/jobListingList")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFilteredJobListings(
             @QueryParam("subject") String subject,
@@ -102,7 +102,7 @@ public class JobListingResource {
     }
 
     @GET
-    @Path("/get/{jobListingId}")
+    @Path("/{jobListingId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJobListing(
             @PathParam("jobListingId") Long jobListingId) {

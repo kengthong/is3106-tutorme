@@ -92,7 +92,7 @@ public class TutorResource {
     }
 
     @GET
-    @Path("/get/{tutorId}")
+    @Path("/get")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTutorById(@PathParam("tutorId") Long tutorId) {
         System.out.println("Tutor Id is... " + tutorId);

@@ -9,7 +9,9 @@ import entity.Rating;
 import entity.Tutee;
 import entity.Tutor;
 import exception.PersonNotFoundException;
+import exception.TuteeNotFoundException;
 import filter.StaffJWTTokenNeeded;
+import filter.TuteeJWTTokenNeeded;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -196,6 +198,28 @@ public class StaffResource {
             emailSession.ban(person.getFirstName(), person.getEmail());
             return Response.status(204).build();
         } catch (PersonNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", "tuteeId does not exists").build();
+            return Response.status(400).entity(exception).build();
+        }
+    }
+    
+    @GET
+    @Path("/get")
+    @StaffJWTTokenNeeded
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTuteeById(@PathParam("tuteeId") Long tuteeId) {
+        System.out.println("Tutee Id is... " + tuteeId);
+        try {
+            Tutee tutee = tuteeSession.retrieveTuteeById(tuteeId);
+            tutee.setPassword(null);
+            tutee.setSalt(null);
+            tutee.setReceivedMessages(null);
+            tutee.setSentMessages(null);
+            tutee.setOffers(null); // to confirm not needed
+            GenericEntity<Tutee> packet = new GenericEntity<Tutee>(tutee) {
+            };
+            return Response.status(200).entity(packet).build();
+        } catch (TuteeNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", "tuteeId does not exists").build();
             return Response.status(400).entity(exception).build();
         }
