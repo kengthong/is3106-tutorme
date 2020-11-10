@@ -26,7 +26,7 @@ export class ChatService {
 
     public static async getMessagesByUserIds(currentUserId: string, chatUserId: string): Promise<chatMessagesType> {
         const url = "http://localhost:8080/tutorme-war/webresources/message/conversation?" + new URLSearchParams({
-            p1Id: currentUserId,
+            //p1Id: currentUserId, -----TODO: DOUBLE CHECK PLS!!!
             p2Id: chatUserId
         });
         const token = localStorage.getItem("token");
