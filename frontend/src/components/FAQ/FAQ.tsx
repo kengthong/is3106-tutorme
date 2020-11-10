@@ -123,13 +123,6 @@ export const FAQs = () => {
                     appropriate disciplinary actions against the tutor's account.
                 </p>
             </Card>
-
-            <br />
-
-            <Card title="How do we contact you if we need help?" className="col-lg-8 col-sm-8">
-                <p>You can email us at support@tutorme.com</p>
-            </Card>
-
             <br />
         </div>
 

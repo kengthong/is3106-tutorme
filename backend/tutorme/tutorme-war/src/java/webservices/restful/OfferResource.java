@@ -9,19 +9,24 @@ import entity.JobListing;
 import entity.Message;
 import entity.Offer;
 import entity.Rating;
+import entity.Subject;
 import entity.Tutee;
 import exception.InvalidParamsException;
 import exception.InvalidSubjectChoiceException;
 import exception.OfferNotFoundException;
 import exception.OfferStatusException;
 import exception.PersonNotFoundException;
+import exception.SubjectNotFoundException;
 import filter.JWTTokenNeeded;
 import filter.TuteeJWTTokenNeeded;
 import filter.TutorJWTTokenNeeded;
+import filter.UserPrincipal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
@@ -32,12 +37,15 @@ import javax.json.JsonObject;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import session.MessageSessionLocal;
 import session.OfferSessionLocal;
 import session.StaffSessionLocal;
+import session.SubjectSessionLocal;
 
 /**
  * REST Web Service
@@ -54,6 +62,8 @@ public class OfferResource {
     MessageSessionLocal messageSession;
     @EJB
     StaffSessionLocal staffSession;
+    @EJB
+    SubjectSessionLocal subjectSession;
 
     @GET
     @Path("/get/{offerId}")
@@ -145,9 +155,11 @@ public class OfferResource {
     @Path("/makeOffer")
     @TuteeJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response makeOffer(JsonObject json) {
+    public Response makeOffer(@Context SecurityContext securityContext, JsonObject json) {
         try {
-            String offeredRateStr = json.getString("offeredRate");
+            UserPrincipal person = (UserPrincipal) securityContext.getUserPrincipal();
+            Long tuteeId = person.getPersonId();
+            String offeredRateStr = json.getString("price");
             double offeredRate = Double.valueOf(offeredRateStr);
 
             String pattern = "dd-MM-YYYY";
@@ -156,11 +168,9 @@ public class OfferResource {
             Date startDate;
             startDate = dateFormatter.parse(startDateStr);
 
-            String tuteeIdStr = json.getString("tuteeId");
-            Long tuteeId = Long.valueOf(tuteeIdStr);
-
-            String subjectIdStr = json.getString("chosenSubjectId");
-            Long subjectId = Long.valueOf(subjectIdStr);
+            String subjectName = json.getString("subject");
+            String level = json.getString("level");
+            Subject subject = subjectSession.retrieveSubjectByNameAndLevel(subjectName, level);
 
             String jobListingIdStr = json.getString("jobListingId");
             Long jobListingId = Long.valueOf(jobListingIdStr);
@@ -172,7 +182,7 @@ public class OfferResource {
             String notes = json.getString("notes");
 
             System.out.println("Making new offer...tuteeId: " + tuteeId + " for jobListingId:" + jobListingId);
-            Offer offer = offerSession.createOffer(offeredRate, startDate, tuteeId, subjectId, jobListingId, numSessions, hoursPerSession, notes.trim());
+            Offer offer = offerSession.createOffer(offeredRate, startDate, tuteeId, subject.getSubjectId(), jobListingId, numSessions, hoursPerSession, notes.trim());
             List<Offer> offers = offerSession.retrieveOffersByTuteeId(tuteeId);
             for (Offer o : offers) {
                 Tutee tutee = o.getTutee();
@@ -195,7 +205,7 @@ public class OfferResource {
             GenericEntity<List<Offer>> payload = new GenericEntity<List<Offer>>(offers) {
             };
             return Response.status(201).entity(payload).build();
-        } catch (ParseException | InvalidParamsException | InvalidSubjectChoiceException | PersonNotFoundException ex) {
+        } catch (ParseException | InvalidParamsException | InvalidSubjectChoiceException | PersonNotFoundException | SubjectNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
         }

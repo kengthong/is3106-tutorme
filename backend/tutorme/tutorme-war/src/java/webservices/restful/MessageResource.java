@@ -51,17 +51,15 @@ public class MessageResource {
     }
 
     @GET
-//    @Path("/conversation/{p2Id}")
     @Path("/conversation")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-//    public Response getConversation(@Context SecurityContext securityContext, @PathParam("p2Id") Long p2Id) {
-    public Response getConversation(@Context SecurityContext securityContext, @QueryParam("p1Id") Long p1Id, @QueryParam("p2Id") Long p2Id) {
+    public Response getConversation(@Context SecurityContext securityContext, @QueryParam("p2Id") Long p2Id) {
 
         UserPrincipal person = (UserPrincipal) securityContext.getUserPrincipal();
-        Long p11Id = person.getPersonId();
-        System.out.println("Getting conversation between... p1Id: " + p11Id + " and p2Id: " + p2Id);
-        List<Message> conversation = messageSession.retrieveConversation(p11Id, p2Id);
+        Long p1Id = person.getPersonId();
+        System.out.println("Getting conversation between... p1Id: " + p1Id + " and p2Id: " + p2Id);
+        List<Message> conversation = messageSession.retrieveConversation(p1Id, p2Id);
 
         for (Message m : conversation) {
             Person sender = m.getSender();

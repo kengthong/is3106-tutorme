@@ -68,5 +68,4 @@ export const FeedbackCom = () => {
     )
 
 }
-
 export default FeedbackCom;
