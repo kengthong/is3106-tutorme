@@ -17,16 +17,16 @@ import javax.ejb.Local;
  */
 @Local
 public interface PersonSessionLocal {
-    
-    public Person login(String email, String password)  throws PersonLoginFailException;
 
-    public Person retrievePersonById(Long userId) throws PersonNotFoundException;
-    
+    public Person login(String email, String password) throws PersonLoginFailException;
+
+    public Person retrievePersonById(Long personId) throws PersonNotFoundException;
+
     public List<Person> retrieveAllPersons();
 
     public List<Person> retrievePersonsByName(String inputName) throws PersonNotFoundException;
 
-    public Person changePassword(Long userId, String oldPassword, String newPassword);
+    public Person activatePerson(Long personId) throws PersonNotFoundException;
 
-    public void changePersonActiveStatus(Long userId);
+    public Person deactivatePerson(Long personId) throws PersonNotFoundException;
 }

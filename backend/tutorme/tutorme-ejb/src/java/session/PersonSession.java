@@ -45,12 +45,12 @@ public class PersonSession implements PersonSessionLocal {
     }
 
     @Override
-    public Person retrievePersonById(Long userId) throws PersonNotFoundException {
-        Person user = em.find(Person.class, userId);
+    public Person retrievePersonById(Long personId) throws PersonNotFoundException {
+        Person user = em.find(Person.class, personId);
         if (user != null) {
             return user;
         } else {
-            throw new PersonNotFoundException("Person ID " + userId + "does not exists.");
+            throw new PersonNotFoundException("Person ID " + personId + "does not exists.");
         }
     }
 
@@ -73,24 +73,25 @@ public class PersonSession implements PersonSessionLocal {
         }
     }
 
-    // TODO
     @Override
-    public Person changePassword(Long userId, String oldPassword, String newPassword) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void changePersonActiveStatus(Long userId) {
-        try {
-            Person user = retrievePersonById(userId);
-            if (user.getActiveStatus()) {
-                user.setActiveStatus(false);
-            } else {
-                user.setActiveStatus(true);
-            }
-        } catch (PersonNotFoundException ex) {
-            System.out.println("Person ID " + userId + "does not exists.");
+    public Person activatePerson(Long personId) throws PersonNotFoundException {
+        Person person = em.find(Person.class, personId);
+        if (person == null) {
+            throw new PersonNotFoundException("PersonId " + personId + " does not exists.");
+        } else {
+            person.setActiveStatus(true);
+            return person;
         }
     }
 
+    @Override
+    public Person deactivatePerson(Long personId) throws PersonNotFoundException {
+        Person person = em.find(Person.class, personId);
+        if (person == null) {
+            throw new PersonNotFoundException("PersonId " + personId + " does not exists.");
+        } else {
+            person.setActiveStatus(false);
+            return person;
+        }
+    }
 }

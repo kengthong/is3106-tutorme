@@ -14,5 +14,9 @@ import javax.ejb.Local;
 @Local
 public interface EmailSessionLocal {
     
-    public void send(String username, String email);
+    public void send(String firstName, String toEmail);
+    
+    public void ban(String firstName, String toEmail);
+    
+    public void unban(String firstName, String toEmail);
 }
