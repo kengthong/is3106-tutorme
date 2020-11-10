@@ -14,6 +14,7 @@ import filter.TuteeJWTTokenNeeded;
 import filter.UserPrincipal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -114,7 +115,8 @@ public class TuteeResource {
             ex.printStackTrace();
         }
         String profileDesc = json.getJsonString("profileDesc").getString();
-        String profileImage = json.getJsonString("profileImage").getString();
+        String encodedProfileImage = json.getString("profileImage");
+        byte[] profileImage = Base64.getDecoder().decode(encodedProfileImage);
 
         try {
             Tutee tutee = tuteeSession.updateTuteeProfile(tuteeId, firstName, lastName, mobileNum, genderEnum, parsedDob, profileDesc, profileImage);

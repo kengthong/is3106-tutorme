@@ -22,7 +22,7 @@ import javax.ejb.Local;
 @Local
 public interface TutorSessionLocal {
     
-    public Tutor createTutorInit(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob,QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc, String profileImage);
+    public Tutor createTutorInit(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob,QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc);
     
     public Tutor createTutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob);
 
@@ -35,7 +35,7 @@ public interface TutorSessionLocal {
     public List<Tutor> retrieveTutorsByName(String inputName);
 
     public Tutor updateTutorProfile(Long tutorId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob,
-            QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc, String profileImage) throws TutorNotFoundException;
+            QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc, byte[] profileImage) throws TutorNotFoundException;
 
     public Tutor activateTutor(Long tutorId) throws TutorNotFoundException;
     

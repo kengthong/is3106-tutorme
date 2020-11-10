@@ -30,7 +30,7 @@ public class PersonSession implements PersonSessionLocal {
     @Override
     public Person login(String email, String password) throws PersonLoginFailException {
         Query query = em.createQuery("SELECT p from Person p WHERE p.email=:email");
-        query.setParameter("email", email);
+        query.setParameter("email", email.toLowerCase());
         try {
             Person person = (Person) query.getSingleResult();
             String hashedInputPassword = ch.byteArrayToHexString(ch.doHashPassword(password.concat(person.getSalt())));

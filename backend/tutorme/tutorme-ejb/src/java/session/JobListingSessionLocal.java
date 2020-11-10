@@ -7,8 +7,10 @@ package session;
 
 import entity.JobListing;
 import entity.Subject;
+import exception.InvalidParamsException;
 import exception.JobListingNotFoundException;
 import exception.NewJobListingException;
+import exception.SubjectNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -19,11 +21,13 @@ import javax.ejb.Local;
 @Local
 public interface JobListingSessionLocal {
 
-    public JobListing createJobListing(Long tutorId, List<Long> subjectIds, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws NewJobListingException;
+    public JobListing createJobListingInit(Long tutorId, List<Long> subjectIds, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws NewJobListingException;
+
+    public JobListing createJobListing(Long tutorId, String subjectName, List<String> subjectLevels, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws SubjectNotFoundException;
 
     public List<JobListing> retrieveAllJobListings();
 
-    public JobListing retrieveJobListingById(Long jobListingid) throws JobListingNotFoundException;
+    public JobListing retrieveJobListingById(Long jobListingId) throws JobListingNotFoundException;
 
     public List<JobListing> retrieveJobListingsByTutorId(Long userId);
 
@@ -31,14 +35,14 @@ public interface JobListingSessionLocal {
 
     public double retrieveJobListingRatingValue(Long jobListingId) throws JobListingNotFoundException;
 
-    public void updateJobListing(Long jobListingId, List<Subject> subjects, Double hourlyRates, String timeslots, String areas, String jobListingDesc) throws JobListingNotFoundException;
+    public JobListing updateJobListing(Long tutorId, String subjectName, List<String> subjectLevels, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws SubjectNotFoundException, JobListingNotFoundException;
 
-    public void changeJobListingActiveStatus(Long jobListingId) throws JobListingNotFoundException;
+    public void activateJobListing(Long tutorId, Long jobListingId) throws JobListingNotFoundException, InvalidParamsException;
 
-    public void deleteJobListing(Long jobListingId) throws JobListingNotFoundException;
-    
+    public void deactivateJobListing(Long tutorId, Long jobListingId) throws JobListingNotFoundException, InvalidParamsException;
+
     // Reporting use
     public Integer getActiveJobListings();
-    
+
     public Integer getJobListingGrowth();
 }

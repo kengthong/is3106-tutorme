@@ -6,7 +6,6 @@
 package session;
 
 import entity.Tutee;
-import entity.Tutor;
 import enumeration.GenderEnum;
 import exception.TuteeNotFoundException;
 import java.security.NoSuchAlgorithmException;
@@ -31,7 +30,7 @@ public class TuteeSession implements TuteeSessionLocal {
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
     @Override
-    public Tutee createTuteeInit(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, String profileDesc, String profileImage) {
+    public Tutee createTuteeInit(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, String profileDesc) {
         Tutee newTutee = new Tutee();
         try {
             String salt = ch.generateRandomString(64);
@@ -41,12 +40,11 @@ public class TuteeSession implements TuteeSessionLocal {
 
             newTutee.setFirstName(firstName);
             newTutee.setLastName(lastName);
-            newTutee.setEmail(email);
+            newTutee.setEmail(email.toLowerCase());
             newTutee.setMobileNum(mobileNum);
             newTutee.setGender(gender);
             newTutee.setDob(dob);
             newTutee.setProfileDesc(profileDesc);
-            newTutee.setProfileImage(profileImage);
         } catch (NoSuchAlgorithmException ex) {
             System.out.println("Hashing error when creating tutee.");
         }
@@ -65,7 +63,7 @@ public class TuteeSession implements TuteeSessionLocal {
 
             newTutee.setFirstName(firstName);
             newTutee.setLastName(lastName);
-            newTutee.setEmail(email);
+            newTutee.setEmail(email.toLowerCase());
             newTutee.setMobileNum(mobileNum);
             newTutee.setGender(gender);
             newTutee.setDob(dob);
@@ -96,7 +94,7 @@ public class TuteeSession implements TuteeSessionLocal {
     @Override
     public Tutee retrieveTuteeByEmail(String email) throws TuteeNotFoundException {
         Query query = em.createQuery("SELECT t FROM Tutee t WHERE t.email = :inputEmail");
-        query.setParameter("inputEmail", email);
+        query.setParameter("inputEmail", email.toLowerCase());
         Tutee tutee = (Tutee) query.getSingleResult();
         if (tutee != null) {
             return tutee;
@@ -114,7 +112,7 @@ public class TuteeSession implements TuteeSessionLocal {
     }
 
     @Override
-    public Tutee updateTuteeProfile(Long tuteeId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc, String profileImage) throws TuteeNotFoundException {
+    public Tutee updateTuteeProfile(Long tuteeId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc, byte[] profileImage) throws TuteeNotFoundException {
         Tutee tutee = em.find(Tutee.class, tuteeId);
         if (tutee != null) {
             tutee.setFirstName(firstName);

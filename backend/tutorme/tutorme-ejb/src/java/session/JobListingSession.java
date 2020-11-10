@@ -10,11 +10,14 @@ import entity.Offer;
 import entity.Rating;
 import entity.Subject;
 import entity.Tutor;
+import exception.InvalidParamsException;
 import exception.JobListingNotFoundException;
 import exception.NewJobListingException;
+import exception.SubjectNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,7 +34,7 @@ public class JobListingSession implements JobListingSessionLocal {
     private EntityManager em;
 
     @Override
-    public JobListing createJobListing(Long tutorId, List<Long> subjectIds, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws NewJobListingException {
+    public JobListing createJobListingInit(Long tutorId, List<Long> subjectIds, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws NewJobListingException {
         Tutor managedTutor = em.find(Tutor.class, tutorId);
         List<Subject> managedSubjects = new ArrayList<>();
         for (Long subjectId : subjectIds) {
@@ -43,6 +46,30 @@ public class JobListingSession implements JobListingSessionLocal {
                 throw new NewJobListingException("JobListing can only be created with same subject name but different levels.");
             }
         }
+        JobListing newJobListing = new JobListing(managedTutor, managedSubjects, hourlyRates, timeslots, areas, jobListingTitle, jobListingDesc);
+        em.persist(newJobListing);
+        List<JobListing> jobListings = managedTutor.getJobListings();
+        jobListings.add(newJobListing);
+        return newJobListing;
+    }
+
+    @Override
+    public JobListing createJobListing(Long tutorId, String subjectName, List<String> subjectLevels, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws SubjectNotFoundException {
+        Tutor managedTutor = em.find(Tutor.class, tutorId);
+        List<Subject> managedSubjects = new ArrayList<>();
+
+        for (String subjectLevel : subjectLevels) {
+            Query query = em.createQuery("SELECT s FROM Subject s WHERE s.subjectLevel = :inputSubjectLevel AND s.subjectName = :inputSubjectName");
+            query.setParameter("inputSubjectLevel", subjectLevel);
+            query.setParameter("inputSubjectName", subjectName);
+            Subject s = (Subject) query.getSingleResult();
+            if (s != null) {
+                managedSubjects.add(s);
+            } else {
+                throw new SubjectNotFoundException("No Subjects by the level " + subjectLevel + " was found.");
+            }
+        }
+
         JobListing newJobListing = new JobListing(managedTutor, managedSubjects, hourlyRates, timeslots, areas, jobListingTitle, jobListingDesc);
         em.persist(newJobListing);
         List<JobListing> jobListings = managedTutor.getJobListings();
@@ -91,13 +118,6 @@ public class JobListingSession implements JobListingSessionLocal {
         query.setParameter("inputMinPrice", minPrice);
         query.setParameter("inputMaxPrice", maxPrice);
         List<JobListing> result2 = query.getResultList();
-        // filter by price
-//        List<JobListing> result2 = new ArrayList<>();
-//        for (JobListing jl : result1) {
-//            if (jl.getHourlyRates() >= minPrice && jl.getHourlyRates() <= maxPrice) {
-//                result2.add(jl);
-//            }
-//        }
         for (JobListing jl : result2) {
             System.out.println("### filtered by tutorName and price=" + jl.getHourlyRates() + " >> jobListingId:" + jl.getJobListingId());
         }
@@ -169,30 +189,60 @@ public class JobListingSession implements JobListingSessionLocal {
     }
 
     @Override
-    public void updateJobListing(Long jobListingId, List<Subject> subjects, Double hourlyRates, String timeslots, String areas, String jobListingDesc) throws JobListingNotFoundException {
-        JobListing jobListing = retrieveJobListingById(jobListingId);
-        jobListing.setSubjects(subjects);
-        jobListing.setHourlyRates(hourlyRates);
-        jobListing.setTimeslots(timeslots);
-        jobListing.setAreas(areas);
-        jobListing.setHourlyRates(hourlyRates);
-        jobListing.setJobListingDesc(jobListingDesc);
-    }
-
-    @Override
-    public void changeJobListingActiveStatus(Long jobListingId) throws JobListingNotFoundException {
-        JobListing jobListing = retrieveJobListingById(jobListingId);
-        if (jobListing.getActiveStatus()) {
-            jobListing.setActiveStatus(false);
+    public JobListing updateJobListing(Long jobListingId, String subjectName, List<String> subjectLevels, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws SubjectNotFoundException, JobListingNotFoundException {
+        JobListing jobListing = em.find(JobListing.class, jobListingId);
+        if (jobListing != null) {
+            // Retrieve subjects
+            List<Subject> managedSubjects = new ArrayList<>();
+            for (String subjectLevel : subjectLevels) {
+                Query query = em.createQuery("SELECT s FROM Subject s WHERE s.subjectLevel = :inputSubjectLevel AND s.subjectName = :inputSubjectName");
+                query.setParameter("inputSubjectLevel", subjectLevel);
+                query.setParameter("inputSubjectName", subjectName);
+                Subject s = (Subject) query.getSingleResult();
+                if (s != null) {
+                    managedSubjects.add(s);
+                } else {
+                    throw new SubjectNotFoundException("No Subjects by the level " + subjectLevel + " was found.");
+                }
+            }
+            jobListing.setSubjects(managedSubjects);
+            jobListing.setHourlyRates(hourlyRates);
+            jobListing.setTimeslots(timeslots);
+            jobListing.setAreas(areas);
+            jobListing.setJobListingTitle(jobListingTitle);
+            jobListing.setJobListingDesc(jobListingDesc);
+            return jobListing;
         } else {
-            jobListing.setActiveStatus(true);
+            throw new JobListingNotFoundException("JobListingId " + jobListingId + " does not exists.");
         }
     }
 
     @Override
-    public void deleteJobListing(Long jobListingId) throws JobListingNotFoundException {
-        JobListing jobListing = retrieveJobListingById(jobListingId);
-        em.remove(jobListing);
+    public void activateJobListing(Long tutorId, Long jobListingId) throws JobListingNotFoundException, InvalidParamsException {
+        JobListing jobListing = em.find(JobListing.class, jobListingId);
+        if (jobListing != null) {
+            if (Objects.equals(jobListing.getTutor().getPersonId(), tutorId)) {
+                jobListing.setActiveStatus(true);
+            } else {
+                throw new InvalidParamsException("Joblisting does not belong to logged in Tutor");
+            }
+        } else {
+            throw new JobListingNotFoundException("JobListingId " + jobListingId + " does not exists.");
+        }
+    }
+
+    @Override
+    public void deactivateJobListing(Long tutorId, Long jobListingId) throws JobListingNotFoundException, InvalidParamsException {
+        JobListing jobListing = em.find(JobListing.class, jobListingId);
+        if (jobListing != null) {
+            if (Objects.equals(jobListing.getTutor().getPersonId(), tutorId)) {
+                jobListing.setActiveStatus(false);
+            } else {
+                throw new InvalidParamsException("Joblisting does not belong to logged in Tutor");
+            }
+        } else {
+            throw new JobListingNotFoundException("JobListingId " + jobListingId + " does not exists.");
+        }
     }
 
     @Override
@@ -219,5 +269,4 @@ public class JobListingSession implements JobListingSessionLocal {
         Integer jl2 = jobListings2.size();
         return jl2 - jl1;
     }
-
 }
