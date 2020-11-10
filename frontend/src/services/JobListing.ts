@@ -31,8 +31,28 @@ export class JobListingService {
         }
     }
 
+
+    public static async getJobListing(listId: number): Promise<jobListingType | null> {
+        const url = BACKEND_BASE_URL + "/jobListing/" + listId;
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+        const response = await Utility.fetchBuilder(url, 'GET', header, null);
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data)
+            return data;
+        } else {
+            return null;
+        }
+
+    }
+
     public static async createJobListing(body: createJobListingParams): Promise<boolean> {
-        const url = "http://localhost:8080/tutorme-war/JobListingResource/CreateNewJobListing";
+        const url = "http://localhost:8080/tutorme-war/webresources/jobListing/create";
         const token = localStorage.getItem("token");
         const jsonHeader = Utility.getJsonHeader();
         const header = {
@@ -49,6 +69,7 @@ export class JobListingService {
         }
 
     }
+
 
     private static getPriceRange(price?: string) {
         let minPrice = 0, maxPrice = 999;

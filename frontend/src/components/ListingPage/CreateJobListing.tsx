@@ -1,35 +1,22 @@
-import { AutoComplete, Button, Checkbox, Form, Input, InputNumber, Menu, Popover, Select, Slider, Tooltip } from 'antd';
+import { AutoComplete, Button, Checkbox, Form, Input, InputNumber, Menu, message, Popover, Select, Slider, Tooltip } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { SubjectsService } from "../../services/Subjects";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../store";
 import { SubjectState } from "../../reducer/subject-reducer";
+import { JobListingService } from '../../services/JobListing';
 
 const { Option } = Select;
 
 const CreateJobListing = () => {
     const [form] = Form.useForm();
-    const [formData, setFormData] = useState({
-        tutorId: -1,
-        listingTitle: "",
-        subject: { //subject -> level 
-            subjectName: "",
-            subjectLevel: ""
-        },
-        rate: 0,
-        timeslot: "",
-        listingDesc: "",
-        area: ""
-    });
-
     const subjectState = useSelector<IRootState, SubjectState>((state) => state.subjectReducer);
     const [levels, setLevels] = useState<string[]>([]);
+    const [levelSelected, setLevelSelected] = useState(null);
 
     const loadSubjects = async () => {
         await SubjectsService.getAllSubjects();
     }
-
-
     useEffect(() => {
         if (!subjectState || !subjectState.uniqueSubjects || subjectState.uniqueSubjects.length === 0) {
             loadSubjects();
@@ -45,7 +32,7 @@ const CreateJobListing = () => {
     };
 
     const onSelectSubject = (sub: any) => {
-        console.log('subject choisen =', sub);
+        console.log('subject chosen =', sub);
         const availableLevels: string[] = [];
         subjectState.subjects.forEach(s => {
             if (s.subjectName == sub && s.subjectLevel != undefined) {
@@ -58,11 +45,19 @@ const CreateJobListing = () => {
         setLevels(availableLevels);
     }
 
-
     const onFinish = (fieldsValue: any) => {
         console.log("fieldsValue =", fieldsValue)
+        createJobListing(fieldsValue);
     }
 
+    const createJobListing = async (createJobListingParams: any): Promise<void> => {
+        const response = await JobListingService.createJobListing(createJobListingParams);
+        if (response) {
+            return message.success("New listing has been created!")
+        } else {
+            return message.error("Error creating new job listing")
+        }
+    }
 
     return (
         <div>
@@ -122,6 +117,7 @@ const CreateJobListing = () => {
                             style={{ width: 200 }}
                             placeholder="Select a level"
                             optionFilterProp="children"
+
                             filterOption={(input: string, option: any) =>
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
@@ -139,7 +135,9 @@ const CreateJobListing = () => {
                             name="rate"
                             rules={[{ required: true, message: 'Please enter your hourly rate!' }]}
                         >
-                            <InputNumber />
+                            <InputNumber
+                                min={1}
+                            />
                         </Form.Item>
                     </Tooltip>
 
@@ -161,6 +159,20 @@ const CreateJobListing = () => {
 
                         </Form.Item>
                     </Tooltip>
+
+                    <Form.Item
+                        label="Area"
+                        name="area"
+                        rules={[{
+                            required: true,
+                            message: 'Please input your location!'
+                        }]}
+                    >
+                        <Input
+                            name="location"
+                            placeholder="Enter your preferred locations"
+                        />
+                    </Form.Item>
 
                     {/* Listing description */}
                     <Form.Item
@@ -191,19 +203,3 @@ const CreateJobListing = () => {
 
 export default CreateJobListing
 
-
-{/* Available Days
-                    <Form.Item
-                        label="Available days"
-                        name="availableDays"
-                        rules={[{ required: true, message: 'Please select the days of availability!' }]}
-                    >
-                        Available Days
-                        <Checkbox.Group
-                            name="daysGroup"
-                            options={days}
-                            onChange={(e) => handleChange(e)}
-                        >
-                        </Checkbox.Group>
-                    </Form.Item> */
-}

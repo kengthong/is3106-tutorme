@@ -16,7 +16,7 @@ const TutorListingPage = () => {
             <BodyContainer>
                 <div style={{ display: "flex", flexDirection: "column" }}>
                     <div style={{ marginBottom: "20px" }}>
-                        <JobListingDetail />
+                        {/* <JobListingDetail /> */}
                     </div>
                     <div style={{ display: "flex", marginLeft: "70px" }}>
                         <ViewOffer />
