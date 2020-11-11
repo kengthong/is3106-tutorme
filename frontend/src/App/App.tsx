@@ -35,13 +35,12 @@ const App = () => {
     <ErrorBoundary>
       <BrowserRouter>
         <Switch>
-          <Route path="/tutor/CreateNewListing" component={CreateJobListing} />
+
           <Route path="/job" component={TuteeListingPage} />
           <Route path="/tutor/listings" component={TutorListingPage} />
           <Route path="/login" component={Login} />
           <Route path="/" exact component={LandingPage} isAuthenticated={true} />
           <Route path='/search:params?' component={SearchPage} />
-          <Route path="/tutor/createListing" component={CreateJobListing} />
           <Route path="/faq" component={FAQ} />
           <Route path="/about-us" component={AboutUs} />
           <Route path="/contact-us" component={ContactUs} />
@@ -50,6 +49,7 @@ const App = () => {
           <ProtectedRoute path="/login" component={Login} />
           <ProtectedRoute path="/tutor/settings/profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
           <ProtectedRoute path="/tutor/settings/personal-details" allowedUser='tutor' exact component={TutorDetailsPage} isAuthenticated={true} />
+          <ProtectedRoute path="/tutor/CreateNewListing" allowedUser='tutor' exact component={CreateJobListing} isAuthenticated={true} />
           {/*For viewing tutor profile directly*/}
           {/*<ProtectedRoute path="/tutor-profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />*/}
 

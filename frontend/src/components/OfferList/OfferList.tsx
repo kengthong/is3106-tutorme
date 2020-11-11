@@ -1,7 +1,11 @@
 import React from "react";
 import { Button, Table, Tag } from "antd";
+import { useSelector } from "react-redux";
+import { UserState } from "../../reducer/user-reducer";
+import { IRootState } from "../../store";
 
 const OfferListComponent = (props: any) => {
+  const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
   const data = [
     {
       id: "1",
@@ -28,7 +32,7 @@ const OfferListComponent = (props: any) => {
         justifyContent: "center",
       }}
     >
-      <div style={{ fontSize: "16px", fontWeight: 600, marginBottom: "12px" }}>
+      <div style={{ fontSize: "24px", fontWeight: 600, marginTop: "20px", marginBottom: "12px" }}>
         Tutee Offers
       </div>
 
@@ -43,6 +47,12 @@ type OfferTableProps = {
     status: string;
   }[];
 };
+
+const AcceptOffer = (props: any) => {
+
+
+}
+
 const OfferTable = (props: OfferTableProps) => {
   const data = props.data;
   const columns = [
@@ -80,6 +90,12 @@ const OfferTable = (props: OfferTableProps) => {
         </>
       ),
     },
+
+    {
+      title: "Details",
+      // key: "detail"
+    }
+
   ];
   return (
     <Table columns={columns} dataSource={data} size={"small"} rowKey="id" />

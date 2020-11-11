@@ -48,8 +48,8 @@ type createJobListingParams = {
     listingTitle: string;
     listingDesc: string;
     rate: number;
-    subjectName: string;
-    subjectLevels: [];
+    subject: string;
+    levels: [];
     timeslot: string;
     area: string;
 }

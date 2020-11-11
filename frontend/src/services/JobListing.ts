@@ -57,7 +57,7 @@ export class JobListingService {
         const jsonHeader = Utility.getJsonHeader();
         const header = {
             ...jsonHeader,
-            "Authorization": "Bearer" + token
+            "Authorization": "Bearer " + token
         };
 
         const response = await Utility.fetchBuilder(url, 'POST', header, body);
