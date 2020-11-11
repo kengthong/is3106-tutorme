@@ -10,8 +10,10 @@ import entity.Tutee;
 import entity.Tutor;
 import exception.PersonNotFoundException;
 import exception.TuteeNotFoundException;
+import filter.JWTTokenNeeded;
 import filter.StaffJWTTokenNeeded;
 import filter.TuteeJWTTokenNeeded;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -202,25 +204,28 @@ public class StaffResource {
             return Response.status(400).entity(exception).build();
         }
     }
-    
+
     @GET
-    @Path("/get")
+    @Path("/getTutees")
     @StaffJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTuteeById(@PathParam("tuteeId") Long tuteeId) {
-        System.out.println("Tutee Id is... " + tuteeId);
-        try {
-            Tutee tutee = tuteeSession.retrieveTuteeById(tuteeId);
-            tutee.setPassword(null);
-            tutee.setSalt(null);
-            tutee.setReceivedMessages(null);
-            tutee.setSentMessages(null);
-            tutee.setOffers(null); // to confirm not needed
-            GenericEntity<Tutee> packet = new GenericEntity<Tutee>(tutee) {
+    public Response getTutees() {
+        System.out.println("Getting tutees...");
+        List<Tutee> tutees = new ArrayList();
+        tutees = tuteeSession.retrieveAllTutees();
+        if (!tutees.isEmpty()) {
+            for (Tutee t : tutees) {
+                t.setSalt(null);
+                t.setPassword(null);
+                t.setReceivedMessages(null);
+                t.setSentMessages(null);
+                t.setOffers(null); //to confirm not needed
+            }
+            GenericEntity<List<Tutee>> packet = new GenericEntity<List<Tutee>>(tutees) {
             };
             return Response.status(200).entity(packet).build();
-        } catch (TuteeNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "tuteeId does not exists").build();
+        } else {
+            JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getTutees").build();
             return Response.status(400).entity(exception).build();
         }
     }

@@ -45,6 +45,7 @@ public class TuteeSession implements TuteeSessionLocal {
             newTutee.setGender(gender);
             newTutee.setDob(dob);
             newTutee.setProfileDesc(profileDesc);
+            newTutee.setProfileImage(new byte[0]);
         } catch (NoSuchAlgorithmException ex) {
             System.out.println("Hashing error when creating tutee.");
         }
@@ -67,6 +68,7 @@ public class TuteeSession implements TuteeSessionLocal {
             newTutee.setMobileNum(mobileNum);
             newTutee.setGender(gender);
             newTutee.setDob(dob);
+            newTutee.setProfileImage(new byte[0]);
 
         } catch (NoSuchAlgorithmException ex) {
             System.out.println("Hashing error when creating tutee.");
