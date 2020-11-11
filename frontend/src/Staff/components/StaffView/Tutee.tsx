@@ -1,20 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Button, message, Space, Table, Tag} from "antd";
+import {Button, message, Table, Tag} from "antd";
 import {TutorService} from "../../../services/Tutor";
 import moment from 'antd/node_modules/moment';
 import {StaffService} from "../../../services/Staff";
 
-type tableProps = {
-    // type: string;
-}
-
-const expandable = { expandedRowRender: (record: { description: string; }) => <p>{record.description}</p> };
-
-const TuteeTable = (props: tableProps) => {
+const TuteeTable = () => {
     const [tableData, setTableData] = useState([])
     const getAllTutors = async () => {
         const data = await TutorService.getAllTutors();
-        console.log('data =', data)
         setTableData(data)
     }
     useEffect(() => {
@@ -42,12 +35,10 @@ const TuteeTable = (props: tableProps) => {
     }
 
     const banUser = (id: number) => {
-        console.log('banUser =', id)
         updateTutorDetails(id, 'ban');
     }
 
     const unBanUser = (id: number) => {
-        console.log('reactivateUser =', id)
         updateTutorDetails(id, 'unBan');
     }
 

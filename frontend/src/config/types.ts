@@ -83,7 +83,7 @@ type jobListingType = {
         createdDate?: string;
         dob?: string;
         email?: string;
-        firstName?: string;
+        firstName: string;
         gender?: string;
         lastName?: string;
         mobileNum?: string;
@@ -97,10 +97,10 @@ type jobListingType = {
 }
 
 
-type jobListingCardProps = jobListingType & {
+type jobListingCardProps = {
     loading?: boolean;
     handleClick?: (id?: number) => void;
-}
+} & jobListingType;
 
 type getJobListingListWithParamResposeProps = jobListingType[]
 
@@ -200,6 +200,7 @@ type tuteeDataType = {
 }
 
 type subjectResponseType = {
+    subjectId?: number;
     subjectName: string;
     subjectLevel: string;
 }[];
