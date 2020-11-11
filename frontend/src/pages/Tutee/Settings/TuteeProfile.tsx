@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../../components/Header/Header";
 import TuteeProfileComponent from "../../../components/Tutee/TuteeProfileComponent";
-import BodyContainer from "../../../components/Layout/BodyContainer";
+import {BodyContainer} from "../../../components/Layout/BodyContainer";
 import { Footer } from "../../../components/LandingPage/Footer";
 import { Col, Row } from "antd";
 import TuteeSettingsMenu from "../../../components/Tutee/TuteeSettingsMenu";
