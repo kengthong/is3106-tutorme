@@ -5,14 +5,19 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../../store";
 import { SubjectState } from "../../reducer/subject-reducer";
 import { JobListingService } from '../../services/JobListing';
+import { ChatService } from '../../services/Chat';
+import { UserState } from '../../reducer/user-reducer';
+import { useHistory } from 'react-router-dom';
 
 const { Option } = Select;
 
 const CreateJobListing = () => {
-    const [form] = Form.useForm();
+    const history = useHistory();
+
     const subjectState = useSelector<IRootState, SubjectState>((state) => state.subjectReducer);
+    const [form] = Form.useForm();
     const [levels, setLevels] = useState<string[]>([]);
-    const [levelSelected, setLevelSelected] = useState(null);
+
 
     const loadSubjects = async () => {
         await SubjectsService.getAllSubjects();
@@ -48,6 +53,7 @@ const CreateJobListing = () => {
     const onFinish = (fieldsValue: any) => {
         console.log("fieldsValue =", fieldsValue)
         createJobListing(fieldsValue);
+        history.push('/search');
     }
 
     const createJobListing = async (createJobListingParams: any): Promise<void> => {
@@ -149,14 +155,10 @@ const CreateJobListing = () => {
                             name="timeslot"
                             rules={[{ required: true, message: 'Please select the days of availability!' }]}
                         >
-
                             <Input
-                                name="timeslot"
                                 placeholder="Enter your preferred timeslots"
                             >
-
                             </Input>
-
                         </Form.Item>
                     </Tooltip>
 
@@ -169,7 +171,7 @@ const CreateJobListing = () => {
                         }]}
                     >
                         <Input
-                            name="location"
+
                             placeholder="Enter your preferred locations"
                         />
                     </Form.Item>
@@ -184,7 +186,6 @@ const CreateJobListing = () => {
                         }]}
                     >
                         <Input.TextArea
-                            name="listingDesc"
                             maxLength={500}
                         />
                     </Form.Item>

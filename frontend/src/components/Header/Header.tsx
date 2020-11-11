@@ -19,6 +19,7 @@ const Header = () => {
 
   }
 
+
   return (
     <div className="navbar navbar-inverse navbar-fixed-top" style={{ zIndex: 0 }}>
       <div className="container">
@@ -133,6 +134,18 @@ const Header = () => {
 };
 
 const ProfileContent = (personEnum: string, handleLogout: () => void) => {
+  const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
+  function showCreateNewList() {
+    if (userState.currentUser && userState.currentUser.personEnum === "TUTOR") {
+      return <div className='clickable highlightable'>
+        <a className='selection w-100' href="/tutor/createNewListing">
+          New Listing
+        </a>
+      </div>
+    } else {
+      return <div></div>
+    }
+  }
 
   return (
     <div style={{ height: '80px', width: '150px' }}>
@@ -150,6 +163,9 @@ const ProfileContent = (personEnum: string, handleLogout: () => void) => {
           Settings
         </a>
       </div>
+
+      {showCreateNewList()}
+
       <div className='clickable highlightable'>
         <div className='selection w-100' onClick={handleLogout}>
           <a>Log Out</a>

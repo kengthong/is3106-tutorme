@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Modal, Alert, Menu, Dropdown, Select, InputNumber, Radio, message } from 'antd';
+import { Form, Input, Button, Modal, Alert, Menu, Dropdown, Select, InputNumber, Radio, message, DatePicker } from 'antd';
 import { JobListingService } from '../../services/JobListing';
 import { OfferService } from '../../services/Offer';
 import { useForm } from 'antd/lib/form/Form';
@@ -9,6 +9,7 @@ import { SubjectState } from "../../reducer/subject-reducer";
 import qs from 'qs';
 import { useHistory, useLocation } from 'react-router-dom';
 import { SubjectsService } from '../../services/Subjects';
+import moment from 'antd/node_modules/moment';
 
 type jobListingDetailProps = {
     listing: jobListingType
@@ -29,9 +30,7 @@ const MakeOfferForm = (props: any) => {
         setLoading(false);
     }
 
-
     const subjectState = useSelector<IRootState, SubjectState>((state) => state.subjectReducer);
-
     const loadSubjects = async () => {
         await SubjectsService.getAllSubjects();
     }
@@ -41,15 +40,19 @@ const MakeOfferForm = (props: any) => {
         }
     }, []);
 
-
     const [showOffer, setShowOffer] = useState(false);
-    const [jobListingList, setJobListingList] = useState(null);
     const [loading, setLoading] = useState(false);
 
 
     const onFinish = (fieldsValue: any) => {
-        console.log("fieldsValue =", fieldsValue);
-        createOffer(fieldsValue);
+        const values = {
+            ...fieldsValue,
+            numSessions: fieldsValue.numSessions.toString(),
+            price: fieldsValue.price.toString(),
+            startDate: moment(fieldsValue.startDate).format("DD-MM-YYYY")
+        }
+        console.log("fieldsValue =", values);
+        createOffer(values);
     }
 
     const createOffer = async (createOfferParams: any): Promise<void> => {
@@ -91,6 +94,12 @@ const MakeOfferForm = (props: any) => {
                     onFinish={onFinish}
                 >
                     <div>
+                        <Form.Item
+                            name="jobListingId"
+                            initialValue={props.listing.jobListingId.toString()}
+                            hidden
+                        />
+
                         <Form.Item
                             name="price"
                             label="Price"
@@ -156,6 +165,7 @@ const MakeOfferForm = (props: any) => {
                         >
                             <InputNumber
                                 min={1}
+                                max={10}
                             />
                         </Form.Item>
 
@@ -171,6 +181,18 @@ const MakeOfferForm = (props: any) => {
                         </Form.Item>
 
                         <Form.Item
+                            name="startDate"
+                            label="Start date of 1st session"
+                            rules={[{
+                                required: true,
+                                message: "Select Date"
+                            }]}
+                        >
+                            <DatePicker format="DD-MM-YYYY" />
+
+                        </Form.Item>
+
+                        <Form.Item
                             name="notes"
                             label="Additional notes to Tutor"
                             rules={[{
@@ -180,8 +202,8 @@ const MakeOfferForm = (props: any) => {
                         >
                             <Input.TextArea />
                         </Form.Item>
-
                     </div>
+
                     <div style={{ marginTop: "330px", marginRight: "30px" }}>
                         <Form.Item {...tailLayout}>
                             <Button
