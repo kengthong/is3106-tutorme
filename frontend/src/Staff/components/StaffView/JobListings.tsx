@@ -53,10 +53,10 @@ const JobListingsTable = () => {
             },
         },
         {
-            title: 'Rates ($/hr)',
+            title: 'Rates ($)',
             dataIndex: 'hourlyRates',
             render: (rates: number) => {
-                return (<span>($) {rates}/hr</span>)
+                return (<span>{rates} /hr</span>)
             }
         },
         {

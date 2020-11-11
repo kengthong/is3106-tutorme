@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard";
 import TutorTable from "./Tutor";
 import TuteeTable from "./Tutee";
 import JobListingsTable from "./JobListings";
+import OfferListingTable from "./Offers";
 
 export const AdminDash = () => {
 
@@ -62,8 +63,10 @@ export const AdminDash = () => {
                     <TabPane tab="Offer" key="6">
                         <h3>
                             Offer
-                            Read only
                         </h3>
+                        <div className="margin-top-btm-12">
+                            <OfferListingTable />
+                        </div>
                     </TabPane>
 
                     <TabPane tab="Chat" key="7">
