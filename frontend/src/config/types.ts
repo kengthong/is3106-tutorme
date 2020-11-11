@@ -177,6 +177,26 @@ type tutorDataType = {
     sentMessages?: null;
 }
 
+type tuteeDataType = {
+    personId: number;
+    createdDate: string;
+    activeStatus: boolean;
+    firstName: string;
+    lastName: string;
+    email: string;
+    mobileNum: string;
+    password?: null;
+    salt?: null;
+    gender: string;
+    personEnum: string;
+    profileImage?: string;
+    dob: string;
+    sentMessage?: null;
+    receivedMessages?:null;
+    profileDesc?:string;
+    offers?:null;
+}
+
 type subjectResponseType = {
     subjectName: string;
     subjectLevel: string;
