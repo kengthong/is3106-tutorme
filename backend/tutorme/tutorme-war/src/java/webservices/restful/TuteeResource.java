@@ -8,21 +8,17 @@ package webservices.restful;
 import entity.Tutee;
 import enumeration.GenderEnum;
 import exception.TuteeNotFoundException;
-import filter.JWTTokenNeeded;
 import filter.TuteeJWTTokenNeeded;
 import filter.UserPrincipal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
@@ -42,31 +38,6 @@ public class TuteeResource {
     TuteeSessionLocal tuteeSession;
 
     public TuteeResource() {
-    }
-
-    @GET
-    @Path("/getAll")
-    @JWTTokenNeeded
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getTutees() {
-        System.out.println("Getting tutees...");
-        List<Tutee> tutees = new ArrayList();
-        tutees = tuteeSession.retrieveAllTutees();
-        if (!tutees.isEmpty()) {
-            for (Tutee t : tutees) {
-                t.setSalt(null);
-                t.setPassword(null);
-                t.setReceivedMessages(null);
-                t.setSentMessages(null);
-                t.setOffers(null); //to confirm not needed
-            }
-            GenericEntity<List<Tutee>> packet = new GenericEntity<List<Tutee>>(tutees) {
-            };
-            return Response.status(200).entity(packet).build();
-        } else {
-            JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getTutees").build();
-            return Response.status(400).entity(exception).build();
-        }
     }
 
     @GET

@@ -59,8 +59,9 @@ public class JobListing implements Serializable {
     private List<Offer> offers;
 
     private Double reviewScore;
-
     private Integer reviewCount;
+    private Integer numSubjects;
+    private Integer numOffers;
 
     public JobListing() {
         this.createdDate = new Date();
@@ -212,4 +213,21 @@ public class JobListing implements Serializable {
         return count;
     }
 
+    public Integer getNumSubjects() {
+        return this.subjects.size();
+    }
+
+    public void setNumSubjects(Integer numSubjects) {
+        this.numSubjects = numSubjects;
+    }
+
+    public Integer getNumOffers() {
+        return this.offers.size();
+    }
+
+    public void setNumOffers(Integer numOffers) {
+        this.numOffers = numOffers;
+    }
+
+    
 }

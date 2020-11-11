@@ -10,8 +10,10 @@ import entity.Tutee;
 import entity.Tutor;
 import exception.PersonNotFoundException;
 import exception.TuteeNotFoundException;
+import filter.JWTTokenNeeded;
 import filter.StaffJWTTokenNeeded;
 import filter.TuteeJWTTokenNeeded;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,53 +61,6 @@ public class StaffResource {
     EmailSessionLocal emailSession;
 
     public StaffResource() {
-    }
-
-    @GET
-    @Path("/jobListings")
-    @StaffJWTTokenNeeded
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response reportJobListings() {
-        System.out.println("Getting jobListing report...");
-        List<JobListing> jobListings = jobListingSession.retrieveAllJobListings();
-        JsonArrayBuilder jsonArrayPayload = Json.createArrayBuilder();
-        ObjectMapper mapper = new ObjectMapper();
-
-        for (JobListing jl : jobListings) {
-            try {
-                JsonObjectBuilder jsonObject = Json.createObjectBuilder();
-                Tutor tutor = jl.getTutor();
-                tutor.setSalt(null);
-                tutor.setPassword(null);
-                tutor.setSentMessages(null);
-                tutor.setReceivedMessages(null);
-                tutor.setJobListings(null);
-
-                List<Offer> offers = jl.getOffers();
-                for (Offer o : offers) {
-                    Tutee tutee = o.getTutee();
-                    tutee.setReceivedMessages(null);
-                    tutee.setSentMessages(null);
-                    tutee.setPassword(null);
-                    tutee.setSalt(null);
-                    tutee.setOffers(null);
-                    Rating rating = o.getRating();
-                    if (rating != null) {
-                        rating.setOffer(null);
-                    }
-
-                    o.setJobListing(null);
-                }
-                String jsonListing = mapper.writeValueAsString(jl);
-                jsonObject.add(String.valueOf(jl.getJobListingId()), jsonListing);
-                jsonObject.add("numOffers", offers.size());
-                jsonObject.add("numSubjects", jl.getSubjects().size());
-                jsonArrayPayload.add(jsonObject);
-            } catch (JsonProcessingException ex) {
-                Logger.getLogger(JobListingResource.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return Response.status(200).entity(jsonArrayPayload.build()).build();
     }
 
     @GET
@@ -202,25 +157,28 @@ public class StaffResource {
             return Response.status(400).entity(exception).build();
         }
     }
-    
+
     @GET
-    @Path("/get")
+    @Path("/getTutees")
     @StaffJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTuteeById(@PathParam("tuteeId") Long tuteeId) {
-        System.out.println("Tutee Id is... " + tuteeId);
-        try {
-            Tutee tutee = tuteeSession.retrieveTuteeById(tuteeId);
-            tutee.setPassword(null);
-            tutee.setSalt(null);
-            tutee.setReceivedMessages(null);
-            tutee.setSentMessages(null);
-            tutee.setOffers(null); // to confirm not needed
-            GenericEntity<Tutee> packet = new GenericEntity<Tutee>(tutee) {
+    public Response getTutees() {
+        System.out.println("Getting tutees...");
+        List<Tutee> tutees = new ArrayList();
+        tutees = tuteeSession.retrieveAllTutees();
+        if (!tutees.isEmpty()) {
+            for (Tutee t : tutees) {
+                t.setSalt(null);
+                t.setPassword(null);
+                t.setReceivedMessages(null);
+                t.setSentMessages(null);
+                t.setOffers(null); //to confirm not needed
+            }
+            GenericEntity<List<Tutee>> packet = new GenericEntity<List<Tutee>>(tutees) {
             };
             return Response.status(200).entity(packet).build();
-        } catch (TuteeNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "tuteeId does not exists").build();
+        } else {
+            JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getTutees").build();
             return Response.status(400).entity(exception).build();
         }
     }
