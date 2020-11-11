@@ -48,6 +48,41 @@ export class UserService {
         }
     }
 
+    static async rehydrate(){
+        const url = BACKEND_BASE_URL + '/person/get';
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+
+        await Utility.fetchBuilder(url, 'GET', header, null)
+            .then(async (res) => {
+                console.log(res);
+
+                if(res.ok) {
+                    const data = await res.json();
+                    console.log(data);
+                    
+                    store.dispatch({
+                        type: LOGIN_SUCCESSFUL,
+                        payload: data
+                    })
+                    
+                } else {
+                    const body = await res.json();
+                    store.dispatch({
+                        type: AUTHENTICATION_ERROR,
+                        payload: body.error
+                    })
+                }
+            })
+            .catch( err => {
+                console.log(err);
+            })
+    }
+
     static logout() {
         localStorage.removeItem("token");
         store.dispatch({

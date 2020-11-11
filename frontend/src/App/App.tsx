@@ -15,7 +15,7 @@ import Login from "../pages/Common/Login/Login";
 import Registration from "../pages/Common/Login/Registration";
 import LandingPage from "../pages/Common/LandingPage/LandingPage";
 import NotFoundPage from "../pages/Common/NotFoundPage/NotFoundPage";
-import tuteeProfile from "../pages/Tutee/Settings/TuteeProfile";
+import TuteeProfilePage from "../pages/Tutee/Settings/TuteeProfile"
 import TutorProfilePage from "../pages/Tutor/Settings/Profile";
 import TutorDetailsPage from "../pages/Tutor/Settings/PersonalDetails";
 import SearchPage from "../pages/Search/SearchPage";
@@ -54,7 +54,7 @@ const App = () => {
           {/*<ProtectedRoute path="/tutor-profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />*/}
 
           <Route path="/registration" component={Registration} />
-          <Route path="/tutee-profile" component={tuteeProfile} />
+          <Route path="/tutee-profile" component={TuteeProfilePage} />
           {/*<ProtectedRoute path="/settings" component={Settings}/>*/}
           {/*<ProtectedRoute component={Dashboard}/>*/}
           <Route path="/error" exact={true} component={NotFoundPage} />

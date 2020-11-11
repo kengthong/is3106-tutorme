@@ -14,6 +14,7 @@ import {
 import { qualifications, races } from "../../config/constants";
 import moment from 'moment';
 import TuteeService from "../../services/tutee";
+import { UserService } from "../../services/User";
 const countryJson = require("../../config/countries.json");
 
 const { Option } = Select;
@@ -45,8 +46,10 @@ const TuteeProfile = (props: tuteeProfileProps) => {
   }, [user]);
 
   const updateUserDetails = async (userId: number, data: tuteeDataType): Promise<void> => {
+
     const response = await TuteeService.updateTuteeDetails(userId, data);
     if (response) {
+      await UserService.rehydrate();
       message.success("Successfully updated your details")
     } else {
       message.error("Unable to save user details");

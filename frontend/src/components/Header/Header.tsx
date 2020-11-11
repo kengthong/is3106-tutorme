@@ -64,7 +64,7 @@ const Header = () => {
             </li>
 
             <li>
-              <a href="contact-us.html">Contact us</a>
+              <a href="/contact-us">Contact us</a>
             </li>
 
             {!userState.isAuthenticated ?
@@ -146,7 +146,7 @@ const ProfileContent = (personEnum: string, handleLogout: () => void) => {
         null
       }
       <div className='clickable highlightable'>
-        <a className='selection w-100' href={`/${personEnum === 'TUTEE' ? 'tutee' : 'tutor'}/settings/personal-details`}>
+        <a className='selection w-100' href={`/${personEnum === 'TUTEE' ? 'tutee-profile' : 'tutor/settings/personal-details'}`}>
           Settings
         </a>
       </div>

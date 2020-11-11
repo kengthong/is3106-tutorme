@@ -41,13 +41,15 @@ export const SubjectSection = () => {
     return (
         <div className={"flex-row"} style={{ height: '480px' }}>
             <div className="flex-row justify-end w-50 h-100 subject-section-form align-center" style={{ backgroundColor: '#438dc2', position: "relative" }}>
-                <div className="flex-col" style={{ zIndex: 1 }}>
+                <div className="flex-col" style={{ zIndex: 1, padding: 30, width: "70%" }}>
                     <span className="fs-24" style={{ color: '#fff', fontWeight: "bold" }}>
-                        Online tutoring that actually delivers results
+                        Tuition that actually delivers results
                     </span>
+                    <br />
 
                     <span className="fs-18" style={{ color: '#fff' }}>
-                        Keep your child’s studies on track with interactive online lessons
+                        Find your tutors based on the myriad of tuition subjects we support.
+                        From Primary School Leaving Examinations to Advanced-Levels, we've got your back!
                     </span>
                     <br />
                     <div>
@@ -72,7 +74,7 @@ export const SubjectSection = () => {
                     </div>
                 </div>
             </div>
-            <div className="w-50 h-100" style={{ overflow: "hidden" }}>
+            <div style={{ flexWrap: "wrap", overflow: "hidden" }}>
                 <img src={"https://cdn.mytutor.co.uk/images/uploads/TV-ad-hero-banner-_flipped_.jpg"} style={{ objectFit: "cover" }} />
             </div>
         </div>
