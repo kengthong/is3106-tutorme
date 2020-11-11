@@ -13,9 +13,12 @@ import entity.Tutee;
 import entity.Tutor;
 import enumeration.GenderEnum;
 import exception.PersonLoginFailException;
+import exception.PersonNotFoundException;
 import exception.StaffNotFoundException;
 import exception.TuteeNotFoundException;
 import exception.TutorNotFoundException;
+import filter.JWTTokenNeeded;
+import filter.UserPrincipal;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,9 +30,13 @@ import javax.ws.rs.Path;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import session.EmailSessionLocal;
 import session.PersonSessionLocal;
 import session.StaffSessionLocal;
@@ -67,7 +74,7 @@ public class PersonResource implements Serializable {
         System.out.println("Logging user in...");
         String email = json.getString("email").toLowerCase();
         String password = json.getString("password");
-        
+
         JsonObjectBuilder payload = Json.createObjectBuilder();
         JsonObjectBuilder exception = Json.createObjectBuilder();
         try {
@@ -95,7 +102,7 @@ public class PersonResource implements Serializable {
                     tutee.setSentMessages(null);
                     tutee.setReceivedMessages(null);
                     tutee.setOffers(null);
-                    
+
                     String jsonTutee = mapper.writeValueAsString(tutee);
                     payload.add("user", jsonTutee);
                     return Response.status(200).entity(payload.build()).build();
@@ -105,7 +112,7 @@ public class PersonResource implements Serializable {
                     staff.setPassword(null);
                     staff.setSentMessages(null);
                     staff.setReceivedMessages(null);
-                    
+
                     String jsonStaff = mapper.writeValueAsString(staff);
                     payload.add("user", jsonStaff);
                     return Response.status(200).entity(payload.build()).build();
@@ -175,5 +182,73 @@ public class PersonResource implements Serializable {
             exception.add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
         }
+    }
+
+    @GET
+    @Path("/get")
+    @Produces(MediaType.APPLICATION_JSON)
+    @JWTTokenNeeded
+    public Response getPerson(@Context SecurityContext securityContext) throws PersonLoginFailException {
+        System.out.println("Getting person in...");
+        UserPrincipal p = (UserPrincipal) securityContext.getUserPrincipal();
+        Long personId = p.getPersonId();
+
+        JsonObjectBuilder exception = Json.createObjectBuilder();
+        try {
+            Person person = personSession.retrievePersonById(personId);
+            switch (person.getPersonEnum()) {
+                case TUTOR:
+                    Tutor tutor = tutorSession.retrieveTutorById(personId);
+                    tutor.setSalt(null);
+                    tutor.setPassword(null);
+                    tutor.setSentMessages(null);
+                    tutor.setReceivedMessages(null);
+                    tutor.setJobListings(null);
+
+                    GenericEntity<Tutor> payload1 = new GenericEntity<Tutor>(tutor) {
+                    };
+                    return Response.status(200).entity(payload1).build();
+                case TUTEE:
+                    Tutee tutee = tuteeSession.retrieveTuteeById(personId);
+                    tutee.setSalt(null);
+                    tutee.setPassword(null);
+                    tutee.setSentMessages(null);
+                    tutee.setReceivedMessages(null);
+                    tutee.setOffers(null);
+
+                    GenericEntity<Tutee> payload2 = new GenericEntity<Tutee>(tutee) {
+                    };
+                    return Response.status(200).entity(payload2).build();
+                case STAFF:
+                    Staff staff = staffSession.retrieveStaffById(personId);
+                    staff.setSalt(null);
+                    staff.setPassword(null);
+                    staff.setSentMessages(null);
+                    staff.setReceivedMessages(null);
+
+                    GenericEntity<Staff> payload3 = new GenericEntity<Staff>(staff) {
+                    };
+                    return Response.status(200).entity(payload3).build();
+            }
+        } catch (TutorNotFoundException | TuteeNotFoundException | StaffNotFoundException | PersonNotFoundException ex) {
+            exception.add("error", ex.getMessage());
+            return Response.status(401).entity(exception.build()).build();
+        }
+        exception.add("error", "Unknown error when getting person after updating profile.");
+        return Response.status(400).entity(exception.build()).build();
+    }
+
+    @POST
+    @Path("/uploadImage")
+//    @Consumes(MediaType.MEDIA_TYPE_WILDCARD)
+    @Produces(MediaType.APPLICATION_JSON)
+//    @JWTTokenNeeded
+    public Response uploadImage(@Context SecurityContext securityContext, JsonObject json) {
+        UserPrincipal person = (UserPrincipal) securityContext.getUserPrincipal();
+        Long personId = person.getPersonId();
+
+        JsonObjectBuilder exception = Json.createObjectBuilder();
+        exception.add("error", "testing").build();
+        return Response.status(400).entity(exception).build();
     }
 }

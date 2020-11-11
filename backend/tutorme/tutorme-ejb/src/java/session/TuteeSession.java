@@ -45,7 +45,6 @@ public class TuteeSession implements TuteeSessionLocal {
             newTutee.setGender(gender);
             newTutee.setDob(dob);
             newTutee.setProfileDesc(profileDesc);
-            newTutee.setProfileImage(new byte[0]);
         } catch (NoSuchAlgorithmException ex) {
             System.out.println("Hashing error when creating tutee.");
         }
@@ -68,8 +67,6 @@ public class TuteeSession implements TuteeSessionLocal {
             newTutee.setMobileNum(mobileNum);
             newTutee.setGender(gender);
             newTutee.setDob(dob);
-            newTutee.setProfileImage(new byte[0]);
-
         } catch (NoSuchAlgorithmException ex) {
             System.out.println("Hashing error when creating tutee.");
         }
@@ -114,7 +111,7 @@ public class TuteeSession implements TuteeSessionLocal {
     }
 
     @Override
-    public Tutee updateTuteeProfile(Long tuteeId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc, byte[] profileImage) throws TuteeNotFoundException {
+    public Tutee updateTuteeProfile(Long tuteeId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, String profileDesc) throws TuteeNotFoundException {
         Tutee tutee = em.find(Tutee.class, tuteeId);
         if (tutee != null) {
             tutee.setFirstName(firstName);
@@ -123,7 +120,6 @@ public class TuteeSession implements TuteeSessionLocal {
             tutee.setGender(gender);
             tutee.setDob(dob);
             tutee.setProfileDesc(profileDesc);
-            tutee.setProfileImage(profileImage);
             return tutee;
         } else {
             throw new TuteeNotFoundException("TuteeID " + tuteeId + " does not exists.");

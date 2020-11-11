@@ -51,7 +51,6 @@ public class TutorSession implements TutorSessionLocal {
             newTutor.setCitizenship(citizenship);
             newTutor.setRace(race);
             newTutor.setProfileDesc(profileDesc);
-            newTutor.setProfileImage(new byte[0]);
         } catch (NoSuchAlgorithmException ex) {
             System.out.println("Hashing error when creating tutor.");
         }
@@ -74,7 +73,6 @@ public class TutorSession implements TutorSessionLocal {
             newTutor.setMobileNum(mobileNum);
             newTutor.setGender(gender);
             newTutor.setDob(dob);
-            newTutor.setProfileImage(new byte[0]);
         } catch (NoSuchAlgorithmException ex) {
             System.out.println("Hashing error when creating tutor.");
         }
@@ -121,7 +119,7 @@ public class TutorSession implements TutorSessionLocal {
     }
 
     @Override
-    public Tutor updateTutorProfile(Long tutorId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc, byte[] profileImage) throws TutorNotFoundException {
+    public Tutor updateTutorProfile(Long tutorId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob, QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc) throws TutorNotFoundException {
         Tutor tutor = em.find(Tutor.class, tutorId);
         if (tutor == null) {
             throw new TutorNotFoundException("TutorID " + tutorId + " does not exists.");
@@ -135,7 +133,6 @@ public class TutorSession implements TutorSessionLocal {
             tutor.setCitizenship(citizenship);
             tutor.setRace(race);
             tutor.setProfileDesc(profileDesc);
-            tutor.setProfileImage(profileImage);
             return tutor;
         }
     }

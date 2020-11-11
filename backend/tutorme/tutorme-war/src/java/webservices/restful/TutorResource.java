@@ -148,8 +148,6 @@ public class TutorResource {
         String citizenship = json.getString("citizenship");
         String race = json.getString("race");
         String profileDesc = json.getString("profileDesc");
-        String encodedProfileImage = json.getString("profileImage");
-        byte[] profileImage = Base64.getDecoder().decode(encodedProfileImage);
 
         GenderEnum genderEnum = gender.equals("Male") ? GenderEnum.MALE : GenderEnum.FEMALE;
         QualificationEnum qualiEnum = QualificationEnum.valueOf(QualificationEnum.class, qualification.toUpperCase());
@@ -165,7 +163,7 @@ public class TutorResource {
             ex.printStackTrace();
         }
         try {
-            Tutor tutor = tutorSession.updateTutorProfile(tutorId, firstName, lastName, mobileNum, genderEnum, parsedDob, qualiEnum, citiEnum, raceEnum, profileDesc, profileImage);
+            Tutor tutor = tutorSession.updateTutorProfile(tutorId, firstName, lastName, mobileNum, genderEnum, parsedDob, qualiEnum, citiEnum, raceEnum, profileDesc);
             tutor.setPassword(null);
             tutor.setSalt(null);
             tutor.setSentMessages(null);
