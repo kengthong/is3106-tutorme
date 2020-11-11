@@ -13,12 +13,9 @@ const { Option } = Select;
 
 const CreateJobListing = () => {
     const history = useHistory();
-
     const subjectState = useSelector<IRootState, SubjectState>((state) => state.subjectReducer);
     const [form] = Form.useForm();
     const [levels, setLevels] = useState<string[]>([]);
-
-
     const loadSubjects = async () => {
         await SubjectsService.getAllSubjects();
     }
@@ -51,9 +48,13 @@ const CreateJobListing = () => {
     }
 
     const onFinish = (fieldsValue: any) => {
-        console.log("fieldsValue =", fieldsValue)
-        createJobListing(fieldsValue);
-        history.push('/search');
+        const values = {
+            ...fieldsValue,
+            rate: fieldsValue.rate
+        }
+        console.log(values);
+        createJobListing(values);
+        // history.push('/search');
     }
 
     const createJobListing = async (createJobListingParams: any): Promise<void> => {
