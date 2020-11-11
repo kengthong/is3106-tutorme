@@ -73,7 +73,7 @@ public abstract class Person implements Serializable {
     @Enumerated
     private PersonEnum personEnum;
 
-    private byte[] profileImage;
+    private String profileImage;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
@@ -101,8 +101,7 @@ public abstract class Person implements Serializable {
         this.password = password;
         this.mobileNum = mobileNum;
         this.gender = gender;
-        this.dob = dob;
-        this.profileImage = new byte[0];
+        this.dob = dob;;
     }
 
     public Long getPersonId() {
@@ -217,11 +216,11 @@ public abstract class Person implements Serializable {
         this.personEnum = personEnum;
     }
 
-    public byte[] getProfileImage() {
+    public String getProfileImage() {
         return profileImage;
     }
 
-    public void setProfileImage(byte[] profileImage) {
+    public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
 }

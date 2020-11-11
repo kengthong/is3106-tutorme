@@ -70,7 +70,7 @@ public class JobListingResource {
         System.out.println("...minPrice: " + minPx);
         System.out.println("...maxPrice: " + maxPx);
         System.out.println("...tutor's name: " + name);
-        List<JobListing> jobListings = jobListingSession.retrieveJobListingsWithMultipleFilters(subject.trim(), level.trim(), minPx, maxPx, name.trim());
+        List<JobListing> jobListings = jobListingSession.retrieveJobListingsWithMultipleFilters(subject.trim(), level.trim(), minPx, maxPx, name.trim().toLowerCase());
         // return jobListing object with reviewCount and avgRatings
         for (JobListing jl : jobListings) {
             Tutor tutor = jl.getTutor();

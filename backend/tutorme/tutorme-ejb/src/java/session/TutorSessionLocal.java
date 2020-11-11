@@ -35,7 +35,7 @@ public interface TutorSessionLocal {
     public List<Tutor> retrieveTutorsByName(String inputName);
 
     public Tutor updateTutorProfile(Long tutorId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob,
-            QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc, byte[] profileImage) throws TutorNotFoundException;
+            QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc) throws TutorNotFoundException;
     
     // Reporting use
     public Integer getActiveTutors();
