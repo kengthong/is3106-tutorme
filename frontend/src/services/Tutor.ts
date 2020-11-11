@@ -39,4 +39,20 @@ export class TutorService {
             return false;
         }
     }
+
+    static async getAllTutors() {
+        const url = BACKEND_BASE_URL + '/tutor/getAll';
+        const jsonHeader = Utility.getJsonHeader();
+        const token = localStorage.getItem("token");
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+        const response = await Utility.fetchBuilder(url, 'GET', header, null);
+        if (response.ok) {
+            return await response.json();
+        } else {
+            return false;
+        }
+    }
 };

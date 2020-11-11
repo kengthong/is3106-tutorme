@@ -46,4 +46,40 @@ export class StaffService {
             payload: undefined
         })
     }
+
+    static async banUser(userId: number) {
+        const url = BACKEND_BASE_URL + '/staff/ban/' + userId;
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+
+        const response = await Utility.fetchBuilder(url, 'PUT', header, null);
+        if (response.ok) {
+            const data = await response.json();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    static async unBanUser(userId: number) {
+        const url = BACKEND_BASE_URL + '/staff/unban/' + userId;
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+
+        const response = await Utility.fetchBuilder(url, 'PUT', header, null);
+        if (response.ok) {
+            const data = await response.json();
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

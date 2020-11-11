@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Input, Button, Card, Tabs, Statistic, Timeline, Calendar } from 'antd'
 import Dashboard from "./Dashboard";
+import TutorTable from "./Tutor";
 
 export const AdminDash = () => {
 
@@ -28,9 +29,12 @@ export const AdminDash = () => {
 
                     <TabPane tab="Tutor" key="3">
                         <h3>
-                            Tutor
-                            Read and Update (Ban)
+                            Tutor List
                         </h3>
+                        <div className="margin-top-btm-12">
+                            <TutorTable  />
+                        </div>
+
                     </TabPane>
 
                     <TabPane tab="Staff" key="4">

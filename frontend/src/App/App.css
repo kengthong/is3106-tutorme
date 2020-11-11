@@ -55,6 +55,10 @@ label {
   padding: 0px !important;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 .border-e8 {
   border: 1px solid #e8e8e8;
 }
@@ -74,6 +78,10 @@ label {
 .flex-row {
   display: flex;
   flex-direction: row;
+}
+
+.fs-12 {
+  font-size: 12px;
 }
 
 .fs-18 {
@@ -106,6 +114,10 @@ label {
 
 .justify-space-between {
   justify-content: space-between;
+}
+
+.margin-top-btm-12 {
+  margin: 12px 0px;
 }
 
 .opacity-65 {
