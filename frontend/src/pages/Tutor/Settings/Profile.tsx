@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Header from "../../../components/Header/Header";
 import TutorProfileComponent from "../../../components/TutorSettings/Profile";
-import BodyContainer from "../../../components/Layout/BodyContainer";
+import { BodyContainer } from "../../../components/Layout/BodyContainer";
 import { Col, Row } from "antd";
 import TutorSettingsMenu from "../../../components/TutorSettings/TutorMenu";
 import {TutorService} from "../../../services/Tutor";

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Header from "../../../components/Header/Header";
 import { useHistory } from 'react-router-dom';
-import BodyContainer from "../../../components/Layout/BodyContainer";
+import { BodyContainer } from "../../../components/Layout/BodyContainer";
 import { Col, Row } from "antd";
 import TutorSettingsMenu from "../../../components/TutorSettings/TutorMenu";
 import EditableDetails from "../../../components/TutorSettings/Details/EditableDetails";

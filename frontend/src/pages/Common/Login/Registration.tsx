@@ -1,5 +1,5 @@
 import React from "react";
-import BodyContainer from "../../../components/Layout/BodyContainer";
+import { BodyContainer } from "../../../components/Layout/BodyContainer";
 import RegistrationComponent from "../../../components/Login/Registration";
 
 const Registration = () => {

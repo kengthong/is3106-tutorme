@@ -1,19 +1,19 @@
 import React from "react";
 import Header from "../../components/Header/Header";
 import { Footer } from "../../components/LandingPage/Footer";
-import { AdminDash } from "../../components/Admin/AdminDash"
+import AdminDash from "../components/StaffView";
 
-const AdminPage = () => {
+const StaffHome = () => {
     return (
         <div style={{ height: "100%" }}>
-            <Header />
+            {/*<Header />*/}
             <div>
                 <AdminDash />
             </div>
 
-            <Footer />
+            {/*<Footer />*/}
         </div>
     );
 };
 
-export default AdminPage;
+export default StaffHome;

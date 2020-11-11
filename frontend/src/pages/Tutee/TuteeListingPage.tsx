@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from '../../components/Header/Header';
-import BodyContainer from '../../components/Layout/BodyContainer';
+import { BodyContainer } from '../../components/Layout/BodyContainer';
 import JobListingDetail from '../../components/ListingPage/JobListingDetail';
 import ListingDescription from "../../components/ListingPage/ListingDescription";
 import MakeOfferForm from "../../components/Offer/MakeOfferForm";

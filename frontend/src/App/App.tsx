@@ -27,7 +27,7 @@ import FAQ from "../pages/Common/FAQs"
 import AboutUs from "../pages/Common/AboutUs"
 import Feedback from "../pages/Common/Feedback"
 import ContactUs from "../pages/Common/ContactUs"
-import AdminPage from "../pages/Admin/Admin"
+import {StaffRoutes} from "../Staff";
 // services
 
 const App = () => {
@@ -57,7 +57,9 @@ const App = () => {
           <Route path="/tutee-profile" component={TuteeProfilePage} />
           {/*<ProtectedRoute path="/settings" component={Settings}/>*/}
           {/*<ProtectedRoute component={Dashboard}/>*/}
-          <Route path="/error" exact={true} component={NotFoundPage} />
+          {/*<StaffRoutes/>*/}
+          <Route path="/staff" component={StaffRoutes} />
+          <Route component={NotFoundPage} />
           {/*<Redirect to="/error" exact={true} />*/}
         </Switch>
       </BrowserRouter>
@@ -65,7 +67,7 @@ const App = () => {
   );
 };
 
-const ProtectedRoute = ({ component, isAuthenticated, allowedUser, ...rest }: any) => {
+export const ProtectedRoute = ({ component, isAuthenticated, allowedUser, ...rest }: any) => {
   const userType = 'tutor';
   // If user is null, it means the page is a common page. Else, check if user is a tutee or a tutor, and if this user
   // is authorized to view the page
