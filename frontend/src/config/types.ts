@@ -91,7 +91,9 @@ type jobListingType = {
         personId?: number;
         avgRating?: number;
     },
-    offers?: offerType[]
+    offers?: offerType[],
+    numOffers?: number,
+    numSubjects?: number
 }
 
 

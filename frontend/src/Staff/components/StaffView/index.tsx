@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { Input, Button, Card, Tabs, Statistic, Timeline, Calendar } from 'antd'
 import Dashboard from "./Dashboard";
 import TutorTable from "./Tutor";
+import TuteeTable from "./Tutee";
+import JobListingsTable from "./JobListings";
 
 export const AdminDash = () => {
 
@@ -23,8 +25,10 @@ export const AdminDash = () => {
                     <TabPane tab="Tutee" key="2">
                         <h3>
                             Tutee
-                            Read and Update (Ban)
                         </h3>
+                        <div className="margin-top-btm-12">
+                            <TuteeTable />
+                        </div>
                     </TabPane>
 
                     <TabPane tab="Tutor" key="3">
@@ -49,8 +53,10 @@ export const AdminDash = () => {
                     <TabPane tab="Job Listing" key="5">
                         <h3>
                             Job Listing
-                            Read only
                         </h3>
+                        <div className="margin-top-btm-12">
+                            <JobListingsTable />
+                        </div>
                     </TabPane>
 
                     <TabPane tab="Offer" key="6">

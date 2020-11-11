@@ -57,8 +57,8 @@ export class StaffService {
         };
 
         const response = await Utility.fetchBuilder(url, 'PUT', header, null);
+        console.log('response =', response)
         if (response.ok) {
-            const data = await response.json();
             return true;
         } else {
             return false;
@@ -76,10 +76,27 @@ export class StaffService {
 
         const response = await Utility.fetchBuilder(url, 'PUT', header, null);
         if (response.ok) {
-            const data = await response.json();
             return true;
         } else {
             return false;
+        }
+    }
+
+    static async getAllJobListing() {
+        const url = BACKEND_BASE_URL + '/staff/jobListings/';
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+
+        const response = await Utility.fetchBuilder(url, 'GET', header, null);
+        if (response.ok) {
+            const data = response.json();
+            return data;
+        } else {
+            return [];
         }
     }
 }

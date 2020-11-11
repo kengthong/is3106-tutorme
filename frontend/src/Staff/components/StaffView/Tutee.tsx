@@ -10,7 +10,7 @@ type tableProps = {
 
 const expandable = { expandedRowRender: (record: { description: string; }) => <p>{record.description}</p> };
 
-const TutorTable = (props: tableProps) => {
+const TuteeTable = (props: tableProps) => {
     const [tableData, setTableData] = useState([])
     const getAllTutors = async () => {
         const data = await TutorService.getAllTutors();
@@ -172,4 +172,4 @@ const TutorTable = (props: tableProps) => {
     )
 }
 
-export default TutorTable;
+export default TuteeTable;
