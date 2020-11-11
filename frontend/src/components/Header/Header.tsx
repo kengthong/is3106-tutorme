@@ -73,14 +73,8 @@ const Header = () => {
               </li>
               :
 
-              userState.currentUser && userState.currentUser.personEnum === "TUTEE" ?
-                <li>
-                  <a href="/tuteeProfile">My Profile</a>
-                </li>
-                :
-                <li>
-                  <a href="/tutorMenu">Menu</a>
-                </li>
+              null
+
             }
             {userState.isAuthenticated ?
               <li>
@@ -141,12 +135,16 @@ const Header = () => {
 const ProfileContent = (personEnum: string, handleLogout: () => void) => {
 
   return (
-    <div style={{ height: '150px', width: '150px' }}>
-      <div className='clickable highlightable'>
-        <a className='selection w-100' href={`${personEnum === 'TUTEE' ? '/tutee-profile' : '/tutor/settings/profile'}`}>
-          My Profile
+    <div style={{ height: '80px', width: '150px' }}>
+      {personEnum === 'TUTOR' ?
+        <div className='clickable highlightable'>
+          <a className='selection w-100' href={'/tutor-profile'}>
+            My Profile
         </a>
-      </div>
+        </div>
+        :
+        null
+      }
       <div className='clickable highlightable'>
         <a className='selection w-100' href={`/${personEnum === 'TUTEE' ? 'tutee' : 'tutor'}/settings/personal-details`}>
           Settings

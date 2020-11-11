@@ -35,4 +35,22 @@ export default class TuteeService {
         }
     }
 
+    static async updateTuteeDetails(userId: number, user: tuteeDataType) {
+        const url = BACKEND_BASE_URL + '/tutee/update';
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+
+        const response = await Utility.fetchBuilder(url, 'PUT', header, user);
+        if (response.ok) {
+            const data = await response.json();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 };

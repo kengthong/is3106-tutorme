@@ -42,12 +42,14 @@ export const SubjectSection = () => {
         <div className={"flex-row"} style={{ height: '480px' }}>
             <div className="flex-row justify-end w-50 h-100 subject-section-form align-center" style={{ backgroundColor: '#438dc2', position: "relative" }}>
                 <div className="flex-col" style={{ zIndex: 1 }}>
-                    <span className="fs-24" style={{ color: '#fff' }}>
+                    <span className="fs-24" style={{ color: '#fff', fontWeight: "bold" }}>
                         Online tutoring that actually delivers results
                     </span>
+
                     <span className="fs-18" style={{ color: '#fff' }}>
                         Keep your child’s studies on track with interactive online lessons
                     </span>
+                    <br />
                     <div>
                         <Select
                             showSearch

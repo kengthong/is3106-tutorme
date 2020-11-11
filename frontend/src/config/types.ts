@@ -178,7 +178,7 @@ type tutorDataType = {
 }
 
 type tuteeDataType = {
-    personId: string;
+    personId: number;
     createdDate: string;
     activeStatus: boolean;
     firstName: string;

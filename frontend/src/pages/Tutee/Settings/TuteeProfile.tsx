@@ -48,7 +48,7 @@ const TuteeProfilePage = () => {
             <TuteeSettingsMenu />
           </Col>
           <Col span={20}>
-            <TuteeProfileComponent {...userData} settingsPage={true} />
+            <TuteeProfileComponent {...userData} />
           </Col>
         </Row>
       </BodyContainer>
