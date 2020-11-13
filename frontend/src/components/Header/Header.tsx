@@ -156,7 +156,7 @@ const ProfileContent = (personEnum: string, userState: UserState, handleLogout: 
                         </a>
                     </div>
                     <div className='clickable highlightable'>
-                        <a className='selection w-100' href="/tutor/createNewListing">
+                        <a className='selection w-100' href="/tutor/create-new-listing">
                             New Listing
                         </a>
                     </div>

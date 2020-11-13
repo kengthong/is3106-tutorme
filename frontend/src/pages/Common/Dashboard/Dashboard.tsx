@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../../components/Header/Header";
 import Dashboard from "../../../components/Dashboard";
 
-const OffersPage = () => {
+const DashboardPage = () => {
     return (
         <div>
             <Header />
@@ -13,4 +13,4 @@ const OffersPage = () => {
     );
 };
 
-export default OffersPage;
+export default DashboardPage;
