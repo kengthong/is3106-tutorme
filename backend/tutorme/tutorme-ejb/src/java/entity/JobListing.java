@@ -222,7 +222,11 @@ public class JobListing implements Serializable {
     }
 
     public Integer getNumOffers() {
-        return this.offers.size();
+        if (this.offers == null) {
+            return 0;
+        } else {
+            return this.offers.size();
+        }
     }
 
     public void setNumOffers(Integer numOffers) {
