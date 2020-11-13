@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { LOGIN_URL } from "../../config/constants";
 import { useHistory } from "react-router-dom";
 import logo from "../../assets/logo.jpg";
-import { Input, Button, Radio, DatePicker, Modal } from "antd";
+import { Input, Button, Radio, DatePicker, Modal, message } from "antd";
 import { UserService } from "../../services/User";
 
 const RegisterComponent = () => {
@@ -33,13 +33,27 @@ const RegisterComponent = () => {
   };
 
   //To be implemented
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     //Should call on API
     //Skeleton
     if (verifyForm()) {
-
-      UserService.register(formData.firstName, formData.lastName, formData.email, formData.password, formData.phoneNumber, formData.gender, formData.date, formData.accountType);
-
+      const response = await UserService.register(
+        formData.firstName,
+        formData.lastName,
+        formData.email,
+        formData.password,
+        formData.phoneNumber,
+        formData.gender,
+        formData.date,
+        formData.accountType
+      );
+      console.log("response = ", response);
+      if (response.ok) {
+        handleRedirectToLogin();
+      } else {
+        const data = await response.json();
+        message.error(data.error);
+      }
     } else if (formData.password !== formData.confirmPassword) {
       Modal.error({
         title: "Error",
@@ -62,7 +76,6 @@ const RegisterComponent = () => {
       ...prevState,
       [name]: value,
     }));
-
   };
 
   //Need this to be separated because DatePicker returns 2 values
@@ -75,7 +88,7 @@ const RegisterComponent = () => {
 
   return (
     <div>
-      <img src={logo} style={{ padding: 100 }} alt='logo' />
+      <img src={logo} style={{ padding: 100 }} alt="logo" />
       <h1
         style={{
           fontSize: "3rem",

@@ -10,7 +10,9 @@ import { IRootState } from "../../store";
 
 const Login = () => {
   const history = useHistory();
-  const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
+  const userState = useSelector<IRootState, UserState>(
+    (state) => state.userReducer
+  );
   const [hasSubmit, setHasSubmit] = useState(false);
   const handleRedirectToRegister = () => history.push(REGISTRATION_URL);
 
@@ -35,7 +37,7 @@ const Login = () => {
 
   return (
     <div>
-      <img src={logo} style={{ padding: 100 }} alt='logo' />
+      <img src={logo} style={{ padding: 100 }} alt="logo" />
       <h1
         style={{
           fontSize: "3rem",
@@ -46,7 +48,7 @@ const Login = () => {
       </h1>
 
       {userState.isAuthenticated && <Redirect to={"/"} />}
-      <div style={{ fontSize: '16px', color: 'red' }}>
+      <div style={{ fontSize: "16px", color: "red" }}>
         {hasSubmit && userState.error ? userState.errorMsg : null}
       </div>
       <form onSubmit={handleSubmit}>

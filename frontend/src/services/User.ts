@@ -39,13 +39,9 @@ export class UserService {
         const url = BACKEND_BASE_URL + '/person/register';
         const body = {firstName, lastName, email, password, phoneNumber, gender, date, accountType}
 
-        const response = await Utility.fetchBuilder(url, 'POST', jsonHeader, body);
+        const response = await Utility.fetchBuilder(url, 'POST', jsonHeader, body)
         console.log("response: " + response)
-        if (response.ok) {
-            return true;
-        } else {
-            return false;
-        }
+        return response;
     }
 
     static async rehydrate(){
