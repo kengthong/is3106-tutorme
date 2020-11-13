@@ -167,7 +167,7 @@ export class StaffService {
         }
 
         const response = await Utility.fetchBuilder(url, 'GET', header, null);
-        if(response.ok) {
+        if (response.ok) {
             return await response.json();
         } else {
             console.log(response);
@@ -183,14 +183,14 @@ export class StaffService {
         });
         const token = localStorage.getItem("staffToken");
         let data = [];
-        if(token) {
+        if (token) {
             const header = {
                 ...jsonHeader,
                 'Authorization': 'Bearer ' + token
             }
 
             const response = await Utility.fetchBuilder(url, 'GET', header, null);
-            if(response.ok) {
+            if (response.ok) {
                 data = await response.json();
             } else {
                 console.log(response);
@@ -202,7 +202,7 @@ export class StaffService {
     public static async sendMessage(senderId: string, receiverId: string, body: string): Promise<boolean> {
         const url = "http://localhost:8080/tutorme-war/webresources/message/sendMessage";
         const token = localStorage.getItem("staffToken");
-        if(token) {
+        if (token) {
             const header = {
                 ...jsonHeader,
                 'Authorization': 'Bearer ' + token
@@ -214,7 +214,7 @@ export class StaffService {
             };
             const res = await Utility.fetchBuilder(url, 'POST', header, fetchBody);
             console.log('res = ', res)
-            if(res.ok) {
+            if (res.ok) {
                 return true;
             }
         }
