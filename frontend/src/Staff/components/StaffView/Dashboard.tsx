@@ -137,11 +137,18 @@ const Dashboard = () => {
         </div>
 
         <div className={"col-lg-2"}>
-          <Card title="Total Offers">
+          <Card title="Offer Withdrawal Rate">
             <Statistic
-              title="Total"
-              value={25}
-              valueStyle={{ color: "#cf1322" }}
+              title="Per Month"
+              value={dashboardData ? dashboardData.offerWithdrawalRate : "-"}
+              precision={2}
+              valueStyle={{ color: "#3f8600" }}
+              suffix="%"
+              prefix={
+                dashboardData && dashboardData.offerWithdrawalRate < 0
+                  ? "-"
+                  : "+"
+              }
             />
           </Card>
         </div>

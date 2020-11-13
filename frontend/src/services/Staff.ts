@@ -49,7 +49,7 @@ export class StaffService {
 
     static async banUser(userId: number) {
         const url = BACKEND_BASE_URL + '/staff/ban/' + userId;
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("staffToken");
         const jsonHeader = Utility.getJsonHeader();
         const header = {
             ...jsonHeader,
@@ -67,7 +67,7 @@ export class StaffService {
 
     static async unBanUser(userId: number) {
         const url = BACKEND_BASE_URL + '/staff/unban/' + userId;
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("staffToken");
         const jsonHeader = Utility.getJsonHeader();
         const header = {
             ...jsonHeader,
@@ -84,7 +84,7 @@ export class StaffService {
 
     static async getAllJobListing() {
         const url = BACKEND_BASE_URL + '/staff/jobListings/';
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("staffToken");
         const jsonHeader = Utility.getJsonHeader();
         const header = {
             ...jsonHeader,
@@ -102,7 +102,7 @@ export class StaffService {
 
     static async getOfferList() {
         const url = BACKEND_BASE_URL + '/staff/offers';
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("staffToken");
         const jsonHeader = Utility.getJsonHeader();
         const header = {
             ...jsonHeader,
@@ -120,7 +120,7 @@ export class StaffService {
 
     static async getDashboard() {
         const url = BACKEND_BASE_URL + '/staff/home';
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("staffToken");
         const jsonHeader = Utility.getJsonHeader();
         const header = {
             ...jsonHeader,

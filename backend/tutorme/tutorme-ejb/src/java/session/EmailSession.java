@@ -58,7 +58,7 @@ public class EmailSession implements EmailSessionLocal {
     @Override
     public void ban(String firstName, String toEmail) {
         try {
-            String fromEmail = "tutormecare3106@gmail.com@";
+            String fromEmail = "tutormecare3106@gmail.com";
             String password = "#IS3106dummy";
 
             Properties props = new Properties();
@@ -77,7 +77,7 @@ public class EmailSession implements EmailSessionLocal {
             msg.setFrom(new InternetAddress(fromEmail));
             msg.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail.toLowerCase()));
             msg.setSubject("TutorMe Registration Complete!");
-            msg.setText("Hi " + firstName+ "! \n\nSorry to inform you that you've been ban for inappropriate behaviour\n\n Regards, \n TutorMe Team");
+            msg.setText("Hi " + firstName+ "! \n\nSorry to inform you that you've been banned for inappropriate behaviour\n\n Regards, \n TutorMe Team");
 
             Date timestamp = new Date();
             msg.setSentDate(timestamp);
@@ -92,7 +92,7 @@ public class EmailSession implements EmailSessionLocal {
     @Override
     public void unban(String firstName, String toEmail) {
         try {
-            String fromEmail = "tutormecare3106@gmail.com@";
+            String fromEmail = "tutormecare3106@gmail.com";
             String password = "#IS3106dummy";
 
             Properties props = new Properties();

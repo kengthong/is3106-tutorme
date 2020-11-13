@@ -165,13 +165,6 @@ public class OfferSession implements OfferSessionLocal {
     }
 
     @Override
-    public Integer getActiveOffers() {
-        Query query = em.createQuery("SELECT o from Offer o");
-        List<Offer> offers = query.getResultList();
-        return offers.size();
-    }
-
-    @Override
     public Integer getOfferGrowth() {
         Query query1 = em.createQuery("SELECT o FROM Offer o WHERE o.createdDate < :inputDate");
         Query query2 = em.createQuery("SELECT o FROM Offer o WHERE o.createdDate >= :inputDate");
@@ -206,6 +199,30 @@ public class OfferSession implements OfferSessionLocal {
 
         Double o1 = Double.valueOf(allOffers.size());
         Double o2 = Double.valueOf(acceptedOffers.size());
+        if (o1 == 0.0) {
+            return (o2 / 1) * 100;
+        } else {
+            return (o2 / o1) * 100;
+        }
+    }
+    
+    @Override
+    public Double getOfferWithdrawalRate() {
+        Query query1 = em.createQuery("SELECT o FROM Offer o WHERE o.createdDate >= :inputDate");
+        List<Offer> allOffers = new ArrayList<>();
+        List<Offer> withdrawnOffers = new ArrayList<>();
+
+        Calendar c = Calendar.getInstance();   // this takes current date
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        query1.setParameter("inputDate", c.getTime());
+        allOffers = query1.getResultList();
+
+        withdrawnOffers = allOffers.stream()
+                .filter(o -> o.getOfferStatus().equals(OfferStatusEnum.WITHDRAWN))
+                .collect(Collectors.toList());
+
+        Double o1 = Double.valueOf(allOffers.size());
+        Double o2 = Double.valueOf(withdrawnOffers.size());
         if (o1 == 0.0) {
             return (o2 / 1) * 100;
         } else {

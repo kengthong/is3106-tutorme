@@ -12,6 +12,7 @@ import entity.Staff;
 import entity.Tutee;
 import entity.Tutor;
 import enumeration.GenderEnum;
+import exception.BannedPersonException;
 import exception.PersonLoginFailException;
 import exception.PersonNotFoundException;
 import exception.StaffNotFoundException;
@@ -120,6 +121,9 @@ public class PersonResource implements Serializable {
         } catch (TutorNotFoundException | TuteeNotFoundException | StaffNotFoundException | JsonProcessingException | PersonLoginFailException ex) {
             exception.add("error", ex.getMessage());
             return Response.status(401).entity(exception.build()).build();
+        } catch (BannedPersonException ex) {
+            exception.add("error", ex.getMessage());
+            return Response.status(403).entity(exception.build()).build();
         }
         exception.add("error", "Unknown error when logging in.");
         return Response.status(400).entity(exception.build()).build();

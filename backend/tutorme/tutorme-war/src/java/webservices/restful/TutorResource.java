@@ -34,6 +34,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import session.JobListingSessionLocal;
 import session.TutorSessionLocal;
 
 /**
@@ -46,6 +47,8 @@ public class TutorResource {
 
     @EJB
     TutorSessionLocal tutorSession;
+    @EJB
+    JobListingSessionLocal jobListingSession;
 
     public TutorResource() {
     }
@@ -178,5 +181,38 @@ public class TutorResource {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(404).entity(exception).build();
         }
+    }
+
+    @GET
+    @Path("/jobListings")
+    @TutorJWTTokenNeeded
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTutorJobListings(@Context SecurityContext securityContext) {
+        UserPrincipal person = (UserPrincipal) securityContext.getUserPrincipal();
+        Long tutorId = person.getPersonId();
+        System.out.println("Getting jobListings by Tutor Id is ... " + tutorId);
+        List<JobListing> jobListings = jobListingSession.retrieveJobListingsByTutorId(tutorId);
+        for (JobListing jl : jobListings) {
+            jl.setReviewCount(jl.getReviewCount());
+            jl.setReviewScore(jl.getReviewScore());
+            jl.setTutor(null);
+
+            for (Offer o : jl.getOffers()) {
+                Tutee tutee = o.getTutee();
+                tutee.setReceivedMessages(null);
+                tutee.setSentMessages(null);
+                tutee.setPassword(null);
+                tutee.setSalt(null);
+                tutee.setOffers(null);
+                Rating rating = o.getRating();
+                if (rating != null) {
+                    rating.setOffer(null);
+                }
+                o.setJobListing(null);
+            }
+        }
+        GenericEntity<List<JobListing>> payload = new GenericEntity<List<JobListing>>(jobListings) {
+        };
+        return Response.status(200).entity(payload).build();
     }
 }
