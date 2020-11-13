@@ -4,6 +4,7 @@ import entity.JobListing;
 import entity.Offer;
 import entity.Person;
 import entity.Rating;
+import entity.Staff;
 import entity.Tutee;
 import exception.PersonNotFoundException;
 import filter.StaffJWTTokenNeeded;
@@ -26,6 +27,7 @@ import session.EmailSessionLocal;
 import session.JobListingSessionLocal;
 import session.OfferSessionLocal;
 import session.PersonSessionLocal;
+import session.StaffSessionLocal;
 import session.TuteeSessionLocal;
 import session.TutorSessionLocal;
 
@@ -50,6 +52,8 @@ public class StaffResource {
     TuteeSessionLocal tuteeSession;
     @EJB
     EmailSessionLocal emailSession;
+    @EJB
+    StaffSessionLocal staffSession;
 
     public StaffResource() {
     }
@@ -170,6 +174,29 @@ public class StaffResource {
             return Response.status(200).entity(packet).build();
         } else {
             JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getTutees").build();
+            return Response.status(400).entity(exception).build();
+        }
+    }
+
+    @GET
+    @Path("/getStaffs")
+    @StaffJWTTokenNeeded
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getStaffs() {
+        System.out.println("Getting staffs...");
+        List<Staff> staffs = staffSession.retrieveAllStaffs();
+        if (!staffs.isEmpty()) {
+            for (Staff s : staffs) {
+                s.setSalt(null);
+                s.setPassword(null);
+                s.setReceivedMessages(null);
+                s.setSentMessages(null);
+            }
+            GenericEntity<List<Staff>> packet = new GenericEntity<List<Staff>>(staffs) {
+            };
+            return Response.status(200).entity(packet).build();
+        } else {
+            JsonObject exception = Json.createObjectBuilder().add("error", "returned empty list from REST/getStaffs").build();
             return Response.status(400).entity(exception).build();
         }
     }
