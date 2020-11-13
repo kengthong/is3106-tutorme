@@ -1,24 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Table, Tag} from "antd";
-import moment from 'antd/node_modules/moment';
-import {JobListingService} from "../../../services/JobListing";
-import { useHistory } from 'react-router-dom';
+import React from 'react';
+import { Button, Table, Tag } from "antd";
+import { useSelector } from "react-redux";
+import { UserState } from "../../reducer/user-reducer";
+import { IRootState } from "../../store";
+import moment from "antd/node_modules/moment";
 
-const JobListingsTable = () => {
-    const [tableData, setTableData] = useState<jobListingType[]>([])
-    const history = useHistory();
-    const getAllJobListing = async () => {
-        const data: jobListingType[] = await JobListingService.getJobListingListWithParams({});
-        setTableData(data)
-    }
-    useEffect(() => {
-        getAllJobListing()
-    },[])
+const JobListingsComponent = (props: any) => {
+    const {data, viewJobListing} = props;
 
-    const viewJobListing = (id?: number) => {
-        if(id) history.push('/job?id=' + id)
-    }
-    const _columns = [
+    const columns = [
         {
             title: 'Active Status',
             dataIndex: 'activeStatus',
@@ -49,7 +39,7 @@ const JobListingsTable = () => {
             title: 'Tutor',
             dataIndex: 'tutor',
             render: (record: any) => {
-              return (<span> {record.firstName + " " + record.lastName}</span>)
+                return (<span> {record.firstName + " " + record.lastName}</span>)
             },
         },
         {
@@ -90,19 +80,12 @@ const JobListingsTable = () => {
                 </div>
             ),
         }
-    ]
+    ];
 
-    if(tableData.length === 0) {
-        return <div style={{marginTop: '20px', fontSize: '16px'}}>Loading...</div>
-    }
+    console.log('table d =', data)
     return (
-        <Table
-            columns={_columns}
-            dataSource={tableData}
-            scroll={{x: true}}
-            rowKey="jobListingId"
-        />
-    )
-}
+        <Table columns={columns} dataSource={data} rowKey="offerId" />
+    );
+};
 
-export default JobListingsTable;
+export default JobListingsComponent;

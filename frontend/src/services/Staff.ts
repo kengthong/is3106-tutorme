@@ -16,6 +16,7 @@ export class StaffService {
                     const text = await res.text();
                     const data = JSON.parse(text);
                     const user = JSON.parse(data.user);
+                    console.log('data =', data)
                     const token = data.jwtToken;
                     localStorage.setItem("staffToken", token);
                     store.dispatch({
