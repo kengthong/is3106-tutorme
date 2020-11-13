@@ -6,10 +6,11 @@ const ChatPage = () => {
     return (
         <div style={{ height: "100%" }}>
             <Header />
-            <div style={{height: 'calc(100vh - 90px)', maxWidth: '1170px', marginLeft: 'auto', marginRight: 'auto'}}>
+            <div style={{ height: 'calc(100vh - 90px)', maxWidth: '1170px', marginLeft: 'auto', marginRight: 'auto' }}>
                 {/*<Chat />*/}
-                <Chat/>
+                <Chat />
             </div>
+            <br />
         </div>
     );
 };
