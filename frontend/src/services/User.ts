@@ -83,6 +83,25 @@ export class UserService {
             })
     }
 
+    static async sendFeedback(body: string){
+        const url = BACKEND_BASE_URL + '/message/sendFeedback';
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+        const message = {body}
+
+        const response = await Utility.fetchBuilder(url, 'POST', header, message)
+        console.log("response: " + response)
+        if (response.ok) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     static logout() {
         localStorage.removeItem("token");
         store.dispatch({

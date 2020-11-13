@@ -6,8 +6,17 @@ import TutorTable from "./Tutor";
 import TuteeTable from "./Tutee";
 import JobListingsTable from "./JobListings";
 import OfferListingTable from "./Offers";
+import { UserService } from "../../../services/User";
+
 
 export const AdminDash = () => {
+
+    const history = useHistory();
+
+    const handleLogout = () => {
+        UserService.logout();
+        history.push("/");
+    }
 
     const { TabPane } = Tabs;
 
@@ -20,7 +29,7 @@ export const AdminDash = () => {
                 <Tabs defaultActiveKey="1" tabPosition="left">
 
                     <TabPane tab="Overview" key="1">
-                        <Dashboard/>
+                        <Dashboard />
                     </TabPane>
 
                     <TabPane tab="Tutee" key="2">
@@ -37,7 +46,7 @@ export const AdminDash = () => {
                             Tutor List
                         </h3>
                         <div className="margin-top-btm-12">
-                            <TutorTable  />
+                            <TutorTable />
                         </div>
 
                     </TabPane>
@@ -73,6 +82,18 @@ export const AdminDash = () => {
                         <h3>
                             Chat
                         </h3>
+                    </TabPane>
+
+                    <TabPane tab="Logout" key="8" >
+                        <h3>
+                            Confirm Logout?
+                        </h3>
+
+                        <br />
+
+                        <Button danger onClick={handleLogout}>
+                            Logout
+                        </Button>
                     </TabPane>
                 </Tabs>
             </div>
