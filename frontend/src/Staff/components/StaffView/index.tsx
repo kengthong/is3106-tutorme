@@ -7,7 +7,6 @@ import TuteeTable from "./Tutee";
 import JobListingsTable from "./JobListings";
 import OfferListingTable from "./Offers";
 import { UserService } from "../../../services/User";
-import StaffTable from './StaffTable';
 
 
 export const AdminDash = () => {
@@ -55,9 +54,8 @@ export const AdminDash = () => {
                     <TabPane tab="Staff" key="4">
                         <h3>
                             Staff
-                            <div className="margin-top-btm-12">
-                                <StaffTable />
-                            </div>
+
+                            CRUD staff account
 
                         </h3>
                     </TabPane>
