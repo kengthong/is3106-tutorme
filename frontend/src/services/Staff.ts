@@ -221,20 +221,21 @@ export class StaffService {
 
         return false;
     }
-
-    static async getAllTutees() {
-        const url = BACKEND_BASE_URL + '/staff/getTutees';
+    static async createNewStaff(params: createStaffParams): Promise<boolean> {
+        const url = BACKEND_BASE_URL + "/person/register";
         const token = localStorage.getItem("staffToken");
         const jsonHeader = Utility.getJsonHeader();
         const header = {
             ...jsonHeader,
             "Authorization": "Bearer " + token
         };
-        const response = await Utility.fetchBuilder(url, 'GET', header, null);
+        const response = await Utility.fetchBuilder(url, 'POST', header, params);
+        console.log("response: " + response);
         if (response.ok) {
-            return await response.json();
+            return true;
         } else {
             return false;
         }
     }
+
 }
