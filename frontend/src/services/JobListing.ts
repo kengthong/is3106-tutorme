@@ -99,6 +99,24 @@ export class JobListingService {
         }
     }
 
+    public static async getMyJobListings() {
+        const url = "http://localhost:8080/tutorme-war/webresources/jobListing/";
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+
+        const response = await Utility.fetchBuilder(url, 'POST', header, null);
+        console.log("response: " + response)
+        if (response.ok) {
+            return await response.json();
+        } else {
+            return [];
+        }
+    }
+
 
 
 

@@ -80,7 +80,7 @@ export class OfferService {
         }
     }
 
-    static async getOffers(userId: number) {
+    static async getOffers() {
         const url = "http://localhost:8080/tutorme-war/webresources/offer/get";
         const token = localStorage.getItem("token");
         const jsonHeader = Utility.getJsonHeader();

@@ -9,6 +9,8 @@ import {UserState} from "../../reducer/user-reducer";
 import qs from "qs";
 import OfferListComponent from "./OfferList";
 import {message} from "antd";
+import {JobListingService} from "../../services/JobListing";
+import JobListingsComponent from "./JobListings";
 
 const Dashboard = () => {
     const location = useLocation();
@@ -22,22 +24,33 @@ const Dashboard = () => {
     const [offersData, setOffersData] = useState<offerType[]>([]);
 
     // JobListing
+    const [jobListingsData, setJobListingsData] = useState<jobListingType[]>([]);
+
 
     const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
     const {currentUser} = userState;
 
-    const getAllOffers = async(personId: number) => {
-        const data = await OfferService.getOffers(personId);
+    const getAllOffers = async() => {
+        const data = await OfferService.getOffers();
         setAllOffers(data);
         const params: { [key: string]: any } = qs.parse(location.search, { ignoreQueryPrefix: true });
+        setType(params.type);
         if(params.type ==="offers" && data.length >0) {
             filterOffers(params.status, data);
         }
     }
 
+    const getAllJobListings = async() => {
+        const data = await JobListingService.getMyJobListings();
+        setJobListingsData(data);
+        const params: { [key: string]: any } = qs.parse(location.search, { ignoreQueryPrefix: true });
+        setType(params.type);
+    }
+
     useEffect(() => {
         if(currentUser) {
-            getAllOffers(currentUser.personId);
+            getAllOffers();
+            getAllJobListings();
         }
     },[])
 
@@ -47,6 +60,7 @@ const Dashboard = () => {
         }
         const params: { [key: string]: any } = qs.parse(location.search, { ignoreQueryPrefix: true });
         setParams(params);
+        setType(params.type);
         if(params.type ==="offers") {
             filterOffers(params.status);
         }
@@ -66,7 +80,7 @@ const Dashboard = () => {
         const success = await OfferService.withdrawOffer(offerId);
         if(userState.currentUser && success) {
             message.success("Successfully withdraw offer");
-            getAllOffers(userState.currentUser.personId);
+            getAllOffers();
         } else {
             message.error("Unable to withdraw offer");
         }
@@ -76,7 +90,7 @@ const Dashboard = () => {
         const success = await OfferService.rejectOffer(offerId);
         if(userState.currentUser && success) {
             message.success("Successfully rejected offer");
-            getAllOffers(userState.currentUser.personId);
+            getAllOffers();
         } else {
             message.error("Unable to reject offer");
         }
@@ -86,22 +100,38 @@ const Dashboard = () => {
         const success = await OfferService.acceptOffer(offerId);
         if(userState.currentUser && success) {
             message.success("Successfully rejected offer");
-            getAllOffers(userState.currentUser.personId);
+            getAllOffers();
         } else {
             message.error("Unable to reject offer");
         }
     }
 
+    const viewJobListing = (id?: number) => {
+        if(id) history.push('/job?id=' + id)
+    }
+
     return (
         <div className="w-100 flex-row" style={{height: '100vh'}}>
-            <DashboardMenu params={params}/>
-            <div className="w-100 flex-row justify-center" style={{minHeight: "calc(100vh -90px)", backgroundColor: "rgb(237 247 255)",}}>
-                <div >
+            <DashboardMenu params={params} currentUser={userState.currentUser}/>
+            <div className="w-100 flex-col " style={{minHeight: "calc(100vh -90px)", backgroundColor: "rgb(237 247 255)",}}>
+                <div className="fs-24 w-100" style={{fontWeight: 300, backgroundColor: "#fff", padding: '16px 32px', borderTop: '1px solid #e8e8e8'}}>
+                    {type === "offers" ?
+                        <span>
+                            My Offers
+                        </span>
+                        :
+                        <span>
+                            My Job Listings
+                        </span>
+                    }
+                </div>
+                <div className="w-100 flex-col align-center margin-top-btm-12">
                     {type ==="offers"?
                         <OfferListComponent data={offersData} userState={userState}
-                                            withdrawOffer={withdrawOffer} rejectOffer={rejectOffer} acceptOffer={acceptOffer}/>
+                                            withdrawOffer={withdrawOffer} rejectOffer={rejectOffer} acceptOffer={acceptOffer}
+                                            />
                         :
-                        null
+                        <JobListingsComponent data={jobListingsData} viewJobListing={viewJobListing}/>
                     }
                 </div>
             </div>
