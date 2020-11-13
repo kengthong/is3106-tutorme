@@ -10,6 +10,8 @@ import qs from 'qs';
 import { useHistory, useLocation } from 'react-router-dom';
 import { SubjectsService } from '../../services/Subjects';
 import moment from 'antd/node_modules/moment';
+import { UserState } from '../../reducer/user-reducer';
+import { ChatService } from '../../services/Chat';
 
 type jobListingDetailProps = {
     listing: jobListingType
@@ -29,7 +31,7 @@ const MakeOfferForm = (props: any) => {
         // setJobListingList(result);
         setLoading(false);
     }
-
+    const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
     const subjectState = useSelector<IRootState, SubjectState>((state) => state.subjectReducer);
     const loadSubjects = async () => {
         await SubjectsService.getAllSubjects();
@@ -53,16 +55,31 @@ const MakeOfferForm = (props: any) => {
         }
         console.log("fieldsValue =", values);
         createOffer(values);
+
+        const msgValues = {
+            currUserId: userState.currentUser?.personId.toString(),
+            receiverId: props.listing.tutor.personId.toString(),
+            body: "Hi! I have sent you an offer of $" + values.price + " for your listing on " + props.listing.jobListingTitle
+        }
+
+        sendMessage(msgValues)
+        history.push("/chat");
     }
+
 
     const createOffer = async (createOfferParams: any): Promise<void> => {
         const response = await OfferService.createOffer(createOfferParams);
         if (response) {
             return message.success("Dashboard made!")
         } else {
-            return message.error("Error sending offer. Please try again.")
+            return message.error("Error sending offer. Please try again.");
         }
     }
+
+    const sendMessage = async (messageValues: any): Promise<void> => {
+        const response = await ChatService.sendMessage(messageValues.senderId, messageValues.receiverId, messageValues.body);
+    }
+
 
     const tailLayout = {
         wrapperCol: { offset: 8, span: 16 },

@@ -32,8 +32,6 @@ const JobListingDetail = (props: any) => {
         }
     }
 
-
-
     return (
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: "40px" }}>
             <div style={{ display: "flex" }}>
@@ -82,14 +80,19 @@ const JobListingDetail = (props: any) => {
                                 fontSize: "16px"
                             }}
                         >
-                            <p style={{ fontSize: "20px" }}>
+                            <p style={{ fontSize: "24px" }}>
                                 {props.listing.subjects[0].subjectName}
                             </p>
 
-                            <h4>Levels</h4>
-                            <li style={{ fontSize: "16px" }}>
-                                - {props.listing.subjects[0].subjectLevel}
-                            </li>
+                            <h4 style={{ marginBottom: "5px" }}>Levels</h4>
+
+
+                            {props.listing.subjects.map((lvl: any) => (
+                                <li>
+                                    -{lvl.subjectLevel}
+                                </li>
+                            ))}
+
 
                         </Card>
                     </span>

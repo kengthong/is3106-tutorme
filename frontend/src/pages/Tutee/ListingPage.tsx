@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Header from '../../components/Header/Header';
 import { BodyContainer } from '../../components/Layout/BodyContainer';
 import JobListingDetail from '../../components/ListingPage/JobListingDetail';
-import ListingDescription from "../../components/ListingPage/ListingDescription";
 import MakeOfferForm from "../../components/Offer/MakeOfferForm";
 import { Button, Collapse } from 'antd';
 import Review from "../../components/Review/Review";
@@ -14,7 +13,7 @@ import { JobListingService } from "../../services/JobListing";
 import qs from "qs";
 import { useLocation, useHistory } from "react-router-dom";
 
-const TuteeListingPage = () => {
+const ListingPage = () => {
     const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
     const [listingData, setListingData] = useState<jobListingType>();
     useEffect(() => {
@@ -45,4 +44,4 @@ const TuteeListingPage = () => {
     );
 };
 
-export default TuteeListingPage;
+export default ListingPage;

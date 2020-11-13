@@ -19,15 +19,14 @@ import TuteeProfilePage from "../pages/Tutee/Settings/TuteeProfile"
 import TutorProfilePage from "../pages/Tutor/Settings/Profile";
 import TutorDetailsPage from "../pages/Tutor/Settings/PersonalDetails";
 import SearchPage from "../pages/Search/SearchPage";
-import TuteeListingPage from "../pages/Tutee/TuteeListingPage";
-import TutorListingPage from "../pages/Tutor/TutorListingPage";
+import ListingPage from "../pages/Tutee/ListingPage";
 import CreateJobListing from "../pages/Tutor/CreateListingPage";
 import Chat from "../pages/Common/Chat/Chat"
 import FAQ from "../pages/Common/FAQs"
 import AboutUs from "../pages/Common/AboutUs"
 import Feedback from "../pages/Common/Feedback"
 import ContactUs from "../pages/Common/ContactUs"
-import {StaffRoutes} from "../Staff";
+import { StaffRoutes } from "../Staff";
 import OffersPage from "../pages/Common/Dashboard/Dashboard";
 // services
 
@@ -37,8 +36,7 @@ const App = () => {
       <BrowserRouter>
         <Switch>
 
-          <Route path="/job" component={TuteeListingPage} />
-          <Route path="/tutor/listings" component={TutorListingPage} />
+          <Route path="/job" component={ListingPage} />
           <Route path="/login" component={Login} />
           <Route path="/" exact component={LandingPage} isAuthenticated={true} />
           <Route path='/search:params?' component={SearchPage} />
