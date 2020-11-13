@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Input, Button, Card } from 'antd'
+import { Input, Button, Card, message } from 'antd'
 import { CANCELLED } from 'dns';
+import { UserService } from '../../services/User';
 
 export const FeedbackCom = () => {
 
     const [formData, setFormData] = useState({
-        Subject: "",
-        Body: "",
+        body: "",
     });
 
     //To Be implemented
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any): Promise<void> => {
+
+        const response = await UserService.sendFeedback(formData.body);
+        if (response) {
+            message.success("Successfully updated your details")
+        } else {
+            message.error("Unable to save user details");
+        }
+
 
     };
 
@@ -28,26 +36,17 @@ export const FeedbackCom = () => {
     return (
         <div className={"custom-container"} style={{ height: '100%' }}>
             <br />
-            <Card title="Feedback" className="col-lg-12 col-sm-8" >
+            <Card title="Feedback Page" className="col-lg-12 col-sm-8" >
                 <p>
-                    Feedback on any issues you faced or report an incident to our team.
+                    Let us know of any issues you faced or report an incident to our team.
                 </p>
 
-                <br />
                 <form>
                     <div className="p-fluid ">
 
-                        <label htmlFor="Subject">Subject</label>
-                        <Input
-                            name="Subject"
-                            type="text"
-                            onChange={(e) => handleChange(e)}
-                            required={true}
-                        />
-
                         <label htmlFor="Body">Message</label>
                         <Input.TextArea
-                            name="Body"
+                            name="body"
                             rows={4}
                             onChange={(e) => handleChange(e)}
                             required={true}
