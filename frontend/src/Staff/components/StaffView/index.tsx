@@ -8,6 +8,7 @@ import JobListingsTable from "./JobListings";
 import OfferListingTable from "./Offers";
 import { UserService } from "../../../services/User";
 import StaffTable from './StaffTable';
+import ChatCompo from './Chat';
 
 
 export const AdminDash = () => {
@@ -85,6 +86,10 @@ export const AdminDash = () => {
                         <h3>
                             Chat
                         </h3>
+                        <div className="margin-top-btm-12">
+                            <ChatCompo />
+                        </div>
+
                     </TabPane>
 
                     <TabPane tab="Logout" key="8" >
