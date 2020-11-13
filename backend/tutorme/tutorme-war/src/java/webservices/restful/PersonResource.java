@@ -12,7 +12,9 @@ import entity.Staff;
 import entity.Tutee;
 import entity.Tutor;
 import enumeration.GenderEnum;
+import enumeration.StaffPositionEnum;
 import exception.BannedPersonException;
+import exception.InvalidParamsException;
 import exception.PersonLoginFailException;
 import exception.PersonNotFoundException;
 import exception.StaffNotFoundException;
@@ -122,7 +124,7 @@ public class PersonResource implements Serializable {
             exception.add("error", ex.getMessage());
             return Response.status(401).entity(exception.build()).build();
         } catch (BannedPersonException ex) {
-            exception.add("error", ex.getMessage());
+            exception.add("error", "User has been banned.");
             return Response.status(403).entity(exception.build()).build();
         }
         exception.add("error", "Unknown error when logging in.");
@@ -148,7 +150,13 @@ public class PersonResource implements Serializable {
             String pattern = "dd-MM-YYYY";
             SimpleDateFormat dateFormatter = new SimpleDateFormat(pattern);
             Date dob;
-            dob = dateFormatter.parse(dobStr);
+            try {
+                dob = dateFormatter.parse(dobStr);
+            } catch (ParseException ex) {
+                System.out.println("### ParseException");
+                exception.add("error", ex.getMessage());
+                return Response.status(400).entity(exception.build()).build();
+            }
 
             String userType = json.getString("accountType");
             String encodedJWT = null;
@@ -179,12 +187,32 @@ public class PersonResource implements Serializable {
                     payload.add("user", jsonTutee);
                     emailSession.send(tutee.getFirstName(), tutee.getEmail());
                     break;
+                case "staff":
+                    Staff staff = staffSession.createStaff(firstName, lastName, email, password, mobileNum, genderEnum, dob, StaffPositionEnum.OPERATOR);
+                    staff.setSalt(null);
+                    staff.setPassword(null);
+                    staff.setSentMessages(null);
+                    staff.setReceivedMessages(null);
+                    encodedJWT = AuthenticateUser.issueJwt(staff.getPersonId());
+                    String jsonStaff = mapper.writeValueAsString(staff);
+                    payload.add("user", jsonStaff);
+                    emailSession.send(staff.getFirstName(), staff.getEmail());
+                    break;
             }
             payload.add("jwtToken", encodedJWT);
             return Response.status(201).entity(payload.build()).build();
-        } catch (ParseException | JsonProcessingException ex) {
-            exception.add("error", ex.getMessage()).build();
-            return Response.status(400).entity(exception).build();
+        } catch (InvalidParamsException ex) {
+            System.out.println("### InvalidParamsException");
+            exception.add("error", ex.getMessage());
+            return Response.status(409).entity(exception.build()).build();
+        } catch (JsonProcessingException ex) {
+            System.out.println("### JsonProcessingException");
+            exception.add("error", ex.getMessage());
+            return Response.status(401).entity(exception.build()).build();
+        } catch (Exception ex) {
+            System.out.println("### Exception");
+            exception.add("error", "Email has been used.");
+            return Response.status(409).entity(exception.build()).build();
         }
     }
 

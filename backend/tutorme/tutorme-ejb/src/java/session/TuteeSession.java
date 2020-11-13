@@ -7,11 +7,13 @@ package session;
 
 import entity.Tutee;
 import enumeration.GenderEnum;
+import exception.InvalidParamsException;
 import exception.TuteeNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -53,7 +55,7 @@ public class TuteeSession implements TuteeSessionLocal {
     }
 
     @Override
-    public Tutee createTutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) {
+    public Tutee createTutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) throws InvalidParamsException {
         Tutee newTutee = new Tutee();
         try {
             String salt = ch.generateRandomString(64);
@@ -67,10 +69,14 @@ public class TuteeSession implements TuteeSessionLocal {
             newTutee.setMobileNum(mobileNum);
             newTutee.setGender(gender);
             newTutee.setDob(dob);
+            em.persist(newTutee);
         } catch (NoSuchAlgorithmException ex) {
             System.out.println("Hashing error when creating tutee.");
+        } catch (EJBException ex) {
+            System.out.println("%%% EJB Exception");
+            throw new InvalidParamsException("Email has been used before");
         }
-        em.persist(newTutee);
+        
         return newTutee;
     }
 
