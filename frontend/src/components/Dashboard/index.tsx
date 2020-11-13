@@ -27,7 +27,7 @@ const Dashboard = () => {
     const {currentUser} = userState;
 
     const getAllOffers = async(personId: number) => {
-        const data = await OfferService.getOffer(personId);
+        const data = await OfferService.getOffers(personId);
         setAllOffers(data);
         const params: { [key: string]: any } = qs.parse(location.search, { ignoreQueryPrefix: true });
         if(params.type ==="offers" && data.length >0) {

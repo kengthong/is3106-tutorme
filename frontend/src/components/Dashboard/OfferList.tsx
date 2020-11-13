@@ -45,8 +45,9 @@ const OfferListComponent = (props: any) => {
     {
       title: 'Tutor',
       dataIndex: 'jobListing',
-      render: (record: any) => {
-        return (<span> {record.jobListing.firstName + " " + record.jobListing.lastName}</span>)
+      render: (jobListing: any) => {
+        const { firstName, lastName } = jobListing && jobListing.tutor || "";
+        return (<span> {firstName + " " + lastName}</span>)
       },
     },
     {
@@ -94,9 +95,10 @@ const OfferListComponent = (props: any) => {
       key: "action",
       render: (record: any) => {
         if (userState.currentUser && userState.currentUser.personEnum === "TUTEE") {
+          const status = record && record.offerStatus || "";
           return (
               <>
-                <Button danger size="small" disabled={["ACCEPTED", "REJECTED", "WITHDRAWN"].includes(record.offerStatus)}
+                <Button danger size="small" disabled={["ACCEPTED", "REJECTED", "WITHDRAWN"].includes(status)}
                 onClick={() => props.withdrawOffer(record.offerId)}>
                   <span> Withdraw </span>
                 </Button>
