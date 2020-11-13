@@ -6,20 +6,21 @@ import { UserService } from '../../services/User';
 
 export const FeedbackCom = () => {
 
+    const history = useHistory();
+
     const [formData, setFormData] = useState({
         body: "",
     });
 
     //To Be implemented
     const handleSubmit = async (e: any): Promise<void> => {
-
         const response = await UserService.sendFeedback(formData.body);
         if (response) {
-            message.success("Successfully updated your details")
+            message.success("Successfully sent your feedback to Customer Care")
+            history.push("/chat");
         } else {
-            message.error("Unable to save user details");
+            message.error("Error: Unable to Send");
         }
-
 
     };
 

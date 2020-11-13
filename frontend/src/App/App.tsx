@@ -27,8 +27,10 @@ import AboutUs from "../pages/Common/AboutUs"
 import Feedback from "../pages/Common/Feedback"
 import ContactUs from "../pages/Common/ContactUs"
 import { StaffRoutes } from "../Staff";
-import OffersPage from "../pages/Common/Dashboard/Dashboard";
 // services
+import { useSelector } from "react-redux";
+import { UserState } from "../reducer/user-reducer";
+import { IRootState } from "../store";
 
 const App = () => {
   return (
@@ -44,16 +46,14 @@ const App = () => {
           <Route path="/about-us" component={AboutUs} />
           <Route path="/contact-us" component={ContactUs} />
           <Route path="/feedback" component={Feedback} />
-          <ProtectedRoute path="/chat" component={Chat} isAuthenticated={true} />
-          <ProtectedRoute path="/login" component={Login} />
-          <ProtectedRoute path="/tutor-profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
-          <ProtectedRoute path="/tutor/settings/personal-details" allowedUser='tutor' exact component={TutorDetailsPage} isAuthenticated={true} />
-          <ProtectedRoute path="/tutor/CreateNewListing" allowedUser='tutor' exact component={CreateJobListing} isAuthenticated={true} />
+          <ProtectedRoute path="/chat" component={Chat} />
+          <ProtectedRoute path="/tutor-profile" allowedUser='tutor' exact component={TutorProfilePage} />
+          <ProtectedRoute path="/tutor/settings/personal-details" allowedUser='tutor' exact component={TutorDetailsPage} />
+          <ProtectedRoute path="/tutor/CreateNewListing" allowedUser='tutor' exact component={CreateJobListing} />
           {/*For viewing tutor profile directly*/}
           {/*<ProtectedRoute path="/tutor-profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />*/}
-          <Route path="/dashboard" component={OffersPage} />
           <Route path="/registration" component={Registration} />
-          <Route path="/tutee-profile" component={TuteeProfilePage} />
+          <ProtectedRoute path="/tutee-profile" allowedUser='tutee' component={TuteeProfilePage} />
           {/*<ProtectedRoute path="/settings" component={Settings}/>*/}
           {/*<ProtectedRoute component={Dashboard}/>*/}
           {/*<StaffRoutes/>*/}
@@ -67,7 +67,9 @@ const App = () => {
 };
 
 export const ProtectedRoute = ({ component, isAuthenticated, allowedUser, ...rest }: any) => {
-  const userType = 'tutor';
+  const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
+  const userType = userState.currentUser?.personEnum.toLowerCase();
+  isAuthenticated = userState.isAuthenticated;
   // If user is null, it means the page is a common page. Else, check if user is a tutee or a tutor, and if this user
   // is authorized to view the page
   const isAppropriateUser = (!allowedUser) || (allowedUser && userType === allowedUser);
