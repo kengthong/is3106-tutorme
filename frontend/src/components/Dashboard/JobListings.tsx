@@ -36,13 +36,6 @@ const JobListingsComponent = (props: any) => {
             }
         },
         {
-            title: 'Tutor',
-            dataIndex: 'tutor',
-            render: (record: any) => {
-                return (<span> {record.firstName + " " + record.lastName}</span>)
-            },
-        },
-        {
             title: 'Rates ($)',
             dataIndex: 'hourlyRates',
             render: (rates: number) => {
