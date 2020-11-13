@@ -1,17 +1,17 @@
-import React, {useState} from "react";
-import {Redirect, useHistory} from "react-router-dom";
-import {REGISTRATION_URL} from "../../config/constants";
+import React, { useState } from "react";
+import { Redirect, useHistory } from "react-router-dom";
+import { REGISTRATION_URL } from "../../config/constants";
 import logo from "../../assets/logo.jpg";
-import {Button, Input} from "antd";
-import {UserState} from "../../reducer/user-reducer";
-import {useSelector} from "react-redux";
-import {IRootState} from "../../store";
-import {StaffService} from "../../services/Staff";
+import { Button, Input } from "antd";
+import { UserState } from "../../reducer/user-reducer";
+import { useSelector } from "react-redux";
+import { IRootState } from "../../store";
+import { StaffService } from "../../services/Staff";
 
 const StaffLogin = () => {
     const history = useHistory();
     const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
-    const [ hasSubmit, setHasSubmit] = useState(false);
+    const [hasSubmit, setHasSubmit] = useState(false);
     const handleRedirectToRegister = () => history.push(REGISTRATION_URL);
 
     const [formData, setFormData] = useState({
@@ -36,23 +36,23 @@ const StaffLogin = () => {
     };
 
     return (
-        <div className="custom-container flex-row align-center" style={{height: '100vh'}}>
-            <div className="border-e8" style={{padding: '24px'}}>
+        <div className="custom-container flex-row align-center" style={{ height: '100vh' }}>
+            <div className="border-e8" style={{ padding: '24px' }}>
                 <div className='flex-col align-center'>
-                    <img src={logo} style={{width: '100px', height: '100px' }} alt='logo'/>
+                    <img src={logo} style={{ width: '100px', height: '100px' }} alt='logo' />
                     <span
                         style={{
                             fontSize: "3rem",
                             padding: 50,
                         }}
                     >
-                    Staff Login
+                        Staff Login
                 </span>
                 </div>
 
-                {userState.isAuthenticated && <Redirect to={"/"} />}
-                <div style={{fontSize: '16px', color: 'red'}}>
-                    {hasSubmit && userState.error? userState.errorMsg: null }
+                {userState.isAuthenticated && <Redirect to={"/staff/home"} />}
+                <div style={{ fontSize: '16px', color: 'red' }}>
+                    {hasSubmit && userState.error ? userState.errorMsg : null}
                 </div>
                 <form onSubmit={handleSubmit}>
                     <div className="p-fluid">
