@@ -5,7 +5,8 @@ export const LandingPageBodyContainer = (props: any) => {
         <div
             style={{
                 backgroundColor: "rgb(237 247 255)",
-                minHeight: "calc(100vh - 90px - 285px)"
+                minHeight: "calc(100vh - 90px - 285px)",
+                width: '100%'
             }}
         >
             <div className='custom-container'>
@@ -19,7 +20,8 @@ export const BodyContainer = (props: any) => {
     <div
       style={{
         backgroundColor: "rgb(237 247 255)",
-        minHeight: "calc(100vh - 90px)"
+        minHeight: "calc(100vh - 90px)",
+          width: '100%'
       }}
     >
       <div className='custom-container'>

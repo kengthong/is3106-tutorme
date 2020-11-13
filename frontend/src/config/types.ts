@@ -113,6 +113,7 @@ type offerType = {
         subjectLevel: string;
         subjectName: string;
     },
+    jobListing: jobListingType,
     createdDate: string;
     numHoursPerSession: number;
     numSessions: number;

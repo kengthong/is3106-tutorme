@@ -28,6 +28,7 @@ import AboutUs from "../pages/Common/AboutUs"
 import Feedback from "../pages/Common/Feedback"
 import ContactUs from "../pages/Common/ContactUs"
 import {StaffRoutes} from "../Staff";
+import OffersPage from "../pages/Common/Dashboard/Dashboard";
 // services
 
 const App = () => {
@@ -52,7 +53,7 @@ const App = () => {
           <ProtectedRoute path="/tutor/CreateNewListing" allowedUser='tutor' exact component={CreateJobListing} isAuthenticated={true} />
           {/*For viewing tutor profile directly*/}
           {/*<ProtectedRoute path="/tutor-profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />*/}
-
+          <Route path="/dashboard" component={OffersPage} />
           <Route path="/registration" component={Registration} />
           <Route path="/tutee-profile" component={TuteeProfilePage} />
           {/*<ProtectedRoute path="/settings" component={Settings}/>*/}
