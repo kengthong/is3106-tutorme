@@ -192,9 +192,30 @@ type tuteeDataType = {
     profileImage?: string;
     dob: string;
     sentMessage?: null;
-    receivedMessages?:null;
-    profileDesc?:string;
-    offers?:null;
+    receivedMessages?: null;
+    profileDesc?: string;
+    offers?: null;
+}
+
+type staffDataType = {
+    personId: number;
+    createdDate: string;
+    activeStatus: boolean;
+    staffName: {
+        firstName: string;
+        lastName: string;
+    }
+    email: string;
+    mobileNum: string;
+    password?: null;
+    personEnum: string;
+    gender: string;
+    salt?: null;
+    profileImage?: string;
+    dob: string;
+    sentMessage?: null;
+    receivedMessages?: null;
+    staffPositionEnum: string;
 }
 
 
