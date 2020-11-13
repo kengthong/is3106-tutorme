@@ -54,7 +54,7 @@ const CreateJobListing = () => {
         }
         console.log(values);
         createJobListing(values);
-        // history.push('/search');
+        history.push('/search');
     }
 
     const createJobListing = async (createJobListingParams: any): Promise<void> => {
