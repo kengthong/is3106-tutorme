@@ -92,7 +92,7 @@ const Header = () => {
                 >
                     {userState.isAuthenticated && userState.currentUser ?
                         <Popover placement="bottomRight"
-                            content={ProfileContent(userState.currentUser.personEnum, handleLogout)}
+                            content={ProfileContent(userState.currentUser.personEnum, userState, handleLogout)}
                             trigger="click" className='clickable'>
                             <div className='flex-row align-center justify-center border-e8'
                                 style={{ minWidth: '100px', padding: '8px 16px', borderRadius: '4px' }}
@@ -145,10 +145,9 @@ const Header = () => {
     );
 };
 
-const ProfileContent = (personEnum: string, handleLogout: () => void) => {
-    const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
+const ProfileContent = (personEnum: string, userState: UserState, handleLogout: () => void) => {
     return (
-        <div style={{ height: '80px', width: '150px' }}>
+        <div style={{ width: '150px' }}>
             {personEnum === 'TUTOR' ?
                 <>
                     <div className='clickable highlightable'>
