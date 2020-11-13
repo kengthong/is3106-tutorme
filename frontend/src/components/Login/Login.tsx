@@ -1,17 +1,17 @@
-import React, {useState} from "react";
-import {Redirect, useHistory} from "react-router-dom";
-import {REGISTRATION_URL} from "../../config/constants";
+import React, { useState } from "react";
+import { Redirect, useHistory } from "react-router-dom";
+import { REGISTRATION_URL } from "../../config/constants";
 import logo from "../../assets/logo.jpg";
-import {Button, Input} from "antd";
-import {UserService} from "../../services/User";
-import {UserState} from "../../reducer/user-reducer";
-import {useSelector} from "react-redux";
-import {IRootState} from "../../store";
+import { Button, Input } from "antd";
+import { UserService } from "../../services/User";
+import { UserState } from "../../reducer/user-reducer";
+import { useSelector } from "react-redux";
+import { IRootState } from "../../store";
 
 const Login = () => {
   const history = useHistory();
   const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
-  const [ hasSubmit, setHasSubmit] = useState(false);
+  const [hasSubmit, setHasSubmit] = useState(false);
   const handleRedirectToRegister = () => history.push(REGISTRATION_URL);
 
   const [formData, setFormData] = useState({
@@ -29,15 +29,13 @@ const Login = () => {
   };
 
   const handleSubmit = (e: any) => {
-    //Should call on
-    //Skeleton
     setHasSubmit(true);
     UserService.login(formData.email, formData.password);
   };
 
   return (
     <div>
-      <img src={logo} style={{ padding: 100 }} alt='logo'/>
+      <img src={logo} style={{ padding: 100 }} alt='logo' />
       <h1
         style={{
           fontSize: "3rem",
@@ -48,8 +46,8 @@ const Login = () => {
       </h1>
 
       {userState.isAuthenticated && <Redirect to={"/"} />}
-      <div style={{fontSize: '16px', color: 'red'}}>
-        {hasSubmit && userState.error? userState.errorMsg: null }
+      <div style={{ fontSize: '16px', color: 'red' }}>
+        {hasSubmit && userState.error ? userState.errorMsg : null}
       </div>
       <form onSubmit={handleSubmit}>
         <div className="p-fluid">
@@ -92,6 +90,8 @@ const Login = () => {
               Registration
             </Button>
           </div>
+          <br />
+          <br />
         </div>
       </form>
     </div>
