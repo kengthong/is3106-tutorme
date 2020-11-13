@@ -4,7 +4,7 @@ import { Card } from "antd";
 import BasicDetails from "./BasicDetails";
 import MakeOfferComponent from "../../MakeOffer/MakeOffer";
 import ReviewsComponent from "../../Reviews/Reviews";
-import OfferListComponent from "../../OfferList/OfferList";
+import OfferListComponent from "../../Dashboard/OfferList";
 import {TutorService} from "../../../services/Tutor";
 import {useSelector} from "react-redux";
 import {IRootState} from "../../../store";

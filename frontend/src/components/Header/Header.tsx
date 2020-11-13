@@ -161,13 +161,17 @@ const ProfileContent = (personEnum: string, userState: UserState, handleLogout: 
                         </a>
                     </div>
                     <div className='clickable highlightable'>
-                        <a className='selection w-100' href="/tutor/offers">
-                            My Offers
+                        <a className='selection w-100' href="/dashboard">
+                            Dashboard
                         </a>
                     </div>
                 </>
                 :
-                null
+                <div className='clickable highlightable'>
+                    <a className='selection w-100' href="/dashboard">
+                        Dashboard
+                    </a>
+                </div>
             }
             <div className='clickable highlightable'>
                 <a className='selection w-100'
