@@ -117,4 +117,23 @@ export class StaffService {
             return [];
         }
     }
+
+    static async getDashboard() {
+        const url = BACKEND_BASE_URL + '/staff/home';
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+
+        const response = await Utility.fetchBuilder(url, 'GET', header, null);
+        if (response.ok) {
+            const data = response.json();
+            console.log(data)
+            return data;
+        } else {
+            return [];
+        }
+    }
 }

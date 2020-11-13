@@ -5,6 +5,7 @@ import Dashboard from "../../Staff/components/StaffView/Dashboard";
 
 export const AdminDash = () => {
 
+    
     const { TabPane } = Tabs;
 
     return (
