@@ -55,7 +55,7 @@ const JobListingsComponent = (props: any) => {
             dataIndex: 'reviewCount',
         },
         {
-            title: 'Review Rating',
+            title: 'Average Rating',
             dataIndex: 'reviewScore',
         },
         {
