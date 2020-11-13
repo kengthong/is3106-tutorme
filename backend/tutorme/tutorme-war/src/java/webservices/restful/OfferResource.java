@@ -97,12 +97,14 @@ public class OfferResource {
 
     // Considering to remove, use TuteeResources's getTutee to retrieve associated offers
     @GET
-    @Path("/tuteeOffers/{tuteeId}")
+    @Path("/get")
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTuteeOffers(@PathParam("tuteeId") Long tuteeId) {
-        System.out.println("Getting tutee's offers...");
-        List<Offer> offers = offerSession.retrieveOffersByTuteeId(tuteeId);
+    public Response getPersonOffers(@Context SecurityContext securityContext) {
+        UserPrincipal person = (UserPrincipal) securityContext.getUserPrincipal();
+        Long personId = person.getPersonId();
+        System.out.println("Getting person's offers...");
+        List<Offer> offers = offerSession.retrieveOffersByPersonId(personId);
         for (Offer o : offers) {
             Tutee tutee = o.getTutee();
             tutee.setReceivedMessages(null);
@@ -181,7 +183,7 @@ public class OfferResource {
 
             System.out.println("Making new offer...tuteeId: " + tuteeId + " for jobListingId:" + jobListingId);
             Offer offer = offerSession.createOffer(offeredRate, startDate, tuteeId, subject.getSubjectId(), jobListingId, numSessions, hoursPerSession, notes.trim());
-            List<Offer> offers = offerSession.retrieveOffersByTuteeId(tuteeId);
+            List<Offer> offers = offerSession.retrieveOffersByPersonId(tuteeId);
             for (Offer o : offers) {
                 Tutee tutee = o.getTutee();
                 tutee.setReceivedMessages(null);

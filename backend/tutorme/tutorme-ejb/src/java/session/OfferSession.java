@@ -74,9 +74,11 @@ public class OfferSession implements OfferSessionLocal {
     }
 
     @Override
-    public List<Offer> retrieveOffersByTuteeId(Long tuteeId) {
-        Query query = em.createQuery("SELECT o from Offer o WHERE o.tutee.personId = :inputTuteeId");
-        query.setParameter("inputTuteeId", tuteeId);
+    public List<Offer> retrieveOffersByPersonId(Long personId) {
+        Query query = em.createQuery("SELECT o from Offer o "
+                + "WHERE o.tutee.personId = :inputPersonId "
+                + "OR o.jobListing.tutor.personId = :inputPersonId");
+        query.setParameter("inputPersonId", personId);
         return query.getResultList();
     }
 
