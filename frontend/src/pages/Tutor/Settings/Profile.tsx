@@ -46,9 +46,6 @@ const TutorProfilePage = () => {
       <BodyContainer>
         <div style={{ padding: "20px 0" }} />
         <Row style={{ width: "100%" }} gutter={20}>
-          <Col span={4}>
-            <TutorSettingsMenu />
-          </Col>
           <Col span={20}>
             <TutorProfileComponent {...userData} settingsPage={true}/>
           </Col>

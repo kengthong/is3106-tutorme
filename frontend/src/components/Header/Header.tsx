@@ -1,177 +1,179 @@
 import React from "react";
 import logo from "../../assets/logo.jpg";
-import { UserService } from "../../services/User";
-import { UserState } from "../../reducer/user-reducer";
-import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
-import { Avatar, Popover } from "antd";
-import { useHistory } from "react-router-dom";
+import {UserService} from "../../services/User";
+import {UserState} from "../../reducer/user-reducer";
+import {useSelector} from "react-redux";
+import {IRootState} from "../../store";
+import {Avatar, Popover} from "antd";
+import {useHistory} from "react-router-dom";
 
 const Header = () => {
-  const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
-  const history = useHistory();
-  const handleLogout = () => {
-    UserService.logout();
-    history.push("/");
-  }
+    const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
+    const history = useHistory();
+    const handleLogout = () => {
+        UserService.logout();
+        history.push("/");
+    }
 
-  const handleProfileClick = () => {
+    const handleProfileClick = () => {
 
-  }
+    }
 
-  return (
-    <div className="navbar navbar-inverse navbar-fixed-top" style={{ zIndex: 0 }}>
-      <div className="container">
-        <div className="col-lg-2 col-sm-2">
-          <div className="navbar-header">
-            <button
-              type="button"
-              className="navbar-toggle"
-              data-toggle="collapse"
-              data-target="#bs-example-navbar-collapse-1"
-            >
-              <span className="sr-only">Toggle navigation</span>{" "}
-              <span className="icon-bar"></span>{" "}
-              <span className="icon-bar"></span>{" "}
-              <span className="icon-bar"></span>
-            </button>
-            <a className="navbar-brand" href="/">
-              <img
-                src={logo}
-                alt="logo"
-                style={{ width: "70px", height: "70px" }}
-              />
-            </a>
-          </div>
-        </div>
-        <div
-          className="col-lg-7 col-sm-8"
-          style={{ paddingTop: "20px" }}
-        >
-          <ul className="nav navbar-nav">
-            <li>
-              <a href="/">Home</a>
-            </li>
-            <li>
-              <a href="/search">Search</a>
-            </li>
-            <li>
-              <a href="/FAQ">FAQs</a>
-            </li>
+    return (
+        <div className="navbar navbar-inverse navbar-fixed-top" style={{zIndex: 0}}>
+            <div className="container">
+                <div className="col-lg-2 col-sm-2">
+                    <div className="navbar-header">
+                        <button
+                            type="button"
+                            className="navbar-toggle"
+                            data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1"
+                        >
+                            <span className="sr-only">Toggle navigation</span>{" "}
+                            <span className="icon-bar"></span>{" "}
+                            <span className="icon-bar"></span>{" "}
+                            <span className="icon-bar"></span>
+                        </button>
+                        <a className="navbar-brand" href="/">
+                            <img
+                                src={logo}
+                                alt="logo"
+                                style={{width: "70px", height: "70px"}}
+                            />
+                        </a>
+                    </div>
+                </div>
+                <div
+                    className="col-lg-7 col-sm-8"
+                    style={{paddingTop: "20px"}}
+                >
+                    <ul className="nav navbar-nav">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        <li>
+                            <a href="/search">Search</a>
+                        </li>
+                        <li>
+                            <a href="/FAQ">FAQs</a>
+                        </li>
 
-            <li>
-              <a href="/feedback">Feedback</a>
-            </li>
+                        <li>
+                            <a href="/feedback">Feedback</a>
+                        </li>
 
-            <li>
-              <a href="/contact-us">Contact us</a>
-            </li>
+                        <li>
+                            <a href="/contact-us">Contact us</a>
+                        </li>
 
-            {!userState.isAuthenticated ?
-              <li>
-                <a href="/registration">Register</a>
-              </li>
-              :
+                        {!userState.isAuthenticated ?
+                            <li>
+                                <a href="/registration">Register</a>
+                            </li>
+                            :
 
-              null
+                            null
 
-            }
-            {userState.isAuthenticated ?
-              <li>
-                <a href="/chat">Chat</a>
-              </li>
-              :
-              null
-            }
-          </ul>
-        </div>
-
-        <div
-          className="col-lg-3 col-sm-2 flex-row align-center"
-          style={{ paddingTop: "20px" }}
-        >
-          {userState.isAuthenticated && userState.currentUser ?
-            <Popover placement="bottomRight" content={ProfileContent(userState.currentUser.personEnum, handleLogout)} trigger="click" className='clickable'>
-              <div className='flex-row align-center justify-center border-e8' style={{ minWidth: '100px', padding: '8px 16px', borderRadius: '4px' }}
-                onClick={handleProfileClick}
-              >
-                <div>
-                  <Avatar style={{ backgroundColor: '#C2175B' }}>
-                    {userState.currentUser?.firstName.substring(0, 1).toUpperCase()}
-                  </Avatar>
+                        }
+                        {userState.isAuthenticated ?
+                            <li>
+                                <a href="/chat">Chat</a>
+                            </li>
+                            :
+                            null
+                        }
+                    </ul>
                 </div>
 
-                <div style={{ paddingLeft: '8px' }}>
-                  {userState.currentUser?.firstName}
+                <div
+                    className="col-lg-3 col-sm-2 flex-row align-center"
+                    style={{paddingTop: "20px"}}
+                >
+                    {userState.isAuthenticated && userState.currentUser ?
+                        <Popover placement="bottomRight"
+                                 content={ProfileContent(userState.currentUser.personEnum, handleLogout)}
+                                 trigger="click" className='clickable'>
+                            <div className='flex-row align-center justify-center border-e8'
+                                 style={{minWidth: '100px', padding: '8px 16px', borderRadius: '4px'}}
+                                 onClick={handleProfileClick}
+                            >
+                                <div>
+                                    <Avatar style={{backgroundColor: '#C2175B'}}>
+                                        {userState.currentUser?.firstName.substring(0, 1).toUpperCase()}
+                                    </Avatar>
+                                </div>
+
+                                <div style={{paddingLeft: '8px'}}>
+                                    {userState.currentUser?.firstName}
+                                </div>
+                            </div>
+                        </Popover>
+
+                        :
+                        <ul className="nav navbar-nav myProfileButton">
+                            <li>
+                                <a href="/login">Sign In</a>
+                            </li>
+                        </ul>
+                    }
+                    {/*<ul className="nav navbar-nav myProfileButton">*/}
+                    {/*  {userState.isAuthenticated ?*/}
+                    {/*    <li>*/}
+                    {/*      <a onClick={() => handleLogout()}>Sign Out</a>*/}
+                    {/*    </li>*/}
+                    {/*    : <li>*/}
+                    {/*      <a href="/login">Sign In</a>*/}
+                    {/*    </li>*/}
+                    {/*  }*/}
+                    {/*</ul>*/}
+
                 </div>
-              </div>
-            </Popover>
 
-            :
-            <ul className="nav navbar-nav myProfileButton">
-              <li>
-                <a href="/login">Sign In</a>
-              </li>
-            </ul>
-          }
-          {/*<ul className="nav navbar-nav myProfileButton">*/}
-          {/*  {userState.isAuthenticated ?*/}
-          {/*    <li>*/}
-          {/*      <a onClick={() => handleLogout()}>Sign Out</a>*/}
-          {/*    </li>*/}
-          {/*    : <li>*/}
-          {/*      <a href="/login">Sign In</a>*/}
-          {/*    </li>*/}
-          {/*  }*/}
-          {/*</ul>*/}
-
+            </div>
         </div>
-
-      </div>
-    </div>
-  );
+    );
 };
 
 const ProfileContent = (personEnum: string, handleLogout: () => void) => {
-  const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
-  function showCreateNewList() {
-    if (userState.currentUser && userState.currentUser.personEnum === "TUTOR") {
-      return <div className='clickable highlightable'>
-        <a className='selection w-100' href="/tutor/createNewListing">
-          New Listing
-        </a>
-      </div>
-    } else {
-      return <div></div>
-    }
-  }
+    const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
+    return (
+        <div style={{height: '80px', width: '150px'}}>
+            {personEnum === 'TUTOR' ?
+                <>
+                    <div className='clickable highlightable'>
+                        <a className='selection w-100' href={'/tutor-profile'}>
+                            My Profile
+                        </a>
+                    </div>
+                    <div className='clickable highlightable'>
+                        <a className='selection w-100' href="/tutor/createNewListing">
+                            New Listing
+                        </a>
+                    </div>
+                    <div className='clickable highlightable'>
+                        <a className='selection w-100' href="/tutor/offers">
+                            My Offers
+                        </a>
+                    </div>
+                </>
+                :
+                null
+            }
+            <div className='clickable highlightable'>
+                <a className='selection w-100'
+                   href={`/${personEnum === 'TUTEE' ? 'tutee-profile' : 'tutor/settings/personal-details'}`}>
+                    Settings
+                </a>
+            </div>
 
-  return (
-    <div style={{ height: '80px', width: '150px' }}>
-      {personEnum === 'TUTOR' ?
-        <div className='clickable highlightable'>
-          <a className='selection w-100' href={'/tutor-profile'}>
-            My Profile
-        </a>
+            <div className='clickable highlightable'>
+                <div className='selection w-100' onClick={handleLogout}>
+                    <a>Log Out</a>
+                </div>
+            </div>
         </div>
-        :
-        null
-      }
-      <div className='clickable highlightable'>
-        <a className='selection w-100' href={`/${personEnum === 'TUTEE' ? 'tutee-profile' : 'tutor/settings/personal-details'}`}>
-          Settings
-        </a>
-      </div>
-
-      {showCreateNewList()}
-
-      <div className='clickable highlightable'>
-        <div className='selection w-100' onClick={handleLogout}>
-          <a>Log Out</a>
-        </div>
-      </div>
-    </div>
-  )
+    )
 };
 
 export default Header;

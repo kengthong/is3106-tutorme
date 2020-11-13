@@ -18,7 +18,6 @@ const TutorSettingsMenu = () => {
       }}
       style={{ width: "100%", marginRight: "20px" }}
     >
-      <Menu.Item key="profile">Profile</Menu.Item>
       <Menu.Item key="personal-details">Personal Details</Menu.Item>
     </Menu>
   );
