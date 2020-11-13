@@ -6,6 +6,7 @@ import entity.Person;
 import entity.Rating;
 import entity.Staff;
 import entity.Tutee;
+import entity.Tutor;
 import exception.PersonNotFoundException;
 import filter.StaffJWTTokenNeeded;
 import java.util.ArrayList;
@@ -80,7 +81,13 @@ public class StaffResource {
 
             JobListing jobListing = o.getJobListing();
             jobListing.setOffers(null);
-            jobListing.setTutor(null);
+
+            Tutor tutor = jobListing.getTutor();
+            tutor.setPassword(null);
+            tutor.setSalt(null);
+            tutor.setSentMessages(null);
+            tutor.setReceivedMessages(null);
+            tutor.setJobListings(null);
         }
         GenericEntity<List<Offer>> payload = new GenericEntity<List<Offer>>(offers) {
         };
@@ -108,14 +115,14 @@ public class StaffResource {
         builder.add("numActiveJobListings", numActiveJobListings);
         builder.add("jobListingGrowth", jobListingGrowth);
 
-        Integer numActiveOffers = offerSession.getActiveOffers();
         Integer offerGrowth = offerSession.getOfferGrowth();
-        builder.add("numActiveOffers", numActiveOffers);
         builder.add("offerGrowth", offerGrowth);
 
         Double offerAcceptanceRate = offerSession.getOfferAcceptanceRate();
+        Double offerWithdrawalRate = offerSession.getOfferWithdrawalRate();
         Double offerRejectionRate = offerSession.getOfferRejectionRate();
         builder.add("offerAcceptanceRate", offerAcceptanceRate);
+        builder.add("offerWithdrawalRate", offerWithdrawalRate);
         builder.add("offerRejectionRate", offerRejectionRate);
 
         return Response.status(200).entity(builder.build()).build();

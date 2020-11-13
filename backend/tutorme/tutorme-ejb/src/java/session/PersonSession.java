@@ -6,6 +6,7 @@
 package session;
 
 import entity.Person;
+import exception.BannedPersonException;
 import exception.PersonLoginFailException;
 import exception.PersonNotFoundException;
 import java.util.List;
@@ -28,14 +29,18 @@ public class PersonSession implements PersonSessionLocal {
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
     @Override
-    public Person login(String email, String password) throws PersonLoginFailException {
+    public Person login(String email, String password) throws PersonLoginFailException, BannedPersonException {
         Query query = em.createQuery("SELECT p from Person p WHERE p.email=:email");
         query.setParameter("email", email.toLowerCase());
         try {
             Person person = (Person) query.getSingleResult();
             String hashedInputPassword = ch.byteArrayToHexString(ch.doHashPassword(password.concat(person.getSalt())));
             if (person.getPassword().equals(hashedInputPassword)) {
-                return person;
+                if (person.getActiveStatus()) {
+                    return person;
+                } else {
+                    throw new BannedPersonException ("User was banned.");
+                }
             } else {
                 throw new PersonLoginFailException("Invalid login credentials.");
             }

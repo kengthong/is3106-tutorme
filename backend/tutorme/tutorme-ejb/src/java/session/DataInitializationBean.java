@@ -89,7 +89,7 @@ public class DataInitializationBean {
         c.set(2015, 12, 31);
         Date randomEndDate = c.getTime();
 
-        Tutor tutor1 = tutorSession.createTutorInit("Hsiang", "Hui", "HsiangHui@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), QualificationEnum.BACHELOR, CitizenshipEnum.SINGAPORE, RaceEnum.CHINESE, "I have 6 years of tutoring kids and very experienced. Please pm me for more info or to negotiate my rates");
+        Tutor tutor1 = tutorSession.createTutorInit("Hsiang", "Hui", "hsianghui@nus.edu.sg", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), QualificationEnum.BACHELOR, CitizenshipEnum.SINGAPORE, RaceEnum.CHINESE, "I have 6 years of tutoring kids and very experienced. Please pm me for more info or to negotiate my rates");
         em.flush();
         Tutor tutor2 = tutorSession.createTutorInit("Enelton", "Satria", "EneltonSatria@gmail.com", "password", String.valueOf(randomNumberGenerator(80000001, 99999998)), GenderEnum.FEMALE, randomDateBetween(randomStartDate, randomEndDate), QualificationEnum.DIPLOMA, CitizenshipEnum.SINGAPORE, RaceEnum.INDIAN, "Please chat with me!");
         em.flush();
@@ -175,8 +175,8 @@ public class DataInitializationBean {
             combo6.add(sciencePrimary6.getSubjectId());
 
             //new JobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc)
-            jobListing = jobListingSession.createJobListingInit(tutorSession.retrieveTutorByEmail("HsiangHui@gmail.com").getPersonId(), combo1, 45.0, "Anyday except weekends", "North", "Math P1 to P4", "Negotiable prices");
-            jobListing = jobListingSession.createJobListingInit(tutorSession.retrieveTutorByEmail("HsiangHui@gmail.com").getPersonId(), combo4, 35.0, "Anyday except weekends", "North", "Science P3 to P6", "Negotiable prices");
+            jobListing = jobListingSession.createJobListingInit(tutorSession.retrieveTutorByEmail("hsianghui@nus.edu.sg").getPersonId(), combo1, 45.0, "Anyday except weekends", "North", "Math P1 to P4", "Negotiable prices");
+            jobListing = jobListingSession.createJobListingInit(tutorSession.retrieveTutorByEmail("hsianghui@nus.edu.sg").getPersonId(), combo4, 35.0, "Anyday except weekends", "North", "Science P3 to P6", "Negotiable prices");
             jobListing = jobListingSession.createJobListingInit(tutorSession.retrieveTutorByEmail("EneltonSatria@gmail.com").getPersonId(), combo2, 15.0, "Monday Only", "South", "Math P2 to P5", "Fixed prices");
             jobListing = jobListingSession.createJobListingInit(tutorSession.retrieveTutorByEmail("EneltonSatria@gmail.com").getPersonId(), combo5, 65.0, "Monday Only", "South", "Science P1 to P4", "Fixed prices");
             jobListing = jobListingSession.createJobListingInit(tutorSession.retrieveTutorByEmail("KengThong@gmail.com").getPersonId(), combo3, 50.0, "Weekdays Only", "East", "Science P3 to P6", "PM me fast");
@@ -468,7 +468,7 @@ public class DataInitializationBean {
 
     private void initMessages() {
         try {
-            Tutor tutor1 = tutorSession.retrieveTutorByEmail("HsiangHui@gmail.com");
+            Tutor tutor1 = tutorSession.retrieveTutorByEmail("hsianghui@nus.edu.sg");
             Tutee tutee1 = tuteeSession.retrieveTuteeByEmail("chen@gmail.com");
             Staff staff1 = staffSession.retrieveStaffByEmail("tutormecare3106@gmail.com");
             //Tutor-Tutee

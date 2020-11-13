@@ -235,8 +235,8 @@ type staffDashboardType = {
     tuteeGrowth: number;
     numActiveJobListings: number;
     jobListingGrowth: number;
-    numActiveOffers: number;
     offerGrowth: number;
+    offerWithdrawalRate: number;
     offerAcceptanceRate: number;
     offerRejectionRate: number;
 }
