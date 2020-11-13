@@ -59,7 +59,7 @@ public class TutorJWTTokenNeededFilter implements ContainerRequestFilter {
             Map<String, Object> claims = jwt.getAllClaims();
             System.out.println(claims);
             String personId = String.valueOf(claims.get("personId"));
-            System.out.println("#### JWTToken's personId : " + personId);
+            System.out.println("#### TutorJWTToken's personId : " + personId);
             System.out.println("#### valid token : " + token);
 
             Tutor tutor = tutorSession.retrieveTutorById(Long.valueOf(personId));

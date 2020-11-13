@@ -11,6 +11,7 @@ import entity.Offer;
 import entity.Rating;
 import entity.Subject;
 import entity.Tutee;
+import entity.Tutor;
 import exception.InvalidParamsException;
 import exception.InvalidSubjectChoiceException;
 import exception.OfferNotFoundException;
@@ -84,7 +85,13 @@ public class OfferResource {
 
             JobListing jobListing = offer.getJobListing();
             jobListing.setOffers(null);
-            jobListing.setTutor(null);
+
+            Tutor tutor = jobListing.getTutor();
+            tutor.setPassword(null);
+            tutor.setSalt(null);
+            tutor.setSentMessages(null);
+            tutor.setReceivedMessages(null);
+            tutor.setJobListings(null);
 
             GenericEntity<Offer> payload = new GenericEntity<Offer>(offer) {
             };
@@ -119,7 +126,13 @@ public class OfferResource {
 
             JobListing jobListing = o.getJobListing();
             jobListing.setOffers(null);
-            jobListing.setTutor(null);
+
+            Tutor tutor = jobListing.getTutor();
+            tutor.setPassword(null);
+            tutor.setSalt(null);
+            tutor.setSentMessages(null);
+            tutor.setReceivedMessages(null);
+            tutor.setJobListings(null);
         }
         GenericEntity<List<Offer>> payload = new GenericEntity<List<Offer>>(offers) {
         };
@@ -144,7 +157,13 @@ public class OfferResource {
 
             JobListing jobListing = o.getJobListing();
             jobListing.setOffers(null);
-            jobListing.setTutor(null);
+
+            Tutor tutor = jobListing.getTutor();
+            tutor.setPassword(null);
+            tutor.setSalt(null);
+            tutor.setSentMessages(null);
+            tutor.setReceivedMessages(null);
+            tutor.setJobListings(null);
         }
         GenericEntity<List<Offer>> payload = new GenericEntity<List<Offer>>(offers) {
         };
@@ -196,7 +215,13 @@ public class OfferResource {
 
                 JobListing jobListing = o.getJobListing();
                 jobListing.setOffers(null);
-                jobListing.setTutor(null);
+
+                Tutor tutor = jobListing.getTutor();
+                tutor.setPassword(null);
+                tutor.setSalt(null);
+                tutor.setSentMessages(null);
+                tutor.setReceivedMessages(null);
+                tutor.setJobListings(null);
             }
 
             // Create offer message notification
@@ -232,7 +257,13 @@ public class OfferResource {
 
             JobListing jobListing = offer.getJobListing();
             jobListing.setOffers(null);
-            jobListing.setTutor(null);
+            
+            Tutor tutor = jobListing.getTutor();
+            tutor.setPassword(null);
+            tutor.setSalt(null);
+            tutor.setSentMessages(null);
+            tutor.setReceivedMessages(null);
+            tutor.setJobListings(null);
             GenericEntity<Offer> payload = new GenericEntity<Offer>(offer) {
             };
             return Response.status(200).entity(payload).build();
@@ -266,7 +297,13 @@ public class OfferResource {
 
             JobListing jobListing = offer.getJobListing();
             jobListing.setOffers(null);
-            jobListing.setTutor(null);
+            
+            Tutor tutor = jobListing.getTutor();
+            tutor.setPassword(null);
+            tutor.setSalt(null);
+            tutor.setSentMessages(null);
+            tutor.setReceivedMessages(null);
+            tutor.setJobListings(null);
             GenericEntity<Offer> payload = new GenericEntity<Offer>(offer) {
             };
             return Response.status(200).entity(payload).build();
@@ -300,7 +337,14 @@ public class OfferResource {
 
             JobListing jobListing = offer.getJobListing();
             jobListing.setOffers(null);
-            jobListing.setTutor(null);
+            
+            Tutor tutor = jobListing.getTutor();
+            tutor.setPassword(null);
+            tutor.setSalt(null);
+            tutor.setSentMessages(null);
+            tutor.setReceivedMessages(null);
+            tutor.setJobListings(null);
+            
             GenericEntity<Offer> payload = new GenericEntity<Offer>(offer) {
             };
             return Response.status(200).entity(payload).build();

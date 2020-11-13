@@ -60,7 +60,7 @@ public class StaffJWTTokenNeededFilter implements ContainerRequestFilter {
             Map<String, Object> claims = jwt.getAllClaims();
             System.out.println(claims);
             String personId = String.valueOf(claims.get("personId"));
-            System.out.println("#### JWTToken's personId : " + personId);
+            System.out.println("#### StaffJWTToken's personId : " + personId);
             System.out.println("#### valid token : " + token);
 
             Staff staff = staffSession.retrieveStaffById(Long.valueOf(personId));

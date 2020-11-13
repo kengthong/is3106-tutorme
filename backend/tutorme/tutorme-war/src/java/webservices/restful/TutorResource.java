@@ -19,7 +19,6 @@ import filter.TutorJWTTokenNeeded;
 import filter.UserPrincipal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
