@@ -72,7 +72,7 @@ const JobListingsTable = () => {
             dataIndex: 'reviewCount',
         },
         {
-            title: 'Review Rating',
+            title: 'Average Rating',
             dataIndex: 'reviewScore',
         },
         {
