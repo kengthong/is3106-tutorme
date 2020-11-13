@@ -27,7 +27,7 @@ public interface OfferSessionLocal {
 
     public List<Offer> retrieveAllOffers();
 
-    public List<Offer> retrieveOffersByTuteeId(Long userId);
+    public List<Offer> retrieveOffersByPersonId(Long personId);
 
     public List<Offer> retrieveOffersByJobListingId(Long jobListingId);
 

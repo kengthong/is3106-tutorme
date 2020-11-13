@@ -1,27 +1,18 @@
 package webservices.restful;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.JobListing;
 import entity.Offer;
 import entity.Person;
 import entity.Rating;
 import entity.Tutee;
-import entity.Tutor;
 import exception.PersonNotFoundException;
-import exception.TuteeNotFoundException;
-import filter.JWTTokenNeeded;
 import filter.StaffJWTTokenNeeded;
-import filter.TuteeJWTTokenNeeded;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
 import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
@@ -93,7 +84,7 @@ public class StaffResource {
     }
 
     @GET
-    @Path("/dashboard")
+    @Path("/home")
     @StaffJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response getDashboard() {
