@@ -93,7 +93,7 @@ const OfferListComponent = (props: any) => {
       title: "Action",
       key: "action",
       render: (record: any) => {
-        if (userState.currentUser && userState.currentUser.personEnum === "TUTOR") {
+        if (userState.currentUser && userState.currentUser.personEnum === "TUTEE") {
           return (
               <>
                 <Button danger size="small" disabled={["ACCEPTED", "REJECTED", "WITHDRAWN"].includes(record.offerStatus)}
