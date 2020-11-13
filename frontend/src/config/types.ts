@@ -206,3 +206,15 @@ type subjectResponseType = {
     subjectLevel: string;
 }[];
 
+type staffDashboardType = {
+    numActiveTutors: number;
+    tutorGrowth: number;
+    numActiveTutees: number;
+    tuteeGrowth: number;
+    numActiveJobListings: number;
+    jobListingGrowth: number;
+    numActiveOffers: number;
+    offerGrowth: number;
+    offerAcceptanceRate: number;
+    offerRejectionRate: number;
+}
