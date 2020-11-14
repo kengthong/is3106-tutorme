@@ -127,12 +127,6 @@ export class JobListingService {
 
         const response = await Utility.fetchBuilder(url, 'POST', header, body);
         return response;
-        console.log("response: " + response)
-        if (response.ok) {
-            return await response.json();
-        } else {
-            return [];
-        }
     }
 
     public static async activateJobListing(listId: number) {
