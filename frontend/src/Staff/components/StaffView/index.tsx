@@ -59,8 +59,6 @@ export const AdminDash = () => {
                             <div className="margin-top-btm-12">
                                 <StaffTable />
                             </div>
-                            CRUD staff account
-
                         </h3>
                     </TabPane>
 

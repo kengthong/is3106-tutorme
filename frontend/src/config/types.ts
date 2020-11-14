@@ -201,10 +201,8 @@ type staffDataType = {
     personId: number;
     createdDate: string;
     activeStatus: boolean;
-    staffName: {
-        firstName: string;
-        lastName: string;
-    }
+    firstName: string;
+    lastName: string;
     email: string;
     mobileNum: string;
     password?: null;
@@ -236,4 +234,15 @@ type staffDashboardType = {
     offerWithdrawalRate: number;
     offerAcceptanceRate: number;
     offerRejectionRate: number;
+}
+
+type createStaffParams = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password?: null;
+    phoneNumber: string;
+    gender: string;
+    date: string;
+    accountType: string;
 }
