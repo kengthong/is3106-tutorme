@@ -174,7 +174,7 @@ public class StaffResource {
                 t.setPassword(null);
                 t.setReceivedMessages(null);
                 t.setSentMessages(null);
-                t.setOffers(null); //to confirm not needed
+                t.setOffers(null);
             }
             GenericEntity<List<Tutee>> packet = new GenericEntity<List<Tutee>>(tutees) {
             };

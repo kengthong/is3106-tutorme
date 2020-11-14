@@ -55,7 +55,7 @@ public class JobListingResource {
             @QueryParam("maxPrice") String maxPrice,
             @QueryParam("name") String name
     ) {
-        System.out.println("Getting filtered jobListings...");
+        System.out.println("###%%% filterJobListings params...");
         double minPx = 0;
         double maxPx = 999;
         if (!minPrice.isEmpty()) {
@@ -64,14 +64,12 @@ public class JobListingResource {
         if (!maxPrice.isEmpty()) {
             maxPx = Double.valueOf(maxPrice.trim());
         }
-        System.out.println("###%%% filterJobListings params...");
         System.out.println("...subject: " + subject);
         System.out.println("...level: " + level);
         System.out.println("...minPrice: " + minPx);
         System.out.println("...maxPrice: " + maxPx);
         System.out.println("...tutor's name: " + name);
         List<JobListing> jobListings = jobListingSession.retrieveJobListingsWithMultipleFilters(subject.trim(), level.trim(), minPx, maxPx, name.trim().toLowerCase());
-        // return jobListing object with reviewCount and avgRatings
         for (JobListing jl : jobListings) {
             Tutor tutor = jl.getTutor();
             tutor.setSalt(null);
@@ -132,7 +130,6 @@ public class JobListingResource {
 
                 o.setJobListing(null);
             }
-
             GenericEntity<JobListing> packet = new GenericEntity<JobListing>(jobListing) {
             };
             return Response.status(200).entity(packet).build();
@@ -187,7 +184,6 @@ public class JobListingResource {
                     if (rating != null) {
                         rating.setOffer(null);
                     }
-
                     o.setJobListing(null);
                 }
             }

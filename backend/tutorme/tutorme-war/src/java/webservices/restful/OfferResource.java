@@ -6,7 +6,6 @@
 package webservices.restful;
 
 import entity.JobListing;
-import entity.Message;
 import entity.Offer;
 import entity.Rating;
 import entity.Subject;
@@ -102,7 +101,6 @@ public class OfferResource {
         }
     }
 
-    // Considering to remove, use TuteeResources's getTutee to retrieve associated offers
     @GET
     @Path("/get")
     @JWTTokenNeeded
@@ -139,7 +137,6 @@ public class OfferResource {
         return Response.status(200).entity(payload).build();
     }
 
-    // Considering to remove, use JobListingResource's getJobListing to retrieve associated offers
     @GET
     @Path("/jobListingOffers/{jobListingId}")
     @JWTTokenNeeded
@@ -223,14 +220,10 @@ public class OfferResource {
                 tutor.setReceivedMessages(null);
                 tutor.setJobListings(null);
             }
-
-            // Create offer message notification
-            Message message = messageSession.createOfferMessage(tuteeId, jobListingId, "TuteeId: " + tuteeId + " has made an offer for your post with jobListingID: " + jobListingId);
-
             GenericEntity<List<Offer>> payload = new GenericEntity<List<Offer>>(offers) {
             };
             return Response.status(201).entity(payload).build();
-        } catch (ParseException | InvalidParamsException | InvalidSubjectChoiceException | PersonNotFoundException | SubjectNotFoundException ex) {
+        } catch (ParseException | InvalidParamsException | InvalidSubjectChoiceException | SubjectNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
         }

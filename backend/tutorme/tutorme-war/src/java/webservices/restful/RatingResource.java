@@ -45,14 +45,12 @@ public class RatingResource {
     @TuteeJWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response makeRating(JsonObject json) {
-
         String ratingValueStr = json.getString("ratingValue");
         String comments = json.getString("comments");
         String offerIdStr = json.getString("offerId");
         Integer ratingValue = Integer.valueOf(ratingValueStr);
         Long offerId = Long.valueOf(offerIdStr);
         System.out.println("Rating for offerId..." + offerIdStr);
-
         try {
             Rating rating = ratingSession.createRating(ratingValue, comments, offerId);
             System.out.println("%%%% Rating created successfully for offerId..." + offerIdStr);

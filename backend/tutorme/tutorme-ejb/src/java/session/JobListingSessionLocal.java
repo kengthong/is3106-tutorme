@@ -6,7 +6,6 @@
 package session;
 
 import entity.JobListing;
-import entity.Subject;
 import exception.InvalidParamsException;
 import exception.JobListingNotFoundException;
 import exception.NewJobListingException;

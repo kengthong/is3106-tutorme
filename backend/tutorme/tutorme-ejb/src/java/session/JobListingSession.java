@@ -128,9 +128,7 @@ public class JobListingSession implements JobListingSessionLocal {
             for (JobListing jl : result2) {
                 List<Subject> subjects = jl.getSubjects();
                 for (Subject s : subjects) {
-//                    System.out.println(">> Comparing subjectName db: " + s.getSubjectName() + " and input: " + subjectName);
                     if (s.getSubjectName().toLowerCase().equals(subjectName.toLowerCase())) {
-                        System.out.println("###$$$ Matched subjectName db: " + s.getSubjectName() + " and input: " + subjectName);
                         result3.add(jl);
                         break;
                     }
@@ -148,7 +146,6 @@ public class JobListingSession implements JobListingSessionLocal {
             for (JobListing jl : result3) {
                 List<Subject> subjects = jl.getSubjects();
                 for (Subject s : subjects) {
-//                    System.out.println(">> Comparing subjectLevel db: " + s.getSubjectLevel() + " and input: " + subjectLevel);
                     if (s.getSubjectLevel().equals(subjectLevel)) {
                         System.out.println("###$$$ Matched subjectLevel db: " + s.getSubjectLevel() + " and input: " + subjectLevel);
                         result4.add(jl);

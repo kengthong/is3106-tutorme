@@ -90,24 +90,32 @@ public class StaffSession implements StaffSessionLocal {
 
     @Override
     public Staff updateStaff(Long personId, String firstName, String lastName, String mobileNum, GenderEnum gender, Date dob) throws StaffNotFoundException {
-        Staff staff = retrieveStaffById(personId);
-        staff.setFirstName(firstName);
-        staff.setLastName(lastName);
-        staff.setMobileNum(mobileNum);
-        staff.setGender(gender);
-        staff.setDob(dob);
-        return staff;
+        Staff staff = em.find(Staff.class, personId);
+        if (staff != null) {
+            staff.setFirstName(firstName);
+            staff.setLastName(lastName);
+            staff.setMobileNum(mobileNum);
+            staff.setGender(gender);
+            staff.setDob(dob);
+            return staff;
+        } else {
+            throw new StaffNotFoundException("StaffID " + personId + " does not exists.");
+        }
     }
 
     @Override
     public Staff changeStaffActiveStatus(Long personId) throws StaffNotFoundException {
-        Staff staff = retrieveStaffById(personId);
-        if (staff.getActiveStatus()) {
-            staff.setActiveStatus(true);
+        Staff staff = em.find(Staff.class, personId);
+        if (staff != null) {
+            if (staff.getActiveStatus()) {
+                staff.setActiveStatus(true);
+            } else {
+                staff.setActiveStatus(false);
+            }
+            return staff;
         } else {
-            staff.setActiveStatus(false);
+            throw new StaffNotFoundException("StaffID " + personId + " does not exists.");
         }
-        return staff;
     }
 
     @Override

@@ -58,6 +58,7 @@ public class JobListing implements Serializable {
     @OneToMany(mappedBy = "jobListing", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<Offer> offers;
 
+    private Integer totalReviewScore;
     private Double reviewScore;
     private Integer reviewCount;
     private Integer numSubjects;
@@ -174,6 +175,23 @@ public class JobListing implements Serializable {
         this.reviewScore = dummy;
     }
 
+    public Integer getTotalReviewScore() {
+        Integer sum = 0;
+        if (this.offers != null) {
+            for (Offer o : this.offers) {
+                Rating rating = o.getRating();
+                if (rating != null) {
+                    sum = rating.getRatingValue();
+                }
+            }
+        }
+        return sum;
+    }
+
+    public void setTotalReviewScore(Integer totalReviewScore) {
+        this.totalReviewScore = totalReviewScore;
+    }
+
     public Double getReviewScore() {
         Integer sum = 0;
         Integer count = 0;
@@ -187,7 +205,6 @@ public class JobListing implements Serializable {
             }
         }
         Double avg = new Double(sum) / new Double(count);
-        System.out.println("*** Setting reviewScore: " + avg);
         if (Double.isNaN(avg) || Double.isInfinite(avg)) {
             return 0.0;
         } else {
@@ -209,7 +226,6 @@ public class JobListing implements Serializable {
                 }
             }
         }
-        System.out.println("*** Setting reviewCount: " + count);
         return count;
     }
 
@@ -233,5 +249,4 @@ public class JobListing implements Serializable {
         this.numOffers = numOffers;
     }
 
-    
 }
