@@ -9,6 +9,7 @@ import exception.StaffNotFoundException;
 import entity.Staff;
 import enumeration.GenderEnum;
 import enumeration.StaffPositionEnum;
+import exception.RegistrationFailException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -20,7 +21,7 @@ import javax.ejb.Local;
 @Local
 public interface StaffSessionLocal {
 
-    public Staff createStaff(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, StaffPositionEnum staffPositionEnum);
+    public Staff createStaff(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, StaffPositionEnum staffPositionEnum) throws RegistrationFailException;
 
     public List<Staff> retrieveAllStaffs();
 

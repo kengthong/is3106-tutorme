@@ -10,6 +10,7 @@ import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
+import exception.RegistrationFailException;
 import exception.TutorNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
@@ -18,6 +19,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import util.security.CryptoHelper;
 
@@ -59,7 +61,7 @@ public class TutorSession implements TutorSessionLocal {
     }
 
     @Override
-    public Tutor createTutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) {
+    public Tutor createTutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) throws RegistrationFailException {
         Tutor newTutor = new Tutor();
         try {
             String salt = ch.generateRandomString(64);
@@ -73,11 +75,16 @@ public class TutorSession implements TutorSessionLocal {
             newTutor.setMobileNum(mobileNum);
             newTutor.setGender(gender);
             newTutor.setDob(dob);
+            try {
+                em.persist(newTutor);
+                em.flush();
+            } catch (PersistenceException ex) {
+                throw new RegistrationFailException("Email is in use");
+            }
+            return newTutor;
         } catch (NoSuchAlgorithmException ex) {
-            System.out.println("Hashing error when creating tutor.");
+            throw new RegistrationFailException("Something when wrong in creating new user's password salt");
         }
-        em.persist(newTutor);
-        return newTutor;
     }
 
     @Override
@@ -91,10 +98,10 @@ public class TutorSession implements TutorSessionLocal {
     @Override
     public Tutor retrieveTutorById(Long tutorId) throws TutorNotFoundException {
         Tutor tutor = em.find(Tutor.class, tutorId);
-        if (tutor == null) {
-            throw new TutorNotFoundException("TutorID " + tutorId + " does not exists.");
-        } else {
+        if (tutor != null) {
             return tutor;
+        } else {
+            throw new TutorNotFoundException("TutorID " + tutorId + " does not exists.");
         }
     }
 

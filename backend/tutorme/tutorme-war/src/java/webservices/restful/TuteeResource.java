@@ -11,7 +11,6 @@ import exception.TuteeNotFoundException;
 import filter.TuteeJWTTokenNeeded;
 import filter.UserPrincipal;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.json.Json;

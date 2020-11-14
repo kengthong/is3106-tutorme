@@ -8,6 +8,7 @@ package session;
 import entity.Offer;
 import entity.Rating;
 import exception.OfferNotFoundException;
+import exception.OfferRatingExistException;
 import exception.OfferStatusException;
 import exception.RatingNotFoundException;
 import java.util.List;
@@ -22,7 +23,7 @@ public interface RatingSessionLocal {
 
     public Rating createRatingInit(Integer ratingValue, String comments, Long offerId) throws OfferNotFoundException, OfferStatusException;
 
-    public Rating createRating(Integer ratingValue, String comments, Long offerId) throws OfferNotFoundException, OfferStatusException;
+    public Rating createRating(Integer ratingValue, String comments, Long offerId) throws OfferNotFoundException, OfferStatusException, OfferRatingExistException;
 
     public List<Rating> retrieveAllRatings();
 

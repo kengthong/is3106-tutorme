@@ -16,6 +16,7 @@ import enumeration.RaceEnum;
 import exception.OfferNotFoundException;
 import exception.OfferStatusException;
 import exception.PersonNotFoundException;
+import exception.RegistrationFailException;
 import exception.StaffNotFoundException;
 import exception.TuteeNotFoundException;
 import exception.TutorNotFoundException;
@@ -176,6 +177,7 @@ public class DataInitializationBean {
 
             //new JobListing(Tutor tutor, List<Subject> subjects, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc)
             jobListing = jobListingSession.createJobListingInit(tutorSession.retrieveTutorByEmail("hsianghui@nus.edu.sg").getPersonId(), combo1, 45.0, "Anyday except weekends", "North", "Math P1 to P4", "Negotiable prices");
+            em.flush();
             jobListing = jobListingSession.createJobListingInit(tutorSession.retrieveTutorByEmail("hsianghui@nus.edu.sg").getPersonId(), combo4, 35.0, "Anyday except weekends", "North", "Science P3 to P6", "Negotiable prices");
             jobListing = jobListingSession.createJobListingInit(tutorSession.retrieveTutorByEmail("EneltonSatria@gmail.com").getPersonId(), combo2, 15.0, "Monday Only", "South", "Math P2 to P5", "Fixed prices");
             jobListing = jobListingSession.createJobListingInit(tutorSession.retrieveTutorByEmail("EneltonSatria@gmail.com").getPersonId(), combo5, 65.0, "Monday Only", "South", "Science P1 to P4", "Fixed prices");
@@ -227,13 +229,13 @@ public class DataInitializationBean {
         Rating rating;
         try {
             //createRating(Double ratingValue, String comments, Long offerId) throws OfferNotFoundException {
-            rating = ratingSession.createRatingInit(0, "the tutor was super bad, did not turn up!! DONT EVER TAKE THIS TUTOR", 1L);
-            rating = ratingSession.createRatingInit(0, "cannot teach", 2L);
+//            rating = ratingSession.createRatingInit(0, "the tutor was super bad, did not turn up!! DONT EVER TAKE THIS TUTOR", 1L);
+//            rating = ratingSession.createRatingInit(0, "cannot teach", 2L);
             rating = ratingSession.createRatingInit(1, "super bad", 3L);
             rating = ratingSession.createRatingInit(1, "too expensive not worth it", 4L);
             rating = ratingSession.createRatingInit(2, "ok la", 5L);
             rating = ratingSession.createRatingInit(2, "below average, i sacked him", 6L);
-            rating = ratingSession.createRatingInit(3, "hmmm.. idk leh good or not", 7L); 
+            rating = ratingSession.createRatingInit(3, "hmmm.. idk leh good or not", 7L);
             rating = ratingSession.createRatingInit(3, "not very honest but can teach", 8L);
             rating = ratingSession.createRatingInit(4, "the tutor was great", 9L);
             rating = ratingSession.createRatingInit(4, "highly recommend", 10L);
@@ -263,10 +265,14 @@ public class DataInitializationBean {
         c.set(2015, 12, 31);
         Date randomEndDate = c.getTime();
 
-        staffSession.createStaff("dummy", "staff", "is3106dummy@gmail.com", "password", "99990001", GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), StaffPositionEnum.MANAGER);
-        em.flush();
-        staffSession.createStaff("customer care", "staff", "tutormecare3106@gmail.com", "password", "99990002", GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), StaffPositionEnum.OPERATOR);
-        em.flush();
+        try {
+            staffSession.createStaff("dummy", "staff", "is3106dummy@gmail.com", "password", "99990001", GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), StaffPositionEnum.MANAGER);
+            em.flush();
+            staffSession.createStaff("customer care", "staff", "tutormecare3106@gmail.com", "password", "99990002", GenderEnum.MALE, randomDateBetween(randomStartDate, randomEndDate), StaffPositionEnum.OPERATOR);
+            em.flush();
+        } catch (RegistrationFailException ex) {
+            Logger.getLogger(DataInitializationBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void initSubjects() {

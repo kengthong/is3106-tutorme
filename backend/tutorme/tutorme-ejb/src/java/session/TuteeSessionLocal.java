@@ -8,6 +8,7 @@ package session;
 import entity.Tutee;
 import enumeration.GenderEnum;
 import exception.InvalidParamsException;
+import exception.RegistrationFailException;
 import exception.TuteeNotFoundException;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +23,7 @@ public interface TuteeSessionLocal {
 
     public Tutee createTuteeInit(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, String profileDesc);
     
-    public Tutee createTutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) throws InvalidParamsException;
+    public Tutee createTutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) throws RegistrationFailException;
 
     public List<Tutee> retrieveAllTutees();
 
