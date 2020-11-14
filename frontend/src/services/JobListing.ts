@@ -181,5 +181,4 @@ export class JobListingService {
             return [];
         }
     }
-
 }

@@ -23,8 +23,8 @@ export class TutorService {
         }
     }
 
-    static async updateTutorDetails(userId: number, user: tutorDataType) {
-        const url = BACKEND_BASE_URL + '/tutor/update/' + userId;
+    static async updateTutorDetails(user: tutorDataType) {
+        const url = BACKEND_BASE_URL + '/tutor/update/';
         const token = localStorage.getItem("token");
         const jsonHeader = Utility.getJsonHeader();
         const header = {

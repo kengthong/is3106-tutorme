@@ -90,7 +90,12 @@ const StaffTable = () => {
         },
         {
             title: 'DOB',
-            dataIndex: 'dob'
+            dataIndex: 'dob',
+            render: (dob: string) => {
+                return (
+                    <span>{moment(dob.split("[")[0]).format("DD-MM-YYYY")}</span>
+                )
+            }
         },
         {
             title: 'Created Date',

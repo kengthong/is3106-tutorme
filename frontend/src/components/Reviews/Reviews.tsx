@@ -54,7 +54,7 @@ const ReviewsComponent = (props: reviewProps) => {
         }
     }
 
-    const isUserACustomer = userState.currentUser && userState.currentUser.personId &&  props.ratings && props.ratings.filter( o => o.tutee.personId == userState.currentUser?.personId) || [];
+    const isUserACustomer = userState.currentUser && userState.currentUser.personId &&  props.ratings && props.ratings.filter( o => o.tutee.personId == userState.currentUser?.personId && o.offerStatus == "ACCEPTED") || [];
     return (
         <div>
             <div style={{fontSize: "16px", fontWeight: "bold", padding: "10px 0"}}>
@@ -72,7 +72,7 @@ const ReviewsComponent = (props: reviewProps) => {
             >
                 <Col span={70}>
                     <div style={{fontSize: "72px", fontWeight: 300, color: "#fada15"}}>
-                        {props.avgRating}
+                        {props.avgRating.toFixed(1)}
                     </div>
                     <div>
                         <Rate value={avgRating} disabled/> {props.ratingCount} Reviews
@@ -86,8 +86,8 @@ const ReviewsComponent = (props: reviewProps) => {
             <Row>
                 <ReviewList ratingData={ratingData}/>
             </Row>
-
-            {isUserACustomer.length > 0 && !isUserACustomer[0].rating && isUserACustomer[0].offerStatus === "ACCEPTED"?
+            {console.log(isUserACustomer)}
+            {isUserACustomer.length > 0 ?
                 <div className="border-e8" style={{padding: '16px', marginTop: '40px', borderRadius: '4px', backgroundColor: "#f8fcff"}}>
                     <div className="fs-18" style={{marginTop: '24px'}}>
                         Leave a review

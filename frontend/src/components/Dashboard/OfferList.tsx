@@ -51,6 +51,15 @@ const OfferListComponent = (props: any) => {
       },
     },
     {
+      title: "Tutee",
+      dataIndex: "tutee",
+      render: (record: any) => {
+        const firstName = record && record.firstName || "";
+        const lastName = record && record.lastName || "";
+        return <span> {firstName + " " + lastName}</span>;
+      },
+    },
+    {
       title: 'Hours/Session',
       dataIndex: 'numHoursPerSession',
       render: (numHoursPerSession: number) => {
