@@ -149,7 +149,7 @@ export class StaffService {
 
         const response = await Utility.fetchBuilder(url, 'GET', header, null);
         if (response.ok) {
-            const data = response.json();
+            const data = await response.json();
             console.log(data)
             return data;
         } else {
