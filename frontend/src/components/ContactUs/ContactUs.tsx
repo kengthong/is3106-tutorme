@@ -1,40 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Card, Button } from 'antd'
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { Card, Button } from "antd";
 
 export const ContactUs = () => {
+	return (
+		<div className={"custom-container"} style={{ height: "100%" }}>
+			<br />
 
-    return (
-        <div className={"custom-container"} style={{ height: '100%' }}>
+			<Card title="Contact Us" className="col-lg-12 col-sm-8">
+				<p>You may contact us through any of the following means.</p>
 
-            <br />
+				<p>Email: tutormecare3106@tutorme.com</p>
 
-            <Card title="Contact Us" className="col-lg-12 col-sm-8" >
-                <p >
-                    You may contact us through any of the following means.
-                </p>
+				<p>Office Number: +65 6122 3912</p>
 
-                <p>
-                    Email: support@tutorme.com
-                </p>
+				<p>Address: Aperia Tower 2, Level 4, 8 Kallang Ave, Singapore 339509</p>
 
-                <p>
-                    Office Number: +65 6122 3912
-                </p>
+				<br />
+			</Card>
 
-                <p>
-                    Address: Aperia Tower 2, Level 4, 8 Kallang Ave, Singapore 339509
-                </p>
-
-                <br />
-
-            </Card>
-
-            <br />
-        </div>
-
-    )
-
-}
+			<br />
+		</div>
+	);
+};
 
 export default ContactUs;

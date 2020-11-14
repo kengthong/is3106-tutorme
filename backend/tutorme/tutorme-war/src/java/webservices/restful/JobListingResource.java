@@ -265,7 +265,7 @@ public class JobListingResource {
             Long tutorId = person.getPersonId();
 
             jobListingSession.deactivateJobListing(tutorId, jobListingId);
-            return Response.status(204).build();
+            return Response.status(200).build();
         } catch (JobListingNotFoundException | InvalidParamsException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
@@ -282,7 +282,7 @@ public class JobListingResource {
             Long tutorId = person.getPersonId();
 
             jobListingSession.activateJobListing(tutorId, jobListingId);
-            return Response.status(204).build();
+            return Response.status(200).build();
         } catch (JobListingNotFoundException | InvalidParamsException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(400).entity(exception).build();
