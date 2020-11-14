@@ -69,7 +69,7 @@ public class SubjectSession implements SubjectSessionLocal {
         query.setParameter("inputSubjectLevel", subjectLevel);
         query.setParameter("inputSubjectName", subjectName);
         Subject result = (Subject) query.getSingleResult();
-        if (result != null) { 
+        if (result != null) {
             return result;
         } else {
             throw new SubjectNotFoundException("No Subjects by the level " + subjectLevel + " was found.");
@@ -78,10 +78,14 @@ public class SubjectSession implements SubjectSessionLocal {
 
     @Override
     public Subject updateSubject(Long subjectId, String subjectName, String subjectLevel) throws SubjectNotFoundException {
-        Subject subject = retrieveSubjectById(subjectId);
-        subject.setSubjectName(subjectName);
-        subject.setSubjectLevel(subjectLevel);
-        return subject;
+        Subject subject = em.find(Subject.class, subjectId);
+        if (subject != null) {
+            subject.setSubjectName(subjectName);
+            subject.setSubjectLevel(subjectLevel);
+            return subject;
+        } else {
+            throw new SubjectNotFoundException("SubjectID " + subjectId + " does not exists.");
+        }
     }
 
     @Override

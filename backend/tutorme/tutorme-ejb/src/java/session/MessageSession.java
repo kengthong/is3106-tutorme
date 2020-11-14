@@ -77,7 +77,6 @@ public class MessageSession implements MessageSessionLocal {
         query.setParameter("inputP1", p1Id);
         query.setParameter("inputP2", p2Id);
         conversation = query.getResultList();
-        
         conversation.sort(new MessageDateComaparator());
         return conversation;
     }
@@ -99,7 +98,6 @@ public class MessageSession implements MessageSessionLocal {
                 otherPersonIds.add(senderId);
             }
         }
-
         List<List<Message>> conversations = new ArrayList<>();
         otherPersonIds.forEach(pId -> conversations.add(retrieveConversation(personId, pId)));
         return conversations;

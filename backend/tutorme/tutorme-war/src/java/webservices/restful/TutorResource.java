@@ -68,7 +68,6 @@ public class TutorResource {
                 t.setReceivedMessages(null);
                 for (JobListing jl : t.getJobListings()) {
                     jl.setTutor(null);
-
                     for (Offer o : jl.getOffers()) {
                         Tutee tutee = o.getTutee();
                         tutee.setReceivedMessages(null);

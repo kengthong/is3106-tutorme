@@ -108,15 +108,14 @@ public class Tutor extends Person implements Serializable {
     }
 
     public Double getAvgRating() {
-        Double sum = 0.0;
-        Integer count = 0;
+        Integer numOffers = 0;
+        Integer totalReviewValue = 0;
         if (this.jobListings != null) {
             for (JobListing jl : this.jobListings) {
-                count++;
-                Double score = jl.getReviewScore();
-                sum += jl.getReviewScore();
+                numOffers += jl.getNumOffers();
+                totalReviewValue += jl.getTotalReviewScore();
             }
-            Double avg = sum / count;
+            Double avg = new Double(totalReviewValue) / new Double(numOffers);
             if (Double.isNaN(avg) || Double.isInfinite(avg)) {
                 return 0.0;
             } else {
