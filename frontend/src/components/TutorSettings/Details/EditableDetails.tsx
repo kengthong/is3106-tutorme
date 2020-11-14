@@ -44,7 +44,7 @@ const EditableDetails = (props: editableDetailsProps) => {
   },[user]);
 
   const updateUserDetails = async (userId: number, data: tutorDataType): Promise<void> => {
-    const response = await TutorService.updateTutorDetails(userId, data);
+    const response = await TutorService.updateTutorDetails(data);
     if(response) {
       message.success("Successfully updated your details")
     } else {

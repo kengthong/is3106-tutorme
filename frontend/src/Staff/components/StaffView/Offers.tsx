@@ -62,7 +62,19 @@ const OfferListingTable = () => {
 			title: "Tutor",
 			dataIndex: "jobListing",
 			render: (record: any) => {
-				return <span> {record.firstName + " " + record.lastName}</span>;
+				console.log('record =', record)
+				const lastName = record && record.tutor && record.tutor.lastName || "";
+				const firstName = record && record.tutor && record.tutor.firstName || "";
+				return <span> {firstName + " " + lastName}</span>;
+			},
+		},
+		{
+			title: "Tutee",
+			dataIndex: "tutee",
+			render: (record: any) => {
+				const firstName = record && record.firstName || "";
+				const lastName = record && record.lastName || "";
+				return <span> {firstName + " " + lastName}</span>;
 			},
 		},
 		{
@@ -120,6 +132,7 @@ const OfferListingTable = () => {
 		);
 	}
 
+	console.log('test =', tableData)
 	// return (<div> in development</div>)
 	return (
 		<Table

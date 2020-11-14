@@ -46,7 +46,7 @@ const App = () => {
           <Route path="/faq" component={FAQ} />
           <Route path="/about-us" component={AboutUs} />
           <Route path="/contact-us" component={ContactUs} />
-          <Route path="/feedback" component={Feedback} />
+          <ProtectedRoute path="/feedback" component={Feedback} />
           <Route path="/registration" component={Registration} />
           <ProtectedRoute path="/chat" component={Chat} />
           <ProtectedRoute path="/tutor/settings/personal-details" allowedUser='tutor' exact component={TutorDetailsPage} />

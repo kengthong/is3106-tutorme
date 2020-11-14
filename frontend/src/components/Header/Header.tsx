@@ -59,9 +59,13 @@ const Header = () => {
                             <a href="/FAQ">FAQs</a>
                         </li>
 
-                        <li>
-                            <a href="/feedback">Feedback</a>
-                        </li>
+                        {userState.isAuthenticated?
+                            <li>
+                                <a href="/feedback">Feedback</a>
+                            </li>
+                            :
+                            null
+                        }
 
                         <li>
                             <a href="/contact-us">Contact us</a>
