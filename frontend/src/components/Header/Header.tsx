@@ -151,7 +151,7 @@ const ProfileContent = (personEnum: string, userState: UserState, handleLogout: 
             {personEnum === 'TUTOR' ?
                 <>
                     <div className='clickable highlightable'>
-                        <a className='selection w-100' href={'/tutor-profile'}>
+                        <a className='selection w-100' href={'/tutor-profile?id=' + userState.currentUser?.personId}>
                             My Profile
                         </a>
                     </div>

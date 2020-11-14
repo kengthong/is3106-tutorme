@@ -31,12 +31,20 @@ const JobListingDetail = (props: any) => {
         <div className="flex-col" style={{marginTop: "40px", backgroundColor: "#fff", padding: '48px', minHeight: "calc(100vh - 150px)", maxWidth: "1000px"}}>
             <div style={{ display: "flex" }}>
                 <div style={{ marginRight: "80px" }}>
-                    <Avatar
-                        shape="circle"
-                        size={280}
-                        src={ProfileIcon}
-                    >
-                    </Avatar>
+                    {props.listing.tutor.profileImage && props.listing.tutor.profileImage != ""?
+                        <Avatar
+                            shape="circle"
+                            size={280}
+                            src={props.listing.tutor.profileImage}
+                        />:
+                        <Avatar
+                            shape="circle"
+                            size={280}
+                            style={{fontSize: '48px'}}>
+                            {props.listing.tutor.firstName.substring(0,1).toUpperCase()}
+                        </Avatar>
+                    }
+
 
                     {showTuteeButtons()}
                     {/* <div style={{ display: "flex", marginLeft: "50px", marginTop: "15px" }}>
@@ -111,7 +119,9 @@ const JobListingDetail = (props: any) => {
                     <Panel header="Testimonials" key="2">
                         {/*<Review />*/}
                         <div style={{padding: '0px 16px'}}>
-                            <ReviewsComponent ratings={props.listing.offers} avgRating={props.listing.reviewScore} ratingCount={props.listing.reviewCount}/>
+                            <ReviewsComponent
+                                ratings={props.listing.offers} avgRating={props.listing.reviewScore} ratingCount={props.listing.reviewCount}
+                                getListingDetails={props.getListingDetails}/>
                         </div>
                     </Panel>
                 </Collapse>

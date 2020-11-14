@@ -78,19 +78,7 @@ type jobListingType = {
         }
     ],
     timeslots?: string;
-    tutor?: {
-        activeStatus?: boolean;
-        createdDate?: string;
-        dob?: string;
-        email?: string;
-        firstName: string;
-        gender?: string;
-        lastName?: string;
-        mobileNum?: string;
-        personEnum?: string;
-        personId?: number;
-        avgRating?: number;
-    },
+    tutor?: tutorDataType,
     offers?: offerType[],
     numOffers?: number,
     numSubjects?: number

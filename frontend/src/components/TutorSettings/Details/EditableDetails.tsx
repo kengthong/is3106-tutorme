@@ -137,7 +137,7 @@ const EditableDetails = (props: editableDetailsProps) => {
                 name="profileImg"
                 label="Profile Image"
             >
-              <ProfileAvatar />
+              <ProfileAvatar imgUrl={user.profileImage}/>
             </Form.Item>
 
             <Form.Item

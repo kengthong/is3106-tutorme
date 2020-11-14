@@ -11,7 +11,7 @@ const ProfileAvatar = (props:any) => {
     const [imageUrl, setImageUrl] = useState("");
 
     useEffect(() => {
-        setImageUrl(props.imageUrl || "")
+        setImageUrl(props.imgUrl || "")
     }, [])
     const uploadImage = async(base64: string) => {
         const response = await UserService.uploadImage(base64);

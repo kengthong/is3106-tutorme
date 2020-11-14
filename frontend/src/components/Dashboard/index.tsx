@@ -140,6 +140,7 @@ const Dashboard = () => {
                     {type ==="offers"?
                         <OfferListComponent data={offersData} userState={userState}
                                             withdrawOffer={withdrawOffer} rejectOffer={rejectOffer} acceptOffer={acceptOffer}
+                                            viewJobListing={viewJobListing}
                                             />
                         :
                         <JobListingsComponent data={jobListingsData} viewJobListing={viewJobListing}/>

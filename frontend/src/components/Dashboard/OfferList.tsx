@@ -95,9 +95,13 @@ const OfferListComponent = (props: any) => {
       key: "action",
       render: (record: any) => {
         const status = record && record.offerStatus || "";
+        console.log('recor d=', record)
         if (userState.currentUser && userState.currentUser.personEnum === "TUTEE") {
           return (
               <>
+                <Button type="primary" size="small" style={{marginRight: "4px"}} onClick={() => props.viewJobListing(record.jobListing.jobListingId)}>
+                  <span> View</span>
+                </Button>
                 <Button danger size="small" disabled={["ACCEPTED", "REJECTED", "WITHDRAWN"].includes(status)}
                 onClick={() => props.withdrawOffer(record.offerId)}>
                   <span> Withdraw </span>
@@ -107,6 +111,9 @@ const OfferListComponent = (props: any) => {
         } else {
           return (
               <>
+                <Button type="primary" size="small" style={{marginRight: "4px"}} onClick={() => props.viewJobListing(record.jobListing.jobListingId)}>
+                  <span> View</span>
+                </Button>
                 <Button type="primary" size="small" style={{marginRight: "4px"}} onClick={() => props.acceptOffer(record.offerId)}
                         disabled={["ACCEPTED", "REJECTED", "WITHDRAWN"].includes(status)}>
                   <span> Accept </span>

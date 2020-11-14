@@ -38,6 +38,11 @@ const TutorProfilePage = () => {
                         offerRatings: []
                     })
                 }
+            } else {
+                setUserData({
+                    user: null,
+                    offerRatings: []
+                })
             }
         }
 
