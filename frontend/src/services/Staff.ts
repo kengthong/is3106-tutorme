@@ -221,4 +221,20 @@ export class StaffService {
 
         return false;
     }
+
+    static async getAllTutees() {
+        const url = BACKEND_BASE_URL + '/staff/getTutees';
+        const token = localStorage.getItem("staffToken");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+        const response = await Utility.fetchBuilder(url, 'GET', header, null);
+        if (response.ok) {
+            return await response.json();
+        } else {
+            return false;
+        }
+    }
 }

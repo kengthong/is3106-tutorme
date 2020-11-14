@@ -147,10 +147,7 @@ type createOfferParams = {
     numSession: number;
     duration: number;
     jobListingId: string;
-
     levels: string[];
-
-
     addNote: string;
 
 }
