@@ -121,6 +121,27 @@ const Dashboard = () => {
         if(id) history.push('/job?id=' + id)
     }
 
+    const activateJobListing = async (jobListingId: number) => {
+        const success = await JobListingService.activateJobListing(jobListingId);
+        if(userState.currentUser && success) {
+            message.success("Successfully activated job listing");
+            getAllJobListings();
+        } else {
+            message.error("Unable to activate job listing");
+        }
+    }
+
+    const deactivateJobListing = async (jobListingId: number) => {
+        const success = await JobListingService.deactivateJobListing(jobListingId);
+        if(userState.currentUser && success) {
+            message.success("Successfully deactivated job listing");
+            getAllJobListings();
+        } else {
+            message.error("Unable to deactivate job listing");
+        }
+    }
+
+
     return (
         <div className="w-100 flex-row" style={{height: '100vh'}}>
             <DashboardMenu params={params} currentUser={userState.currentUser}/>
@@ -143,7 +164,8 @@ const Dashboard = () => {
                                             viewJobListing={viewJobListing}
                                             />
                         :
-                        <JobListingsComponent data={jobListingsData} viewJobListing={viewJobListing}/>
+                        <JobListingsComponent data={jobListingsData} viewJobListing={viewJobListing}
+                                              activateJobListing={activateJobListing} deactivateJobListing={deactivateJobListing}/>
                     }
                 </div>
             </div>

@@ -68,9 +68,22 @@ const JobListingsComponent = (props: any) => {
         {
             title: 'Action',
             render: (record: jobListingType) => (
-                <div className="flex-row justify-center">
-                    <Button size="small" className="fs-12 bold" onClick={() => viewJobListing(record.jobListingId)} type="primary">View</Button>
-                </div>
+                <>
+                    <div className="flex-row justify-center">
+                        <Button size="small" className="fs-12 bold" onClick={() => viewJobListing(record.jobListingId)} type="primary">View</Button>
+                        {
+                            record.activeStatus?
+                                <Button danger size="small" onClick={() => props.deactivateJobListing(record.jobListingId)}>
+                                    <span> Deactivate </span>
+                                </Button>
+                                :
+                                <Button type="default" size="small" onClick={() => props.activateJobListing(record.jobListingId)}>
+                                    <span> Reactivate </span>
+                                </Button>
+                        }
+                    </div>
+
+                </>
             ),
         }
     ];
