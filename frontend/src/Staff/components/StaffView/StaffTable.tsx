@@ -235,9 +235,17 @@ const StaffTable = () => {
                                 rules={[{
                                     required: true,
                                     message: "Please enter a valid phone number!"
-                                }]}
+                                },
+                                {   validator: (rule, value, callback) => {
+                                        if(value.length !== 8) {
+                                            callback("Phone number can only have 8 digits")
+                                        } else {
+                                            callback()
+                                        }
+                                    } }
+                                ]}
                             >
-                                <InputNumber />
+                                <Input max={8}/>
                             </Form.Item>
 
                             <Form.Item
@@ -249,8 +257,8 @@ const StaffTable = () => {
                                 }]}
                             >
                                 <Radio.Group>
-                                    <Radio.Button value="Male">Male</Radio.Button>
-                                    <Radio.Button value="Female">Female</Radio.Button>
+                                    <Radio.Button value="MALE">Male</Radio.Button>
+                                    <Radio.Button value="FEMALE">Female</Radio.Button>
                                 </Radio.Group>
                             </Form.Item>
 
