@@ -61,7 +61,7 @@ public class RatingSession implements RatingSessionLocal {
                 offer.setRating(newRating);
                 return newRating;
             } else {
-                System.out.println("%%%% Offer was not accepted, rating aborted");
+                System.out.println("%%%% Offer status is not accepted, rating aborted");
                 throw new OfferStatusException("Offer has not been accepted.");
             }
         }

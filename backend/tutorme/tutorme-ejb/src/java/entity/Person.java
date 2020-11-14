@@ -27,6 +27,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import javax.persistence.Lob;
 
 /**
  *
@@ -73,6 +74,7 @@ public abstract class Person implements Serializable {
     @Enumerated
     private PersonEnum personEnum;
 
+    @Lob
     private String profileImage;
 
     @NotNull

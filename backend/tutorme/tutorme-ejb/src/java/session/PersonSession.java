@@ -39,7 +39,7 @@ public class PersonSession implements PersonSessionLocal {
                 if (person.getActiveStatus()) {
                     return person;
                 } else {
-                    throw new BannedPersonException ("User was banned.");
+                    throw new BannedPersonException("User was banned.");
                 }
             } else {
                 throw new PersonLoginFailException("Invalid login credentials.");
@@ -96,6 +96,17 @@ public class PersonSession implements PersonSessionLocal {
             throw new PersonNotFoundException("PersonId " + personId + " does not exists.");
         } else {
             person.setActiveStatus(false);
+            return person;
+        }
+    }
+
+    @Override
+    public Person uploadImage(Long personId, String encodedImage) throws PersonNotFoundException {
+        Person person = em.find(Person.class, personId);
+        if (person == null) {
+            throw new PersonNotFoundException("PersonId " + personId + " does not exists.");
+        } else {
+            person.setProfileImage(encodedImage);
             return person;
         }
     }
