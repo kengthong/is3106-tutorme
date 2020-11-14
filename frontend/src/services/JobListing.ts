@@ -136,7 +136,40 @@ export class JobListingService {
         }
     }
 
+    public static async activateJobListing(listId: number) {
+        const url = "http://localhost:8080/tutorme-war/webresources/jobListing/activate/"+ listId;
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
 
+        const response = await Utility.fetchBuilder(url, 'PUT', header, null);
+        console.log("response: " + response)
+        if (response.ok) {
+            return await response;
+        } else {
+            return [];
+        }
+    }
 
+    public static async deactivateJobListing(listId: number) {
+        const url = "http://localhost:8080/tutorme-war/webresources/jobListing/deactivate/"+ listId;
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+
+        const response = await Utility.fetchBuilder(url, 'PUT', header, null);
+        console.log("response: " + response)
+        if (response.ok) {
+            return await response;
+        } else {
+            return [];
+        }
+    }
 
 }
