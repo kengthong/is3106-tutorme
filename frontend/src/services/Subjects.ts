@@ -17,7 +17,8 @@ export class SubjectsService {
 
                     const result: subjectResponseType = await res.json();
                     // console.log(result);
-                    const uniqueSubjects = Array.from(new Set(result.map(sub => sub.subjectName)));
+                    const uniqueSubjects = Array.from(new Set(result.map(sub => sub.subjectName))).sort();
+                    console.log('unique subject', uniqueSubjects)
                     const payload: SubjectState = {
                         uniqueSubjects,
                         subjects: result

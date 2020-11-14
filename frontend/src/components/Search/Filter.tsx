@@ -28,6 +28,7 @@ const Filter = (props: filterProps) => {
                 {label}
             </div>
             <Select
+                showSearch
                 defaultValue={defaultVal}
                 style={{ width: 180 }}
                 allowClear

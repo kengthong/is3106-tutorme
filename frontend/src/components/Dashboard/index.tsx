@@ -35,6 +35,8 @@ const Dashboard = () => {
         setAllOffers(data);
         const params: { [key: string]: any } = qs.parse(location.search, { ignoreQueryPrefix: true });
         setType(params.type);
+        console.log('data =', data)
+        console.log('poarams type =', params.type)
         if(params.type ==="offers" && data.length >0) {
             filterOffers(params.status, data);
         }
@@ -72,7 +74,7 @@ const Dashboard = () => {
             setOffersData(_data);
             return;
         }
-        const filteredOfferData = allOffers.length >0? allOffers.filter( d => d.offerStatus === status.toUpperCase()) : [];
+        const filteredOfferData = _data.length >0? _data.filter( d => d.offerStatus === status.toUpperCase()) : [];
         setOffersData(filteredOfferData);
     }
 
