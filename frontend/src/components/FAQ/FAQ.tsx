@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Card } from 'antd'
+import React from 'react';
+import {Card} from 'antd'
 
 export const FAQs = () => {
 
     return (
 
         <div className={"custom-container"} style={{ height: '100%' }}>
-
             <br />
 
             <Card title="What is TutorMe?" className="col-lg-8 col-sm-8" >
@@ -125,9 +123,7 @@ export const FAQs = () => {
             </Card>
             <br />
         </div>
-
     )
-
 }
 
 export default FAQs;

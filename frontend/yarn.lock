@@ -8795,11 +8795,6 @@ pretty-format@^26.4.2:
     ansi-styles "^4.0.0"
     react-is "^16.12.0"
 
-primereact@^5.0.0-rc.1:
-  version "5.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/primereact/-/primereact-5.0.0-rc.2.tgz#1ff6a9fab7e7a16786d89821901cc6ca562e1947"
-  integrity sha512-o/eTK62gf9FjgE1CoLYYOYxoCA0CxyKb/C5FamMCg+B9+G0jXW/kQB/LZYY0lXXTOnaQz/bW5UTyN8TNy/i1Ag==
-
 process-nextick-args@~2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"

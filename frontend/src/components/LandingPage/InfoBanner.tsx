@@ -1,16 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Select } from "antd";
-import { useHistory } from 'react-router-dom';
-
-import { SubjectsService } from "../../services/Subjects";
-import { useSelector } from "react-redux";
-import { UserState } from "../../reducer/user-reducer";
-import { SubjectState } from "../../reducer/subject-reducer";
-import { IRootState } from "../../store";
-import { inherits } from 'util';
-
-
-const { Option } = Select;
+import React from 'react';
 
 export const InfoBanner = () => {
 

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Input, Button, Card, message } from 'antd'
-import { CANCELLED } from 'dns';
-import { UserService } from '../../services/User';
+import React, {useState} from 'react';
+import {useHistory} from 'react-router-dom';
+import {Button, Card, Input, message} from 'antd'
+import {UserService} from '../../services/User';
 
 export const FeedbackCom = () => {
 
@@ -66,6 +65,5 @@ export const FeedbackCom = () => {
         </div>
 
     )
-
 }
 export default FeedbackCom;

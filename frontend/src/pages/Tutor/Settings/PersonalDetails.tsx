@@ -25,7 +25,7 @@ const TutorDetailsPage = () => {
         }
 
         getTutorDetails();
-    }, []);
+    }, [userState.currentUser]);
     if(userState.currentUser?.personEnum !== "TUTOR") {
         history.push("/error")
     }

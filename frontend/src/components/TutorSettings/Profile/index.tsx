@@ -1,14 +1,8 @@
-import React, {useEffect, useState} from "react";
-import { Card } from "antd";
+import React from "react";
+import {Card} from "antd";
 
 import BasicDetails from "./BasicDetails";
-import MakeOfferComponent from "../../MakeOffer/MakeOffer";
 import ReviewsComponent from "../../Reviews/Reviews";
-import OfferListComponent from "../../Dashboard/OfferList";
-import {TutorService} from "../../../services/Tutor";
-import {useSelector} from "react-redux";
-import {IRootState} from "../../../store";
-import {UserState} from "../../../reducer/user-reducer";
 
 type tutorProfileProps = {
     user: tutorDataType | null,
@@ -38,17 +32,6 @@ const TutorProfileComponent = (props: tutorProfileProps) => {
           <ReviewsComponent ratings={offerRatings} avgRating={user.avgRating} ratingCount={user.ratingCount}/>
         </Card>
       </div>
-        {settingsPage?
-            null:
-            <div style={{ width: "35%" }}>
-                <Card>
-                    {/*{user.type === "tutee" ? (*/}
-                    {/*  <MakeOfferComponent />*/}
-                    {/*) : null}*/}
-                </Card>
-            </div>
-        }
-
     </div>
   );
 };

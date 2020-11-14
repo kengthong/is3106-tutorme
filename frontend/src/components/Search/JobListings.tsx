@@ -25,7 +25,7 @@ const JobListings = () => {
     }
     useEffect(() => {
         getJobListings();
-    },[location]);
+    },[getJobListings, location]);
     return (
         <div className={'flex-row justify-center job-listing-list-body'}>
             <Row gutter={30} style={{width: '100%'}}>
@@ -43,7 +43,6 @@ const JobListingCard = (props: jobListingCardProps) => {
     const profileImage = tutor && tutor.profileImage || "";
     const date = createdDate ? new Date(createdDate.split("[")[0]).toLocaleDateString("en-US") : "";
     const firstName = tutor && tutor.firstName || "";
-    console.log('user =', props)
     return (
         <Col span={6} style={{marginTop: '20px'}}>
             <Card

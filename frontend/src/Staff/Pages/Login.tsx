@@ -1,18 +1,15 @@
-import React, { useState } from "react";
-import { Redirect, useHistory } from "react-router-dom";
-import { REGISTRATION_URL } from "../../config/constants";
+import React, {useState} from "react";
+import {Redirect, useHistory} from "react-router-dom";
 import logo from "../../assets/logo.jpg";
-import { Button, Input } from "antd";
-import { UserState } from "../../reducer/user-reducer";
-import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
-import { StaffService } from "../../services/Staff";
+import {Button, Input} from "antd";
+import {UserState} from "../../reducer/user-reducer";
+import {useSelector} from "react-redux";
+import {IRootState} from "../../store";
+import {StaffService} from "../../services/Staff";
 
 const StaffLogin = () => {
-    const history = useHistory();
     const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
     const [hasSubmit, setHasSubmit] = useState(false);
-    const handleRedirectToRegister = () => history.push(REGISTRATION_URL);
 
     const [formData, setFormData] = useState({
         email: "",
@@ -84,15 +81,6 @@ const StaffLogin = () => {
                                 onClick={handleSubmit}
                             >
                                 Login
-                            </Button>
-                        </div>
-                        <div style={{ display: "flex", justifyContent: "center" }}>
-                            <Button
-                                type="link"
-                                className="p-button-link"
-                                onClick={handleRedirectToRegister}
-                            >
-                                Registration
                             </Button>
                         </div>
                     </div>

@@ -142,7 +142,7 @@ const TutorTable = () => {
             render: (record: tutorDataType) => (
                 <div className="flex-row justify-center">
                     <Button size="small" className="fs-12 bold" onClick={() => viewProfile(record.personId)} type="primary">View</Button>
-                    {record .activeStatus?
+                    {record.activeStatus?
                         <Button size="small" className="fs-12 bold" onClick={() => banUser(record.personId)} type="primary" danger>DEACTIVATE</Button>
                         :
                         <Button size="small" className="fs-12 bold" onClick={() => unBanUser(record.personId)} type="default">REACTIVATE</Button>

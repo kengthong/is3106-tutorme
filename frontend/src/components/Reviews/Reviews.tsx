@@ -1,10 +1,9 @@
 import React from "react";
-import {Button, Col, Input, InputNumber, Rate, Row, Form, message} from "antd";
+import {Button, Col, Form, Input, InputNumber, message, Rate, Row} from "antd";
 import {useSelector} from "react-redux";
 import {IRootState} from "../../store";
 import {UserState} from "../../reducer/user-reducer";
 import {JobListingService} from "../../services/JobListing";
-import { useLocation, useHistory } from "react-router-dom";
 
 type reviewProps = {
     ratings?: offerType[],
@@ -23,7 +22,6 @@ const tailLayout = {
 
 const ReviewsComponent = (props: reviewProps) => {
     const {avgRating, ratingCount} = props;
-    const location = useLocation();
     const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
     const ratingData = props.ratings && props.ratings.filter(r => r.rating).map(r => {
         return {
@@ -75,7 +73,7 @@ const ReviewsComponent = (props: reviewProps) => {
                         {props.avgRating.toFixed(1)}
                     </div>
                     <div>
-                        <Rate value={avgRating} disabled/> {props.ratingCount} Reviews
+                        <Rate value={avgRating} disabled/> {ratingCount} Reviews
                     </div>
                 </Col>
                 <Col span={30}>
@@ -86,7 +84,6 @@ const ReviewsComponent = (props: reviewProps) => {
             <Row>
                 <ReviewList ratingData={ratingData}/>
             </Row>
-            {console.log(isUserACustomer)}
             {isUserACustomer.length > 0 ?
                 <div className="border-e8" style={{padding: '16px', marginTop: '40px', borderRadius: '4px', backgroundColor: "#f8fcff"}}>
                     <div className="fs-18" style={{marginTop: '24px'}}>

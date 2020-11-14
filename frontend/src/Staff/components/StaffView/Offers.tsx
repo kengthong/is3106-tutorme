@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Button, Table, Tag } from "antd";
+import React, {useEffect, useState} from "react";
+import {Button, Table, Tag} from "antd";
 import moment from "antd/node_modules/moment";
-import { JobListingService } from "../../../services/JobListing";
-import { useHistory } from "react-router-dom";
-import { StaffService } from "../../../services/Staff";
+import {useHistory} from "react-router-dom";
+import {StaffService} from "../../../services/Staff";
 
 const OfferListingTable = () => {
 	const [tableData, setTableData] = useState([]);
@@ -62,7 +61,6 @@ const OfferListingTable = () => {
 			title: "Tutor",
 			dataIndex: "jobListing",
 			render: (record: any) => {
-				console.log('record =', record)
 				const lastName = record && record.tutor && record.tutor.lastName || "";
 				const firstName = record && record.tutor && record.tutor.firstName || "";
 				return <span> {firstName + " " + lastName}</span>;
@@ -132,7 +130,6 @@ const OfferListingTable = () => {
 		);
 	}
 
-	console.log('test =', tableData)
 	// return (<div> in development</div>)
 	return (
 		<Table

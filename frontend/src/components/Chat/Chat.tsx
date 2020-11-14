@@ -1,11 +1,11 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Avatar, Input, List, message } from "antd";
-import { ChatBubble, Message } from "react-chat-ui";
-import { ChatService } from "../../services/Chat";
-import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
-import { UserState } from "../../reducer/user-reducer";
-import { StaffService } from '../../services/Staff';
+import React, {ChangeEvent, useEffect, useState} from 'react';
+import {Avatar, Input, List, message} from "antd";
+import {ChatBubble, Message} from "react-chat-ui";
+import {ChatService} from "../../services/Chat";
+import {useSelector} from "react-redux";
+import {IRootState} from "../../store";
+import {UserState} from "../../reducer/user-reducer";
+import {StaffService} from '../../services/Staff';
 
 // const currUserId = 1;
 const activeStyle = {
@@ -52,7 +52,7 @@ const Chat = () => {
             }
         }
         getChatList();
-    }, [])
+    }, [userState.currentUser])
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const words = e.target.value;

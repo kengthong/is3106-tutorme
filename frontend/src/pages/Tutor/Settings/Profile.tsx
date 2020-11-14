@@ -3,7 +3,6 @@ import Header from "../../../components/Header/Header";
 import TutorProfileComponent from "../../../components/TutorSettings/Profile";
 import {BodyContainer} from "../../../components/Layout/BodyContainer";
 import {Col, Row} from "antd";
-import TutorSettingsMenu from "../../../components/TutorSettings/TutorMenu";
 import {TutorService} from "../../../services/Tutor";
 import {useSelector} from "react-redux";
 import {IRootState} from "../../../store";
@@ -47,7 +46,7 @@ const TutorProfilePage = () => {
         }
 
         getTutorDetails();
-    }, []);
+    }, [location.search]);
     if (!userData) {
         return (
             <div>

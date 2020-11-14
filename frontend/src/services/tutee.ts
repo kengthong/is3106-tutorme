@@ -6,13 +6,6 @@ import { Utility } from "../config/Utility";
 
 // }
 export default class TuteeService {
-    static async getJobListingListWithParams(params: getJobListingListWithParamsProps): Promise<void> {
-        console.log("getJobListingListWithParams:", params);
-    }
-
-    static makeOffer() {
-
-    }
 
     static async getTuteeDetails(userId: number): Promise<tuteeDataType | null> {
 
@@ -46,7 +39,7 @@ export default class TuteeService {
 
         const response = await Utility.fetchBuilder(url, 'PUT', header, user);
         if (response.ok) {
-            const data = await response.json();
+            await response.json();
             return true;
         } else {
             return false;

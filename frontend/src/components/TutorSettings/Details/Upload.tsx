@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {message, Upload} from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import {BACKEND_BASE_URL} from "../../../config/constants";
+import {LoadingOutlined, PlusOutlined} from '@ant-design/icons';
 import {UserService} from "../../../services/User";
-
 
 
 const ProfileAvatar = (props:any) => {
@@ -12,7 +10,7 @@ const ProfileAvatar = (props:any) => {
 
     useEffect(() => {
         setImageUrl(props.imgUrl || "")
-    }, [])
+    }, [props.imgUrl])
     const uploadImage = async(base64: string) => {
         const response = await UserService.uploadImage(base64);
         if(response.ok){
@@ -37,10 +35,8 @@ const ProfileAvatar = (props:any) => {
         if (!isLt2M) {
             message.error('Image must smaller than 2MB!');
         }
-        console.log('file =', file)
         if( isJpgOrPng && isLt2M) {
             getBase64(file, (cb: any) => {
-                console.log('cb =', cb)
                 uploadImage(cb)
             })
         }
