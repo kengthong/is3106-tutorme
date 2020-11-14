@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { Button, message, Table, Tag } from "antd";
-import { TutorService } from "../../../services/Tutor";
-import moment from 'antd/node_modules/moment';
+import moment from "antd/node_modules/moment";
 import { StaffService } from "../../../services/Staff";
 
 const TuteeTable = () => {
