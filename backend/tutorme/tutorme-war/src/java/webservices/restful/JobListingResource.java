@@ -207,14 +207,6 @@ public class JobListingResource {
     public Response editJobListing(JsonObject json) {
         try {
             Long jobListingId = Long.valueOf(json.getString("jobListingId"));
-            String subjectName = json.getString("subject");
-
-            JsonArray levelsArr = json.getJsonArray("levels");
-            List<String> levels = new ArrayList<>();
-            for (int i = 0; i < levelsArr.size(); i++) {
-                System.out.println("Level: " + levelsArr.getString(i));
-                levels.add(levelsArr.getString(i));
-            }
 
             String title = json.getString("listingTitle");
             String desc = json.getString("listingDesc");
@@ -222,7 +214,7 @@ public class JobListingResource {
             String timeslot = json.getString("timeslot");
             Double rate = Double.valueOf(json.getInt("rate"));
 
-            JobListing jobListing = jobListingSession.updateJobListing(jobListingId, subjectName, levels, rate, timeslot, area, title, desc);
+            JobListing jobListing = jobListingSession.updateJobListing(jobListingId, rate, timeslot, area, title, desc);
             Tutor tutor = jobListing.getTutor();
             tutor.setSalt(null);
             tutor.setPassword(null);
