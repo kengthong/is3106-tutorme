@@ -3,9 +3,11 @@ import {Button, message, Table, Tag} from "antd";
 import {TutorService} from "../../../services/Tutor";
 import moment from 'antd/node_modules/moment';
 import {StaffService} from "../../../services/Staff";
+import { useHistory } from 'react-router-dom';
 
 const TutorTable = () => {
-    const [tableData, setTableData] = useState([])
+    const [tableData, setTableData] = useState([]);
+    const history = useHistory();
     const getAllTutors = async () => {
         const data = await TutorService.getAllTutors();
         setTableData(data)
@@ -43,6 +45,7 @@ const TutorTable = () => {
     }
 
     const viewProfile = (id: number) => {
+        history.push("/tutor-profile?id=" + id)
     }
 
     const _columns = [

@@ -12,7 +12,7 @@ const OfferListComponent = (props: any) => {
       title: "Status",
       dataIndex: "offerStatus",
       render: (offerStatus: string) => {
-        const color = offerStatus === "ACCEPTED"? "success" : offerStatus === "REJECTED"? "error" : offerStatus === "WITHDRAW"? "default": "warning";
+        const color = offerStatus === "ACCEPTED"? "success" : offerStatus === "REJECTED"? "error" : offerStatus === "WITHDRAWN"? "default": "warning";
         return (
             <span>
                 <Tag color={color}>{offerStatus}</Tag>
@@ -87,15 +87,15 @@ const OfferListComponent = (props: any) => {
       title: 'Rating',
       dataIndex: 'rating',
       render: (rating: any) => {
-        return (<span>{rating.ratingValue}</span>)
+        return (<span>{rating && rating.ratingValue || ""}</span>)
       }
     },
     {
       title: "Action",
       key: "action",
       render: (record: any) => {
+        const status = record && record.offerStatus || "";
         if (userState.currentUser && userState.currentUser.personEnum === "TUTEE") {
-          const status = record && record.offerStatus || "";
           return (
               <>
                 <Button danger size="small" disabled={["ACCEPTED", "REJECTED", "WITHDRAWN"].includes(status)}
@@ -107,10 +107,12 @@ const OfferListComponent = (props: any) => {
         } else {
           return (
               <>
-                <Button type="primary" size="small" style={{marginRight: "4px"}} onClick={() => props.acceptOffer(record.offerId)}>
+                <Button type="primary" size="small" style={{marginRight: "4px"}} onClick={() => props.acceptOffer(record.offerId)}
+                        disabled={["ACCEPTED", "REJECTED", "WITHDRAWN"].includes(status)}>
                   <span> Accept </span>
                 </Button>
-                <Button danger size="small" onClick={() => props.rejectOffer(record.offerId)}>
+                <Button danger size="small" onClick={() => props.rejectOffer(record.offerId)}
+                        disabled={["ACCEPTED", "REJECTED", "WITHDRAWN"].includes(status)}>
                   <span> Reject </span>
                 </Button>
               </>

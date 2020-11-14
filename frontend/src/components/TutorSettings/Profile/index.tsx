@@ -11,12 +11,17 @@ import {IRootState} from "../../../store";
 import {UserState} from "../../../reducer/user-reducer";
 
 type tutorProfileProps = {
-    user: tutorDataType,
+    user: tutorDataType | null,
     offerRatings: offerType[],
     settingsPage?: boolean
 }
 const TutorProfileComponent = (props: tutorProfileProps) => {
     const { user, offerRatings, settingsPage } = props;
+    if(!user) {
+        return <div>
+            Unable to find user
+        </div>
+    }
   return (
     <div
       style={{

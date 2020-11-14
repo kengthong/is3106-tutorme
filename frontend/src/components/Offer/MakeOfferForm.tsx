@@ -70,7 +70,7 @@ const MakeOfferForm = (props: any) => {
     const createOffer = async (createOfferParams: any): Promise<void> => {
         const response = await OfferService.createOffer(createOfferParams);
         if (response) {
-            return message.success("Dashboard made!")
+            return message.success("Successfully made offer!")
         } else {
             return message.error("Error sending offer. Please try again.");
         }
