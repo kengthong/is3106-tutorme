@@ -41,7 +41,7 @@ const App = () => {
 
           <Route path="/job" component={ListingPage} />
           <Route path="/login" component={Login} />
-          <Route path="/" exact component={LandingPage} isAuthenticated={true} />
+          <Route path="/" exact component={LandingPage} />
           <Route path='/search:params?' component={SearchPage} />
           <Route path="/faq" component={FAQ} />
           <Route path="/about-us" component={AboutUs} />
@@ -54,8 +54,8 @@ const App = () => {
 
           {/*For viewing tutor profile directly*/}
           <ProtectedRoute path="/tutor-profile" exact component={TutorProfilePage} />
-          <ProtectedRoute path="/tutee-profile" allowedUser='tutee' component={TuteeProfilePage} />
-          <ProtectedRoute path="/dashboard" component={DashboardPage}/>
+          <ProtectedRoute path="/tutee/settings/personal-details" allowedUser='tutee' component={TuteeProfilePage} />
+          <ProtectedRoute path="/dashboard" component={DashboardPage} />
 
           {/*<StaffRoutes/>*/}
           <Route path="/staff" component={StaffRoutes} />

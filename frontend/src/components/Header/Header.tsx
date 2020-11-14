@@ -175,7 +175,7 @@ const ProfileContent = (personEnum: string, userState: UserState, handleLogout: 
             }
             <div className='clickable highlightable'>
                 <a className='selection w-100'
-                    href={`/${personEnum === 'TUTEE' ? 'tutee-profile' : 'tutor/settings/personal-details'}`}>
+                    href={`/${personEnum === 'TUTEE' ? 'tutee/settings/personal-details' : 'tutor/settings/personal-details'}`}>
                     Settings
                 </a>
             </div>
