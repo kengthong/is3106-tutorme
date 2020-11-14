@@ -127,7 +127,6 @@ public class JobListingResource {
                 if (rating != null) {
                     rating.setOffer(null);
                 }
-
                 o.setJobListing(null);
             }
             GenericEntity<JobListing> packet = new GenericEntity<JobListing>(jobListing) {
