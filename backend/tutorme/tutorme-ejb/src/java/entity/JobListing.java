@@ -201,9 +201,6 @@ public class JobListing implements Serializable {
                 if (rating != null) {
                     sum += rating.getRatingValue();
                     count++;
-                    System.out.println("### New rating added");
-                    System.out.println("### sum: " + sum);
-                    System.out.println("### count: " + count);
                 }
             }
         }
