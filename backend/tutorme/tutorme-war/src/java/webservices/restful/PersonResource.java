@@ -14,7 +14,6 @@ import entity.Tutor;
 import enumeration.GenderEnum;
 import enumeration.StaffPositionEnum;
 import exception.BannedPersonException;
-import exception.InvalidParamsException;
 import exception.PersonLoginFailException;
 import exception.PersonNotFoundException;
 import exception.RegistrationFailException;
@@ -205,7 +204,7 @@ public class PersonResource implements Serializable {
         } catch (RegistrationFailException ex) {
             exception.add("error", ex.getMessage());
             return Response.status(409).entity(exception.build()).build();
-        } catch (JsonProcessingException | ParseException ex) {
+        } catch (JsonProcessingException ex) {
             exception.add("error", ex.getMessage());
             return Response.status(400).entity(exception.build()).build();
         }
