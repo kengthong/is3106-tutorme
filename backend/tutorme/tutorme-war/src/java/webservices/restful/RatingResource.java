@@ -10,6 +10,8 @@ import entity.Offer;
 import entity.Rating;
 import entity.Tutee;
 import exception.OfferNotFoundException;
+import exception.OfferRatingExistException;
+import exception.OfferStatusException;
 import filter.TuteeJWTTokenNeeded;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
@@ -49,10 +51,11 @@ public class RatingResource {
         String offerIdStr = json.getString("offerId");
         Integer ratingValue = Integer.valueOf(ratingValueStr);
         Long offerId = Long.valueOf(offerIdStr);
-        System.out.println("Making new rating on offerId..." + offerIdStr);
+        System.out.println("Rating for offerId..." + offerIdStr);
 
         try {
             Rating rating = ratingSession.createRating(ratingValue, comments, offerId);
+            System.out.println("%%%% Rating created successfully for offerId..." + offerIdStr);
             Offer o = rating.getOffer();
             Tutee tutee = o.getTutee();
             tutee.setReceivedMessages(null);
@@ -72,8 +75,11 @@ public class RatingResource {
         } catch (OfferNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(404).entity(exception).build();
-        } catch (Exception ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "Rating for this offer has already been made.").build();
+        } catch (OfferStatusException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(400).entity(exception).build();
+        } catch (OfferRatingExistException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(409).entity(exception).build();
         }
     }

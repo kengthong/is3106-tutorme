@@ -17,6 +17,7 @@ import exception.BannedPersonException;
 import exception.InvalidParamsException;
 import exception.PersonLoginFailException;
 import exception.PersonNotFoundException;
+import exception.RegistrationFailException;
 import exception.StaffNotFoundException;
 import exception.TuteeNotFoundException;
 import exception.TutorNotFoundException;
@@ -201,18 +202,12 @@ public class PersonResource implements Serializable {
             }
             payload.add("jwtToken", encodedJWT);
             return Response.status(201).entity(payload.build()).build();
-        } catch (InvalidParamsException ex) {
-            System.out.println("### InvalidParamsException");
+        } catch (RegistrationFailException ex) {
             exception.add("error", ex.getMessage());
             return Response.status(409).entity(exception.build()).build();
-        } catch (JsonProcessingException ex) {
-            System.out.println("### JsonProcessingException");
+        } catch (JsonProcessingException | ParseException ex) {
             exception.add("error", ex.getMessage());
-            return Response.status(401).entity(exception.build()).build();
-        } catch (Exception ex) {
-            System.out.println("### Exception");
-            exception.add("error", "Email has been used.");
-            return Response.status(409).entity(exception.build()).build();
+            return Response.status(400).entity(exception.build()).build();
         }
     }
 

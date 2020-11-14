@@ -9,12 +9,14 @@ import entity.Offer;
 import entity.Rating;
 import enumeration.OfferStatusEnum;
 import exception.OfferNotFoundException;
+import exception.OfferRatingExistException;
 import exception.OfferStatusException;
 import exception.RatingNotFoundException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 /**
@@ -42,19 +44,25 @@ public class RatingSession implements RatingSessionLocal {
     }
 
     @Override
-    public Rating createRating(Integer ratingValue, String comments, Long offerId) throws OfferNotFoundException, OfferStatusException {
-        Offer offer = em.find(Offer.class,
-                offerId);
+    public Rating createRating(Integer ratingValue, String comments, Long offerId) throws OfferNotFoundException, OfferStatusException, OfferRatingExistException {
+        Offer offer = em.find(Offer.class, offerId);
         if (offer == null) {
             throw new OfferNotFoundException("offerId does not exist");
         } else {
             if (offer.getOfferStatus() == OfferStatusEnum.ACCEPTED) {
+                System.out.println("%%%% Offer was accepted, processing rating");
                 Rating newRating = new Rating(ratingValue, comments, offer);
-                em.persist(newRating);
+                try {
+                    em.persist(newRating);
+                    em.flush();
+                } catch (PersistenceException ex) {
+                    throw new OfferRatingExistException("Offer has been rated previously");
+                }
                 offer.setRating(newRating);
                 return newRating;
             } else {
-                throw new OfferStatusException("Offer was not accepted.");
+                System.out.println("%%%% Offer was not accepted, rating aborted");
+                throw new OfferStatusException("Offer has not been accepted.");
             }
         }
     }
@@ -69,7 +77,7 @@ public class RatingSession implements RatingSessionLocal {
     @Override
     public Rating retrieveRatingById(Long ratingId) throws RatingNotFoundException {
         Rating rating = em.find(Rating.class,
-                ratingId);
+                 ratingId);
         if (rating != null) {
             return rating;
         } else {

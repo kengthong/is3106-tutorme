@@ -10,6 +10,7 @@ import enumeration.CitizenshipEnum;
 import enumeration.GenderEnum;
 import enumeration.QualificationEnum;
 import enumeration.RaceEnum;
+import exception.RegistrationFailException;
 import exception.TutorNotFoundException;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,7 @@ public interface TutorSessionLocal {
     
     public Tutor createTutorInit(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob,QualificationEnum highestQualification, CitizenshipEnum citizenship, RaceEnum race, String profileDesc);
     
-    public Tutor createTutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob);
+    public Tutor createTutor(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) throws RegistrationFailException;
 
     public List<Tutor> retrieveAllTutors();
 

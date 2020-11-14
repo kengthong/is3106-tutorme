@@ -7,7 +7,7 @@ package session;
 
 import entity.Tutee;
 import enumeration.GenderEnum;
-import exception.InvalidParamsException;
+import exception.RegistrationFailException;
 import exception.TuteeNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
@@ -17,6 +17,7 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import util.security.CryptoHelper;
 
@@ -55,7 +56,7 @@ public class TuteeSession implements TuteeSessionLocal {
     }
 
     @Override
-    public Tutee createTutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) throws InvalidParamsException {
+    public Tutee createTutee(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob) throws RegistrationFailException {
         Tutee newTutee = new Tutee();
         try {
             String salt = ch.generateRandomString(64);
@@ -69,15 +70,16 @@ public class TuteeSession implements TuteeSessionLocal {
             newTutee.setMobileNum(mobileNum);
             newTutee.setGender(gender);
             newTutee.setDob(dob);
-            em.persist(newTutee);
+            try {
+                em.persist(newTutee);
+                em.flush();
+                return newTutee;
+            } catch (PersistenceException ex) {
+                throw new RegistrationFailException("Email is in use");
+            }
         } catch (NoSuchAlgorithmException ex) {
-            System.out.println("Hashing error when creating tutee.");
-        } catch (EJBException ex) {
-            System.out.println("%%% EJB Exception");
-            throw new InvalidParamsException("Email has been used before");
+            throw new RegistrationFailException("Something when wrong in creating new user's password salt");
         }
-        
-        return newTutee;
     }
 
     @Override
@@ -154,7 +156,7 @@ public class TuteeSession implements TuteeSessionLocal {
 
         Integer t1 = tutees1.size();
         Integer t2 = tutees2.size();
-        return t2-t1;
+        return t2 - t1;
     }
 
 }

@@ -8,6 +8,7 @@ package session;
 import entity.Staff;
 import enumeration.GenderEnum;
 import enumeration.StaffPositionEnum;
+import exception.RegistrationFailException;
 import exception.StaffNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import util.security.CryptoHelper;
 
@@ -30,7 +32,7 @@ public class StaffSession implements StaffSessionLocal {
     private final CryptoHelper ch = CryptoHelper.getInstance();
 
     @Override
-    public Staff createStaff(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, StaffPositionEnum staffPositionEnum) {
+    public Staff createStaff(String firstName, String lastName, String email, String password, String mobileNum, GenderEnum gender, Date dob, StaffPositionEnum staffPositionEnum) throws RegistrationFailException {
         Staff newStaff = new Staff();
         try {
             String salt = ch.generateRandomString(64);
@@ -46,11 +48,16 @@ public class StaffSession implements StaffSessionLocal {
             newStaff.setDob(dob);
             newStaff.setStaffPositionEnum(staffPositionEnum);
             em.persist(newStaff);
+            try {
+                em.persist(newStaff);
+                em.flush();
+                return newStaff;
+            } catch (PersistenceException ex) {
+                throw new RegistrationFailException("Email is in use");
+            }
         } catch (NoSuchAlgorithmException ex) {
-            System.out.println("Hashing error when creating staff.");
+            throw new RegistrationFailException("Something when wrong in creating new user's password salt");
         }
-
-        return newStaff;
     }
 
     @Override
