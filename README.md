@@ -1,6 +1,6 @@
 # TutorMe
-### Group Project IS3106 Enterprise Systems Interface Design and Development.
-Members: 
+### IS3106 Enterprise Systems Interface Design and Development (Group Project)
+Members:  
 A0173350M Enelton Satria  
 A0185681U Brandon Ng Jun Yuan  
 A0177024J Soh Yi Bin  
