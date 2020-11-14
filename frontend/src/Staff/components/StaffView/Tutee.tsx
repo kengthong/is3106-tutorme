@@ -7,6 +7,7 @@ const TuteeTable = () => {
     const [tableData, setTableData] = useState([]);
     const getAllTutees = async () => {
         const data = await StaffService.getAllTutees();
+        console.log('dataaa =', data)
         setTableData(data);
     };
     useEffect(() => {
@@ -24,8 +25,9 @@ const TuteeTable = () => {
         }
 
         if (processed) {
-            getAllTutees();
+
             message.success("Successfully updated user");
+            getAllTutees();
             return true;
         } else {
             message.error("Unable to updated user");

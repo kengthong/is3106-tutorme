@@ -39,9 +39,9 @@ const EditJobListing = (props: any) => {
             jobListingId: fieldsValue.jobListingId.toString(),
             listingTitle: fieldsValue.jobListingTitle,
             listingDesc: fieldsValue.jobListingDesc,
-            area: fieldsValue.area,
+            area: fieldsValue.areas,
             timeslot: fieldsValue.timeslot,
-            rate: fieldsValue.hourlyRates.toString()
+            rate: fieldsValue.hourlyRates
         }
         console.log(values);
         editJobListing(values);
@@ -50,9 +50,9 @@ const EditJobListing = (props: any) => {
     const editJobListing = async (editJobListingParams: any): Promise<void> => {
         const response = await JobListingService.editJobListing(editJobListingParams);
         if (response) {
-            return message.success("New listing has been created!")
+            return message.success("Successfully updated job listing!")
         } else {
-            return message.error("Error creating new job listing")
+            return message.error("Error updating new job listing")
         }
     }
 
