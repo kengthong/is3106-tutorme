@@ -35,7 +35,7 @@ public interface JobListingSessionLocal {
 
     public double retrieveJobListingRatingValue(Long jobListingId) throws JobListingNotFoundException;
 
-    public JobListing updateJobListing(Long tutorId, String subjectName, List<String> subjectLevels, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws SubjectNotFoundException, JobListingNotFoundException;
+    public JobListing updateJobListing(Long tutorId, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws SubjectNotFoundException, JobListingNotFoundException;
 
     public void activateJobListing(Long tutorId, Long jobListingId) throws JobListingNotFoundException, InvalidParamsException;
 

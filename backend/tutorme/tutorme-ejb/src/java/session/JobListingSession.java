@@ -189,23 +189,9 @@ public class JobListingSession implements JobListingSessionLocal {
     }
 
     @Override
-    public JobListing updateJobListing(Long jobListingId, String subjectName, List<String> subjectLevels, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws SubjectNotFoundException, JobListingNotFoundException {
+    public JobListing updateJobListing(Long jobListingId, Double hourlyRates, String timeslots, String areas, String jobListingTitle, String jobListingDesc) throws SubjectNotFoundException, JobListingNotFoundException {
         JobListing jobListing = em.find(JobListing.class, jobListingId);
         if (jobListing != null) {
-            // Retrieve subjects
-            List<Subject> managedSubjects = new ArrayList<>();
-            for (String subjectLevel : subjectLevels) {
-                Query query = em.createQuery("SELECT s FROM Subject s WHERE s.subjectLevel = :inputSubjectLevel AND s.subjectName = :inputSubjectName");
-                query.setParameter("inputSubjectLevel", subjectLevel);
-                query.setParameter("inputSubjectName", subjectName);
-                Subject s = (Subject) query.getSingleResult();
-                if (s != null) {
-                    managedSubjects.add(s);
-                } else {
-                    throw new SubjectNotFoundException("No Subjects by the level " + subjectLevel + " was found.");
-                }
-            }
-            jobListing.setSubjects(managedSubjects);
             jobListing.setHourlyRates(hourlyRates);
             jobListing.setTimeslots(timeslots);
             jobListing.setAreas(areas);

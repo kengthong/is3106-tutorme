@@ -22,7 +22,6 @@ import exception.TuteeNotFoundException;
 import exception.TutorNotFoundException;
 import filter.JWTTokenNeeded;
 import filter.UserPrincipal;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,9 +46,6 @@ import session.StaffSessionLocal;
 import session.TuteeSessionLocal;
 import session.TutorSessionLocal;
 import utils.AuthenticateUser;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import javax.ws.rs.Consumes;
 
 /**
  * REST Web Service
