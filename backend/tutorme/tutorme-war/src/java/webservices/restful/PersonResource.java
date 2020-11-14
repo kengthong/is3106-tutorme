@@ -204,7 +204,7 @@ public class PersonResource implements Serializable {
         } catch (RegistrationFailException ex) {
             exception.add("error", ex.getMessage());
             return Response.status(409).entity(exception.build()).build();
-        } catch (JsonProcessingException ex) {
+        } catch (JsonProcessingException | ParseException ex) {
             exception.add("error", ex.getMessage());
             return Response.status(400).entity(exception.build()).build();
         }
