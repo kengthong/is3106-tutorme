@@ -14,6 +14,7 @@ import entity.Tutor;
 import enumeration.GenderEnum;
 import enumeration.StaffPositionEnum;
 import exception.BannedPersonException;
+import exception.InvalidParamsException;
 import exception.PersonLoginFailException;
 import exception.PersonNotFoundException;
 import exception.RegistrationFailException;
@@ -150,7 +151,13 @@ public class PersonResource implements Serializable {
             String pattern = "dd-MM-YYYY";
             SimpleDateFormat dateFormatter = new SimpleDateFormat(pattern);
             Date dob;
-            dob = dateFormatter.parse(dobStr);
+            try {
+                dob = dateFormatter.parse(dobStr);
+            } catch (ParseException ex) {
+                System.out.println("### ParseException");
+                exception.add("error", ex.getMessage());
+                return Response.status(400).entity(exception.build()).build();
+            }
 
             String userType = json.getString("accountType");
             String encodedJWT = null;
