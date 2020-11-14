@@ -70,7 +70,6 @@ export class JobListingService {
 
     }
 
-
     private static getPriceRange(price?: string) {
         let minPrice = 0, maxPrice = 999;
         if (price !== undefined) {
@@ -128,23 +127,16 @@ export class JobListingService {
 
         const response = await Utility.fetchBuilder(url, 'POST', header, body);
         return response;
-        console.log("response: " + response)
-        if (response.ok) {
-            return await response.json();
-        } else {
-            return [];
-        }
     }
 
     public static async activateJobListing(listId: number) {
-        const url = "http://localhost:8080/tutorme-war/webresources/jobListing/activate/"+ listId;
+        const url = "http://localhost:8080/tutorme-war/webresources/jobListing/activate/" + listId;
         const token = localStorage.getItem("token");
         const jsonHeader = Utility.getJsonHeader();
         const header = {
             ...jsonHeader,
             "Authorization": "Bearer " + token
         };
-
         const response = await Utility.fetchBuilder(url, 'PUT', header, null);
         console.log("response: " + response)
         if (response.ok) {
@@ -153,9 +145,47 @@ export class JobListingService {
             return [];
         }
     }
+    public static async editJobListing(body: createJobListingParams): Promise<boolean> {
+        const url = "http://localhost:8080/tutorme-war/webresources/jobListing/edit";
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+
+        const response = await Utility.fetchBuilder(url, 'PUT', header, body);
+        console.log("response: " + response)
+        if (response.ok) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public static async editJobListing(body: createJobListingParams): Promise<boolean> {
+        const url = "http://localhost:8080/tutorme-war/webresources/jobListing/edit";
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+
+        const response = await Utility.fetchBuilder(url, 'PUT', header, body);
+        console.log("response: " + response)
+        if (response.ok) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
 
     public static async deactivateJobListing(listId: number) {
-        const url = "http://localhost:8080/tutorme-war/webresources/jobListing/deactivate/"+ listId;
+        const url = "http://localhost:8080/tutorme-war/webresources/jobListing/deactivate/" + listId;
         const token = localStorage.getItem("token");
         const jsonHeader = Utility.getJsonHeader();
         const header = {

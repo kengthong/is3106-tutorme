@@ -202,6 +202,8 @@ type staffDataType = {
     sentMessage?: null;
     receivedMessages?: null;
     staffPositionEnum: string;
+    profileDesc?: string;
+    offers?: null;
 }
 
 

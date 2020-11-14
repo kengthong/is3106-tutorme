@@ -239,34 +239,3 @@ const MakeOfferForm = (props: any) => {
 
 export default MakeOfferForm
 
-
-
- // const [formData, setFormData] = useState({
-    //     price: 0,
-    //     subject: "",
-    //     duration: "",
-    //     remarks: ""
-    // })
-
-
-
-    // const verifyForm = () => {
-    //     let a = formData.tuteeId != -1;
-    //     let b = formData.jobListingId != -1;
-    //     let c = formData.price > 0;
-    //     let d = formData.subject !== "";
-    //     let e = formData.duration != "";
-    //     let f = formData.remarks != "";
-    //     return a && b && c && d && e && f;
-    // };
-
-    // const handleChange = (e: any) => {
-    //     const name = e && e.target && e.target.name ? e.target.name : "";
-    //     const value = e && e.target && e.target.value ? e.target.value : "";
-    //     setFormData((prevState) => ({
-    //         ...prevState,
-    //         [name]: value,
-    //     }));
-    //     // console.log("form name: " + name + " and value:" + value);
-    //     console.log(formData)
-    // };

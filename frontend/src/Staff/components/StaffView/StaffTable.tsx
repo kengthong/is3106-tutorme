@@ -135,6 +135,7 @@ const StaffTable = () => {
         console.log("fields value =", values);
         createNewStaff(values);
         setShowModal(false);
+        getAllStaff();
     }
 
 
@@ -236,16 +237,18 @@ const StaffTable = () => {
                                     required: true,
                                     message: "Please enter a valid phone number!"
                                 },
-                                {   validator: (rule, value, callback) => {
-                                        if(value.length !== 8) {
+                                {
+                                    validator: (rule, value, callback) => {
+                                        if (value.length !== 8) {
                                             callback("Phone number can only have 8 digits")
                                         } else {
                                             callback()
                                         }
-                                    } }
+                                    }
+                                }
                                 ]}
                             >
-                                <Input max={8}/>
+                                <Input max={8} />
                             </Form.Item>
 
                             <Form.Item
