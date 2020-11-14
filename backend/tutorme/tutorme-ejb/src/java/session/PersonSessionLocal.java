@@ -30,4 +30,6 @@ public interface PersonSessionLocal {
     public Person activatePerson(Long personId) throws PersonNotFoundException;
 
     public Person deactivatePerson(Long personId) throws PersonNotFoundException;
+    
+    public Person uploadImage(Long personId, String encodedImage) throws PersonNotFoundException;
 }

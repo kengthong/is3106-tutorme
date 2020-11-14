@@ -22,6 +22,7 @@ import exception.TuteeNotFoundException;
 import exception.TutorNotFoundException;
 import filter.JWTTokenNeeded;
 import filter.UserPrincipal;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,6 +47,9 @@ import session.StaffSessionLocal;
 import session.TuteeSessionLocal;
 import session.TutorSessionLocal;
 import utils.AuthenticateUser;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import javax.ws.rs.Consumes;
 
 /**
  * REST Web Service
@@ -260,15 +264,56 @@ public class PersonResource implements Serializable {
 
     @POST
     @Path("/uploadImage")
-//    @Consumes(MediaType.MEDIA_TYPE_WILDCARD)
+    @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-//    @JWTTokenNeeded
     public Response uploadImage(@Context SecurityContext securityContext, JsonObject json) {
         UserPrincipal person = (UserPrincipal) securityContext.getUserPrincipal();
         Long personId = person.getPersonId();
+        
+        String encodedImage = json.getString("profileImage");
 
         JsonObjectBuilder exception = Json.createObjectBuilder();
-        exception.add("error", "testing").build();
-        return Response.status(400).entity(exception).build();
+        try {
+            Person user = personSession.uploadImage(personId, encodedImage);
+            switch (user.getPersonEnum()) {
+                case TUTOR:
+                    Tutor tutor = tutorSession.retrieveTutorById(personId);
+                    tutor.setSalt(null);
+                    tutor.setPassword(null);
+                    tutor.setSentMessages(null);
+                    tutor.setReceivedMessages(null);
+                    tutor.setJobListings(null);
+
+                    GenericEntity<Tutor> payload1 = new GenericEntity<Tutor>(tutor) {
+                    };
+                    return Response.status(200).entity(payload1).build();
+                case TUTEE:
+                    Tutee tutee = tuteeSession.retrieveTuteeById(personId);
+                    tutee.setSalt(null);
+                    tutee.setPassword(null);
+                    tutee.setSentMessages(null);
+                    tutee.setReceivedMessages(null);
+                    tutee.setOffers(null);
+
+                    GenericEntity<Tutee> payload2 = new GenericEntity<Tutee>(tutee) {
+                    };
+                    return Response.status(200).entity(payload2).build();
+                case STAFF:
+                    Staff staff = staffSession.retrieveStaffById(personId);
+                    staff.setSalt(null);
+                    staff.setPassword(null);
+                    staff.setSentMessages(null);
+                    staff.setReceivedMessages(null);
+
+                    GenericEntity<Staff> payload3 = new GenericEntity<Staff>(staff) {
+                    };
+                    return Response.status(200).entity(payload3).build();
+            }
+        } catch (TutorNotFoundException | TuteeNotFoundException | StaffNotFoundException | PersonNotFoundException ex) {
+            exception.add("error", ex.getMessage());
+            return Response.status(401).entity(exception.build()).build();
+        }
+        exception.add("error", "Unknown error when getting person after updating profile.");
+        return Response.status(400).entity(exception.build()).build();
     }
 }
