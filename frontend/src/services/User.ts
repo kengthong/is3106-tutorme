@@ -105,4 +105,21 @@ export class UserService {
             payload: undefined
         })
     }
+
+    static async uploadImage(imgString: string) {
+        const url = BACKEND_BASE_URL + '/person/uploadImage';
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+        const body = {
+
+        }
+
+        const response = await Utility.fetchBuilder(url, 'POST', header, body)
+        console.log("response: " + response)
+        return response;
+    }
 }

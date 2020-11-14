@@ -14,6 +14,7 @@ import {
 import { qualifications, races } from "../../../config/constants";
 import moment from 'moment';
 import {TutorService} from "../../../services/Tutor";
+import ProfileAvatar from "./Upload";
 const countryJson = require("../../../config/countries.json");
 
 const { Option } = Select;
@@ -131,6 +132,14 @@ const EditableDetails = (props: editableDetailsProps) => {
           </Col>
 
           <Col span={12}>
+
+            <Form.Item
+                name="profileImg"
+                label="Profile Image"
+            >
+              <ProfileAvatar />
+            </Form.Item>
+
             <Form.Item
               name="dob"
               label="Date of birth"
