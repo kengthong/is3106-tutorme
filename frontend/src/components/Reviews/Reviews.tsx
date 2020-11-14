@@ -1,14 +1,16 @@
 import React from "react";
-import {Button, Col, Input, InputNumber, Rate, Row, Form} from "antd";
+import {Button, Col, Input, InputNumber, Rate, Row, Form, message} from "antd";
 import {useSelector} from "react-redux";
 import {IRootState} from "../../store";
 import {UserState} from "../../reducer/user-reducer";
 import {JobListingService} from "../../services/JobListing";
+import { useLocation, useHistory } from "react-router-dom";
 
 type reviewProps = {
     ratings?: offerType[],
     avgRating: number;
     ratingCount?: number;
+    getListingDetails?: () => void
 }
 
 const layout = {
@@ -20,7 +22,8 @@ const tailLayout = {
 };
 
 const ReviewsComponent = (props: reviewProps) => {
-    const value = 5;
+    const {avgRating, ratingCount} = props;
+    const location = useLocation();
     const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
     const ratingData = props.ratings && props.ratings.filter(r => r.rating).map(r => {
         return {
@@ -32,18 +35,26 @@ const ReviewsComponent = (props: reviewProps) => {
 
 
     const leaveComment = async(values: any) => {
-        console.log('values =', values)
+
         const body = {
             ...values,
             ratingValue: values.ratingValue.toString(),
             offerId: isUserACustomer[0].offerId.toString()
         }
 
-        await JobListingService.postComment(body)
+        const response = await JobListingService.postComment(body)
+        if(response.ok) {
+            message.success("Successfully left a comment");
+            if(props.getListingDetails != undefined) {
+                props.getListingDetails();
+            }
+            return;
+        } else {
+            message.error("Unable to leave comment");
+        }
     }
 
     const isUserACustomer = userState.currentUser && userState.currentUser.personId &&  props.ratings && props.ratings.filter( o => o.tutee.personId == userState.currentUser?.personId) || [];
-    console.log('isUserACustomer =', isUserACustomer)
     return (
         <div>
             <div style={{fontSize: "16px", fontWeight: "bold", padding: "10px 0"}}>
@@ -64,7 +75,7 @@ const ReviewsComponent = (props: reviewProps) => {
                         {props.avgRating}
                     </div>
                     <div>
-                        <Rate value={value} disabled/> {props.ratingCount} Reviews
+                        <Rate value={avgRating} disabled/> {props.ratingCount} Reviews
                     </div>
                 </Col>
                 <Col span={30}>
@@ -76,7 +87,7 @@ const ReviewsComponent = (props: reviewProps) => {
                 <ReviewList ratingData={ratingData}/>
             </Row>
 
-            {isUserACustomer.length > 0?
+            {isUserACustomer.length > 0 && !isUserACustomer[0].rating && isUserACustomer[0].offerStatus === "ACCEPTED"?
                 <div className="border-e8" style={{padding: '16px', marginTop: '40px', borderRadius: '4px', backgroundColor: "#f8fcff"}}>
                     <div className="fs-18" style={{marginTop: '24px'}}>
                         Leave a review
@@ -162,7 +173,7 @@ const RatingBreakdown = (props: any) => {
 const ProgressBar = (props: any) => {
     const {current, total, star} = props;
     const totalWidth = 120;
-    const width = (current / total) * totalWidth;
+    const width = current == 0? 0 : (current / total) * totalWidth;
     const faintStyle = {fontSize: "12px", paddingLeft: "4px", opacity: 0.7};
     return (
         <div style={{margin: "0px 0", display: "flex", alignItems: "center"}}>

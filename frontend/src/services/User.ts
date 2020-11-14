@@ -115,7 +115,7 @@ export class UserService {
             "Authorization": "Bearer " + token
         };
         const body = {
-
+            profileImage: imgString
         }
 
         const response = await Utility.fetchBuilder(url, 'POST', header, body)

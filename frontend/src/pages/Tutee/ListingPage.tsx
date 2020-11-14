@@ -16,14 +16,15 @@ import { useLocation, useHistory } from "react-router-dom";
 const ListingPage = () => {
     const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
     const [listingData, setListingData] = useState<jobListingType>();
-    useEffect(() => {
-        const getListingDetails = async () => {
-            const params: { [key: string]: any } = qs.parse(location.search.substring(1), { ignoreQueryPrefix: true });
-            const data: jobListingType | null = await JobListingService.getJobListing(params.id);
-            if (data) {
-                setListingData(data);
-            }
+    const getListingDetails = async () => {
+        const params: { [key: string]: any } = qs.parse(location.search.substring(1), { ignoreQueryPrefix: true });
+        const data: jobListingType | null = await JobListingService.getJobListing(params.id);
+        if (data) {
+            setListingData(data);
         }
+    }
+
+    useEffect(() => {
         getListingDetails();
     }, []
     )
@@ -36,7 +37,7 @@ const ListingPage = () => {
             <BodyContainer>
                 <div style={{ display: "flex", flexDirection: "column" }}>
                     <div style={{ marginBottom: "20px" }}>
-                        {listingData ? <JobListingDetail listing={listingData} /> : null}
+                        {listingData ? <JobListingDetail listing={listingData} getListingDetails={getListingDetails}/> : null}
                     </div>
                 </div>
             </BodyContainer>

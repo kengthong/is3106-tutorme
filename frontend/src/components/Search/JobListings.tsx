@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory, useLocation} from "react-router-dom";
 import qs from "qs";
-import {Card, Col, Rate, Row} from "antd";
+import {Avatar, Card, Col, Rate, Row} from "antd";
 import {JobListingService} from "../../services/JobListing";
 
 const JobListings = () => {
@@ -38,10 +38,11 @@ const JobListings = () => {
 };
 
 const JobListingCard = (props: jobListingCardProps) => {
-    const { jobListingId, tutor , hourlyRates, jobListingDesc, createdDate,  reviewCount, reviewScore, loading, handleClick } = props;
-    const img = "";
+    const { jobListingId, tutor , hourlyRates, jobListingDesc, createdDate,  reviewCount, reviewScore, loading, handleClick, subjects } = props;
+    const profileImage = tutor && tutor.profileImage || "";
     const date = createdDate ? new Date(createdDate.split("[")[0]).toLocaleDateString("en-US") : "";
     const firstName = tutor && tutor.firstName || "";
+    console.log('user =', props)
     return (
         <Col span={6} style={{marginTop: '20px'}}>
             <Card
@@ -49,7 +50,17 @@ const JobListingCard = (props: jobListingCardProps) => {
                 style={{width: '100%', minWidth: 267.5}}
                 className={"clickable"}
                 loading={loading}
-                    cover={<img style={{width: '100%', height: '300px', objectFit: 'cover'}} src={img} alt={img} />}>
+                    cover={
+                        profileImage && profileImage != ""?
+                            <img style={{width: '100%', height: '300px', objectFit: 'cover'}} src={profileImage} alt={profileImage} />
+                            :
+                        <Avatar
+                            className="flex-row align-center"
+                            shape="square"
+                            style={{width: '100%', height: '300px', fontSize: '48px'}}>
+                            {tutor && tutor.firstName.substring(0,1).toUpperCase()}
+                        </Avatar>
+                    }>
                 <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '150px'}}>
                     <div>
                         <Row>
@@ -61,6 +72,11 @@ const JobListingCard = (props: jobListingCardProps) => {
                             </Col>
                         </Row>
                         <Row style={{marginTop: '8px'}}>
+                            <span style={{fontSize: '16px', fontWeight: 'bold'}}>
+                                {subjects && subjects.length && subjects[0].subjectName || "" }
+                            </span>
+                        </Row>
+                        <Row>
                             {jobListingDesc}
                         </Row>
                     </div>
