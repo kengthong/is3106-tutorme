@@ -150,13 +150,7 @@ public class PersonResource implements Serializable {
             String pattern = "dd-MM-YYYY";
             SimpleDateFormat dateFormatter = new SimpleDateFormat(pattern);
             Date dob;
-            try {
-                dob = dateFormatter.parse(dobStr);
-            } catch (ParseException ex) {
-                System.out.println("### ParseException");
-                exception.add("error", ex.getMessage());
-                return Response.status(400).entity(exception.build()).build();
-            }
+            dob = dateFormatter.parse(dobStr);
 
             String userType = json.getString("accountType");
             String encodedJWT = null;
