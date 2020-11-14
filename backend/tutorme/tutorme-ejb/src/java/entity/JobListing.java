@@ -199,8 +199,11 @@ public class JobListing implements Serializable {
             for (Offer o : this.offers) {
                 Rating rating = o.getRating();
                 if (rating != null) {
-                    sum = rating.getRatingValue();
+                    sum += rating.getRatingValue();
                     count++;
+                    System.out.println("### New rating added");
+                    System.out.println("### sum: " + sum);
+                    System.out.println("### count: " + count);
                 }
             }
         }
