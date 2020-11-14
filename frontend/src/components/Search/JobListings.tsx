@@ -19,7 +19,8 @@ const JobListings = () => {
     const getJobListings = async() => {
         const params: {[key: string]:any} = qs.parse(location.search.substring(1), { ignoreQueryPrefix: true });
         const result: getJobListingListWithParamResposeProps = await JobListingService.getJobListingListWithParams(params);
-        setJobListingList(result);
+        const jobListings = result.filter(j => j.activeStatus)
+        setJobListingList(jobListings);
         setLoading(false);
     }
     useEffect(() => {
