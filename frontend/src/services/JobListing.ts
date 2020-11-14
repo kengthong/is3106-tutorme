@@ -117,6 +117,24 @@ export class JobListingService {
         }
     }
 
+    public static async postComment(body: any) {
+        const url = "http://localhost:8080/tutorme-war/webresources/rating/rate";
+        const token = localStorage.getItem("token");
+        const jsonHeader = Utility.getJsonHeader();
+        const header = {
+            ...jsonHeader,
+            "Authorization": "Bearer " + token
+        };
+
+        const response = await Utility.fetchBuilder(url, 'POST', header, body);
+        console.log("response: " + response)
+        if (response.ok) {
+            return await response.json();
+        } else {
+            return [];
+        }
+    }
+
 
 
 

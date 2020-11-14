@@ -9,17 +9,12 @@ import MakeOffer from "../MakeOffer/MakeOffer"
 import { useSelector } from "react-redux";
 import { UserState } from "../../reducer/user-reducer";
 import { IRootState } from "../../store";
-
-type jobListingDetailProps = {
-    listing: jobListingType
-}
+import ReviewsComponent from "../Reviews/Reviews";
 
 const JobListingDetail = (props: any) => {
     const { Panel } = Collapse;
-    console.log(props);
-    const { activeStatus, areas, createdDate, hourlyRates, jobListingDesc, jobListingId, reviewCount, reviewScore, subjects, timeslots, tutor, offers } = props.listing;
+
     const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
-    const [loading, setLoading] = useState(true)
 
     function showTuteeButtons() {
         if (userState.currentUser && userState.currentUser.personEnum === "TUTEE") {
@@ -33,7 +28,7 @@ const JobListingDetail = (props: any) => {
     }
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: "40px" }}>
+        <div className="flex-col" style={{marginTop: "40px", backgroundColor: "#fff", padding: '48px', minHeight: "calc(100vh - 150px)", maxWidth: "1000px"}}>
             <div style={{ display: "flex" }}>
                 <div style={{ marginRight: "80px" }}>
                     <Avatar
@@ -100,20 +95,24 @@ const JobListingDetail = (props: any) => {
             </div>
 
             <div>
-                <Collapse defaultActiveKey={['1']} style={{ marginTop: "50px" }}>
+                <Collapse defaultActiveKey={['1']} style={{ marginTop: "50px", maxWidth: '850px'}}>
                     <Panel header="Description" key="1">
-                        <Card
-                            title={props.listing.jobListingTitle}
-                            headStyle={{
-                                fontWeight: "bold"
-                            }}
-                        >
-                            <p> {props.listing.jobListingDesc} </p>
-                        </Card>
+                        <div style={{padding: '16px 16px'}}>
+                            <div className="fs-24" >
+                                {props.listing.jobListingTitle}
+                            </div>
+
+                            <div className="margin-top-btm-12">
+                                {props.listing.jobListingDesc}
+                            </div>
+                        </div>
                     </Panel>
 
                     <Panel header="Testimonials" key="2">
-                        <Review />
+                        {/*<Review />*/}
+                        <div style={{padding: '0px 16px'}}>
+                            <ReviewsComponent ratings={props.listing.offers} avgRating={props.listing.reviewScore} ratingCount={props.listing.reviewCount}/>
+                        </div>
                     </Panel>
                 </Collapse>
             </div>

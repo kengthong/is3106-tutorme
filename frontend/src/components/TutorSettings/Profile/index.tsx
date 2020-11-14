@@ -29,6 +29,7 @@ const TutorProfileComponent = (props: tutorProfileProps) => {
       <div style={{ width: `${settingsPage? "100%": "65%"}`, marginRight: "20px" }}>
         <Card>
           <BasicDetails user={user} />
+          <div style={{height: '50px'}}/>
           <ReviewsComponent ratings={offerRatings} avgRating={user.avgRating} ratingCount={user.ratingCount}/>
         </Card>
       </div>
