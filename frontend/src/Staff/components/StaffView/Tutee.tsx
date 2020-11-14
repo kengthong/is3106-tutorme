@@ -41,10 +41,6 @@ const TuteeTable = () => {
 		updateTuteeDetails(id, "unBan");
 	};
 
-	const viewProfile = (id: number) => {
-		console.log("viewProfile     =", id);
-	};
-
 	const _columns = [
 		{
 			title: "Active Status",
@@ -114,14 +110,6 @@ const TuteeTable = () => {
 			title: "Action",
 			render: (record: tuteeDataType) => (
 				<div className="flex-row justify-center">
-					<Button
-						size="small"
-						className="fs-12 bold"
-						onClick={() => viewProfile(record.personId)}
-						type="primary"
-					>
-						View
-					</Button>
 					{record.activeStatus ? (
 						<Button
 							size="small"

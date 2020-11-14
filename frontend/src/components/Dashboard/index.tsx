@@ -36,7 +36,8 @@ const Dashboard = () => {
         const params: { [key: string]: any } = qs.parse(location.search, { ignoreQueryPrefix: true });
         setType(params.type);
         console.log('data =', data)
-        console.log('poarams type =', params.type)
+        console.log('poarams type =', params)
+        console.log('location  =', location)
         if(params.type ==="offers" && data.length >0) {
             filterOffers(params.status, data);
         }
@@ -49,18 +50,26 @@ const Dashboard = () => {
         setType(params.type);
     }
 
-    useEffect(() => {
-        if(currentUser) {
-            getAllOffers();
-            getAllJobListings();
-        }
-    },[])
 
     useEffect(() => {
         if(location.search === "") {
             history.push("/dashboard?type=offers&status=all");
         }
+        console.log('data =', allOffers)
+        if(!currentUser) {
+            return;
+        }
+
+        if(allOffers.length == 0) {
+            getAllOffers()
+        }
+
+        if(currentUser.personEnum == "TUTOR") {
+            getAllJobListings()
+        }
+
         const params: { [key: string]: any } = qs.parse(location.search, { ignoreQueryPrefix: true });
+        console.log("params =", params)
         setParams(params);
         setType(params.type);
         if(params.type ==="offers") {
@@ -101,10 +110,10 @@ const Dashboard = () => {
     const acceptOffer = async (offerId: number) => {
         const success = await OfferService.acceptOffer(offerId);
         if(userState.currentUser && success) {
-            message.success("Successfully rejected offer");
+            message.success("Successfully accepted offer");
             getAllOffers();
         } else {
-            message.error("Unable to reject offer");
+            message.error("Unable to accept offer");
         }
     }
 

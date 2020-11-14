@@ -49,12 +49,11 @@ const App = () => {
           <Route path="/feedback" component={Feedback} />
           <Route path="/registration" component={Registration} />
           <ProtectedRoute path="/chat" component={Chat} />
-          <ProtectedRoute path="/tutor-profile" allowedUser='tutor' exact component={TutorProfilePage} />
           <ProtectedRoute path="/tutor/settings/personal-details" allowedUser='tutor' exact component={TutorDetailsPage} />
           <ProtectedRoute path="/tutor/create-new-listing" allowedUser='tutor' exact component={CreateJobListing} />
 
           {/*For viewing tutor profile directly*/}
-          <ProtectedRoute path="/tutor-profile" allowedUser='tutor' exact component={TutorProfilePage} isAuthenticated={true} />
+          <ProtectedRoute path="/tutor-profile" exact component={TutorProfilePage} />
           <ProtectedRoute path="/tutee-profile" allowedUser='tutee' component={TuteeProfilePage} />
           <ProtectedRoute path="/dashboard" component={DashboardPage}/>
 

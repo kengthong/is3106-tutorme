@@ -22,7 +22,7 @@ const tailLayout = {
 const ReviewsComponent = (props: reviewProps) => {
     const value = 5;
     const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
-    const ratingData = props.ratings && props.ratings.map(r => {
+    const ratingData = props.ratings && props.ratings.filter(r => r.rating).map(r => {
         return {
             rating: r.rating.ratingValue,
             name: r.tutee.firstName,
