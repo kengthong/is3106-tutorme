@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { UserState } from "../../reducer/user-reducer";
 import { IRootState } from "../../store";
 import ReviewsComponent from "../Reviews/Reviews";
+import EditJobListing from "./EditJobListing";
 
 const JobListingDetail = (props: any) => {
     const { Panel } = Collapse;
@@ -22,26 +23,30 @@ const JobListingDetail = (props: any) => {
                 <MakeOfferForm listing={props.listing} />
                 <MakeOffer listing={props.listing} />
             </div>
+        } else if (userState.currentUser && userState.currentUser.personEnum === "TUTOR" && userState.currentUser.personId === props.listing.tutor.personId) {
+            return <div style={{ marginRight: "30px", marginTop: "15px" }}>
+                <EditJobListing listing={props.listing} />
+            </div>
         } else {
-            return <div></div>
+            return <div />
         }
     }
 
     return (
-        <div className="flex-col" style={{marginTop: "40px", backgroundColor: "#fff", padding: '48px', minHeight: "calc(100vh - 150px)", maxWidth: "1000px"}}>
+        <div className="flex-col" style={{ marginTop: "40px", backgroundColor: "#fff", padding: '48px', minHeight: "calc(100vh - 150px)", maxWidth: "1000px" }}>
             <div style={{ display: "flex" }}>
                 <div style={{ marginRight: "80px" }}>
-                    {props.listing.tutor.profileImage && props.listing.tutor.profileImage != ""?
+                    {props.listing.tutor.profileImage && props.listing.tutor.profileImage != "" ?
                         <Avatar
                             shape="circle"
                             size={280}
                             src={props.listing.tutor.profileImage}
-                        />:
+                        /> :
                         <Avatar
                             shape="circle"
                             size={280}
-                            style={{fontSize: '48px'}}>
-                            {props.listing.tutor.firstName.substring(0,1).toUpperCase()}
+                            style={{ fontSize: '48px' }}>
+                            {props.listing.tutor.firstName.substring(0, 1).toUpperCase()}
                         </Avatar>
                     }
 
@@ -103,9 +108,9 @@ const JobListingDetail = (props: any) => {
             </div>
 
             <div>
-                <Collapse defaultActiveKey={['1']} style={{ marginTop: "50px", maxWidth: '850px'}}>
+                <Collapse defaultActiveKey={['1']} style={{ marginTop: "50px", maxWidth: '850px' }}>
                     <Panel header="Description" key="1">
-                        <div style={{padding: '16px 16px'}}>
+                        <div style={{ padding: '16px 16px' }}>
                             <div className="fs-24" >
                                 {props.listing.jobListingTitle}
                             </div>
@@ -118,10 +123,10 @@ const JobListingDetail = (props: any) => {
 
                     <Panel header="Testimonials" key="2">
                         {/*<Review />*/}
-                        <div style={{padding: '0px 16px'}}>
+                        <div style={{ padding: '0px 16px' }}>
                             <ReviewsComponent
                                 ratings={props.listing.offers} avgRating={props.listing.reviewScore} ratingCount={props.listing.reviewCount}
-                                getListingDetails={props.getListingDetails}/>
+                                getListingDetails={props.getListingDetails} />
                         </div>
                     </Panel>
                 </Collapse>
