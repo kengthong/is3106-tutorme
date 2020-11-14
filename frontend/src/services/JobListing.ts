@@ -7,7 +7,6 @@ const jsonHeader = {
 };
 export class JobListingService {
     static async getJobListingListWithParams(params: getJobListingListWithParamsProps): Promise<getJobListingListWithParamResposeProps | []> {
-        // console.log("getJobListingListWithParams:", params);
         const { subject, level, name, price } = params;
         const priceRange = this.getPriceRange(price);
         const url = BACKEND_BASE_URL + '/jobListing/jobListingList?' + new URLSearchParams({
@@ -17,15 +16,12 @@ export class JobListingService {
             minPrice: priceRange.minPrice.toString(),
             maxPrice: priceRange.maxPrice.toString()
         });
-        const token = localStorage.getItem("token");
         const header = {
             ...jsonHeader,
-            // "Authorization": "Bearer " + token
         }
         const response = await Utility.fetchBuilder(url, 'GET', header, null);
         if (response.ok) {
             return await response.json();
-            // console.log('data = ', data)
         } else {
             return [];
         }
@@ -43,7 +39,6 @@ export class JobListingService {
         const response = await Utility.fetchBuilder(url, 'GET', header, null);
         if (response.ok) {
             const data = await response.json();
-            console.log(data)
             return data;
         } else {
             return null;
@@ -61,7 +56,6 @@ export class JobListingService {
         };
 
         const response = await Utility.fetchBuilder(url, 'POST', header, body);
-        console.log("response: " + response)
         if (response.ok) {
             return true;
         } else {
@@ -108,7 +102,6 @@ export class JobListingService {
         };
 
         const response = await Utility.fetchBuilder(url, 'GET', header, null);
-        console.log("response: " + response)
         if (response.ok) {
             return await response.json();
         } else {
@@ -138,7 +131,6 @@ export class JobListingService {
             "Authorization": "Bearer " + token
         };
         const response = await Utility.fetchBuilder(url, 'PUT', header, null);
-        console.log("response: " + response)
         if (response.ok) {
             return await response;
         } else {
@@ -155,7 +147,6 @@ export class JobListingService {
         };
 
         const response = await Utility.fetchBuilder(url, 'PUT', header, body);
-        console.log("response: " + response)
         if (response.ok) {
             return true;
         } else {
@@ -174,7 +165,6 @@ export class JobListingService {
         };
 
         const response = await Utility.fetchBuilder(url, 'PUT', header, null);
-        console.log("response: " + response)
         if (response.ok) {
             return await response;
         } else {

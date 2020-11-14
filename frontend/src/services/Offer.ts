@@ -1,12 +1,4 @@
-import { ok } from "assert";
-import { BACKEND_BASE_URL } from "../config/constants";
-import { Utility } from "../config/Utility";
-
-
-const jsonHeader = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-};
+import {Utility} from "../config/Utility";
 
 export class OfferService {
 
@@ -20,7 +12,6 @@ export class OfferService {
         };
 
         const response = await Utility.fetchBuilder(url, 'POST', header, body);
-        console.log("response: " + response)
         if (response.ok) {
             return true;
         } else {
@@ -37,7 +28,6 @@ export class OfferService {
             "Authorization": "Bearer " + token
         };
         const response = await Utility.fetchBuilder(url, 'PUT', header, offerId);
-        console.log("response: " + response)
         if (response.ok) {
             return true;
         } else {
@@ -55,7 +45,6 @@ export class OfferService {
         };
 
         const response = await Utility.fetchBuilder(url, 'PUT', header, offerId);
-        console.log("response: " + response)
         if (response.ok) {
             return true;
         } else {
@@ -72,7 +61,6 @@ export class OfferService {
             "Authorization": "Bearer " + token
         };
         const response = await Utility.fetchBuilder(url, 'PUT', header, offerId);
-        console.log("response: " + response)
         if (response.ok) {
             return true;
         } else {
@@ -90,7 +78,6 @@ export class OfferService {
         };
 
         const response = await Utility.fetchBuilder(url, 'GET', header, null);
-        console.log("response: " + response)
         if (response.ok) {
             return await response.json();
         } else {

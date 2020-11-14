@@ -1,8 +1,5 @@
 import React from 'react';
-import { Button, Table, Tag } from "antd";
-import { useSelector } from "react-redux";
-import { UserState } from "../../reducer/user-reducer";
-import { IRootState } from "../../store";
+import {Button, Table, Tag} from "antd";
 import moment from "antd/node_modules/moment";
 
 const JobListingsComponent = (props: any) => {
@@ -15,7 +12,7 @@ const JobListingsComponent = (props: any) => {
             render: (activeStatus: boolean) => {
                 return (
                     <span>
-                    {activeStatus?
+                    {activeStatus ?
                         <Tag color="success">Active</Tag>
                         :
                         <Tag color="error">Inactive</Tag>
@@ -62,7 +59,7 @@ const JobListingsComponent = (props: any) => {
             title: 'Subjects',
             dataIndex: 'subjects',
             render: (record: subjectResponseType) => {
-                return (<span>{record.length >0? record[0].subjectName : null}</span>)
+                return (<span>{record.length > 0 ? record[0].subjectName : null}</span>)
             }
         },
         {
@@ -70,14 +67,17 @@ const JobListingsComponent = (props: any) => {
             render: (record: jobListingType) => (
                 <>
                     <div className="flex-row justify-center">
-                        <Button size="small" className="fs-12 bold" onClick={() => viewJobListing(record.jobListingId)} type="primary">View</Button>
+                        <Button size="small" className="fs-12 bold" onClick={() => viewJobListing(record.jobListingId)}
+                                type="primary">View</Button>
                         {
-                            record.activeStatus?
-                                <Button danger size="small" onClick={() => props.deactivateJobListing(record.jobListingId)}>
+                            record.activeStatus ?
+                                <Button danger size="small"
+                                        onClick={() => props.deactivateJobListing(record.jobListingId)}>
                                     <span> Deactivate </span>
                                 </Button>
                                 :
-                                <Button type="default" size="small" onClick={() => props.activateJobListing(record.jobListingId)}>
+                                <Button type="default" size="small"
+                                        onClick={() => props.activateJobListing(record.jobListingId)}>
                                     <span> Reactivate </span>
                                 </Button>
                         }
@@ -88,9 +88,8 @@ const JobListingsComponent = (props: any) => {
         }
     ];
 
-    console.log('table d =', data)
     return (
-        <Table columns={columns} dataSource={data} rowKey="offerId" />
+        <Table columns={columns} dataSource={data} rowKey="offerId"/>
     );
 };
 

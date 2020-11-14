@@ -1,7 +1,6 @@
 import {Badge, Menu} from 'antd';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
-import React, {useEffect, useState} from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import React from 'react';
+import {useHistory} from 'react-router-dom';
 
 const { SubMenu } = Menu;
 
@@ -10,13 +9,11 @@ const DashboardMenu = (props: any) => {
     const history = useHistory();
 
     const handleClick = (val: any) => {
-        console.log(val.key)
         const keys = val.key.split("-")
         history.push('/dashboard?type=' + keys[0] + "&status="+ keys[1]);
     }
 
     const activeKey = params && params.status && params.type && params.type + "-" + params.status || "offers-all";
-    console.log('active key=', activeKey)
     return (
         <Menu
             onClick={handleClick}

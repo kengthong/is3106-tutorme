@@ -1,16 +1,13 @@
-import { Button, DatePicker, Form, Input, InputNumber, message, Modal, Radio, Select, Table, Tag } from 'antd';
+import {Button, DatePicker, Form, Input, message, Modal, Radio, Table, Tag} from 'antd';
 import moment from 'antd/node_modules/moment';
-import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom';
-import { StaffService } from '../../../services/Staff';
-
+import React, {useEffect, useState} from 'react'
+import {StaffService} from '../../../services/Staff';
 
 
 const StaffTable = () => {
     const [tableData, setTableData] = useState<staffDataType[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [form] = Form.useForm();
-    const history = useHistory();
     const getAllStaff = async () => {
         const data: staffDataType[] = await StaffService.getAllStaff();
         setTableData(data);
@@ -128,7 +125,6 @@ const StaffTable = () => {
 
     /*
     * CREATE STAFF
-    *
     */
     const onFinish = (fieldsValue: any) => {
         const values = {
@@ -137,7 +133,6 @@ const StaffTable = () => {
             phoneNumber: fieldsValue.phoneNumber.toString(),
             date: moment(fieldsValue.date).format("DD-MM-YYYY")
         }
-        console.log("fields value =", values);
         createNewStaff(values);
         setShowModal(false);
         getAllStaff();

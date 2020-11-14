@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from "react";
-import ProfileIcon from '../../assets/profilepic.jpg';
-import { Rate, Avatar, Card, Button, Collapse } from 'antd';
-import { useHistory, useLocation } from "react-router-dom";
-import qs from "qs";
-import Review from "../Review/Review";
+import React from "react";
+import {Avatar, Card, Collapse, Rate} from 'antd';
 import MakeOfferForm from "../Offer/MakeOfferForm";
-import MakeOffer from "../MakeOffer/MakeOffer"
-import { useSelector } from "react-redux";
-import { UserState } from "../../reducer/user-reducer";
-import { IRootState } from "../../store";
+import MakeOffer from "../SendMessage/SendMessage"
+import {useSelector} from "react-redux";
+import {UserState} from "../../reducer/user-reducer";
+import {IRootState} from "../../store";
 import ReviewsComponent from "../Reviews/Reviews";
 import EditJobListing from "./EditJobListing";
 
@@ -50,12 +46,7 @@ const JobListingDetail = (props: any) => {
                         </Avatar>
                     }
 
-
                     {showTuteeButtons()}
-                    {/* <div style={{ display: "flex", marginLeft: "50px", marginTop: "15px" }}>
-                        <MakeOfferForm listing={props.listing} />
-                        <MakeOffer listing={props.listing} />
-                    </div> */}
                 </div>
 
                 {/* tutor name */}
@@ -131,8 +122,6 @@ const JobListingDetail = (props: any) => {
                     </Panel>
                 </Collapse>
             </div>
-
-
         </div >
     );
 };

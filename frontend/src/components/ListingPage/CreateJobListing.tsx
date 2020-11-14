@@ -1,15 +1,13 @@
-import { AutoComplete, Button, Checkbox, Form, Input, InputNumber, Menu, message, Popover, Select, Slider, Tooltip } from 'antd';
-import React, { useEffect, useState } from 'react'
-import { SubjectsService } from "../../services/Subjects";
-import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
-import { SubjectState } from "../../reducer/subject-reducer";
-import { JobListingService } from '../../services/JobListing';
-import { ChatService } from '../../services/Chat';
-import { UserState } from '../../reducer/user-reducer';
-import { useHistory } from 'react-router-dom';
+import {Button, Form, Input, InputNumber, message, Select, Tooltip} from 'antd';
+import React, {useEffect, useState} from 'react'
+import {SubjectsService} from "../../services/Subjects";
+import {useSelector} from "react-redux";
+import {IRootState} from "../../store";
+import {SubjectState} from "../../reducer/subject-reducer";
+import {JobListingService} from '../../services/JobListing';
+import {useHistory} from 'react-router-dom';
 
-const { Option } = Select;
+const {Option} = Select;
 
 const CreateJobListing = () => {
     const history = useHistory();
@@ -23,14 +21,14 @@ const CreateJobListing = () => {
         if (!subjectState || !subjectState.uniqueSubjects || subjectState.uniqueSubjects.length === 0) {
             loadSubjects();
         }
-    }, []);
+    }, [subjectState]);
 
     const layout = {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 16 },
+        labelCol: {span: 8},
+        wrapperCol: {span: 16},
     };
     const tailLayout = {
-        wrapperCol: { offset: 8, span: 16 },
+        wrapperCol: {offset: 8, span: 16},
     };
 
     const onSelectSubject = (sub: any) => {
@@ -68,7 +66,7 @@ const CreateJobListing = () => {
 
     return (
         <div>
-            <h2 style={{ margin: "20px" }}>New Tuition Listing</h2>
+            <h2 style={{margin: "20px"}}>New Tuition Listing</h2>
 
             <div className="p-fluid">
                 <Form
@@ -81,9 +79,9 @@ const CreateJobListing = () => {
                     <Form.Item
                         label="Listing Title"
                         name="listingTitle"
-                        rules={[{ required: true, message: 'Please input a listing title' }]}
+                        rules={[{required: true, message: 'Please input a listing title'}]}
                     >
-                        <Input />
+                        <Input/>
                     </Form.Item>
 
 
@@ -91,12 +89,12 @@ const CreateJobListing = () => {
                     <Form.Item
                         label="Subject"
                         name="subject"
-                        rules={[{ required: true, message: 'Please select a subject' }]}
+                        rules={[{required: true, message: 'Please select a subject'}]}
                     >
 
                         <Select
                             showSearch
-                            style={{ width: 200 }}
+                            style={{width: 200}}
                             placeholder="Search a subject"
                             optionFilterProp="children"
                             onChange={onSelectSubject}
@@ -115,13 +113,13 @@ const CreateJobListing = () => {
                     <Form.Item
                         label="Levels"
                         name="levels"
-                        rules={[{ required: true, message: 'Please select the level' }]}
+                        rules={[{required: true, message: 'Please select the level'}]}
                     >
                         <Select
                             showSearch
                             mode="multiple"
                             allowClear
-                            style={{ width: 200 }}
+                            style={{width: 200}}
                             placeholder="Select a level"
                             optionFilterProp="children"
 
@@ -140,7 +138,7 @@ const CreateJobListing = () => {
                         <Form.Item
                             label="Rates ($/hr)"
                             name="rate"
-                            rules={[{ required: true, message: 'Please enter your hourly rate!' }]}
+                            rules={[{required: true, message: 'Please enter your hourly rate!'}]}
                         >
                             <InputNumber
                                 min={1}
@@ -154,7 +152,7 @@ const CreateJobListing = () => {
                         <Form.Item
                             label="Timeslot"
                             name="timeslot"
-                            rules={[{ required: true, message: 'Please select the days of availability!' }]}
+                            rules={[{required: true, message: 'Please select the days of availability!'}]}
                         >
                             <Input
                                 placeholder="Enter your preferred timeslots"

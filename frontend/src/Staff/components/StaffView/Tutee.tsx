@@ -7,7 +7,6 @@ const TuteeTable = () => {
     const [tableData, setTableData] = useState([]);
     const getAllTutees = async () => {
         const data = await StaffService.getAllTutees();
-        console.log('dataaa =', data)
         setTableData(data);
     };
     useEffect(() => {

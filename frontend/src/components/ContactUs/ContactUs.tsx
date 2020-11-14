@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Card, Button } from 'antd'
+import React from 'react';
+import {Card} from 'antd'
 
 export const ContactUs = () => {
 

@@ -35,11 +35,8 @@ export const races = ["Chinese", "Malay", "Indian", "Other"];
 
 // User reducer
 export const AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR';
-export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGIN_SUCCESSFUL = 'LOGIN_SUCCESSFUL';
 export const LOGOUT_SUCCESSFUL = 'LOGOUT_SUCCESSFUL';
-export const USER_LOADED = 'USER_LOADED';
-export const USER_LOADING = 'USER_LOADING';
 
 // Subject reducer
 export const GET_SUBJECT_SUCCESSFUL = "GET_SUBJECT_SUCCESSFUL";

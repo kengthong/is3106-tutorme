@@ -47,7 +47,6 @@ const RegisterComponent = () => {
         formData.date,
         formData.accountType
       );
-      console.log("response = ", response);
       if (response.ok) {
         handleRedirectToLogin();
       } else {

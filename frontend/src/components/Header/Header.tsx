@@ -1,11 +1,11 @@
 import React from "react";
 import logo from "../../assets/logo.jpg";
-import { UserService } from "../../services/User";
-import { UserState } from "../../reducer/user-reducer";
-import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
-import { Avatar, Popover, Row } from "antd";
-import { useHistory } from "react-router-dom";
+import {UserService} from "../../services/User";
+import {UserState} from "../../reducer/user-reducer";
+import {useSelector} from "react-redux";
+import {IRootState} from "../../store";
+import {Avatar, Popover} from "antd";
+import {useHistory} from "react-router-dom";
 
 const Header = () => {
     const userState = useSelector<IRootState, UserState>((state) => state.userReducer);

@@ -1,36 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Modal, Alert, Menu, Dropdown, Select, InputNumber, Radio, message, DatePicker } from 'antd';
-import { JobListingService } from '../../services/JobListing';
-import { OfferService } from '../../services/Offer';
-import { useForm } from 'antd/lib/form/Form';
-import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
-import { SubjectState } from "../../reducer/subject-reducer";
-import qs from 'qs';
-import { useHistory, useLocation } from 'react-router-dom';
-import { SubjectsService } from '../../services/Subjects';
+import React, {useEffect, useState} from 'react';
+import {Button, DatePicker, Form, Input, InputNumber, message, Modal, Select} from 'antd';
+import {OfferService} from '../../services/Offer';
+import {useSelector} from "react-redux";
+import {IRootState} from "../../store";
+import {SubjectState} from "../../reducer/subject-reducer";
+import {useHistory} from 'react-router-dom';
+import {SubjectsService} from '../../services/Subjects';
 import moment from 'antd/node_modules/moment';
-import { UserState } from '../../reducer/user-reducer';
-import { ChatService } from '../../services/Chat';
-
-type jobListingDetailProps = {
-    listing: jobListingType
-}
+import {UserState} from '../../reducer/user-reducer';
+import {ChatService} from '../../services/Chat';
 
 const MakeOfferForm = (props: any) => {
-    const jobListing = props.listing;
-    const location = useLocation();
     const history = useHistory();
-    const { Option } = Select;
+    const {Option} = Select;
     const [form] = Form.useForm();
 
-    const getJobListing = async () => {
-        const params: { [key: string]: any } = qs.parse(location.search.substring(1), { ignoreQueryPrefix: true });
-        console.log('params =', params)
-        const result: getJobListingListWithParamResposeProps = await JobListingService.getJobListingListWithParams(params);
-        // setJobListingList(result);
-        setLoading(false);
-    }
     const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
     const subjectState = useSelector<IRootState, SubjectState>((state) => state.subjectReducer);
     const loadSubjects = async () => {
@@ -40,11 +24,9 @@ const MakeOfferForm = (props: any) => {
         if (!subjectState || !subjectState.uniqueSubjects || subjectState.uniqueSubjects.length === 0) {
             loadSubjects();
         }
-    }, []);
+    }, [subjectState]);
 
     const [showOffer, setShowOffer] = useState(false);
-    const [loading, setLoading] = useState(false);
-
 
     const onFinish = (fieldsValue: any) => {
         const values = {
@@ -53,7 +35,6 @@ const MakeOfferForm = (props: any) => {
             price: fieldsValue.price.toString(),
             startDate: moment(fieldsValue.startDate).format("DD-MM-YYYY")
         }
-        console.log("fieldsValue =", values);
         createOffer(values);
 
         const msgValues = {
@@ -61,11 +42,9 @@ const MakeOfferForm = (props: any) => {
             receiverId: props.listing.tutor.personId.toString(),
             body: "Hi! I have sent you an offer of $" + values.price + " for your listing on " + props.listing.jobListingTitle
         }
-
-        sendMessage(msgValues)
+        sendMessage(msgValues);
         history.push("/chat");
-    }
-
+    };
 
     const createOffer = async (createOfferParams: any): Promise<void> => {
         const response = await OfferService.createOffer(createOfferParams);
@@ -77,16 +56,16 @@ const MakeOfferForm = (props: any) => {
     }
 
     const sendMessage = async (messageValues: any): Promise<void> => {
-        const response = await ChatService.sendMessage(messageValues.senderId, messageValues.receiverId, messageValues.body);
+        await ChatService.sendMessage(messageValues.senderId, messageValues.receiverId, messageValues.body);
     }
 
 
     const tailLayout = {
-        wrapperCol: { offset: 8, span: 16 },
+        wrapperCol: {offset: 8, span: 16},
     };
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", margin: "10px" }}>
+        <div style={{display: "flex", flexDirection: "column", margin: "10px"}}>
 
             <div>
                 <Button type="primary" onClick={() => setShowOffer(true)}>
@@ -101,11 +80,11 @@ const MakeOfferForm = (props: any) => {
                 onCancel={() => setShowOffer(false)}
                 width={800}
                 footer={null}
-                style={{ display: "flex", flexDirection: "column" }}
+                style={{display: "flex", flexDirection: "column"}}
             >
 
                 <Form
-                    style={{ display: "flex", justifyContent: "space-evenly" }}
+                    style={{display: "flex", justifyContent: "space-evenly"}}
                     form={form}
                     name="submitOfferForm"
                     onFinish={onFinish}
@@ -194,7 +173,7 @@ const MakeOfferForm = (props: any) => {
                                 message: "Time"
                             }]}
                         >
-                            <Input />
+                            <Input/>
                         </Form.Item>
 
                         <Form.Item
@@ -205,7 +184,7 @@ const MakeOfferForm = (props: any) => {
                                 message: "Select Date"
                             }]}
                         >
-                            <DatePicker format="DD-MM-YYYY" />
+                            <DatePicker format="DD-MM-YYYY"/>
 
                         </Form.Item>
 
@@ -217,23 +196,23 @@ const MakeOfferForm = (props: any) => {
                                 message: "Additional Note"
                             }]}
                         >
-                            <Input.TextArea />
+                            <Input.TextArea/>
                         </Form.Item>
                     </div>
 
-                    <div style={{ marginTop: "330px", marginRight: "30px" }}>
+                    <div style={{marginTop: "330px", marginRight: "30px"}}>
                         <Form.Item {...tailLayout}>
                             <Button
                                 type="primary"
                                 htmlType="submit"
                             >
                                 Submit
-                    </Button>
+                            </Button>
                         </Form.Item>
                     </div>
                 </Form>
             </Modal>
-        </div >
+        </div>
     )
 }
 

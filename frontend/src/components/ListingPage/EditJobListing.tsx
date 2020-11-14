@@ -1,37 +1,22 @@
-import { AutoComplete, Button, Checkbox, Form, Input, InputNumber, Menu, message, Modal, Popover, Select, Slider, Tooltip } from 'antd';
-import React, { useEffect, useState } from 'react'
-import { SubjectsService } from "../../services/Subjects";
-import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
-import { SubjectState } from "../../reducer/subject-reducer";
-import { JobListingService } from '../../services/JobListing';
-import { ChatService } from '../../services/Chat';
-import { UserState } from '../../reducer/user-reducer';
-import { useHistory } from 'react-router-dom';
+import {Button, Form, Input, InputNumber, message, Modal, Select, Tooltip} from 'antd';
+import React, {useEffect, useState} from 'react'
+import {JobListingService} from '../../services/JobListing';
+import {useHistory} from 'react-router-dom';
 import moment from 'antd/node_modules/moment';
-
-const { Option } = Select;
-
-type jobListingDetailProps = {
-    listing: jobListingType
-}
 
 const EditJobListing = (props: any) => {
     const jobListing = props.listing;
-    const history = useHistory();
     const [form] = Form.useForm();
 
     const [showEdit, setShowEdit] = useState(false);
 
 
     useEffect(() => {
-        console.log(jobListing);
         form.setFieldsValue({
             ...jobListing,
             timeslot: moment(jobListing.timeslot && jobListing.timeslot.split("[")[0]).format("DD-MM-YYYY")
         });
-    }, [jobListing]);
-
+    }, [form, jobListing]);
 
 
     const onFinish = (fieldsValue: any) => {
@@ -43,7 +28,6 @@ const EditJobListing = (props: any) => {
             timeslot: fieldsValue.timeslot,
             rate: fieldsValue.hourlyRates
         }
-        console.log(values);
         editJobListing(values);
     }
 
@@ -71,7 +55,7 @@ const EditJobListing = (props: any) => {
                 onCancel={() => setShowEdit(false)}
                 width={800}
                 footer={null}
-                style={{ display: "flex", flexDirection: "column" }}
+                style={{display: "flex", flexDirection: "column"}}
             >
                 <Form
                     form={form}
@@ -82,9 +66,9 @@ const EditJobListing = (props: any) => {
                     <Form.Item
                         label="Listing Title"
                         name="jobListingTitle"
-                        rules={[{ required: true, message: 'Please input a listing title' }]}
+                        rules={[{required: true, message: 'Please input a listing title'}]}
                     >
-                        <Input />
+                        <Input/>
                     </Form.Item>
 
                     {/* Hourly Rate */}
@@ -92,7 +76,7 @@ const EditJobListing = (props: any) => {
                         <Form.Item
                             label="Rates ($/hr)"
                             name="hourlyRates"
-                            rules={[{ required: true, message: 'Please enter your hourly rate!' }]}
+                            rules={[{required: true, message: 'Please enter your hourly rate!'}]}
                         >
                             <InputNumber
                                 min={1}
@@ -106,7 +90,7 @@ const EditJobListing = (props: any) => {
                         <Form.Item
                             label="Timeslot"
                             name="timeslot"
-                            rules={[{ required: true, message: 'Please select the days of availability!' }]}
+                            rules={[{required: true, message: 'Please select the days of availability!'}]}
                         >
                             <Input
                                 placeholder="Enter your preferred timeslots"

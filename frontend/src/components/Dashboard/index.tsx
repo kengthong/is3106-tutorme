@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import DashboardMenu from "./DashboardMenu";
-import { useLocation, useHistory } from 'react-router-dom';
-import {BodyContainer} from "../Layout/BodyContainer";
+import {useHistory, useLocation} from 'react-router-dom';
 import {OfferService} from "../../services/Offer";
 import {useSelector} from "react-redux";
 import {IRootState} from "../../store";
@@ -30,66 +29,61 @@ const Dashboard = () => {
     const userState = useSelector<IRootState, UserState>((state) => state.userReducer);
     const {currentUser} = userState;
 
-    const getAllOffers = async() => {
+    const getAllOffers = async () => {
         const data = await OfferService.getOffers();
         setAllOffers(data);
-        const params: { [key: string]: any } = qs.parse(location.search, { ignoreQueryPrefix: true });
+        const params: { [key: string]: any } = qs.parse(location.search, {ignoreQueryPrefix: true});
         setType(params.type);
-        console.log('data =', data)
-        console.log('poarams type =', params)
-        console.log('location  =', location)
-        if(params.type ==="offers" && data.length >0) {
+        if (params.type === "offers" && data.length > 0) {
             filterOffers(params.status, data);
         }
     }
 
-    const getAllJobListings = async() => {
+    const getAllJobListings = async () => {
         const data = await JobListingService.getMyJobListings();
         setJobListingsData(data);
-        const params: { [key: string]: any } = qs.parse(location.search, { ignoreQueryPrefix: true });
+        const params: { [key: string]: any } = qs.parse(location.search, {ignoreQueryPrefix: true});
         setType(params.type);
     }
 
 
     useEffect(() => {
-        if(location.search === "") {
+        if (location.search === "") {
             history.push("/dashboard?type=offers&status=all");
         }
-        console.log('data =', allOffers)
-        if(!currentUser) {
+        if (!currentUser) {
             return;
         }
 
-        if(allOffers.length == 0) {
+        if (allOffers.length == 0) {
             getAllOffers()
         }
 
-        if(currentUser.personEnum == "TUTOR") {
+        if (currentUser.personEnum == "TUTOR") {
             getAllJobListings()
         }
 
-        const params: { [key: string]: any } = qs.parse(location.search, { ignoreQueryPrefix: true });
-        console.log("params =", params)
+        const params: { [key: string]: any } = qs.parse(location.search, {ignoreQueryPrefix: true});
         setParams(params);
         setType(params.type);
-        if(params.type ==="offers") {
+        if (params.type === "offers") {
             filterOffers(params.status);
         }
-    }, [location])
+    }, [location]);
 
     const filterOffers = (status: string, data?: null) => {
-        const _data = data? data: allOffers;
-        if(status === "all") {
+        const _data = data ? data : allOffers;
+        if (status === "all") {
             setOffersData(_data);
             return;
         }
-        const filteredOfferData = _data.length >0? _data.filter( d => d.offerStatus === status.toUpperCase()) : [];
+        const filteredOfferData = _data.length > 0 ? _data.filter(d => d.offerStatus === status.toUpperCase()) : [];
         setOffersData(filteredOfferData);
     }
 
     const withdrawOffer = async (offerId: number) => {
         const success = await OfferService.withdrawOffer(offerId);
-        if(userState.currentUser && success) {
+        if (userState.currentUser && success) {
             message.success("Successfully withdraw offer");
             getAllOffers();
         } else {
@@ -99,7 +93,7 @@ const Dashboard = () => {
 
     const rejectOffer = async (offerId: number) => {
         const success = await OfferService.rejectOffer(offerId);
-        if(userState.currentUser && success) {
+        if (userState.currentUser && success) {
             message.success("Successfully rejected offer");
             getAllOffers();
         } else {
@@ -109,7 +103,7 @@ const Dashboard = () => {
 
     const acceptOffer = async (offerId: number) => {
         const success = await OfferService.acceptOffer(offerId);
-        if(userState.currentUser && success) {
+        if (userState.currentUser && success) {
             message.success("Successfully accepted offer");
             getAllOffers();
         } else {
@@ -118,12 +112,12 @@ const Dashboard = () => {
     }
 
     const viewJobListing = (id?: number) => {
-        if(id) history.push('/job?id=' + id)
+        if (id) history.push('/job?id=' + id)
     }
 
     const activateJobListing = async (jobListingId: number) => {
         const success = await JobListingService.activateJobListing(jobListingId);
-        if(userState.currentUser && success) {
+        if (userState.currentUser && success) {
             message.success("Successfully activated job listing");
             getAllJobListings();
         } else {
@@ -133,7 +127,7 @@ const Dashboard = () => {
 
     const deactivateJobListing = async (jobListingId: number) => {
         const success = await JobListingService.deactivateJobListing(jobListingId);
-        if(userState.currentUser && success) {
+        if (userState.currentUser && success) {
             message.success("Successfully deactivated job listing");
             getAllJobListings();
         } else {
@@ -145,8 +139,14 @@ const Dashboard = () => {
     return (
         <div className="w-100 flex-row" style={{height: '100vh'}}>
             <DashboardMenu params={params} currentUser={userState.currentUser}/>
-            <div className="w-100 flex-col " style={{minHeight: "calc(100vh -90px)", backgroundColor: "rgb(237 247 255)",}}>
-                <div className="fs-24 w-100" style={{fontWeight: 300, backgroundColor: "#fff", padding: '16px 32px', borderTop: '1px solid #e8e8e8'}}>
+            <div className="w-100 flex-col "
+                 style={{minHeight: "calc(100vh -90px)", backgroundColor: "rgb(237 247 255)",}}>
+                <div className="fs-24 w-100" style={{
+                    fontWeight: 300,
+                    backgroundColor: "#fff",
+                    padding: '16px 32px',
+                    borderTop: '1px solid #e8e8e8'
+                }}>
                     {type === "offers" ?
                         <span>
                             My Offers
@@ -158,14 +158,16 @@ const Dashboard = () => {
                     }
                 </div>
                 <div className="w-100 flex-col align-center margin-top-btm-12">
-                    {type ==="offers"?
+                    {type === "offers" ?
                         <OfferListComponent data={offersData} userState={userState}
-                                            withdrawOffer={withdrawOffer} rejectOffer={rejectOffer} acceptOffer={acceptOffer}
+                                            withdrawOffer={withdrawOffer} rejectOffer={rejectOffer}
+                                            acceptOffer={acceptOffer}
                                             viewJobListing={viewJobListing}
-                                            />
+                        />
                         :
                         <JobListingsComponent data={jobListingsData} viewJobListing={viewJobListing}
-                                              activateJobListing={activateJobListing} deactivateJobListing={deactivateJobListing}/>
+                                              activateJobListing={activateJobListing}
+                                              deactivateJobListing={deactivateJobListing}/>
                     }
                 </div>
             </div>

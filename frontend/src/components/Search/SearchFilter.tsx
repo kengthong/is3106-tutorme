@@ -23,7 +23,7 @@ const SearchFilter = () => {
         if(!subjectState || !subjectState.uniqueSubjects || subjectState.uniqueSubjects.length === 0) {
             loadSubjects();
         }
-    },[]);
+    },[subjectState]);
 
     const params: {[key: string]:any} = qs.parse(location.search.substring(1), { ignoreQueryPrefix: true });
 

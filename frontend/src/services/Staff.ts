@@ -2,14 +2,11 @@ import { AUTHENTICATION_ERROR, BACKEND_BASE_URL, LOGIN_SUCCESSFUL, LOGOUT_SUCCES
 import { store } from "../store";
 import { Utility } from "../config/Utility";
 
-const jsonHeader = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-};
 export class StaffService {
     static async login(email: string, password: string) {
         const url = BACKEND_BASE_URL + '/person/login';
         const body = { email, password };
+        const jsonHeader = Utility.getJsonHeader();
         await Utility.fetchBuilder(url, 'POST', jsonHeader, body)
             .then(async (res) => {
                 if (res.ok) {
@@ -34,10 +31,6 @@ export class StaffService {
             .catch(err => {
                 console.log(err);
             })
-    }
-
-    static register() {
-
     }
 
     static logout() {
@@ -161,6 +154,7 @@ export class StaffService {
     public static async getChatList(userId: number): Promise<chatListResponseType> {
         const token = localStorage.getItem("staffToken");
         const url = "http://localhost:8080/tutorme-war/webresources/message/conversations?personId=" + userId;
+        const jsonHeader = Utility.getJsonHeader();
         const header = {
             ...jsonHeader,
             'Authorization': 'Bearer ' + token
@@ -183,6 +177,7 @@ export class StaffService {
         });
         const token = localStorage.getItem("staffToken");
         let data = [];
+        const jsonHeader = Utility.getJsonHeader();
         if (token) {
             const header = {
                 ...jsonHeader,
@@ -203,6 +198,7 @@ export class StaffService {
         const url = "http://localhost:8080/tutorme-war/webresources/message/sendMessage";
         const token = localStorage.getItem("staffToken");
         if (token) {
+            const jsonHeader = Utility.getJsonHeader();
             const header = {
                 ...jsonHeader,
                 'Authorization': 'Bearer ' + token

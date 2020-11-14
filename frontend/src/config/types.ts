@@ -54,12 +54,25 @@ type createJobListingParams = {
     area: string;
 }
 
+type createStaffParams = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password?: null;
+    phoneNumber: string;
+    gender: string;
+    date: string;
+    accountType: string;
+}
+
 type getJobListingListWithParamsProps = {
     subject?: string;
     level?: string;
     price?: string;
     name?: string;
 };
+
+type getJobListingListWithParamResposeProps = jobListingType[]
 
 type jobListingType = {
     activeStatus?: boolean;
@@ -84,15 +97,10 @@ type jobListingType = {
     numSubjects?: number
 }
 
-
 type jobListingCardProps = {
     loading?: boolean;
     handleClick?: (id?: number) => void;
 } & jobListingType;
-
-type getJobListingListWithParamResposeProps = jobListingType[]
-
-
 
 type offerType = {
     additionalNote: string;
@@ -140,6 +148,47 @@ type createOfferParams = {
 
 }
 
+type staffDataType = {
+    personId: number;
+    createdDate: string;
+    activeStatus: boolean;
+    firstName: string;
+    lastName: string;
+    email: string;
+    mobileNum: string;
+    password?: null;
+    personEnum: string;
+    gender: string;
+    salt?: null;
+    profileImage?: string;
+    dob: string;
+    sentMessage?: null;
+    receivedMessages?: null;
+    staffPositionEnum: string;
+    profileDesc?: string;
+    offers?: null;
+}
+
+type tuteeDataType = {
+    personId: number;
+    createdDate: string;
+    activeStatus: boolean;
+    firstName: string;
+    lastName: string;
+    email: string;
+    mobileNum: string;
+    password?: null;
+    salt?: null;
+    gender: string;
+    personEnum: string;
+    profileImage?: string;
+    dob: string;
+    sentMessage?: null;
+    receivedMessages?: null;
+    profileDesc?: string;
+    offers?: null;
+}
+
 type tutorDataType = {
     activeStatus: boolean;
     avgRating: number;
@@ -165,54 +214,6 @@ type tutorDataType = {
     sentMessages?: null;
 }
 
-type tuteeDataType = {
-    personId: number;
-    createdDate: string;
-    activeStatus: boolean;
-    firstName: string;
-    lastName: string;
-    email: string;
-    mobileNum: string;
-    password?: null;
-    salt?: null;
-    gender: string;
-    personEnum: string;
-    profileImage?: string;
-    dob: string;
-    sentMessage?: null;
-    receivedMessages?: null;
-    profileDesc?: string;
-    offers?: null;
-}
-
-type staffDataType = {
-    personId: number;
-    createdDate: string;
-    activeStatus: boolean;
-    firstName: string;
-    lastName: string;
-    email: string;
-    mobileNum: string;
-    password?: null;
-    personEnum: string;
-    gender: string;
-    salt?: null;
-    profileImage?: string;
-    dob: string;
-    sentMessage?: null;
-    receivedMessages?: null;
-    staffPositionEnum: string;
-    profileDesc?: string;
-    offers?: null;
-}
-
-
-type subjectResponseType = {
-    subjectId?: number;
-    subjectName: string;
-    subjectLevel: string;
-}[];
-
 type staffDashboardType = {
     numActiveTutors: number;
     tutorGrowth: number;
@@ -226,13 +227,11 @@ type staffDashboardType = {
     offerRejectionRate: number;
 }
 
-type createStaffParams = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password?: null;
-    phoneNumber: string;
-    gender: string;
-    date: string;
-    accountType: string;
-}
+type subjectResponseType = {
+    subjectId?: number;
+    subjectName: string;
+    subjectLevel: string;
+}[];
+
+
+

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Card, Statistic, Timeline } from "antd";
+import React from "react";
 import Chat from "../../../components/Chat/Chat"
 
 const ChatCompo = () => {
